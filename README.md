@@ -2,9 +2,9 @@
   <h1 align="center">🛡️ TensorGuard</h1>
   <p align="center">面向深度学习框架的 LLM 辅助模糊测试与缺陷证据管理工作台</p>
   <p align="center">
-    <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white" alt="Python">
-    <img src="https://img.shields.io/badge/PyTorch-supported-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch">
-    <img src="https://img.shields.io/badge/TensorFlow-supported-FF6F00?logo=tensorflow&logoColor=white" alt="TensorFlow">
+    <img src="https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/PyTorch-2.11-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch">
+    <img src="https://img.shields.io/badge/TensorFlow-2.21-FF6F00?logo=tensorflow&logoColor=white" alt="TensorFlow">
     <img src="https://img.shields.io/badge/LLM-Powered-9B59B6?logo=openai&logoColor=white" alt="LLM">
   </p>
 </p>
