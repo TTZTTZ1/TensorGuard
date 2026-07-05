@@ -1,0 +1,68 @@
+params:
+  boxes:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_boxes, q, 4]"]
+    default: null
+  scores:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_boxes, num_classes]"]
+    default: null
+  max_output_size_per_class:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  max_total_size:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  iou_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.5"
+  score_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "float('-inf')"
+  pad_per_class:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "false"
+  clip_boxes:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "true"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: scores
+    Constraint: "boxes.shape[0] == scores.shape[0]"
+  2:
+    Parameter 1: boxes
+    Parameter 2: scores
+    Constraint: "boxes.shape[1] == scores.shape[1]"
+  3:
+    Parameter 1: boxes
+    Parameter 2: scores
+    Constraint: "boxes.shape[2] == 1 or boxes.shape[2] == scores.shape[2]"

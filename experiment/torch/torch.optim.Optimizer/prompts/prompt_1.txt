@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.optim.Optimizer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim` module provides a comprehensive suite of optimization algorithms for training neural networks in PyTorch. It includes standard optimizers like SGD, Adam, and RMSprop, along with advanced features such as per-parameter configuration, learning rate scheduling, and weight averaging techniques (SWA and EMA).
+
+**Key Features:**
+- **Optimizer Construction:** Accepts model parameters as iterables or named parameters, with support for per-parameter options (e.g., layer-specific learning rates, bias exclusion from weight decay).
+- **Optimization Step:** Standard usage involves `zero_grad()`, `backward()`, and `step()`; some algorithms (e.g., LBFGS) require a closure for multiple reevaluations.
+- **Learning Rate Scheduling:** Includes various schedulers (e.g., `StepLR`, `CosineAnnealingLR`) that should be applied after the optimizer update.
+- **State Management:** Supports saving/loading optimizer state via `state_dict()` and `load_state_dict()`, with hooks for customizing state loading (e.g., for model architecture changes).
+- **Implementation Variants:** Many optimizers offer multiple implementations (for-loop, foreach, fused) for performance, with foreach typically being the default.
+- **Weight Averaging:** Provides utilities for Stochastic Weight Averaging (SWA) and Exponential Moving Average (EMA) to improve model generalization and training efficiency.
+
+**Common Usage Pattern:**
+```python
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
+
+for epoch in range(epochs):
+    for batch in dataloader:
+        optimizer.zero_grad()
+        loss = loss_fn(model(batch), target)
+        loss.backward()
+        optimizer.step()
+    scheduler.step()
+```
+
+This module is designed for flexibility, allowing customization of optimization strategies while maintaining ease of use for standard training workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["torch.Tensor", "dict"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  defaults:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Optimizer in a complex way */
+import torch

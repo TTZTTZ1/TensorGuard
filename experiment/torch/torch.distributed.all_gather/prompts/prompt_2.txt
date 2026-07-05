@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi‑process parallelism across multiple machines. It supports synchronous distributed training via `DistributedDataParallel` and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+**Key Features:**
+- **Initialization:** Use `init_process_group()` or `init_device_mesh()` to set up the process group. Methods include TCP, shared file‑system, or environment variables (`env://`).
+- **Backends:** Choose based on hardware:
+  - **NCCL:** Recommended for CUDA GPU training (best performance, supports InfiniBand).
+  - **XCCL:** For XPU GPU training.
+  - **Gloo:** For CPU‑based training or as a fallback for GPU.
+  - **MPI:** Available if built from source.
+- **Collective Operations:** Synchronous/asynchronous collectives (broadcast, all‑reduce, gather, scatter, etc.) with support for complex tensors and uneven sizes.
+- **Point‑to‑Point:** `send`/`recv` and asynchronous `isend`/`irecv` for direct communication.
+- **Groups:** Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh:** Higher‑level abstraction for managing multi‑dimensional process groups (e.g., for 2D/3D parallelism).
+- **Key‑Value Stores:** `TCPStore`, `FileStore`, `HashStore` for sharing connection info.
+- **Debugging:** Tools like `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG`, and `torch.distributed.breakpoint()` help diagnose hangs/desynchronization.
+- **Launch Utilities:** `torch.distributed.launch` (deprecated in favor of `torchrun`) and `torch.multiprocessing.spawn` for multi‑process startup.
+
+**Typical Workflow:**
+1. Initialize the process group with `init_process_group()`.
+2. Use collective operations or `DistributedDataParallel` for model training.
+3. Ensure proper GPU device setting (`torch.cuda.set_device`) when using NCCL.
+4. Clean up with `destroy_process_group()`.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, and requires explicit launch of separate processes per node.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1.
+    Parameter 1: tensor_list
+    Parameter 2: tensor
+    Constraint: tensor.device == tensor_list[0].device and tensor.dtype == tensor_list[0].dtype
+  2.
+    Parameter 1: tensor_list
+    Parameter 2: group
+    Constraint: len(tensor_list) == (group.size() if group is not None else torch.distributed.get_world_size())
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_gather in a complex way */
+import torch

@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DepthwiseConv2dNativeBackpropInput` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DepthwiseConv2dNativeBackpropInput` computes the gradient of a depthwise convolution operation with respect to its input. It backpropagates the error (`out_backprop`) through the convolution using the provided filter, returning the gradient for the input tensor.
+
+**Key Parameters:**
+- `input_sizes`: Shape of the original input tensor.
+- `filter`: 4-D convolution kernel `[height, width, in_channels, depthwise_multiplier]`.
+- `out_backprop`: Gradient of the loss with respect to the convolution output.
+- `strides`: Sliding window stride for each dimension.
+- `padding`: Padding algorithm (`"SAME"`, `"VALID"`, or `"EXPLICIT"`).
+- `data_format`: Data layout (`"NHWC"` or `"NCHW"`).
+- `dilations`: Spacing between kernel elements (defaults to `[1,1,1,1]`).
+
+**Returns:** A tensor of the same type as `filter`, representing the gradient with respect to the input.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_sizes:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4"]
+    default: null
+  filter:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4"]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["4"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID", "EXPLICIT"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  explicit_paddings:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["4"]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "filter"
+    Parameter 2: "out_backprop"
+    Constraint: "out_backprop.dtype == filter.dtype"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DepthwiseConv2dNativeBackpropInput in a complex way */
+import tensorflow as tf

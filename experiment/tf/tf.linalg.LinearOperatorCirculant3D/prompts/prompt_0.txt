@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant3D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant3D` is a TensorFlow class representing a linear operator that behaves like a **nested 3D block circulant matrix**, defined by its frequency spectrum rather than being explicitly stored. It efficiently performs operations like matrix multiplication and solving linear systems using **3D FFTs**, making it suitable for large-scale problems involving convolution-like operations in three dimensions.
+
+### **Key Features:**
+- **Efficient Operations:** Leverages 3D FFT for `matmul` and `solve`, with complexity `O(N log N)` per system.
+- **Spectrum-Based:** The operator is defined by a `spectrum` tensor (shape `[B1,...,Bb, N0, N1, N2]`), where `N0*N1*N2 = N`. Matrix-vector multiplication is computed as `A u = IDFT3[ spectrum * DFT3[u] ]`.
+- **Batch Support:** Handles batch dimensions naturally.
+- **Property Hints:** Allows specifying expectations (e.g., `is_self_adjoint`, `is_positive_definite`) for validation and optimization.
+
+### **Common Use Cases:**
+- **Convolution Operations:** Efficiently applies 3D convolutions in the frequency domain.
+- **Solving Linear Systems:** Solves systems involving block circulant matrices without explicit matrix inversion.
+- **Spectral Analysis:** Models operators where the action is a Fourier multiplier.
+
+### **Example Usage:**
+```python
+import tensorflow as tf
+
+# Define a 3D spectrum (e.g., shape [2, 4, 4, 4] for batch size 2 and block size 4x4x4)
+spectrum = tf.complex(tf.random.normal([2, 4, 4, 4]), tf.random.normal([2, 4, 4, 4]))
+
+# Create the operator
+operator = tf.linalg.LinearOperatorCirculant3D(spectrum)
+
+# Multiply with a vector
+x = tf.random.normal([2, 64, 3])  # Shape [batch, N, R]
+result = operator.matmul(x)  # Output shape [2, 64, 3]
+```
+
+### **Key Methods:**
+- `matmul(x)`: Compute `A @ x` using 3D FFT.
+- `solve(rhs)`: Solve `A X = rhs` efficiently.
+- `determinant()`: Computes determinant via product of spectrum elements.
+- `convolution_kernel()`: Returns the spatial-domain kernel corresponding to the spectrum.
+
+### **Performance Notes:**
+- Operations scale with `O(B * N log N)` for batch size `B` and total size `N = N0*N1*N2`.
+- Avoids storing dense `N x N` matrices, saving memory for large `N`.
+
+This operator is ideal for applications in **signal processing, image analysis, and scientific computing** where 3D circulant structures arise.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N0, N1, N2]"]
+    default: null
+  input_output_dtype:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'LinearOperatorCirculant3D'"
+constraints:
+  1:
+    Parameter 1: spectrum
+    Parameter 2: is_self_adjoint
+    Constraint: "not (spectrum.dtype in ['float16', 'float32', 'float64'] and is_self_adjoint == False)"
+  2:
+    Parameter 1: spectrum
+    Parameter 2: is_positive_definite
+    Constraint: "not (is_positive_definite == True and tf.reduce_any(tf.math.real(spectrum) <= 0))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant3D in a complex way */
+import tensorflow as tf

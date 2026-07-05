@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrize.remove_parametrizations` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `remove_parametrizations` function removes a parametrization from a specified tensor within a module. It offers two modes:  
+
+- **`leave_parametrized=True`** (default): The tensor keeps its current parametrized output, but the parametrization wrapper is removed. The dtype must remain unchanged.  
+- **`leave_parametrized=False`**: The tensor reverts to its original unparametrized state, which is only allowed if the parametrization depends on a single tensor.  
+
+**Parameters:**  
+- `module`: The module containing the parametrization.  
+- `tensor_name`: Name of the parametrized tensor.  
+- `leave_parametrized`: Determines whether to keep the tensor in its parametrized form.  
+
+**Returns:** The modified module.  
+
+**Raises:**  
+- `ValueError` if the tensor is not parametrized.  
+- `ValueError` if `leave_parametrized=False` is used with a multi-tensor parametrization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  tensor_name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  leave_parametrized:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: module
+    Parameter 2: tensor_name
+    Constraint: "hasattr(module, 'parametrizations') and tensor_name in module.parametrizations"
+  2:
+    Parameter 1: leave_parametrized
+    Parameter 2: tensor_name
+    Constraint: "leave_parametrized or isinstance(module.parametrizations[tensor_name].original, torch.Tensor)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrize.remove_parametrizations in a complex way */
+import torch

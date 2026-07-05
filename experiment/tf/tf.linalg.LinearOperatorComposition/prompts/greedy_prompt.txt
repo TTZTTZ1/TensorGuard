@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorComposition` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorComposition` creates a new linear operator by chaining multiple linear operators sequentially. It applies them in order: `op1(op2(...(opJ(x)...))`, equivalent to matrix multiplication `A1 A2...AJ` if each operator acts like a matrix.
+
+**Key Features:**
+- **Composition:** Combines operators with compatible shapes (output dimension of one must match input of the next).
+- **Batch Support:** Handles batch dimensions via broadcasting across operators.
+- **Efficiency:** Performance cost is the sum of individual operators' costs.
+- **Matrix Properties:** Allows hints like `is_non_singular`, `is_square`, etc., for optimization.
+
+**Common Use Cases:**
+- Building complex operators from simpler ones.
+- Applying a sequence of transformations efficiently.
+- Handling batched matrix multiplications with structured matrices.
+
+**Example:**
+```python
+op1 = LinearOperatorFullMatrix([[1., 2.], [3., 4.]])
+op2 = LinearOperatorFullMatrix([[1., 0.], [0., 1.]])
+composed = LinearOperatorComposition([op1, op2])  # Equivalent to op1
+```
+
+**Note:** Shape compatibility and broadcasting must be satisfied; otherwise, methods may fail.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operators:
+    dtype: ["LinearOperator"]
+    range: [null]
+    structure: ["iterable"]
+    shape: [null]
+    default: "null"
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  is_square:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "operators"
+    Parameter 2: "null"
+    Constraint: "len(operators) > 0"
+  2:
+    Parameter 1: "operators"
+    Parameter 2: "null"
+    Constraint: "all(op.dtype == operators[0].dtype for op in operators)"
+  3:
+    Parameter 1: "operators"
+    Parameter 2: "null"
+    Constraint: "all(operators[i].range_dimension == operators[i+1].domain_dimension for i in range(len(operators)-1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorComposition in a complex way */
+import tensorflow as tf

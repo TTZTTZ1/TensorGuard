@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.profiler.schedule` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.profiler` module provides tools for profiling PyTorch model performance during training and inference. It collects detailed metrics to help identify expensive operations, analyze device activity, and visualize execution traces.
+
+### Key Features:
+- **Activity Tracking**: Supports CPU, CUDA, and XPU profiling.
+- **Context Manager**: Use `torch.profiler.profile` as a context manager to profile code blocks.
+- **Customizable Schedule**: Control profiling cycles with `schedule()` to skip, warm up, and record specific iterations.
+- **Data Export**: Export traces in Chrome JSON format for visualization or use TensorBoard integration.
+- **Advanced Metrics**: Optionally record operator input shapes, stack traces, memory usage, and FLOPs estimates.
+
+### Basic Usage:
+```python
+with torch.profiler.profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+    # Code to profile
+    model(input)
+print(prof.key_averages().table(sort_by="cuda_time_total"))
+```
+
+### Additional Tools:
+- **Intel ITT APIs**: For low-level instrumentation and tracing.
+- **Execution Trace Observer**: Enables graph-based workload representation for benchmarks and simulators.
+
+This profiler replaces the legacy `torch.autograd.profiler` and is essential for optimizing PyTorch performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  wait:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  warmup:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  active:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  repeat:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  skip_first:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  skip_first_wait:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: wait
+    Parameter 2: wait
+    Constraint: "wait >= 0"
+  2:
+    Parameter 1: warmup
+    Parameter 2: warmup
+    Constraint: "warmup >= 0"
+  3:
+    Parameter 1: active
+    Parameter 2: active
+    Constraint: "active >= 0"
+  4:
+    Parameter 1: repeat
+    Parameter 2: repeat
+    Constraint: "repeat >= 0"
+  5:
+    Parameter 1: skip_first
+    Parameter 2: skip_first
+    Constraint: "skip_first >= 0"
+  6:
+    Parameter 1: skip_first_wait
+    Parameter 2: skip_first_wait
+    Constraint: "skip_first_wait == 0 or skip_first_wait == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.schedule in a complex way */
+import torch

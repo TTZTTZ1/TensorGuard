@@ -1,0 +1,161 @@
+
+# You are a Python code generation assistant for the `torch.utils.tensorboard.writer.SummaryWriter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.tensorboard` module provides a PyTorch interface for logging data to TensorBoard for visualization. Its core component is the `SummaryWriter` class, which writes events and summaries to log files.
+
+**Key Features:**
+- Logs scalars, images, histograms, graphs, embeddings, audio, text, videos, meshes, and custom plots.
+- Supports hierarchical tagging (e.g., `Loss/train`, `Loss/test`) for organized grouping in TensorBoard.
+- Asynchronously writes data to avoid slowing down training loops.
+
+**Basic Usage:**
+1. **Initialize** a `SummaryWriter` (default log directory is `runs/CURRENT_DATETIME_HOSTNAME`).
+2. **Add data** using methods like `add_scalar()`, `add_image()`, `add_histogram()`, `add_graph()`, etc.
+3. **Visualize** by running TensorBoard: `tensorboard --logdir=runs`.
+
+**Common Methods:**
+- `add_scalar(tag, value, global_step)`: Logs scalar values.
+- `add_scalars(main_tag, tag_value_dict, global_step)`: Logs multiple scalars under a parent tag.
+- `add_image(tag, img_tensor, global_step, dataformats)`: Logs images (supports various data formats like CHW, HWC).
+- `add_graph(model, input_to_model)`: Logs the model's computational graph.
+- `add_histogram(tag, values, global_step)`: Logs histograms of tensors.
+- `add_hparams(hparam_dict, metric_dict)`: Logs hyperparameters and metrics for comparison.
+
+**Important Parameters:**
+- `log_dir`: Directory for saving logs.
+- `global_step`: Step index for tracking progress over time.
+- `flush()` and `close()`: Ensure data is written and resources are released.
+
+This integration enables real-time monitoring and debugging of PyTorch models during training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  log_dir:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "null"
+  comment:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "''"
+  purge_step:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "null"
+  max_queue:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "10"
+  flush_secs:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "120"
+  filename_suffix:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "''"
+  img_tensor:
+    dtype: ["torch.Tensor", "numpy.ndarray", "str"]
+    range: ["No mention"]
+    structure: ["tensor", "ndarray", "string"]
+    shape: ["variable"]
+    default: "No mention"
+  dataformats:
+    dtype: ["str"]
+    range: ["CHW", "HWC", "HW", "WH", "etc."]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "'CHW'"
+  mat:
+    dtype: ["torch.Tensor", "numpy.ndarray"]
+    range: ["No mention"]
+    structure: ["tensor", "ndarray"]
+    shape: ["(N,D)"]
+    default: "No mention"
+  label_img:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(N,C,H,W)"]
+    default: "null"
+  metadata:
+    dtype: ["list"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["N"]
+    default: "null"
+  vertices:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B,N,3)"]
+    default: "No mention"
+  colors:
+    dtype: ["torch.Tensor"]
+    range: ["[0,255] for uint8", "[0,1] for float"]
+    structure: ["tensor"]
+    shape: ["(B,N,3)"]
+    default: "null"
+  faces:
+    dtype: ["torch.Tensor"]
+    range: ["[0, number_of_vertices] for uint8"]
+    structure: ["tensor"]
+    shape: ["(B,N,3)"]
+    default: "null"
+  labels:
+    dtype: ["torch.Tensor", "numpy.ndarray", "str"]
+    range: ["No mention"]
+    structure: ["tensor", "ndarray", "string"]
+    shape: ["variable"]
+    default: "No mention"
+  predictions:
+    dtype: ["torch.Tensor", "numpy.ndarray", "str"]
+    range: ["[0,1]"]
+    structure: ["tensor", "ndarray", "string"]
+    shape: ["variable"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "img_tensor"
+    Parameter 2: "dataformats"
+    Constraint: "img_tensor.ndim == len(dataformats)"
+  2:
+    Parameter 1: "mat"
+    Parameter 2: "label_img"
+    Constraint: "label_img is None or label_img.shape[0] == mat.shape[0]"
+  3:
+    Parameter 1: "mat"
+    Parameter 2: "metadata"
+    Constraint: "metadata is None or len(metadata) == mat.shape[0]"
+  4:
+    Parameter 1: "vertices"
+    Parameter 2: "colors"
+    Constraint: "colors is None or vertices.shape[0] == colors.shape[0]"
+  5:
+    Parameter 1: "vertices"
+    Parameter 2: "faces"
+    Constraint: "faces is None or vertices.shape[0] == faces.shape[0]"
+  6:
+    Parameter 1: "labels"
+    Parameter 2: "predictions"
+    Constraint: "len(labels) == len(predictions)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.tensorboard.writer.SummaryWriter in a complex way */
+import torch

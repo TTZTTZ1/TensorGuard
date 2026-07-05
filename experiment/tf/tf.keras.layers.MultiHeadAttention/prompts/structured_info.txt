@@ -1,0 +1,136 @@
+params:
+  num_heads:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  key_dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  value_dim:
+    dtype: ["int", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  dropout:
+    dtype: ["float"]
+    range: ["[0, 1]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  use_bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  output_shape:
+    dtype: ["tuple", "None"]
+    range: ["No mention"]
+    structure: ["tuple", "None"]
+    shape: ["No mention"]
+    default: "None"
+  attention_axes:
+    dtype: ["tuple", "None"]
+    range: ["No mention"]
+    structure: ["tuple", "None"]
+    shape: ["No mention"]
+    default: "None"
+  kernel_initializer:
+    dtype: ["string", "initializer"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: ["string", "initializer"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: ["regularizer", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  bias_regularizer:
+    dtype: ["regularizer", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  activity_regularizer:
+    dtype: ["regularizer", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  kernel_constraint:
+    dtype: ["constraint", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  bias_constraint:
+    dtype: ["constraint", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  query:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B, T, dim)"]
+    default: null
+  value:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B, S, dim)"]
+    default: null
+  key:
+    dtype: ["tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(B, S, dim)"]
+    default: "None"
+  attention_mask:
+    dtype: ["bool", "tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B, T, S)"]
+    default: "No mention"
+  return_attention_scores:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  training:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  use_causal_mask:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: query
+    Parameter 2: value
+    Constraint: query.shape[-1] == value.shape[-1]
+  2:
+    Parameter 1: key
+    Parameter 2: query
+    Constraint: key is None or query.shape[-1] == key.shape[-1]

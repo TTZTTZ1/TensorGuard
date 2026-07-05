@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.Subset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for efficient data loading in PyTorch, centered around the `DataLoader` class. Here is a concise summary of its core functionality and usage:
+
+### **Core Component: `DataLoader`**
+- **Purpose**: Creates a Python iterable over a dataset, supporting batching, shuffling, multi‑process loading, and memory optimization.
+- **Key Features**:
+  - **Dataset Types**: Works with both **map‑style** (indexable via `__getitem__`/`__len__`) and **iterable‑style** (streaming via `__iter__`) datasets.
+  - **Sampling Control**: Uses `sampler` or `batch_sampler` to define data order (e.g., random, sequential, weighted). For map‑style datasets, `shuffle=True` enables automatic shuffling.
+  - **Batching**: Automatically collates samples into batches via `batch_size` and `collate_fn`. Disable batching by setting `batch_size=None`.
+  - **Multi‑process Loading**: Set `num_workers > 0` to parallelize data loading across subprocesses, avoiding GIL bottlenecks.
+  - **Memory Pinning**: Enable `pin_memory=True` to speed up GPU transfers by using pinned (page‑locked) host memory.
+
+### **Dataset Classes**
+- **`Dataset`**: Abstract base class for map‑style datasets.
+- **`IterableDataset`**: Base for streaming datasets; requires careful handling in multi‑process mode to avoid data duplication.
+- **Utilities**: `TensorDataset`, `ConcatDataset`, `Subset`, `random_split`, etc., for common dataset operations.
+
+### **Samplers**
+- **`Sampler`**: Base class for defining sample‑index sequences.
+- **Built‑in Samplers**: `SequentialSampler`, `RandomSampler`, `WeightedRandomSampler`, `BatchSampler`, `DistributedSampler` (for distributed training).
+
+### **Collation Functions**
+- **`default_collate`**: Default function that stacks NumPy arrays/tensors into batches, preserving data structures (tuples, dicts, etc.).
+- **`default_convert`**: Converts NumPy arrays to tensors when batching is disabled.
+- **Custom `collate_fn`**: Allows custom batch assembly (e.g., padding sequences).
+
+### **Important Notes**
+- **Multi‑process Considerations**:
+  - On Windows/macOS, wrap main script code in `if __name__ == '__main__':` and define dataset/collate functions at the top level.
+  - Use `get_worker_info()` to configure per‑worker behavior (e.g., sharding `IterableDataset`).
+  - Be mindful of increased memory usage with many workers.
+- **Randomness**: In multi‑process mode, each worker receives a unique seed; use `worker_init_fn` to seed other libraries.
+- **CUDA**: Avoid returning CUDA tensors directly from workers; instead, use `pin_memory=True`.
+
+### **Typical Usage**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class MyDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = MyDataset()
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4, pin_memory=True)
+
+for batch in loader:
+    # batch is collated (batched tensors)
+    train_step(batch)
+```
+
+In short, `torch.utils.data` provides a flexible, high‑performance pipeline for feeding data to PyTorch models, with built‑in support for batching, parallelism, and memory optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["sequence"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dataset
+    Parameter 2: indices
+    Constraint: "all(0 <= i < len(dataset) for i in indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.Subset in a complex way */
+import torch

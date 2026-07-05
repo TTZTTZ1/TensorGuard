@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `tf.train.Example` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.Example` is a TensorFlow protocol buffer (proto) used to store structured data for machine learning tasks. It acts as a key-value store where each key maps to a `tf.train.Feature`, which holds a list of values of a fixed type (bytes, int64, or float). This format is compact, flexible, and commonly used in TFRecord files for efficient data storage and retrieval.
+
+**Key Points:**
+- Represents data as `Dict[str, Union[List[bytes], List[int64], List[float]]]`.
+- Requires consistent data types for each key across examples, though values can be omitted or vary in length.
+- Used with `tf.io.parse_example` to deserialize data into tensors for model input.
+- Essential for building scalable input pipelines in TensorFlow.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  features:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: "No mention"
+    default: null
+constraints:
+  1.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "data_type_T"
+    Constraint: "all(type(ex.features[K].value[0]) == T for ex in examples if K in ex.features and ex.features[K].value) and len({type(ex.features[K].value[0]) for ex in examples if K in ex.features and ex.features[K].value}) <= 1"
+  2.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "list_size"
+    Constraint: "len(ex1.features[K].value) != len(ex2.features[K].value) is allowed for any examples ex1, ex2"
+  3.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "default_value"
+    Constraint: "if K not in ex.features, default_value is used if configured"
+  4.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "empty_list"
+    Constraint: "if K in ex.features and not ex.features[K].value, then no default is used and it represents an empty tensor"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.Example in a complex way */
+import tensorflow as tf

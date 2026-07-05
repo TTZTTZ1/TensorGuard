@@ -1,0 +1,32 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["list", "None"]
+    shape: null
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "axis is None or all(-rank(input) <= ax < rank(input) for ax in axis)"
+  2:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "axis is None or all(input.shape[ax if ax >= 0 else ax + rank(input)] == 1 for ax in axis)"
+  3:
+    Parameter 1: input
+    Parameter 2: axis
+    Constraint: "not (isinstance(input, tf.RaggedTensor) and axis is None)"

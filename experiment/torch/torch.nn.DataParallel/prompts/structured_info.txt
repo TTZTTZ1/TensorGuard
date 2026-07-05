@@ -1,0 +1,30 @@
+params:
+  module:
+    dtype: ["Module"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  device_ids:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  output_device:
+    dtype: ["int", "torch.device"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "device_ids[0]"
+  dim:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "module"
+    Parameter 2: "device_ids"
+    Constraint: "next(module.parameters()).device == torch.device(device_ids[0]) if device_ids is not None else True"

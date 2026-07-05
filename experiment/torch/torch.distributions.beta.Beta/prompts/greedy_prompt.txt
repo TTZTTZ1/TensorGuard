@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.distributions.beta.Beta` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling in variational autoencoders
+
+**Core Components:**
+1. **Distribution Base Class**: Abstract class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+2. **Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+3. **TransformedDistribution**: Applies transforms to base distributions (e.g., LogNormal from Normal via exponential transform)
+4. **KL Divergence**: Computes KL divergence between distributions with registered implementations
+5. **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) with caching support
+6. **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+
+**Common Use Cases:**
+- **REINFORCE** (discrete actions):
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization** (continuous actions):
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  ```
+
+**Registry System:**
+- `transform_to(constraint)`: Gets transforms for unconstrained optimization
+- `biject_to(constraint)`: Gets bijective transforms for HMC sampling
+
+The package follows TensorFlow Distributions design and is essential for probabilistic modeling, variational inference, and reinforcement learning in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration1:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  concentration0:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration1
+    Parameter 2: None
+    Constraint: "concentration1 > 0"
+  2:
+    Parameter 1: concentration0
+    Parameter 2: None
+    Constraint: "concentration0 > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.beta.Beta in a complex way */
+import torch

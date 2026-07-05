@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `torch.squeeze` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.squeeze` removes dimensions of size 1 from a tensor. If no dimension is specified, it removes all such dimensions. Optionally, you can provide a specific dimension (or tuple of dimensions) to squeeze only those. The operation preserves the underlying storage, so changes to the output affect the input tensor.  
+
+**Key points:**  
+- Removes size‑1 dimensions from the input tensor.  
+- Without `dim`, all size‑1 dimensions are removed.  
+- With `dim`, only the specified dimension(s) are squeezed (if they have size 1).  
+- Shares storage with the input—modifications are reflected in both tensors.  
+- Caution: Unspecified squeezing can unexpectedly remove batch dimensions of size 1.  
+
+**Example:**  
+A tensor of shape `(2, 1, 2, 1, 2)` becomes `(2, 2, 2)` after `squeeze()`.  
+Calling `squeeze(dim=1)` on the same tensor yields `(2, 2, 1, 2)`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: dim
+    Constraint: "dim is None or (isinstance(dim, int) and -len(input.shape) <= dim < len(input.shape)) or (isinstance(dim, tuple) and all(isinstance(d, int) and -len(input.shape) <= d < len(input.shape) for d in dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.squeeze in a complex way */
+import torch

@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FusedResizeAndPadConv2D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FusedResizeAndPadConv2D` is a fused TensorFlow operation that combines image resizing, padding, and 2D convolution into a single optimized step. It takes an input tensor, resizes it to a specified height and width, applies padding, and then performs a convolution with a given filter. This fusion reduces intermediate memory usage and can improve latency by avoiding separate tensor writes for each preprocessing stage.
+
+**Key parameters:**
+- `input`: 4-D input tensor `[batch, height, width, channels]`.
+- `size`: Target `[new_height, new_width]` for resizing.
+- `paddings`: Specifies padding sizes per dimension.
+- `filter`: 4-D convolution kernel.
+- `mode`: Padding mode (`"REFLECT"` or `"SYMMETRIC"`).
+- `strides`: Convolution stride lengths.
+- `padding`: Convolution padding type (`"SAME"` or `"VALID"`).
+- `resize_align_corners`: Optional alignment control for resizing.
+
+**Note:** The operation uses a single scratch buffer internally, so parallel executions may block. It only supports the `'NHWC'` data format.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  size:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  paddings:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4, 2]
+    default: null
+  filter:
+    dtype: ["half", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["REFLECT", "SYMMETRIC"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  resize_align_corners:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filter
+    Constraint: "input.dtype == filter.dtype"
+  2:
+    Parameter 1: paddings
+    Parameter 2: input
+    Constraint: "paddings.shape[0] == input.shape.ndims"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FusedResizeAndPadConv2D in a complex way */
+import tensorflow as tf

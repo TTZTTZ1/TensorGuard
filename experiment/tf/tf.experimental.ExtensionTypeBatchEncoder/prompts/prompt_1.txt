@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `tf.experimental.ExtensionTypeBatchEncoder` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.ExtensionTypeBatchEncoder` is a class used to encode and decode custom extension type values for batching operations in TensorFlow. It enables extension types to be compatible with batching APIs like `tf.data.Dataset`, `tf.keras`, and `tf.map_fn` by converting them into tensors that can be stacked, unstacked, or concatenated.
+
+### Key Points:
+- **Purpose**: Provides methods to transform extension type values into a batchable tensor format and back.
+- **Default Behavior**: The default encoder assumes that all nested fields (tensors, extension types, composite tensors, shapes) can be directly batched.
+- **Customization**: Extension types requiring special handling must override `__batch_encoder__` with a custom encoder that implements:
+  - `batch()`: Converts a single-value TypeSpec to a batched version.
+  - `unbatch()`: Converts a batched TypeSpec back to a single element.
+  - `encode()`: Encodes a value into a nest of batchable tensors.
+  - `decode()`: Reconstructs the original value from its encoded form.
+  - `encoding_specs()`: Describes the tensor structure of the encoded output.
+- **Examples**: Used by `tf.RaggedTensor` and `tf.SparseTensor` to define custom boxing/unboxing logic for batching.
+
+This class ensures that extension types can seamlessly integrate with TensorFlow’s batching workflows while allowing flexibility for complex data structures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["TypeSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  batch_size:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  value:
+    dtype: ["ExtensionType", "Tensor", "CompositeTensor"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  minimum_rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  encoded_value:
+    dtype: ["Tensor", "CompositeTensor", "ExtensionType"]
+    range: null
+    structure: ["nest"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.ExtensionTypeBatchEncoder in a complex way */
+import tensorflow as tf

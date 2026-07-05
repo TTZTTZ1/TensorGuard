@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyProximalAdagrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceApplyProximalAdagrad` updates a variable (`var`) and its accumulator (`accum`) using the Proximal Adagrad optimization algorithm, which combines Adagrad's adaptive learning rate with L1 and L2 regularization (proximal methods). It is designed for resource variables and supports optional locking to prevent contention during updates.
+
+**Key Parameters:**
+- `var`, `accum`: Resource tensors (from a `Variable()`).
+- `lr`: Learning rate (scalar).
+- `l1`, `l2`: Regularization coefficients (scalars).
+- `grad`: Gradient tensor.
+- `use_locking`: If `True`, protects updates with a lock.
+
+**Update Rules:**
+1. `accum += grad * grad`
+2. `prox_v = var - lr * grad * (1 / sqrt(accum))`
+3. `var = sign(prox_v) / (1 + lr * l2) * max{|prox_v| - lr * l1, 0}`
+
+This operation is useful for sparse training problems with regularization, such as linear models or deep learning with embedded feature selection.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16",
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyProximalAdagrad in a complex way */
+import tensorflow as tf

@@ -1,0 +1,44 @@
+params:
+  y_true:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y_pred:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  from_logits:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  label_smoothing:
+    dtype: ["float32", "float64"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: []
+    default: "0.0"
+  axis:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "y_true.shape == y_pred.shape"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "y_true"
+    Constraint: "axis >= -len(y_true.shape) and axis < len(y_true.shape)"
+  3:
+    Parameter 1: "label_smoothing"
+    Parameter 2: "label_smoothing"
+    Constraint: "label_smoothing >= 0 and label_smoothing <= 1"

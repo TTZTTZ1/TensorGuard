@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.BFloat16Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: PyTorch Storage**
+
+**Core Concept:**  
+A `torch.UntypedStorage` is a low‑level, contiguous, one‑dimensional byte array that holds the raw data for tensors. It is the underlying data container for `torch.Tensor` objects.
+
+**Key Points:**
+
+1. **Tensor‑Storage Relationship**  
+   - A tensor’s data is defined by: **Storage** (raw bytes), `dtype`, `shape`, `stride`, and `offset`.  
+   - Multiple tensors (e.g., views created via `view()` or slicing) can share the same storage.  
+   - Access a tensor’s storage via `tensor.untyped_storage()`.
+
+2. **Untyped vs. Typed Storage**  
+   - **`torch.UntypedStorage`** (current API): A byte‑oriented storage, independent of data type.  
+   - **Legacy typed storages** (e.g., `torch.FloatStorage`) are deprecated; they wrap an `UntypedStorage` with a specific `dtype`.
+
+3. **Important Methods & Attributes**  
+   - `data_ptr()`: Returns the unique identifier (memory address) of the storage.  
+   - `device`, `is_cuda`, `is_pinned()`: Device‑related queries.  
+   - `clone()`, `copy_()`, `fill_()`, `pin_memory()`: Manipulation methods.  
+   - `share_memory_()`: Moves CPU storage to shared memory for multiprocessing.  
+   - `from_file()`: Creates a memory‑mapped storage from a file.
+
+4. **Special Cases**  
+   - Tensors with gradients have separate storages for `data` and `grad`.  
+   - Tensors on `"meta"` device or `FakeTensor` have no actual storage.  
+   - Storage‑level operations are low‑level; prefer tensor‑level APIs (e.g., `clone()`, `fill_()`) for safety.
+
+5. **Warning**  
+   Direct storage manipulation (e.g., using `set_()` to replace a tensor’s storage) is discouraged—it is error‑prone and intended only for educational/advanced use.
+
+**Bottom Line:**  
+`torch.UntypedStorage` is the foundational data container for tensors, enabling memory‑sharing and low‑level data access. Most users should work with tensor‑level operations, resorting to storage APIs only for specialized tasks (e.g., memory‑mapped files or shared‑memory multiprocessing).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["scalar", "list", "tuple", "torch.Tensor"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "object"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.bfloat16"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "str", "int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: ""
+    Constraint: "dtype is None or dtype == torch.bfloat16"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.BFloat16Storage in a complex way */
+import torch

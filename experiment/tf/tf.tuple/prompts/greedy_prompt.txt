@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.tuple` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.tuple` groups tensors together, ensuring they are computed only after all specified input tensors and control operations have completed. It is primarily used in TensorFlow 1.x graph mode to enforce execution order via control dependencies. In TensorFlow 2.x with eager execution or Autograph, automatic control dependencies make this function generally unnecessary.
+
+**Key points:**
+- **Purpose:** Enforces that output tensors are computed after all inputs and any additional `control_inputs` operations.
+- **Use case:** Mainly for legacy TF1 graph code; not needed in TF2 eager/Autograph contexts.
+- **Parameters:**
+  - `tensors`: List of tensors to group (can include `None` entries).
+  - `control_inputs`: Optional list of ops that must finish before the tensors are returned.
+  - `name`: Optional name scope for the operation.
+- **Returns:** The same list of tensors, but with control dependencies enforced.
+- **Errors:** Raises `ValueError` if no tensors are provided, or `TypeError` if `control_inputs` contains invalid types.
+
+**Example:** Useful for ensuring variable updates (e.g., `assign_add`) are performed before subsequent tensor computations in a TF1 session.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensors:
+    dtype: ["Tensor", "IndexedSlices"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  control_inputs:
+    dtype: ["Operation", "Tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "tensors"
+    Parameter 2: "None"
+    Constraint: "any(isinstance(t, (tf.Tensor, tf.IndexedSlices)) for t in tensors)"
+  2:
+    Parameter 1: "control_inputs"
+    Parameter 2: "None"
+    Constraint: "control_inputs is None or all(isinstance(op, (tf.Operation, tf.Tensor)) for op in control_inputs)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.tuple in a complex way */
+import tensorflow as tf

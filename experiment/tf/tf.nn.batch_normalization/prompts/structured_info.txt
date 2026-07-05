@@ -1,0 +1,64 @@
+params:
+  x:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  mean:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  variance:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  offset:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "None"]
+    shape: ["any"]
+    default: null
+  scale:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "None"]
+    shape: ["any"]
+    default: null
+  variance_epsilon:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["string"]
+    shape: No mention
+    default: None
+constraints:
+  1:
+    Parameter 1: mean
+    Parameter 2: x
+    Constraint: (len(mean.shape) == len(x.shape) and all(ms == xs or ms == 1 for ms, xs in zip(mean.shape, x.shape))) or (len(mean.shape) == 1 and mean.shape[0] == x.shape[-1])
+  2:
+    Parameter 1: variance
+    Parameter 2: x
+    Constraint: (len(variance.shape) == len(x.shape) and all(vs == xs or vs == 1 for vs, xs in zip(variance.shape, x.shape))) or (len(variance.shape) == 1 and variance.shape[0] == x.shape[-1])
+  3:
+    Parameter 1: offset
+    Parameter 2: x
+    Constraint: offset is None or ((len(offset.shape) == len(x.shape) and all(os == xs or os == 1 for os, xs in zip(offset.shape, x.shape))) or (len(offset.shape) == 1 and offset.shape[0] == x.shape[-1]))
+  4:
+    Parameter 1: scale
+    Parameter 2: x
+    Constraint: scale is None or ((len(scale.shape) == len(x.shape) and all(ss == xs or ss == 1 for ss, xs in zip(scale.shape, x.shape))) or (len(scale.shape) == 1 and scale.shape[0] == x.shape[-1]))
+  5:
+    Parameter 1: mean
+    Parameter 2: variance
+    Constraint: tuple(mean.shape) == tuple(variance.shape)

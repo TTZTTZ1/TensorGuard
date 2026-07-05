@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.errors.record` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The documentation describes PyTorch TorchElastic's error propagation mechanism for distributed training jobs. Key points:
+
+**Error Categories:**
+- User Errors (e.g., invalid API inputs)
+- Worker Failures (failures in user-provided training scripts)
+- Platform Errors (agent failures)
+- Infra Errors (external failures like host crashes)
+
+**Core Mechanism:**
+- Worker processes write uncaught exceptions to error files specified by `TORCHELASTIC_ERROR_FILE`
+- The parent agent aggregates these files and propagates the **first error** (based on timestamp)
+- Uses `@record` decorator to automatically capture exceptions in worker processes
+
+**Main Components:**
+1. **`@record` decorator** - Applied to main functions to enable error recording
+2. **`ChildFailedError`** - Special exception to propagate child errors without parent traceback wrapping
+3. **`ErrorHandler`** - Base class for writing structured error data to JSON files
+4. **`ProcessFailure`** - Data structure representing failed process results
+
+**Usage:**
+```python
+@record
+def main():
+    # Training logic
+    pass
+```
+
+This system ensures worker failures are properly propagated through the agent to schedulers, enabling accurate error reporting and retry policies in distributed PyTorch jobs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["Callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  error_handler:
+    dtype: ["ErrorHandler", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.errors.record in a complex way */
+import torch

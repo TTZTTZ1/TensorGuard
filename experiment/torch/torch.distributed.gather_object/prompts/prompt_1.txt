@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.distributed.gather_object` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a distributed communication framework for multi‑process parallelism across multiple machines or GPUs. It supports several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+**Key Features:**
+- **Initialization:** Use `init_process_group()` or `init_device_mesh()` to set up the process group before any distributed operations.
+- **Backends:** Choose based on hardware:
+  - **NCCL** for CUDA GPU training (best performance).
+  - **XCCL** for XPU GPU training.
+  - **Gloo** for CPU training or as a fallback for GPU.
+- **Collective Operations:** Synchronous/asynchronous collectives like `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point‑to‑Point Communication:** `send`/`recv` and asynchronous `isend`/`irecv`.
+- **Groups:** Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh:** Higher‑level abstraction for managing multi‑dimensional process groups (e.g., for 2D/3D parallelism).
+- **Key‑Value Stores:** `TCPStore`, `FileStore`, `HashStore` for exchanging connection info.
+- **Debugging Tools:** `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG` environment variable, and `torch.distributed.breakpoint()` for interactive debugging.
+- **Launch Utilities:** `torch.distributed.launch` (deprecated, use `torchrun`) and `torch.multiprocessing.spawn` for multi‑process startup.
+
+**Common Usage Pattern:**
+1. Initialize the process group with `init_process_group()`.
+2. Use collective or point‑to‑point communication functions.
+3. Wrap models with `DistributedDataParallel` for synchronous training.
+4. Clean up with `destroy_process_group()`.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, and provides performance benefits over `DataParallel` by avoiding Python GIL limitations and enabling efficient multi‑node training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  obj:
+    dtype: ["Any"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  object_gather_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list", "None"]
+    shape: ["group_size"]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [[0, "world_size-1"]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group:
+    dtype: ["ProcessGroup"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  group_dst:
+    dtype: ["int"]
+    range: [[0, "group_size-1"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "(dst is None and group_dst is None) or (dst is not None and group_dst is None) or (dst is None and group_dst is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.gather_object in a complex way */
+import torch

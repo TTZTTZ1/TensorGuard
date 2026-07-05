@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.cov` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.cov` function computes the covariance matrix for a given input, where rows represent variables and columns represent observations. It returns a square matrix with variances on the diagonal and covariances between variables off-diagonal.
+
+**Key parameters:**
+- `correction`: Adjusts degrees of freedom (default 1 for unbiased estimate).
+- `fweights`: Integer frequency weights for observations.
+- `aweights`: Floating-point importance weights for observations.
+
+If both weights are provided, they are multiplied together. The function supports both unweighted and weighted covariance calculations, with formulas adjusting for the chosen correction and weights.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar", "1D", "2D"]
+    shape: null
+    default: null
+  correction:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1"
+  fweights:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar", "1D"]
+    shape: null
+    default: "None"
+  aweights:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar", "1D"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "fweights"
+    Parameter 2: "input"
+    Constraint: "fweights is None or fweights.numel() == (input.shape[1] if input.dim() == 2 else input.numel())"
+  2:
+    Parameter 1: "aweights"
+    Parameter 2: "input"
+    Constraint: "aweights is None or aweights.numel() == (input.shape[1] if input.dim() == 2 else input.numel())"
+  3:
+    Parameter 1: "fweights"
+    Parameter 2: None
+    Constraint: "fweights is None or fweights.dtype in [torch.int8, torch.int16, torch.int32, torch.int64]"
+  4:
+    Parameter 1: "aweights"
+    Parameter 2: None
+    Constraint: "aweights is None or aweights.dtype in [torch.float16, torch.float32, torch.float64]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cov in a complex way */
+import torch

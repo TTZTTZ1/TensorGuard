@@ -1,0 +1,50 @@
+# tf.image.rgb_to_yiq
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/image/rgb_to_yiq](https://tensorflow.google.cn/api_docs/python/tf/image/rgb_to_yiq)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/ops/image_ops_impl.py#L3980-L4007) |
+
+Converts one or more images from RGB to YIQ.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.image.rgb_to_yiq`](https://tensorflow.google.cn/api_docs/python/tf/image/rgb_to_yiq)
+
+```
+tf.image.rgb_to_yiq(
+    images
+)
+```
+
+Outputs a tensor of the same shape as the `images` tensor, containing the YIQ
+value of the pixels.
+The output is only well defined if the value in images are in [0,1].
+
+#### Usage Example:
+
+```
+>>> x = tf.constant([[[1.0, 2.0, 3.0]]])
+>>> tf.image.rgb_to_yiq(x)
+<tf.Tensor: shape=(1, 1, 3), dtype=float32,
+numpy=array([[[ 1.815     , -0.91724455,  0.09962624]]], dtype=float32)>
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `images` | 2-D or higher rank. Image data to convert. Last dimension must be size 3. |
+
+| Returns | |
+
+|  |  |
+| --- | --- |
+| `images` | tensor with the same shape as `images`. |

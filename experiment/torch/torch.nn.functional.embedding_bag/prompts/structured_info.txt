@@ -1,0 +1,84 @@
+params:
+  input:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B, N]", "[N]"]
+    default: null
+  weight:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_embeddings, embedding_dim]"]
+    default: null
+  offsets:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B]"]
+    default: "None"
+  max_norm:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  norm_type:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "2"
+  scale_grad_by_freq:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  mode:
+    dtype: ["string"]
+    range: [["sum", "mean", "max"]]
+    structure: ["scalar"]
+    shape: null
+    default: '"mean"'
+  sparse:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  per_sample_weights:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as input"]
+    default: "None"
+  include_last_offset:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  padding_idx:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "offsets"
+    Constraint: "not (input.dim() == 2 and offsets is not None)"
+  2:
+    Parameter 1: "mode"
+    Parameter 2: "scale_grad_by_freq"
+    Constraint: "mode != 'max' or scale_grad_by_freq == False"
+  3:
+    Parameter 1: "mode"
+    Parameter 2: "sparse"
+    Constraint: "mode != 'max' or sparse == False"
+  4:
+    Parameter 1: "per_sample_weights"
+    Parameter 2: "input"
+    Constraint: "per_sample_weights is None or per_sample_weights.shape == input.shape"

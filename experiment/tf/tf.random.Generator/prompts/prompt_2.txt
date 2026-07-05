@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.random.Generator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.Generator` is a TensorFlow class for generating random numbers with stateful, deterministic behavior. It supports algorithms like Philox and ThreeFry, and can be seeded, copied, or initialized from non-deterministic states. Key features include:
+
+- **State Management**: Uses a `tf.Variable` to track internal state, which changes after each random operation.
+- **Distribution Support**: Methods for common distributions: `normal`, `uniform`, `binomial`, `truncated_normal`, and `uniform_full_int`.
+- **Device Consistency**: Same seed/algorithm produces identical integer outputs across CPU/GPU/TPU (float results may have minor numerical differences).
+- **Distributed Training**: Works with `tf.distribute.Strategy`—each replica gets a different random stream, but overall system remains deterministic if seeded.
+- **Checkpointing**: Can be saved/restored via `tf.train.Checkpoint`, even across different strategy configurations.
+- **Global Generator**: Access a global instance with `tf.random.get_global_generator()`.
+- **Utilities**: Includes `split()` to create independent generators, `skip()` to advance counters, and `make_seeds()` for stateless random ops.
+
+Common constructors:
+- `from_seed(seed)`
+- `from_non_deterministic_state()`
+- `from_key_counter(key, counter)` (counter-based algorithms)
+- `from_state(state, alg)`
+
+Useful for reproducible randomness in simulations, data augmentation, and stochastic algorithms.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  copy_from:
+    dtype: ["Generator"]
+    range: [null]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  state:
+    dtype: ["STATE_TYPE"]
+    range: [null]
+    structure: ["vector", "variable"]
+    shape: ["algorithm-specific"]
+    default: "null"
+  alg:
+    dtype: ["int", "string"]
+    range: ["philox", "threefry", "PHILOX", "THREEFRY"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "state"
+    Parameter 2: "alg"
+    Constraint: "The length of state must be appropriate for the chosen algorithm."
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.Generator in a complex way */
+import tensorflow as tf

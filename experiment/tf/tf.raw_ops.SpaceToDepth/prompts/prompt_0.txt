@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SpaceToDepth` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SpaceToDepth` operation rearranges spatial data (height and width) into depth by dividing the input into non-overlapping blocks of size `block_size x block_size`. Each block is flattened and moved into the depth dimension, increasing the number of output channels by a factor of `block_size * block_size`. The input height and width must be divisible by `block_size`.
+
+**Key points:**
+- **Purpose:** Useful for downsampling while preserving data (e.g., replacing pooling) and training convolutional models.
+- **Input:** A tensor with shape dependent on `data_format` (default is `NHWC`: `[batch, height, width, channels]`).
+- **Output:** A tensor of the same type, where:
+  - Spatial dimensions are reduced by a factor of `block_size`.
+  - Depth increases by a factor of `block_size * block_size`.
+- **Constraints:** `block_size >= 2`, and spatial dimensions must be divisible by `block_size`.
+- **Example:** For an input shape `[1, 2, 2, 1]` and `block_size=2`, output shape becomes `[1, 1, 1, 4]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  block_size:
+    dtype: ["int"]
+    range: [">= 2"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NCHW_VECT_C"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "NHWC"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: block_size
+    Constraint: (data_format == 'NHWC' and input.shape[1] % block_size == 0 and input.shape[2] % block_size == 0) or (data_format in ['NCHW', 'NCHW_VECT_C'] and input.shape[2] % block_size == 0 and input.shape[3] % block_size == 0)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SpaceToDepth in a complex way */
+import tensorflow as tf

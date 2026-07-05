@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.custom_from_mask` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.prune.custom_from_mask` applies a user‑defined binary mask to prune a specified parameter in a PyTorch module. It modifies the module in place by:
+
+- Adding a buffer named `name + '_mask'` to store the pruning mask.
+- Replacing the original parameter with its pruned version, while storing the unpruned tensor in a new parameter named `name + '_orig'`.
+
+**Parameters:**
+- `module`: The module containing the parameter to prune.
+- `name`: The name of the parameter to prune.
+- `mask`: A binary tensor mask to apply.
+
+**Returns:** The modified (pruned) module.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: name
+    Parameter 2: module
+    Constraint: "hasattr(module, name) and isinstance(getattr(module, name), torch.nn.Parameter)"
+  2:
+    Parameter 1: mask
+    Parameter 2: mask
+    Constraint: "torch.all((mask == 0) | (mask == 1))"
+  3:
+    Parameter 1: mask
+    Parameter 2: module
+    Constraint: "mask.shape == getattr(module, name).shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.custom_from_mask in a complex way */
+import torch

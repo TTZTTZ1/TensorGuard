@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, in_features)"]
+    default: null
+  weight:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(out_features, in_features)", "(in_features)"]
+    default: null
+  bias:
+    dtype: ["float32", "float64", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: ["(out_features)", "()"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.shape[-1] == weight.shape[-1]"
+  2:
+    Parameter 1: weight
+    Parameter 2: bias
+    Constraint: "bias is None or bias.shape == () or (len(weight.shape) == 2 and bias.shape == (weight.shape[0],))"

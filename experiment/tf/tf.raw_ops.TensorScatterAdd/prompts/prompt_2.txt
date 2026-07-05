@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorScatterAdd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorScatterAdd` adds sparse `updates` to an existing `tensor` at specified `indices`, creating a new tensor. It is similar to `tf.scatter_nd_add` but works on tensors rather than variables.
+
+**Key Points:**
+- **Purpose:** Performs an in-place-like addition of `updates` into `tensor` at positions defined by `indices`.
+- **Indices:** The last dimension of `indices` corresponds to indices into elements or slices of `tensor`. Must satisfy `indices.shape[-1] <= tensor.shape.rank`.
+- **Updates Shape:** Must match `indices.shape[:-1] + tensor.shape[indices.shape[-1]:]`.
+- **Behavior:** If memory cannot be reused, a copy is made. On CPU, out-of-bound indices cause an error; on GPU, they are ignored.
+
+**Example:**
+```python
+indices = [[4], [3], [1], [7]]
+updates = [9, 10, 11, 12]
+tensor = [1, 1, 1, 1, 1, 1, 1, 1]
+# Result: [1, 12, 1, 11, 10, 1, 1, 13]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  updates:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  name:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: None
+constraints:
+  1:
+    Parameter 1: updates
+    Parameter 2: tensor
+    Constraint: updates.dtype == tensor.dtype
+  2:
+    Parameter 1: indices
+    Parameter 2: tensor
+    Constraint: indices.shape[-1] <= tensor.shape.rank
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: updates.shape == indices.shape[:-1] + tensor.shape[indices.shape[-1]:]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorScatterAdd in a complex way */
+import tensorflow as tf

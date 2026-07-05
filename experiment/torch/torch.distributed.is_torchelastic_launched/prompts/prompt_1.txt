@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.distributed.is_torchelastic_launched` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.distributed` package enables distributed parallel training across multiple processes and machines. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (CPU/optional GPU)
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations
+- **Process Groups**: Default world group and custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+
+## **Key Components**
+
+### **Initialization Methods**
+1. **Environment Variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared File System**: Use a shared file for coordination
+4. **DeviceMesh**: For multi-dimensional parallelism
+
+### **Communication Patterns**
+- **Point-to-Point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: 
+  - All-reduce, broadcast, gather, scatter
+  - All-to-all, reduce-scatter, barrier
+- **Object Collectives**: For Python objects (with performance limitations)
+
+### **Backend Selection Guide**
+- **CUDA GPU training**: Use NCCL (best performance)
+- **CPU training**: Use Gloo
+- **XPU GPU training**: Use XCCL
+- **InfiniBand**: NCCL for GPU, Gloo/MPI for CPU
+
+## **Best Practices**
+
+### **Initialization**
+```python
+import torch.distributed as dist
+dist.init_process_group(backend='nccl', init_method='env://')
+```
+
+### **Typical Usage Pattern**
+```python
+# Each process gets unique rank
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+
+# Collective operations
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# Cleanup
+dist.destroy_process_group()
+```
+
+### **DeviceMesh (for complex parallelism)**
+```python
+from torch.distributed.device_mesh import init_device_mesh
+# 2D mesh for data + tensor parallelism
+mesh = init_device_mesh("cuda", (2, 4), mesh_dim_names=("dp", "tp"))
+```
+
+## **Debugging & Performance**
+- **Environment Variables**: `NCCL_DEBUG=INFO`, `TORCH_DISTRIBUTED_DEBUG=DETAIL`
+- **Tools**: `monitored_barrier()`, debug HTTP server, Python breakpoints
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+
+## **Important Notes**
+- Follow SPMD model: same code runs on all ranks
+- Ensure proper GPU device setting with `torch.cuda.set_device()`
+- Use `DistributedDataParallel` wrapper for model parallelism
+- Clean up with `destroy_process_group()` to avoid hangs
+
+The package provides both low-level communication primitives and high-level abstractions like `DeviceMesh` for scalable distributed training across various hardware configurations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  (none)
+
+constraints:
+  (none)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.is_torchelastic_launched in a complex way */
+import torch

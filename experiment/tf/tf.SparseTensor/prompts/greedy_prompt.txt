@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.SparseTensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.SparseTensor` is a class in TensorFlow that efficiently represents tensors where most elements are zero. It stores only the non-zero values along with their indices, reducing memory usage and computational cost for sparse data.
+
+**Key Components:**
+- **`indices`**: A 2D int64 tensor of shape `[N, ndims]` specifying the positions of non-zero values.
+- **`values`**: A 1D tensor of shape `[N]` containing the non-zero values.
+- **`dense_shape`**: A 1D int64 tensor of shape `[ndims]` defining the full shape of the equivalent dense tensor.
+
+**Main Features:**
+- **Memory Efficiency**: Ideal for data with many zeros (e.g., embeddings, graphs, text).
+- **Compatibility**: Works with TensorFlow ops (e.g., `tf.sparse.add`, `tf.sparse.matmul`).
+- **Ordering**: Indices should be sorted in row-major order; use `tf.sparse.reorder` if needed.
+- **Conversion**: Easily convert to/from dense tensors using `tf.sparse.to_dense` and `tf.sparse.from_dense`.
+
+**Common Use Cases:**
+- Natural language processing (word embeddings)
+- Recommendation systems (user-item matrices)
+- Graph neural networks (adjacency matrices)
+
+**Example:**
+```python
+st = tf.SparseTensor(indices=[[0, 0], [1, 2]], 
+                     values=[1, 2], 
+                     dense_shape=[3, 4])
+# Represents dense tensor:
+# [[1, 0, 0, 0],
+#  [0, 0, 2, 0],
+#  [0, 0, 0, 0]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N, ndims]"]
+    default: null
+  values:
+    dtype: ["float32", "float64", "int32", "int64", "string", "bool"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  dense_shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[ndims]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: values
+    Constraint: "indices.shape[0] == values.shape[0]"
+  2:
+    Parameter 1: indices
+    Parameter 2: dense_shape
+    Constraint: "indices.shape[1] == dense_shape.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.SparseTensor in a complex way */
+import tensorflow as tf

@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.nn.sigmoid_cross_entropy_with_logits` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.sigmoid_cross_entropy_with_logits` computes the cross-entropy loss for binary classification or probability regression tasks using logits (pre-activation values). It is designed for independent binary outcomes, supporting both hard labels (0 or 1) and soft labels (probabilities between 0 and 1).
+
+**Key Features:**
+- **Inputs:** `logits` (any real number) and `labels` (same shape as logits, values in [0, 1]).
+- **Mathematical Formulation:** Uses a numerically stable version:  
+  `max(x, 0) - x * z + log(1 + exp(-abs(x)))`, where `x = logits`, `z = labels`.
+- **Use Cases:** Binary classification, logistic regression, or any task with independent binary outcomes.
+- **Comparison:** Unlike softmax-based losses for multi-class classification, this function simplifies to binary cases and is equivalent to softmax cross-entropy when considering two classes (one logit and a zero reference).
+
+**Example:**
+```python
+logits = tf.constant([1., -1., 0.])
+labels = tf.constant([0., 0., 0.5])
+loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=labels, logits=logits)
+```
+
+**Output:** A tensor of the same shape as `logits` containing componentwise logistic losses.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  labels:
+    dtype: ["float32", "float64"]
+    range: [[0, 1]]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  logits:
+    dtype: ["float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "labels"
+    Parameter 2: "logits"
+    Constraint: "labels.dtype == logits.dtype and labels.shape == logits.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.sigmoid_cross_entropy_with_logits in a complex way */
+import tensorflow as tf

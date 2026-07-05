@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `torch.distributed.is_mpi_available` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It supports synchronous distributed training, often used with `DistributedDataParallel` for model parallelism.
+
+**Key Components:**
+
+1. **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional). NCCL is recommended for GPU training, Gloo for CPU.
+
+2. **Initialization**: 
+   - Use `init_process_group()` or `init_device_mesh()` to set up the process group.
+   - Initialization methods: TCP, shared file-system, or environment variables (default).
+
+3. **Collective Operations**: 
+   - Point-to-point: `send`, `recv`, `isend`, `irecv`
+   - Collective: `broadcast`, `all_reduce`, `all_gather`, `scatter`, etc.
+   - Can be synchronous (`async_op=False`) or asynchronous (`async_op=True`).
+
+4. **Groups**: Create sub-groups with `new_group()` for fine-grained communication.
+
+5. **DeviceMesh**: Higher-level abstraction for managing multi-dimensional process groups (e.g., for 2D parallelism).
+
+6. **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for sharing information between processes.
+
+7. **Utilities**: 
+   - Launch scripts (`torch.distributed.launch`) for multi-process training.
+   - Debugging tools: `monitored_barrier`, `TORCH_DISTRIBUTED_DEBUG` environment variable, and `breakpoint()`.
+
+8. **Best Practices**:
+   - Use NCCL for GPU training, Gloo for CPU.
+   - Ensure proper GPU isolation (one GPU per process with NCCL).
+   - Clean up with `destroy_process_group()`.
+   - Be cautious with object collectives due to performance overhead.
+
+The package enables efficient distributed training by allowing each process to maintain its own optimizer and Python interpreter, reducing communication overhead and GIL contention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.is_mpi_available in a complex way */
+import torch

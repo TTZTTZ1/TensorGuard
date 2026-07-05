@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SegmentMean` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SegmentMean` computes the mean along segments of a tensor. It groups elements of `data` based on `segment_ids` and outputs the average for each segment.
+
+**Key Points:**
+- **Inputs:**  
+  - `data`: A tensor of numeric type.  
+  - `segment_ids`: A 1-D integer tensor with sorted values (validated on CPU, not on GPU). Its length must match the first dimension of `data`.
+- **Output:** A tensor with the same type as `data`, where each element at index `i` is the mean of all entries in `data` whose corresponding `segment_ids` equals `i`.
+- **Empty Segments:** If a segment has no elements, the output is `0` for that segment.
+- **GPU vs CPU:** On GPU, unsorted `segment_ids` may lead to undefined behavior, while on CPU an error is thrown for unsorted indices.
+
+**Example:**
+```python
+c = tf.constant([[1.0, 2, 3, 4], [4, 3, 2, 1], [5, 6, 7, 8]])
+tf.math.segment_mean(c, tf.constant([0, 0, 1]))
+# Output: [[2.5, 2.5, 2.5, 2.5], [5., 6., 7., 8.]]
+```
+Here, rows of `c` are grouped by `segment_ids` (row 0 and 1 → segment 0, row 2 → segment 1), and the mean is computed per segment.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: data
+    Parameter 2: segment_ids
+    Constraint: "segment_ids.shape[0] == data.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SegmentMean in a complex way */
+import tensorflow as tf

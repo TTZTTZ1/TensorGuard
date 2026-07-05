@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.cholesky_inverse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.cholesky_inverse(L, upper=False, *, out=None)`
+
+**Purpose:**  
+Computes the inverse of a symmetric positive-definite (or complex Hermitian) matrix using its Cholesky decomposition.
+
+**Key Details:**
+- **Input:** `L` – A tensor of shape `(*, n, n)` representing the lower or upper triangular Cholesky factor of a matrix \(A\), where \(A = LL^H\) (or \(A = LL^T\) for real matrices).
+- **Parameter:** `upper` – If `True`, `L` is upper triangular; otherwise, it is lower triangular (default: `False`).
+- **Output:** The inverse matrix \(A^{-1}\), with the same batch dimensions as the input.
+- **Supported dtypes:** float, double, cfloat, cdouble.
+
+**Use Case:**  
+Efficiently compute the inverse when the Cholesky decomposition is already available, avoiding redundant factorization.
+
+**Example:**
+```python
+A = torch.randn(3, 3)
+A = A @ A.T + torch.eye(3) * 1e-3  # Make symmetric positive-definite
+L = torch.linalg.cholesky(A)
+A_inv = torch.cholesky_inverse(L)  # Same as A.inverse()
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  L:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "L"
+    Parameter 2: "L"
+    Constraint: "L.shape[-1] == L.shape[-2]"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "L"
+    Constraint: "out is None or out.shape == L.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cholesky_inverse in a complex way */
+import torch

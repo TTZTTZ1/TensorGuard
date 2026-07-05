@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.MultiStepLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**MultiStepLR** is a PyTorch learning rate scheduler that reduces the learning rate by a specified factor (`gamma`) at predefined epoch milestones.
+
+### Key Features:
+- **Purpose**: Decays the learning rate when training reaches specific epochs.
+- **Parameters**:
+  - `optimizer`: The optimizer to wrap.
+  - `milestones`: A list of increasing epoch indices (e.g., `[30, 80]`).
+  - `gamma`: Multiplicative decay factor (default: 0.1).
+  - `last_epoch`: The last epoch index (default: -1, sets initial learning rate).
+- **Behavior**: Learning rate is multiplied by `gamma` each time an epoch in `milestones` is reached. If an epoch appears multiple times in `milestones`, the decay is applied repeatedly (i.e., scaled by `gamma^n`).
+
+### Example:
+```python
+scheduler = MultiStepLR(optimizer, milestones=[30, 80], gamma=0.1)
+for epoch in range(100):
+    train(...)
+    validate(...)
+    scheduler.step()  # Update learning rate at milestones
+```
+- **Learning rate progression**:
+  - `lr = 0.05` for epochs < 30
+  - `lr = 0.005` for 30 ≤ epoch < 80
+  - `lr = 0.0005` for epoch ≥ 80
+
+### Important Notes:
+- Call `scheduler.step()` after each epoch (typically after `optimizer.step()`).
+- Use `get_last_lr()` to retrieve the current learning rates.
+- The scheduler can work alongside other learning rate modifications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  milestones:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  gamma:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.1"
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: milestones
+    Parameter 2: milestones
+    Constraint: "all(milestones[i] < milestones[i+1] for i in range(len(milestones)-1)) if len(milestones) > 1 else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.MultiStepLR in a complex way */
+import torch

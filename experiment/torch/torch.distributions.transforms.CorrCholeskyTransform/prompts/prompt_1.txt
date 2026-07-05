@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.CorrCholeskyTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like:
+   - `sample()`, `rsample()` - sampling
+   - `log_prob()` - probability computation
+   - `entropy()`, `mean`, `variance` - statistics
+   - `cdf()`, `icdf()` - cumulative distribution functions
+
+2. **Common Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Dirichlet, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Multinomial, MultivariateNormal, Normal, Poisson, StudentT, Uniform, and many others.
+
+3. **Special Distributions**:
+   - `TransformedDistribution` - applies transforms to base distributions
+   - `MixtureSameFamily` - mixture distributions
+   - `Independent` - reinterprets batch dims as event dims
+   - `ExponentialFamily` - base class for exponential family distributions
+
+4. **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter optimization.
+
+5. **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.).
+
+6. **KL Divergence**: Computes KL divergence between distributions with registered implementations for many distribution pairs.
+
+**Usage Patterns:**
+- **REINFORCE** (discrete actions):
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+
+- **Reparameterization** (continuous actions):
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  ```
+
+**Utilities:**
+- `transform_to()` / `biject_to()` - convert between constrained and unconstrained spaces
+- `register_kl()` - register custom KL divergence computations
+- Constraint registry for optimization and HMC sampling
+
+The package follows TensorFlow Distributions design and is essential for probabilistic modeling, variational inference, reinforcement learning, and Bayesian methods in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.CorrCholeskyTransform in a complex way */
+import torch

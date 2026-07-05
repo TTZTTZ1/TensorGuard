@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.CharStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous, one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw bytes of tensor data, independent of the tensor's dtype, shape, stride, or offset.
+
+### **Key Concepts:**
+- **Tensor Components:** A tensor is defined by its storage (data), dtype, shape, stride, and offset.
+- **Storage Sharing:** Multiple tensors (e.g., views created via `.view()` or slicing) can share the same underlying storage.
+- **Access:** Use `tensor.untyped_storage()` to get the storage of a tensor's data (for gradients, use `tensor.grad.untyped_storage()`).
+- **Identification:** Storages have a unique identifier via `.data_ptr()`.
+
+### **Common Operations:**
+- **Inspection:** Check device (`.device`, `.is_cuda`), size (`.size()`), element size (`.element_size()`), or if it's pinned (`.is_pinned()`).
+- **Manipulation:** Methods like `.fill_()`, `.clone()`, `.copy_()`, `.pin_memory()`.
+- **Memory-mapped Files:** Create from a file using `from_file()`.
+- **Shared Memory:** Move to shared memory across processes with `.share_memory_()`.
+
+### **Important Notes:**
+- **Low-level API:** Direct storage manipulation is risky and not recommended for typical use; prefer high-level tensor operations.
+- **Special Cases:** Tensors on `"meta"` device or `FakeTensor` have no actual storage.
+- **Legacy:** Typed storage classes (e.g., `torch.FloatStorage`) are deprecated; use `torch.UntypedStorage` instead.
+
+### **Example (Educational):**
+```python
+t = torch.ones(3)
+s = t.untyped_storage().clone()
+s.fill_(0)
+t.set_(s, storage_offset=t.storage_offset(), stride=t.stride(), size=t.size())  # t becomes zeros
+```
+
+**In summary:** `torch.UntypedStorage` is PyTorch's fundamental byte-level data container for tensors, primarily used for advanced, low-level memory management and interoperability. Most users should rely on tensor-level APIs instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["variable"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["UntypedStorage", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  dtype:
+    dtype: ["dtype", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  device:
+    dtype: ["device", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.int8"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.CharStorage in a complex way */
+import torch

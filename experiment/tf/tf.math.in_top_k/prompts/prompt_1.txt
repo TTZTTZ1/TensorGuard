@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.math.in_top_k` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.in_top_k` (also available as `tf.nn.in_top_k`) checks whether the true class labels (targets) are within the top‑`k` predicted scores for each example in a batch.  
+
+**Key points:**  
+- **Inputs:**  
+  - `targets`: A 1D tensor of integer class IDs (shape `[batch_size]`).  
+  - `predictions`: A 2D tensor of predicted scores (shape `[batch_size, num_classes]`).  
+  - `k`: An integer specifying how many top predictions to consider.  
+
+- **Output:**  
+  A boolean tensor of shape `[batch_size]`, where `True` indicates the target class for that example is among the top‑`k` predictions.  
+
+- **Notes:**  
+  - Predictions need not be normalized (e.g., logits are fine).  
+  - Ties at the top‑`k` boundary are all counted as “in top‑k”.  
+  - Predictions must be finite (not `inf`, `-inf`, or `nan`) for valid comparison.  
+
+**Example:**  
+```python
+target = [0, 1, 3]
+pred = [[1.2, -0.3, 2.8, 5.2],
+        [0.1, 0.0, 0.0, 0.0],
+        [0.0, 0.5, 0.3, 0.3]]
+tf.math.in_top_k(target, pred, k=2)  # → [False, True, True]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  targets:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["vector"]
+    shape: ["[batch_size]"]
+    default: null
+  predictions:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, classes]"]
+    default: null
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: targets
+    Parameter 2: predictions
+    Constraint: "targets.shape[0] == predictions.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.in_top_k in a complex way */
+import tensorflow as tf

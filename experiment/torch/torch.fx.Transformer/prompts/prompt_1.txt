@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.fx.Transformer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch, enabling programmatic modification and analysis of `nn.Module` instances. It provides a pipeline for capturing, manipulating, and regenerating PyTorch code.
+
+### **Core Components**
+1. **Symbolic Tracer** (`symbolic_trace` / `Tracer`):  
+   Executes the module with proxy values to record operations into a graph representation.
+
+2. **Intermediate Representation (IR)** (`Graph` / `Node`):  
+   A graph of nodes representing operations (e.g., function calls, module calls, placeholders).
+
+3. **Code Generation** (`GraphModule`):  
+   Converts the graph back into executable Python code, wrapped as an `nn.Module`.
+
+### **Key Use Cases**
+- **Transformations**: Modify models by rewriting the graph (e.g., operator substitution, fusion, quantization).
+- **Analysis**: Inspect or profile model execution (e.g., shape propagation, performance profiling).
+- **Code Generation**: Programmatically create models from configurations.
+
+### **Writing Transformations**
+Transformations typically:
+1. Acquire a `Graph` via tracing.
+2. Manipulate nodes (e.g., replace, insert, delete) using graph APIs or proxy-based retracing.
+3. Return a new `GraphModule` (call `recompile()` if modifying in place).
+
+### **Important Limitations**
+- **Dynamic Control Flow**: Cannot trace branches/loops dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Use `torch.fx.wrap()` to trace external functions (e.g., `math.sqrt`).
+- **Leaf Modules**: Customize via `Tracer.is_leaf_module` to control tracing depth.
+
+### **Debugging Tools**
+- Compare outputs with `torch.allclose()`.
+- Inspect generated code via `print(gm.code)` or `gm.graph.print_tabular()`.
+- Use `pdb` or `to_folder()` to export and examine code.
+
+### **API Highlights**
+- `symbolic_trace()`: Entry point for tracing modules/functions.
+- `GraphModule`: The transformed module with a `graph` and generated `forward()`.
+- `replace_pattern()`: Automated subgraph rewriting.
+- `Interpreter`/`Transformer`: Patterns for executing or transforming graphs node-by-node.
+
+**torch.fx** enables deep, customizable transformations of PyTorch models while maintaining the flexibility of Python code.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["GraphModule"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: module
+    Parameter 2: null
+    Constraint: "module must be a valid GraphModule instance"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Transformer in a complex way */
+import torch

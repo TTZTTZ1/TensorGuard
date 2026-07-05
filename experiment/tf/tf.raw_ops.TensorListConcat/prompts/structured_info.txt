@@ -1,0 +1,34 @@
+params:
+  input_handle:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  element_dtype:
+    dtype: ["tf.DType"]
+    range: "No mention"
+    structure: ["dtype"]
+    shape: "No mention"
+    default: null
+  element_shape:
+    dtype: ["tf.TensorShape", "list"]
+    range: "No mention"
+    structure: ["object", "list"]
+    shape: "No mention"
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input_handle
+    Parameter 2: element_dtype
+    Constraint: "all(tf.raw_ops.TensorListGetItem(input_handle, i).dtype == element_dtype for i in range(tf.raw_ops.TensorListLength(input_handle)))"
+  2:
+    Parameter 1: input_handle
+    Parameter 2: element_shape
+    Constraint: "len(set(tf.raw_ops.TensorListGetItem(input_handle, i).shape[1:] for i in range(tf.raw_ops.TensorListLength(input_handle)))) == 1 and (element_shape is None or tf.raw_ops.TensorListGetItem(input_handle, 0).shape[1:] == element_shape)"

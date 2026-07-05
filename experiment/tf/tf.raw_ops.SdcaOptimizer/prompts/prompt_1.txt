@@ -1,0 +1,166 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SdcaOptimizer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SdcaOptimizer` implements a distributed version of the Stochastic Dual Coordinate Ascent (SDCA) algorithm for linear models with L1 and L2 regularization. It optimizes the dual objective using one example per update, supports both sparse and dense features, and is designed for strongly convex global objectives with linear convergence.
+
+**Key Features:**
+- Supports logistic, squared, hinge, smooth hinge, and Poisson loss functions.
+- Handles both sparse and dense feature inputs via separate parameter lists.
+- Applies L1 and L2 regularization during optimization.
+- Operates in a distributed setting with configurable loss partitions and inner iterations.
+- Returns updated example state data and weight deltas for sparse and dense features.
+
+**Main Parameters:**
+- `sparse_example_indices`, `sparse_feature_indices`, `sparse_feature_values`: Sparse feature representations.
+- `dense_features`: Dense feature matrices.
+- `example_weights`, `example_labels`: Per-example weights and labels.
+- `sparse_weights`, `dense_weights`: Current model weights for sparse and dense features.
+- `loss_type`: Type of loss function (e.g., `"logistic_loss"`).
+- `l1`, `l2`: Regularization strengths.
+- `num_loss_partitions`, `num_inner_iterations`: Control distributed execution and mini-batch iterations.
+- `adaptative`: Enables adaptive SDCA for the inner loop (default: `True`).
+
+**Outputs:**
+- `out_example_state_data`: Updated example state.
+- `out_delta_sparse_weights`: Weight updates for sparse features.
+- `out_delta_dense_weights`: Weight updates for dense features.
+
+This low-level operator is suitable for large-scale linear model training where distributed optimization with dual coordinate ascent is required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sparse_example_indices:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["1-D"]
+    default: null
+  sparse_feature_indices:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["1-D"]
+    default: null
+  sparse_feature_values:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["1-D"]
+    default: null
+  dense_features:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["2-D"]
+    default: null
+  example_weights:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  example_labels:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  sparse_indices:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["1-D"]
+    default: null
+  sparse_weights:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["1-D"]
+    default: null
+  dense_weights:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["1-D"]
+    default: null
+  example_state_data:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  loss_type:
+    dtype: ["string"]
+    range: ["logistic_loss", "squared_loss", "hinge_loss", "smooth_hinge_loss", "poisson_loss"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  l1:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  l2:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_loss_partitions:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_inner_iterations:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  adaptative:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: sparse_feature_indices
+    Parameter 2: sparse_example_indices
+    Constraint: len(sparse_feature_indices) == len(sparse_example_indices)
+  2:
+    Parameter 1: sparse_indices
+    Parameter 2: sparse_example_indices
+    Constraint: len(sparse_indices) == len(sparse_example_indices)
+  3:
+    Parameter 1: sparse_weights
+    Parameter 2: sparse_example_indices
+    Constraint: len(sparse_weights) == len(sparse_example_indices)
+  4:
+    Parameter 1: dense_weights
+    Parameter 2: dense_features
+    Constraint: len(dense_weights) == len(dense_features)
+  5:
+    Parameter 1: num_loss_partitions
+    Parameter 2: num_loss_partitions
+    Constraint: num_loss_partitions >= 1
+  6:
+    Parameter 1: num_inner_iterations
+    Parameter 2: num_inner_iterations
+    Constraint: num_inner_iterations >= 1
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SdcaOptimizer in a complex way */
+import tensorflow as tf

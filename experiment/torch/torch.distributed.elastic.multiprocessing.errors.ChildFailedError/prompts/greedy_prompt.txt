@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.errors.ChildFailedError` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The documentation describes PyTorch TorchElastic's error propagation mechanism for distributed training jobs. Key points:
+
+**Error Categories:**
+- User Errors (e.g., invalid API inputs)
+- Worker Failures (failures in user-provided training scripts)
+- Platform Errors (agent failures)
+- Infra Errors (external failures like host crashes)
+
+**Core Mechanism:**
+- Uses `@record` decorator on main functions to capture uncaught exceptions
+- Writes errors to a file specified by `TORCHELASTIC_ERROR_FILE` environment variable
+- Parent agent process collects error files and propagates the **first** error (by timestamp)
+
+**Key Components:**
+1. **`@record` decorator** - Top-level decorator that wraps functions to capture and record exceptions
+2. **`ChildFailedError`** - Special exception to propagate child process errors without parent traceback wrapping
+3. **`ErrorHandler`** - Base class for writing structured error information to JSON files
+4. **`ProcessFailure`** - Data structure representing failed process results
+
+**Usage:**
+```python
+@record
+def main():
+    # training logic
+    pass
+
+if __name__ == "__main__":
+    main()
+```
+
+This system ensures that worker process failures in distributed PyTorch jobs are properly captured and propagated up to the scheduler for debugging and retry policies.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  failures:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.errors.ChildFailedError in a complex way */
+import torch

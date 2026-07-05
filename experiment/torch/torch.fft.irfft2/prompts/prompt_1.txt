@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.fft.irfft2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.irfft2` computes the inverse 2D real-valued Fast Fourier Transform. It reconstructs a real tensor from its one-sided Hermitian frequency representation (as produced by `rfft2`).
+
+**Key Points:**
+- **Purpose:** Converts a Hermitian-symmetric frequency domain signal back to a real-valued spatial/temporal signal.
+- **Input:** A complex tensor representing the one-sided Hermitian spectrum.
+- **Output:** A real-valued tensor.
+- **Important Parameters:**
+  - `s`: Signal shape in transformed dimensions (recommended to always specify for correct round-tripping).
+  - `dim`: Dimensions to transform (default: last two dimensions).
+  - `norm`: Normalization mode (`"backward"` default, `"forward"`, or `"ortho"`).
+- **Note:** For accurate reconstruction of the original real signal, always provide the original signal shape via the `s` parameter.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  s:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+  dim:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "(-2, -1)"
+  norm:
+    dtype: ["string"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "backward"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "s"
+    Parameter 2: "dim"
+    Constraint: "s is None or len(s) == len(dim)"
+  2:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "all(d >= -input.ndim and d < input.ndim for d in dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.irfft2 in a complex way */
+import torch

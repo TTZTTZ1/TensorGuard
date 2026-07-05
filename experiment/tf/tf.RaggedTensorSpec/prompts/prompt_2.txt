@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.RaggedTensorSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.RaggedTensorSpec` is a **type specification class** for `tf.RaggedTensor`, describing its structure and data types. It inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+
+### **Key Purpose**
+Defines the expected shape, data type, and ragged structure of a `RaggedTensor`, enabling type checking, serialization, and compatibility validation in TensorFlow's graph-based operations.
+
+---
+
+### **Constructor Parameters**
+- **`shape`**: Tensor shape (ragged dimensions must be `None`).
+- **`dtype`**: Data type of tensor values (default: `tf.float32`).
+- **`ragged_rank`**: Number of ragged dimensions (default: `shape.ndims - 1`).
+- **`row_splits_dtype`**: Data type for row-splits indices (`tf.int32` or `tf.int64`; default: `tf.int64`).
+- **`flat_values_spec`**: TypeSpec for nested `flat_values` (e.g., if values are `CompositeTensor`).
+
+---
+
+### **Main Attributes**
+- `dtype`: Data type of tensor values.
+- `ragged_rank`: Number of ragged partitions.
+- `row_splits_dtype`: Data type of row-splits.
+- `shape`: Static shape (ragged dims as `None`).
+- `value_type`: Python type (`tf.RaggedTensor`).
+
+---
+
+### **Core Methods**
+1. **`is_compatible_with(spec_or_value)`**: Checks compatibility with another spec or value.
+2. **`is_subtype_of(other)`**: Implements `TraceType` interface for subtype checking.
+3. **`most_specific_common_supertype(others)`**: Finds common supertype spec.
+4. **`experimental_as_proto()` / `experimental_from_proto()`**: Serialization/deserialization.
+5. **`from_value(value)`**: Creates spec from a `RaggedTensor` instance.
+
+---
+
+### **Usage Example**
+```python
+rt = tf.ragged.constant([[1, 2], [3]])
+spec = tf.RaggedTensorSpec.from_value(rt)
+print(spec)  # RaggedTensorSpec(TensorShape([2, None]), tf.int32, 1)
+```
+
+### **Notes**
+- Used internally for graph ops, dataset signatures, and distributed computation.
+- Supports ragged tensors with non-uniform dimensions across axes.
+- Part of TensorFlow's dynamic type system for composite tensors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["No mention"]
+    range: ["None", "shape with ragged dimensions as None"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["tf.DType"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "tf.dtypes.float32"
+  ragged_rank:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  row_splits_dtype:
+    dtype: ["tf.int32", "tf.int64"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "tf.dtypes.int64"
+  flat_values_spec:
+    dtype: ["No mention"]
+    range: ["None", "TypeSpec"]
+    structure: ["TypeSpec"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "flat_values_spec"
+    Constraint: "(dtype is None or flat_values_spec is None) or (dtype == flat_values_spec.dtype)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.RaggedTensorSpec in a complex way */
+import tensorflow as tf

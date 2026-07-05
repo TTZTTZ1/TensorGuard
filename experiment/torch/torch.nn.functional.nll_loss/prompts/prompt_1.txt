@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.nll_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.functional.nll_loss` function computes the negative log likelihood loss, typically used for classification tasks. It expects `input` to be log-probabilities (e.g., from `log_softmax`) and `target` to contain class indices. Key parameters include:
+
+- **`input`**: Tensor of shape `(N, C)` or higher dimensions, containing log-probabilities.
+- **`target`**: Tensor of class indices with shape `(N)` or higher dimensions.
+- **`weight`** (optional): Tensor of size `C` to rescale loss per class.
+- **`ignore_index`**: Specifies target values to ignore (default: `-100`).
+- **`reduction`**: Controls output reduction (`'none'`, `'mean'`, or `'sum'`; default: `'mean'`).
+
+The function is commonly applied after `log_softmax` to compute cross-entropy-like loss for training classification models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["(N,C)", "(N,C,H,W)", "(N,C,d1,...,dK)"]
+    default: null
+  target:
+    dtype: ["int"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["(N)", "(N,d1,...,dK)"]
+    default: null
+  weight:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  ignore_index:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-100"
+  reduce:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: target
+    Parameter 2: input
+    Constraint: "torch.all(target >= 0) and torch.all(target < input.shape[1])"
+  2:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight is None or weight.shape[0] == input.shape[1]"
+  3:
+    Parameter 1: input
+    Parameter 2: target
+    Constraint: "input.dim() == target.dim() + 1 and input.shape[2:] == target.shape[1:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.nll_loss in a complex way */
+import torch

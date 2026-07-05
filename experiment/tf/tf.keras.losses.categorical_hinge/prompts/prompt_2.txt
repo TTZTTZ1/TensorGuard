@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `tf.keras.losses.categorical_hinge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.losses.categorical_hinge` function computes the categorical hinge loss between true labels (`y_true`) and predictions (`y_pred`). It is used for multi-class classification tasks.
+
+**Key Details:**
+- **Formula:** `loss = maximum(neg - pos + 1, 0)`, where `neg = maximum((1 - y_true) * y_pred)` and `pos = sum(y_true * y_pred)`.
+- **Inputs:** 
+  - `y_true`: Ground truth labels, expected as one-hot encoded values (either `{0, 1}` or `{-1, +1}`).
+  - `y_pred`: Predicted values (logits or probabilities).
+- **Output:** Loss values with the same shape as `y_true` but without the last dimension.
+
+**Example Usage:**
+```python
+loss = keras.losses.categorical_hinge(y_true, y_pred)
+```
+This loss function penalizes predictions where the highest score for an incorrect class exceeds the score for the correct class by a margin, encouraging correct class scores to be higher than others by at least 1.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y_true:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: "y_true.shape == y_pred.shape"
+  2:
+    Parameter 1: y_true
+    Parameter 2: y_true
+    Constraint: "tf.reduce_all(tf.logical_or(tf.equal(y_true, -1), tf.equal(y_true, 1))) or tf.reduce_all(tf.logical_or(tf.equal(y_true, 0), tf.equal(y_true, 1)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.losses.categorical_hinge in a complex way */
+import tensorflow as tf

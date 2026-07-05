@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.distributed.reduce_scatter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It enables synchronous distributed training, often used with `DistributedDataParallel`.
+
+### Key Features:
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI, and UCC. NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group before any distributed operations.
+- **Communication**: Includes point-to-point (send/recv) and collective operations (broadcast, all_reduce, all_gather, etc.), both synchronous and asynchronous.
+- **Groups**: Create sub-groups with `new_group()` for fine-grained communication.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional process groups and device topologies.
+- **Key-Value Store**: Provides `TCPStore`, `FileStore`, and `HashStore` for inter-process coordination.
+- **Debugging**: Tools like `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG`, and `torch.distributed.breakpoint()` help debug hangs and synchronization issues.
+- **Launch Utilities**: `torch.distributed.launch` and `torch.multiprocessing.spawn` simplify multi-process startup (note: `launch` is being deprecated in favor of `torchrun`).
+
+### Basic Usage Flow:
+1. Initialize the process group with `init_process_group()`.
+2. Use collective or point-to-point communication functions.
+3. Clean up with `destroy_process_group()`.
+
+### Example:
+```python
+import torch.distributed as dist
+
+dist.init_process_group(backend='nccl', init_method='env://')
+# Perform distributed operations
+dist.all_reduce(tensor)
+dist.destroy_process_group()
+```
+
+This package is essential for scaling PyTorch models across multiple devices or nodes, offering both low-level communication and high-level abstractions like `DeviceMesh` for complex parallelism strategies.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  output:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  input_list:
+    dtype: ["list[Tensor]"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM"]]
+    structure: ["scalar"]
+    shape: null
+    default: "ReduceOp.SUM"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input_list
+    Parameter 2: output
+    Constraint: "len(input_list) == (group.size() if group is not None else torch.distributed.get_world_size()) and all(tensor.shape == output.shape for tensor in input_list)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.reduce_scatter in a complex way */
+import torch

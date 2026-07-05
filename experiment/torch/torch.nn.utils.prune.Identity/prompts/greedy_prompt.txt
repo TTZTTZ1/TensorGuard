@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.Identity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.utils.prune.Identity` class is a utility pruning method that **does not actually prune any parameters** but instead applies a pruning parametrization with a mask of ones. Its main purpose is to generate the necessary pruning structure (mask and reparameterization) without removing any weights, which can be useful for compatibility or testing in pruning workflows.
+
+### Key Functionality:
+- **apply(module, name)**: Adds pruning hooks and reparameterization to a specified tensor in a module, creating a mask of ones (no pruning).
+- **apply_mask(module)**: Returns the tensor multiplied by the mask (effectively the original tensor unchanged).
+- **prune(t, ...)**: Returns a pruned version of the tensor, but since the mask is all ones, the output is identical to the input.
+- **remove(module)**: Removes the pruning reparameterization, leaving the parameter permanently "pruned" (though unchanged) and cleaning up the stored mask and original tensor.
+
+### Use Case:
+Primarily used to integrate a layer into a pruning pipeline without actually sparsifying it, ensuring consistent handling when some layers are pruned and others are not.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["object"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: t
+    Parameter 2: default_mask
+    Constraint: "default_mask is None or t.shape == default_mask.shape"
+  2:
+    Parameter 1: importance_scores
+    Parameter 2: t
+    Constraint: "importance_scores is None or importance_scores.shape == t.shape"
+  3:
+    Parameter 1: name
+    Parameter 2: module
+    Constraint: "name in module._parameters"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.Identity in a complex way */
+import torch

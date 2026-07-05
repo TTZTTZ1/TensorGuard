@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.function` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.function` is a TensorFlow decorator that compiles a Python function into a callable, optimized TensorFlow graph, improving execution performance. It supports data-dependent Python control flow (like `if`, `for`) via AutoGraph, and allows operations with side effects (e.g., `tf.print`, `tf.Variable`). However, pure Python side-effects (e.g., appending to a list) occur only during tracing, so TensorFlow ops like `tf.TensorArray` should be used instead.
+
+Key features include:
+- **Polymorphism**: Internally creates multiple specialized `ConcreteFunction`s for different input shapes/dtypes to optimize performance.
+- **Retracing**: A new graph is traced when new input signatures are encountered, which can impact performance. To minimize retracing:
+  - Avoid Python scalars/lists as arguments; use Tensors when possible.
+  - Use `input_signature` (with `tf.TensorSpec`) to fix input shapes/types.
+- **Variable creation**: `tf.Variable` objects should be created outside `tf.function` or only once inside (during the first call).
+- **Python operations**: Execute only once during tracing; their results are frozen into the graph.
+
+Parameters of note:
+- `autograph`: Enables AutoGraph for Python control flow (default `True`).
+- `jit_compile`: Enables XLA compilation for further optimizations (default `None`, auto-enabled on TPU).
+- `reduce_retracing`: Reduces retracing by using generic shapes.
+
+In summary, `tf.function` enhances performance by graph compilation, but requires careful handling of retracing, side-effects, and variable creation to maximize efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  input_signature:
+    dtype: ["sequence"]
+    range: ["No mention"]
+    structure: ["sequence", "nested sequence"]
+    shape: ["No mention"]
+    default: "None"
+  autograph:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "True"
+  jit_compile:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  reduce_retracing:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "False"
+  experimental_implements:
+    dtype: ["string", "NameAttrList"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_autograph_options:
+    dtype: ["tuple"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_attributes:
+    dtype: ["dict"]
+    range: ["No mention"]
+    structure: ["dictionary"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_relax_shapes:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_compile:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_follow_type_hints:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input_signature"
+    Parameter 2: "func"
+    Constraint: "input_signature is None or all(p.kind != inspect.Parameter.VAR_KEYWORD for p in inspect.signature(func).parameters.values())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.function in a complex way */
+import tensorflow as tf

@@ -1,0 +1,142 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Convolution3D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.Conv3D` is a 3D convolution layer used for processing volumetric data (e.g., 3D medical images, video sequences). It applies a 3D convolution kernel to the input, producing an output tensor with learned spatial features.
+
+### Key Parameters:
+- **`filters`**: Number of output channels (filters).
+- **`kernel_size`**: Size of the 3D convolution window (int or tuple of 3 ints).
+- **`strides`**: Convolution stride (int or tuple of 3 ints). Incompatible with `dilation_rate > 1`.
+- **`padding`**: `"valid"` (no padding) or `"same"` (padding to preserve spatial dimensions when `strides=1`).
+- **`data_format`**: `"channels_last"` (default) or `"channels_first"` for input shape ordering.
+- **`dilation_rate`**: Dilation factor for dilated convolution.
+- **`groups`**: Splits input channels into groups for grouped convolution.
+- **`activation`**: Activation function applied to outputs (e.g., `'relu'`).
+- **`use_bias`**: Whether to include a bias vector.
+- **Initializers/Regularizers/Constraints**: For kernel and bias (e.g., `kernel_initializer`, `kernel_regularizer`).
+
+### Input/Output Shapes:
+- **Input**: 5D tensor of shape `(batch, spatial_dim1, spatial_dim2, spatial_dim3, channels)` for `"channels_last"`, or `(batch, channels, spatial_dim1, spatial_dim2, spatial_dim3)` for `"channels_first"`.
+- **Output**: 5D tensor with spatial dimensions adjusted based on `kernel_size`, `strides`, and `padding`, and channels replaced by `filters`.
+
+### Example:
+```python
+x = np.random.rand(4, 10, 10, 10, 128)  # 4 samples, 128 channels
+y = tf.keras.layers.Conv3D(32, 3, activation='relu')(x)  # Output shape: (4, 8, 8, 8, 32)
+```
+
+### Notes:
+- Raises `ValueError` if both `strides > 1` and `dilation_rate > 1`.
+- Supports advanced features like LoRA (`enable_lora`) and config serialization (`get_config`/`from_config`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filters:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tuple", "list"]
+    shape: [1, 3]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tuple", "list"]
+    shape: [1, 3]
+    default: "(1, 1, 1)"
+  padding:
+    dtype: ["string"]
+    range: ["valid", "same"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'valid'"
+  data_format:
+    dtype: ["string"]
+    range: ["channels_last", "channels_first"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dilation_rate:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tuple", "list"]
+    shape: [1, 3]
+    default: "(1, 1, 1)"
+  groups:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  activation:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  use_bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  kernel_initializer:
+    dtype: ["string", "callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: ["string", "callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  bias_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  activity_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  kernel_constraint:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  bias_constraint:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: strides
+    Parameter 2: dilation_rate
+    Constraint: "not (strides > 1 and dilation_rate > 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Convolution3D in a complex way */
+import tensorflow as tf

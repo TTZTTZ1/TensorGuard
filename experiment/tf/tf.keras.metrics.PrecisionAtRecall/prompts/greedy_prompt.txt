@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.PrecisionAtRecall` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.PrecisionAtRecall` is a metric that calculates the **highest precision achievable while ensuring recall is at least a specified target value**. It is useful for evaluating classification models when a minimum recall level is required.
+
+### Key Features:
+- **Target Recall**: Specify a scalar recall value between 0 and 1.
+- **Threshold-Based**: Automatically determines the prediction threshold that meets the recall target and computes the corresponding precision.
+- **Class-Specific**: Optionally compute for a single class via `class_id`.
+- **Handles Weighting**: Supports `sample_weight` for individual example importance.
+
+### Example Usage:
+```python
+metric = tf.keras.metrics.PrecisionAtRecall(recall=0.8)
+metric.update_state([0, 1, 1, 0], [0.2, 0.7, 0.9, 0.4])
+print(metric.result())  # Output: precision at recall >= 0.8
+```
+
+### Typical Workflow:
+1. **Initialize** with desired recall target.
+2. **Update** with true labels and predictions using `update_state()`.
+3. **Compute** result via `result()`.
+4. **Reset** states with `reset_state()` for new evaluations.
+
+### Integration:
+Can be directly used in `model.compile()`:
+```python
+model.compile(metrics=[tf.keras.metrics.PrecisionAtRecall(recall=0.75)])
+```
+
+This metric is ideal for scenarios where maintaining a certain level of recall is critical, such as medical diagnostics or fraud detection.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  recall:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  num_thresholds:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "200"
+  class_id:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  dtype:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: recall
+    Parameter 2: recall
+    Constraint: "0 <= recall <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.PrecisionAtRecall in a complex way */
+import tensorflow as tf

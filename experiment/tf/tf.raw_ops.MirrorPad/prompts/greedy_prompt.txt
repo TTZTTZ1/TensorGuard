@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MirrorPad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.MirrorPad` operation pads a tensor by mirroring its values along specified dimensions. It takes an input tensor and a `paddings` matrix (with shape `[n, 2]`, where `n` is the tensor's rank) to define how many values to add before and after each dimension. The `mode` parameter determines whether padding uses reflection (excluding borders) or symmetry (including borders). The output tensor has dimensions increased according to the padding amounts.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  paddings:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[rank(input), 2]"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["REFLECT", "SYMMETRIC"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: paddings
+    Parameter 2: input
+    Constraint: "paddings.shape[0] == len(input.shape) and paddings.shape[1] == 2"
+  2:
+    Parameter 1: paddings
+    Parameter 2: input
+    Constraint: "all((paddings[i, 0] <= input.shape[i] and paddings[i, 1] <= input.shape[i]) for i in range(len(input.shape))) if mode == 'SYMMETRIC' else all((paddings[i, 0] <= input.shape[i] - 1 and paddings[i, 1] <= input.shape[i] - 1) for i in range(len(input.shape)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MirrorPad in a complex way */
+import tensorflow as tf

@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.train.checkpoints_iterator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.checkpoints_iterator` continuously monitors a directory for new TensorFlow checkpoints, yielding their file paths as they appear. It is useful for processing checkpoints as they are generated during training.
+
+**Key parameters:**
+- `checkpoint_dir`: Directory to watch for checkpoints.
+- `min_interval_secs`: Minimum wait time between checks (default 0).
+- `timeout`: Maximum seconds to wait for a new checkpoint before stopping (default waits indefinitely).
+- `timeout_fn`: Optional function that returns `True` to stop iteration if a timeout occurs.
+
+**Important behavior:**
+- The iterator only checks for new checkpoints when control flow returns to it, so it may miss checkpoints if code runs longer than the checkpoint interval.
+- If a timeout occurs and `timeout_fn` returns `True` (or is not provided), the iterator stops.
+
+**Use case:** Efficiently process checkpoints in real-time during long-running training jobs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  checkpoint_dir:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  min_interval_secs:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  timeout:
+    dtype: ["int", "float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  timeout_fn:
+    dtype: ["callable", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: min_interval_secs
+    Parameter 2: min_interval_secs
+    Constraint: "min_interval_secs >= 0"
+  2:
+    Parameter 1: timeout
+    Parameter 2: timeout
+    Constraint: "timeout is None or timeout >= 0"
+  3:
+    Parameter 1: timeout_fn
+    Parameter 2: timeout_fn
+    Constraint: "timeout_fn is None or callable(timeout_fn)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.checkpoints_iterator in a complex way */
+import tensorflow as tf

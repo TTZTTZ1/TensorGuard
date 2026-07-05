@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.sparse.reduce_max` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.reduce_max` computes the maximum value across specified dimensions of a sparse tensor. It is the sparse counterpart to `tf.reduce_max`, handling only defined (non-zero) values in the sparse input—undefined entries do not participate in the reduction. By default, it returns a dense tensor, but setting `output_is_sparse=True` returns a sparse tensor. Note that this operation does not have a defined gradient and cannot be used in gradient-based training.
+
+**Key parameters:**
+- `sp_input`: SparseTensor with numeric values.
+- `axis`: Dimensions to reduce (scalar or list); defaults to all dimensions.
+- `keepdims`: If `True`, retains reduced dimensions with size 1.
+- `output_is_sparse`: If `True`, output remains a SparseTensor.
+
+**Behavior:**
+- Reduces along `axis`, lowering tensor rank unless `keepdims=True`.
+- If no values exist along a reduced dimension, the result is 0 for that slice.
+- Supports negative axis indexing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sp_input:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["SparseTensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "list", "None"]
+    shape: null
+    default: "None"
+  keepdims:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  output_is_sparse:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "sp_input"
+    Parameter 2: "axis"
+    Constraint: "axis is None or (isinstance(axis, int) and -len(sp_input.shape) <= axis < len(sp_input.shape)) or (isinstance(axis, list) and all(-len(sp_input.shape) <= ax < len(sp_input.shape) for ax in axis))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.reduce_max in a complex way */
+import tensorflow as tf

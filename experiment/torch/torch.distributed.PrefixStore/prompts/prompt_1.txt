@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.distributed.PrefixStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables distributed training with communication primitives and process groups.
+
+## Key Features
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (CPU/GPU with CUDA support if built with MPI).
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up distributed environment via TCP, shared file-system, or environment variables.
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, and `barrier`.
+- **Point-to-Point Communication**: `send`/`recv` (synchronous) and `isend`/`irecv` (asynchronous).
+- **Groups**: Create sub-groups with `new_group()` for fine-grained communication.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, and `HashStore` for sharing information between processes.
+- **Debugging Tools**: `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG` environment variable, and `breakpoint()` for interactive debugging.
+- **Launch Utilities**: `torch.distributed.launch` and `torch.multiprocessing.spawn` for multi-process training.
+
+## Common Usage
+- **Rule of thumb**: Use NCCL for CUDA GPU training, XCCL for XPU GPU, and Gloo for CPU.
+- **Initialization**: Typically via environment variables (`MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`).
+- **Best Practices**: Ensure proper cleanup with `destroy_process_group()`, avoid thread-unsafe initialization, and use `DistributedDataParallel` for model parallelism.
+
+## Performance Notes
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines for better compute/communication overlap (requires NCCL ≥2.28 and P2P GPU access).
+- **Asynchronous Operations**: Use `async_op=True` for non-blocking collectives to overlap communication with computation.
+
+## Debugging
+- Enable detailed logging with `TORCH_DISTRIBUTED_DEBUG=DETAIL` and `TORCH_CPP_LOG_LEVEL=INFO`.
+- Use `monitored_barrier()` to detect rank synchronization issues.
+- Start debug HTTP server with `start_debug_server()` for runtime inspection.
+
+This package is essential for scaling PyTorch training across multiple devices and nodes, offering both low-level communication primitives and high-level abstractions like `DeviceMesh` and `DistributedDataParallel`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  prefix:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  store:
+    dtype: ["Store"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.PrefixStore in a complex way */
+import torch

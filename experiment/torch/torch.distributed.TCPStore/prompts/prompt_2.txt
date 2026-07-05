@@ -1,0 +1,120 @@
+
+# You are a Python code generation assistant for the `torch.distributed.TCPStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables synchronous distributed training, offering advantages over other parallelism approaches like reduced parameter broadcast overhead and independent Python interpreters per process.
+
+## Key Components
+
+### Backends
+- **Gloo**: Recommended for CPU training
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires building from source
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Initialize DeviceMesh for multi-dimensional parallelism
+- `new_group()`: Create subgroups for fine-grained communication
+- `destroy_process_group()`: Clean up resources
+
+### Communication Primitives
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: `broadcast()`, `all_reduce()`, `all_gather()`, `scatter()`, etc.
+- **Synchronous/Asynchronous**: Operations can be blocking or return request objects
+
+### DeviceMesh
+Higher-level abstraction for managing process groups in multi-dimensional device topologies, simplifying N-dimensional parallelism setup.
+
+### Key Features
+- Supports both synchronous and asynchronous operations
+- Object collectives for Python objects (with performance considerations)
+- Third-party backend support via registration
+- Debugging utilities including monitored barriers and logging
+- Launch utilities for multi-process training
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU
+- Ensure proper cleanup with `destroy_process_group()`
+- Set appropriate environment variables for network interface selection
+- Be cautious with object collectives due to performance implications
+
+The package is essential for scaling PyTorch models across multiple devices and nodes while maintaining efficiency and flexibility.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  host_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  port:
+    dtype: ["int"]
+    range: [[0, 65535]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  world_size:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_master:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  timeout:
+    dtype: ["datetime.timedelta"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "datetime.timedelta(seconds=300)"
+  wait_for_workers:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  multi_tenant:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  master_listen_fd:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  use_libuv:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: world_size
+    Parameter 2: wait_for_workers
+    Constraint: "world_size is not None or wait_for_workers == True"
+  2:
+    Parameter 1: master_listen_fd
+    Parameter 2: port
+    Constraint: "master_listen_fd is None or (isinstance(master_listen_fd, int) and master_listen_fd >= 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.TCPStore in a complex way */
+import torch

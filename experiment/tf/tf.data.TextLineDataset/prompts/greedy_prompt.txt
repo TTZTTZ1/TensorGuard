@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `tf.data.TextLineDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.TextLineDataset` is a TensorFlow dataset class that reads text files line by line, creating a dataset where each line becomes a separate element. It is commonly used for processing text data in machine learning pipelines.
+
+**Key Features:**
+- Reads one or more text files, with each line as a dataset element.
+- Supports optional compression (GZIP/ZLIB) and parallel file reading.
+- Inherits from `tf.data.Dataset`, enabling use of all standard dataset transformations (e.g., `map`, `batch`, `shuffle`).
+
+**Basic Usage:**
+```python
+dataset = tf.data.TextLineDataset(
+    filenames=['file1.txt', 'file2.txt'],
+    compression_type=None,  # Optional: "GZIP" or "ZLIB"
+    num_parallel_reads=None  # Optional: parallel file reading
+)
+```
+
+**Example:**
+Given two text files, the dataset yields each line as a byte string:
+```python
+for line in dataset.take(3):
+    print(line.numpy())  # b'line content'
+```
+
+**Common Methods (inherited from `tf.data.Dataset`):**
+- `batch()`: Groups lines into batches.
+- `map()`: Applies transformations (e.g., tokenization).
+- `shuffle()`: Randomizes line order.
+- `prefetch()`: Optimizes performance by preloading data.
+
+**Use Cases:**
+- Text classification, language modeling, and NLP tasks.
+- Loading CSV/TSV data (with subsequent parsing).
+- Custom text preprocessing pipelines.
+
+**Note:** Lines are returned as `tf.string` tensors (byte strings). Decoding (e.g., to UTF-8) is typically handled via `dataset.map(lambda x: tf.strings.unicode_decode(x, 'utf-8'))`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filenames:
+    dtype: ["string"]
+    range: null
+    structure: ["Dataset", "tensor", "list"]
+    shape: ["scalar", "vector"]
+    default: null
+  compression_type:
+    dtype: ["string", "null"]
+    range: [["", "ZLIB", "GZIP"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  buffer_size:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  num_parallel_reads:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.TextLineDataset in a complex way */
+import tensorflow as tf

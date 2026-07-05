@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.distributions.fishersnedecor.FisherSnedecor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Parameterizable Distributions**: Includes a wide range of distributions (e.g., Normal, Bernoulli, Categorical, Beta, Gamma, Dirichlet, etc.) that can be parameterized by tensors.
+- **Gradient Estimation**: Supports two primary methods for backpropagation through random samples:
+  1. **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods (e.g., reinforcement learning).
+  2. **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (e.g., variational autoencoders).
+
+### **Main Classes**
+1. **`Distribution`**: Abstract base class for all distributions. Key methods:
+   - `sample()` / `rsample()`: Draw samples (with or without reparameterization).
+   - `log_prob()`: Compute log probability density/mass.
+   - `entropy()`: Compute distribution entropy.
+   - `mean`, `variance`, `mode`: Distribution statistics.
+
+2. **`TransformedDistribution`**: Composes a base distribution with a sequence of transforms (e.g., `LogNormal` as `exp(Normal)`).
+
+3. **`Independent`**: Reinterprets batch dimensions as event dimensions (useful for changing `log_prob` shape).
+
+4. **`MixtureSameFamily`**: Models mixture distributions with components from the same family.
+
+### **Key Features**
+- **Batch and Event Shapes**: Distributions support batched parameters and multi-dimensional events.
+- **Constraint Handling**: Each distribution defines valid parameter ranges via `arg_constraints`.
+- **KL Divergence**: Precomputed KL divergences for many distribution pairs via `kl_divergence()`.
+- **Transforms**: Bijective and non-bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) to map between constrained and unconstrained spaces.
+- **Constraint Registries**: 
+  - `transform_to()`: Maps constraints to transforms (not necessarily bijective).
+  - `biject_to()`: Maps constraints to bijective transforms (e.g., for HMC).
+
+### **Common Use Cases**
+1. **Stochastic Gradient Estimation**:
+   ```python
+   # REINFORCE
+   m = Categorical(probs)
+   action = m.sample()
+   loss = -m.log_prob(action) * reward
+   loss.backward()
+
+   # Reparameterization
+   m = Normal(*params)
+   action = m.rsample()
+   loss = -reward
+   loss.backward()
+   ```
+
+2. **Probabilistic Modeling**:
+   ```python
+   dist = Normal(loc, scale)
+   samples = dist.sample([100])
+   log_probs = dist.log_prob(data)
+   ```
+
+3. **Variational Inference**:
+   ```python
+   q = Normal(mu, sigma)  # Approximate posterior
+   p = Normal(0, 1)       # Prior
+   kl = kl_divergence(q, p)
+   ```
+
+### **Supported Distributions**
+Includes univariate (Bernoulli, Poisson, Exponential), multivariate (MultivariateNormal, Dirichlet), and specialized distributions (LKJCholesky, Gumbel, Weibull). Each distribution provides methods for sampling, density evaluation, and statistics.
+
+### **Extensibility**
+- Register custom transforms and constraints via `ConstraintRegistry`.
+- Implement new distributions by subclassing `Distribution` or `ExponentialFamily`.
+
+### **Practical Notes**
+- Use `rsample()` when gradients through samples are needed (requires `has_rsample=True`).
+- Constraints ensure valid parameters; transforms like `biject_to()` enable unconstrained optimization.
+- KL divergences are efficiently implemented for many distribution pairs.
+
+This package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  df1:
+    dtype: ["float", "Tensor"]
+    range: ["(0, inf)"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  df2:
+    dtype: ["float", "Tensor"]
+    range: ["(0, inf)"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: df1
+    Parameter 2: df2
+    Constraint: df1 > 0.0 and df2 > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.fishersnedecor.FisherSnedecor in a complex way */
+import torch

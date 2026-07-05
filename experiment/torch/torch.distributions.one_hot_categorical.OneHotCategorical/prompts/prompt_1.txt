@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `torch.distributions.one_hot_categorical.OneHotCategorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable Distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Two Gradient Estimation Methods**:
+  1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling (e.g., VAE reparameterization trick)
+
+## **Main Components**
+
+### **1. Distribution Base Class**
+Abstract base class with essential methods:
+- `sample()` / `rsample()`: Generate samples (with/without reparameterization)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Calculate distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+- `support`: Valid value constraints
+
+### **2. Available Distributions**
+Includes both continuous and discrete distributions:
+- **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, MultivariateNormal, etc.
+- **Discrete**: Bernoulli, Categorical, Binomial, Poisson, Geometric, etc.
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull (via `TransformedDistribution`)
+
+### **3. Key Features**
+- **Batch/Event Shapes**: Support for batched parameters and multivariate distributions
+- **ExponentialFamily**: Specialized class for distributions in exponential family form
+- **KL Divergence**: Pre-registered KL calculations between distribution pairs
+- **Mixture Models**: `MixtureSameFamily` for mixture distributions
+- **Transforms**: Bijective transformations for constrained optimization (e.g., `SigmoidTransform`, `StickBreakingTransform`)
+- **Constraints**: Domain validation (e.g., `simplex`, `positive_definite`, `interval`)
+
+### **4. Constraint Registry System**
+- `transform_to()`: Maps constraints to transforms (not necessarily bijective)
+- `biject_to()`: Maps constraints to bijective transforms (for HMC)
+- Enables unconstrained optimization of constrained parameters
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.rsample((100,))  # 100 reparameterized samples
+
+# Dirichlet distribution
+dirichlet = Dirichlet(torch.tensor([0.5, 0.5]))
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions package design
+- Enables stochastic computation graphs
+- Supports both score function and pathwise derivative estimators
+- Provides automatic gradient estimation through surrogate functions
+
+This module is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.one_hot_categorical.OneHotCategorical in a complex way */
+import torch

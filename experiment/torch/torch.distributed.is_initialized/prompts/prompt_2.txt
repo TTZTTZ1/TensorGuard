@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.distributed.is_initialized` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a distributed communication framework for multi‑process parallelism across multiple machines or GPUs. It supports synchronous distributed training, primarily through `DistributedDataParallel`, and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+**Key Features:**
+- **Initialization:** Use `init_process_group()` or `init_device_mesh()` to set up the process group. Methods include TCP, shared file‑system, or environment variables (`env://`).
+- **Backends:** Choose based on hardware:
+  - **NCCL** for CUDA GPU training (best performance, InfiniBand support).
+  - **XCCL** for XPU GPU training.
+  - **Gloo** for CPU‑based training or as a fallback for GPU.
+  - **MPI** for CPU with InfiniBand (requires custom build).
+- **Collective Operations:** Synchronous/asynchronous collectives (broadcast, all‑reduce, gather, scatter, etc.) with support for complex tensors and uneven sizes in some cases.
+- **Point‑to‑Point Communication:** `send`/`recv` and asynchronous `isend`/`irecv` for direct rank‑to‑rank communication.
+- **Groups:** Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh:** Higher‑level abstraction for managing multi‑dimensional process groups (e.g., for 2D/3D parallelism).
+- **Key‑Value Stores:** `TCPStore`, `FileStore`, `HashStore` for sharing connection info and initializing the process group.
+- **Debugging Tools:** `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG` environment variable, and `torch.distributed.breakpoint()` for interactive debugging.
+- **Launch Utilities:** `torch.distributed.launch` (deprecated in favor of `torchrun`) and `torch.multiprocessing.spawn` for starting multiple processes.
+
+**Typical Workflow:**
+1. Initialize the process group with `init_process_group()`.
+2. Use collective operations or `DistributedDataParallel` for model training.
+3. Ensure proper GPU device setting (`torch.cuda.set_device`) when using NCCL.
+4. Clean up with `destroy_process_group()`.
+
+**Performance Tips:**
+- Use NCCL for multi‑GPU training on a single node or across nodes.
+- Enable `async_op=True` for overlapping communication and computation.
+- Tune NCCL environment variables (e.g., `NCCL_SOCKET_IFNAME`) for network optimization.
+
+**Debugging:**
+- Set `TORCH_DISTRIBUTED_DEBUG=DETAIL` for detailed logging and synchronization checks.
+- Use `monitored_barrier()` to detect rank desynchronization.
+- Employ `torch.distributed.breakpoint(rank)` for interactive debugging on a specific rank.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, and requires careful management of ranks, world size, and device placement.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  (no parameters)
+
+constraints:
+  (no constraints)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.is_initialized in a complex way */
+import torch

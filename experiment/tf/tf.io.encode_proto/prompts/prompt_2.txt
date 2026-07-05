@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.io.encode_proto` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.encode_proto` serializes protobuf messages from input tensors into binary strings. It requires specifying field names, a message type, and corresponding tensors for values, along with a sizes tensor defining repeat counts per field. The function supports descriptor lookup from linked C++ definitions, files, or byte strings, and handles type mappings between Proto and TensorFlow, with special handling for submessages (as strings) and unsigned integers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sizes:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[batch_shape, len(field_names)]"]
+    default: "null"
+  values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  field_names:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  message_type:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  descriptor_source:
+    dtype: ["string"]
+    range: ["", "local://", "bytes://"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "\"local://\""
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "sizes"
+    Parameter 2: "field_names"
+    Constraint: "sizes.shape[-1] == len(field_names)"
+  2:
+    Parameter 1: "values"
+    Parameter 2: "field_names"
+    Constraint: "len(values) == len(field_names)"
+  3:
+    Parameter 1: "values"
+    Parameter 2: "sizes"
+    Constraint: "all(v.shape[:-1] == sizes.shape[:-1] for v in values) and all(v.shape[-1] >= sizes[..., i] for i, v in enumerate(values))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.encode_proto in a complex way */
+import tensorflow as tf

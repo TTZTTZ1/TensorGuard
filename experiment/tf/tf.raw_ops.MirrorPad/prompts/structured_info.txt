@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  paddings:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[rank(input), 2]"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["REFLECT", "SYMMETRIC"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: paddings
+    Parameter 2: input
+    Constraint: "paddings.shape[0] == len(input.shape) and paddings.shape[1] == 2"
+  2:
+    Parameter 1: paddings
+    Parameter 2: input
+    Constraint: "all((paddings[i, 0] <= input.shape[i] and paddings[i, 1] <= input.shape[i]) for i in range(len(input.shape))) if mode == 'SYMMETRIC' else all((paddings[i, 0] <= input.shape[i] - 1 and paddings[i, 1] <= input.shape[i] - 1) for i in range(len(input.shape)))"

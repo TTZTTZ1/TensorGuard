@@ -1,0 +1,74 @@
+params:
+  input:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  min_range:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  max_range:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  T:
+    dtype: ["string"]
+    range: ["tf.qint8", "tf.quint8", "tf.qint32", "tf.qint16", "tf.quint16"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["MIN_COMBINED", "MIN_FIRST", "SCALED"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "MIN_COMBINED"
+  round_mode:
+    dtype: ["string"]
+    range: ["HALF_AWAY_FROM_ZERO", "HALF_TO_EVEN"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "HALF_AWAY_FROM_ZERO"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  narrow_range:
+    dtype: ["bool"]
+    range: [false, true]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  axis:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  ensure_minimum_range:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.01"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: min_range
+    Constraint: "axis == -1 or (min_range is not None and len(min_range.shape) == 1 and min_range.shape[0] == input.shape[axis])"
+  2:
+    Parameter 1: axis
+    Parameter 2: max_range
+    Constraint: "axis == -1 or (max_range is not None and len(max_range.shape) == 1 and max_range.shape[0] == input.shape[axis])"
+  3:
+    Parameter 1: narrow_range
+    Parameter 2: mode
+    Constraint: "not narrow_range or mode == 'SCALED'"

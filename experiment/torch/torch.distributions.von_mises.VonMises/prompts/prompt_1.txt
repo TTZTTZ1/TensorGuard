@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `torch.distributions.von_mises.VonMises` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Two gradient estimation methods**:
+  1. **Score function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+  2. **Pathwise derivative (reparameterization)**: Uses `rsample()` for differentiable sampling via the reparameterization trick
+
+## **Main Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+- Batch and event shape handling
+
+### **2. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, LKJCholesky
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, RelaxedBernoulli (Gumbel-Softmax)
+
+### **3. Key Features**
+- **ExponentialFamily**: Special class for distributions in exponential family form
+- **TransformedDistribution**: Apply transforms to base distributions (e.g., `LogNormal` as `exp(Normal)`)
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Constraints**: Define valid parameter ranges with automatic transformations
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, StickBreaking, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for unconstrained optimization
+- **Constraints**: Real, Positive, Simplex, Interval, etc.
+
+## **Common Use Cases**
+
+### **Reinforcement Learning (REINFORCE)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Variational Inference (Reparameterization)**
+```python
+params = network(input)
+m = Normal(*params)
+z = m.rsample()  # Differentiable
+loss = -elbo(z)
+loss.backward()
+```
+
+### **Distribution Operations**
+```python
+# KL divergence
+kl = kl_divergence(q_dist, p_dist)
+
+# Transform distributions
+base = Normal(0, 1)
+log_normal = TransformedDistribution(base, [ExpTransform()])
+
+# Mixture models
+mix = Categorical(probs)
+comp = Normal(locs, scales)
+gmm = MixtureSameFamily(mix, comp)
+```
+
+## **Practical Notes**
+- Use `rsample()` when you need differentiable samples (requires `has_rsample=True`)
+- Use `transform_to()` for unconstrained optimization of constrained parameters
+- Check `arg_constraints` for valid parameter ranges
+- `Independent` reinterprets batch dims as event dims for multivariate distributions
+
+The package follows TensorFlow Distributions design and supports automatic differentiation through stochastic nodes via either score function or pathwise derivative estimators, making it essential for probabilistic modeling, variational inference, and reinforcement learning in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  concentration:
+    dtype: ["float", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2: null
+    Constraint: concentration > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.von_mises.VonMises in a complex way */
+import torch

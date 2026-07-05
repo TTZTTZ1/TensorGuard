@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.nn.conv1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.conv1d` performs 1D convolution on 3D input tensors using a given filter. It supports configurable stride, padding, data format (`"NWC"` or `"NCW"`), and dilation rates. Internally, it reshapes inputs to use `tf.nn.conv2d` and returns a tensor of convolved outputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 3"]
+    default: null
+  filters:
+    dtype: ["float16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 3"]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: "1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "filters"
+    Constraint: "input.dtype == filters.dtype"
+  2:
+    Parameter 1: "data_format"
+    Parameter 2: "data_format"
+    Constraint: 'data_format in ["NWC", "NCW"]'
+  3:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: 'not (isinstance(dilations, list) and len(dilations) == 3) or (dilations[0] == 1 and ((data_format == "NWC" and dilations[2] == 1) or (data_format == "NCW" and dilations[1] == 1)))'
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.conv1d in a complex way */
+import tensorflow as tf

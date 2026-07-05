@@ -1,0 +1,113 @@
+
+# You are a Python code generation assistant for the `torch.hub.load` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**PyTorch Hub** is a centralized repository for pre-trained models, designed to simplify sharing and loading models for research reproducibility.
+
+### **Key Features**
+
+*   **Publishing Models:** Add a `hubconf.py` file to a GitHub repo. This file defines callable entrypoints (functions) that return models or tools.
+    *   Each entrypoint can have arguments (e.g., `pretrained`).
+    *   A `dependencies` list specifies required packages.
+    *   Docstrings in entrypoints serve as help text.
+    *   Pretrained weights can be stored locally or loaded via URL using `torch.hub.load_state_dict_from_url()`.
+*   **Loading Models:** Provides simple APIs to discover and use models.
+    *   `torch.hub.list()`: Lists all available entrypoints in a repo.
+    *   `torch.hub.help()`: Shows the docstring for a specific model.
+    *   `torch.hub.load()`: Loads a model (or other object) from a GitHub repo or local directory. Arguments passed to this function are forwarded to the model's entrypoint for instantiation.
+
+### **Core Workflow**
+
+1.  **Explore:** Use `hub.list()` to see what's available in a repository (e.g., `'pytorch/vision'`).
+2.  **Inspect:** Use `hub.help()` to read documentation for a specific model.
+3.  **Load:** Use `hub.load()` to download and instantiate the model. You can pass configuration arguments directly.
+    ```python
+    model = torch.hub.load('pytorch/vision', 'resnet50', weights='IMAGENET1K_V1')
+    ```
+
+### **Important Parameters & Security**
+
+*   `trust_repo`: Controls security for loading code. Options are:
+    *   `"check"`: (Future default) Verifies against a cached list of trusted repos.
+    *   `False`: Prompts the user for confirmation.
+    *   `True`: Adds the repo to the trusted list and loads without prompt.
+    *   `None`: (Current default) Shows a warning. Will change to `"check"`.
+*   `force_reload`: Forces a fresh download, bypassing the local cache.
+*   `skip_validation`: Skips GitHub API validation of the repo/branch.
+
+### **Utilities**
+
+*   `torch.hub.load_state_dict_from_url()`: Loads model weights from a URL.
+*   `torch.hub.get_dir()` / `set_dir()`: Get or set the cache directory for downloaded models.
+
+### **Limitations**
+
+*   **Import Conflicts:** Loading models from different repos with identical sub-package names (like `model`) in the same process can cause import errors. A workaround is to modify `sys.modules`.
+*   **Single Branch per Process:** You cannot load two different branches of the same repository within the same Python process.
+
+In summary, PyTorch Hub streamlines the process of sharing, discovering, and using pre-trained models, promoting reproducibility and collaboration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  repo_or_dir:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  model:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  *args:
+    dtype: ["any"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  source:
+    dtype: ["string"]
+    range: [["github", "local"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "github"
+  trust_repo:
+    dtype: ["string", "boolean", "None"]
+    range: [["check", "True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  force_reload:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  verbose:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  skip_validation:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  **kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dictionary"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hub.load in a complex way */
+import torch

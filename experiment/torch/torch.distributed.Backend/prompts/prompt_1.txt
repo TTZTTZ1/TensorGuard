@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.distributed.Backend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables multi‑process parallel training across multiple machines or GPUs. It provides communication primitives (collectives, point‑to‑point) and higher‑level abstractions like `DistributedDataParallel` and `DeviceMesh` for scalable distributed training.
+
+**Key features:**
+
+- **Backends:** Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI, and custom backends.
+- **Initialization:** Set up via `init_process_group()` or `init_device_mesh()` using TCP, shared file‑system, or environment variables.
+- **Collective operations:** Synchronous/asynchronous collectives (broadcast, all‑reduce, gather, scatter, etc.) for tensors and Python objects.
+- **Point‑to‑point:** Send/receive tensors between specific ranks.
+- **Groups:** Create sub‑groups for fine‑grained communication.
+- **DeviceMesh:** Manages multi‑dimensional device layouts for advanced parallelism (e.g., 2D mesh).
+- **Key‑value stores:** `TCPStore`, `FileStore`, `HashStore` for coordination.
+- **Launch utilities:** `torch.distributed.launch` and `torch.multiprocessing.spawn` for multi‑process startup.
+- **Debugging tools:** `monitored_barrier`, `TORCH_DISTRIBUTED_DEBUG`, `torch.distributed.breakpoint`, and an HTTP debug server.
+- **Logging & exceptions:** Configurable logging levels and custom exception types for distributed errors.
+
+**Typical workflow:**
+1. Initialize the process group.
+2. Use collectives or point‑to‑point communication.
+3. Wrap models with `DistributedDataParallel` for data‑parallel training.
+4. Clean up with `destroy_process_group()`.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution and integrates with PyTorch’s autograd and CUDA semantics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  func:
+    dtype: ["function"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  extended_api:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  devices:
+    dtype: ["string", "list"]
+    range: [null]
+    structure: ["scalar", "list"]
+    shape: [1, -1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "devices"
+    Parameter 2: ""
+    Constraint: "devices is None or isinstance(devices, str) or (isinstance(devices, list) and all(isinstance(d, str) for d in devices))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.Backend in a complex way */
+import torch

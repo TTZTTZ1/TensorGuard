@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.distributions.cauchy.Cauchy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and enabling gradient-based optimization through two main methods:
+
+## Key Features
+- **Score Function Estimator (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods
+- **Pathwise Derivative Estimator**: Uses `rsample()` for reparameterization trick (e.g., in VAEs)
+
+## Core Components
+
+### 1. **Distribution Base Class**
+Abstract base class with essential methods:
+- `sample()` / `rsample()`: Generate samples (latter is reparameterizable)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Compute distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+- `support`: Constraint defining valid values
+
+### 2. **Available Distributions**
+Includes both continuous and discrete distributions:
+- **Univariate**: Normal, Bernoulli, Exponential, Gamma, Beta, Uniform, etc.
+- **Multivariate**: MultivariateNormal, Dirichlet, Categorical, etc.
+- **Specialized**: LKJCholesky (correlation matrices), MixtureSameFamily, TransformedDistribution
+
+### 3. **Transforms & Constraints**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+- **Registry System**: `transform_to()` and `biject_to()` for converting between constrained/unconstrained spaces
+
+### 4. **KL Divergence**
+- `kl_divergence()`: Computes KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+## Common Usage Patterns
+
+### REINFORCE (Policy Gradient)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+## Design Principles
+- Follows TensorFlow Distributions design
+- Enables stochastic gradient estimation
+- Supports batch and event shapes for vectorized operations
+- Provides automatic constraint validation
+- Integrates with PyTorch's autograd system
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "array"]
+    default: null
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "array"]
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scale"
+    Parameter 2: null
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.cauchy.Cauchy in a complex way */
+import torch

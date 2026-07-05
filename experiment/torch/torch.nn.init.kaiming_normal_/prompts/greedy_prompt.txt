@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.kaiming_normal_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions for initializing neural network parameters. These functions operate in `torch.no_grad()` mode and do not affect autograd.
+
+**Key Functions:**
+
+1. **Basic Initializations:**
+   - `uniform_`, `normal_`, `constant_`, `ones_`, `zeros_`, `eye_`, `dirac_` – Fill tensors with values from specific distributions or constants.
+
+2. **Advanced Initializations:**
+   - `xavier_uniform_`, `xavier_normal_` (Glorot) – Suitable for tanh/sigmoid activations.
+   - `kaiming_uniform_`, `kaiming_normal_` (He) – Designed for ReLU/leaky ReLU activations.
+   - `orthogonal_` – Initializes with (semi) orthogonal matrices.
+   - `trunc_normal_` – Samples from a truncated normal distribution.
+   - `sparse_` – Creates sparse matrices with a specified sparsity.
+
+3. **Utility:**
+   - `calculate_gain` – Returns recommended gain values for different nonlinearities.
+
+**Usage Notes:**
+- All functions modify tensors in-place (suffix `_`).
+- For Xavier/Kaiming initializations, ensure correct `fan_in`/`fan_out` calculation based on weight matrix orientation.
+- Use `generator` for reproducible sampling.
+
+**Example:**
+```python
+w = torch.empty(3, 5)
+nn.init.kaiming_uniform_(w, mode='fan_in', nonlinearity='relu')
+```
+
+These initializations help stabilize training and improve convergence in neural networks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  a:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  mode:
+    dtype: ["string"]
+    range: [["fan_in", "fan_out"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'fan_in'"
+  nonlinearity:
+    dtype: ["string"]
+    range: [["linear", "conv1d", "conv2d", "conv3d", "conv_transpose1d", "conv_transpose2d", "conv_transpose3d", "sigmoid", "tanh", "relu", "leaky_relu", "selu"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'leaky_relu'"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["object", "None"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.kaiming_normal_ in a complex way */
+import torch

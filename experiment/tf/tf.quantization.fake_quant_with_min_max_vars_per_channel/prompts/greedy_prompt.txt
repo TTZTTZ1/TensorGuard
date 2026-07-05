@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.quantization.fake_quant_with_min_max_vars_per_channel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.quantization.fake_quant_with_min_max_vars_per_channel` performs per-channel fake quantization on a float input tensor. It clamps input values within a specified per-channel range defined by `min` and `max`, quantizes them to a specified bit-width (`num_bits`, default 8), and then de-quantizes back to float values within the same range. This simulates quantization effects while preserving gradient flow, enabling training of the `min` and `max` parameters. The operation supports inputs with channel dimensions (e.g., `[d]`, `[b, d]`, `[b, h, w, d]`), with `min` and `max` being 1-D tensors of shape `[d]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"], ["b", "d"], ["b", "h", "w", "d"]]
+    default: null
+  min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"]]
+    default: null
+  max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"]]
+    default: null
+  num_bits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: min
+    Constraint: "inputs.shape[-1] == min.shape[0]"
+  2:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min.shape == max.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.fake_quant_with_min_max_vars_per_channel in a complex way */
+import tensorflow as tf

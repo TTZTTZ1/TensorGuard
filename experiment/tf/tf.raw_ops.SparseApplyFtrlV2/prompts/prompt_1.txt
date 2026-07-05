@@ -1,0 +1,155 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyFtrlV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseApplyFtrlV2` is a low-level TensorFlow operation that implements the **FTRL-Proximal optimization algorithm** with **L2 shrinkage regularization** for **sparse updates**. It updates only the rows of the variable tensor specified by `indices` using the provided gradients.
+
+### **Key Functionality:**
+- **Sparse Update**: Efficiently updates only selected rows (via `indices`) of the variable `var`, accumulator `accum`, and linear term `linear`.
+- **FTRL Optimization**: Applies the FTRL-proximal algorithm with L1 and L2 regularization, incorporating L2 shrinkage to handle sparse features.
+- **In-place Update**: Modifies `var`, `accum`, and `linear` directly (requires mutable tensors).
+
+### **Core Update Steps:**
+1. **Gradient Adjustment**:  
+   `grad_with_shrinkage = grad + 2 * l2_shrinkage * var`
+2. **Accumulator Update**:  
+   `accum_new = accum + grad * grad`
+3. **Linear Term Update**:  
+   `linear += grad_with_shrinkage - (accum_new^(-lr_power) - accum^(-lr_power)) / lr * var`
+4. **Variable Update**:  
+   Computes a quadratic term and updates `var` based on the L1 threshold. If `|linear| > l1`, `var` is adjusted; otherwise, set to `0.0`.
+5. **Accumulator Replacement**:  
+   `accum = accum_new`
+
+### **Typical Use Case:**
+Used in training scenarios with **sparse gradients** (e.g., embedding layers or large-scale recommendation systems) where only a subset of parameters receive updates per iteration.
+
+### **Note:**
+- This is a **raw operation** intended for low-level control; most users should prefer higher-level APIs like `tf.keras.optimizers.Ftrl`.
+- Supports **optional locking** (`use_locking`) for thread-safe updates.
+- All tensor inputs (`var`, `accum`, `linear`, `grad`, `lr`, `l1`, `l2`, `l2_shrinkage`, `lr_power`) must share the same data type.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  accum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  linear:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: "null"
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  l2_shrinkage:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  lr_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  use_locking:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  multiply_linear_by_lr:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "accum"
+    Parameter 2: "var"
+    Constraint: "accum.dtype == var.dtype"
+  2:
+    Parameter 1: "linear"
+    Parameter 2: "var"
+    Constraint: "linear.dtype == var.dtype"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "var"
+    Constraint: "grad.dtype == var.dtype"
+  4:
+    Parameter 1: "lr"
+    Parameter 2: "var"
+    Constraint: "lr.dtype == var.dtype and tf.rank(lr) == 0"
+  5:
+    Parameter 1: "l1"
+    Parameter 2: "var"
+    Constraint: "l1.dtype == var.dtype and tf.rank(l1) == 0"
+  6:
+    Parameter 1: "l2"
+    Parameter 2: "var"
+    Constraint: "l2.dtype == var.dtype and tf.rank(l2) == 0"
+  7:
+    Parameter 1: "l2_shrinkage"
+    Parameter 2: "var"
+    Constraint: "l2_shrinkage.dtype == var.dtype"
+  8:
+    Parameter 1: "lr_power"
+    Parameter 2: "var"
+    Constraint: "lr_power.dtype == var.dtype and tf.rank(lr_power) == 0"
+  9:
+    Parameter 1: "indices"
+    Parameter 2: "indices"
+    Constraint: "indices.dtype in [tf.int32, tf.int64]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyFtrlV2 in a complex way */
+import tensorflow as tf

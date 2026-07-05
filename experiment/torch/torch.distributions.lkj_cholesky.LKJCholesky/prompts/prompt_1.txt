@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.distributions.lkj_cholesky.LKJCholesky` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key features include:
+
+**Core Concepts:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning.
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick.
+
+**Main Classes:**
+- **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`.
+- **ExponentialFamily**: Base class for exponential family distributions.
+- **TransformedDistribution**: Applies transforms to base distributions.
+- **Independent**: Reinterprets batch dimensions as event dimensions.
+- **MixtureSameFamily**: Mixture of same-type component distributions.
+
+**Common Distributions:**
+- Univariate: `Bernoulli`, `Beta`, `Binomial`, `Categorical`, `Normal`, `Gamma`, `Exponential`, `Uniform`, etc.
+- Multivariate: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`.
+- Transformed: `LogNormal`, `HalfNormal`, `Gumbel`, `Weibull`.
+
+**Key Methods:**
+- `sample()` / `rsample()`: Draw samples (reparameterized).
+- `log_prob()`: Compute log probability.
+- `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution.
+- `expand()`: Expand batch dimensions.
+
+**Supporting Utilities:**
+- **KL Divergence**: `kl_divergence()` computes KL between distributions.
+- **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) for reparameterization.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive`).
+- **Constraint Registries**: `biject_to()` and `transform_to()` map constraints to transforms for optimization and HMC.
+
+**Usage Example:**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and other stochastic optimization tasks in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  concentration:
+    dtype: ["float", "Tensor"]
+    range: [0.0, null]
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "1.0"
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2:
+    Constraint: concentration > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.lkj_cholesky.LKJCholesky in a complex way */
+import torch

@@ -1,0 +1,174 @@
+
+# You are a Python code generation assistant for the `torch.nn.parallel.DistributedDataParallel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**DistributedDataParallel (DDP)** is a PyTorch module for distributed data parallelism across multiple GPUs or machines. It synchronizes gradients across model replicas to enable efficient multi-process training.
+
+### Key Features:
+- **Data Parallelism**: Each process holds a full model replica; gradients are averaged across processes via all-reduce.
+- **Performance**: Faster than `DataParallel` for single-node multi-GPU training.
+- **Mixed Precision**: Supports training with mixed `fp16`/`fp32` parameters.
+- **Flexible Backends**: Works with NCCL (recommended for GPUs), Gloo, MPI.
+
+### Basic Usage:
+1. **Initialize** `torch.distributed` with `init_process_group()`.
+2. **Wrap model**:
+   ```python
+   model = DistributedDataParallel(model, device_ids=[rank], output_device=rank)
+   ```
+3. **Ensure each process** uses a unique GPU (set via `torch.cuda.set_device()` or `torch.accelerator.set_device_index()`).
+
+### Important Parameters:
+- `process_group`: Custom process group for communication (default: entire world).
+- `broadcast_buffers`: Syncs buffers (e.g., BatchNorm stats) before forward pass.
+- `find_unused_parameters`: Marks unused parameters for reduction (useful for dynamic graphs).
+- `static_graph`: Optimizes performance for static training graphs.
+- `bucket_cap_mb`: Controls gradient bucket size for overlapping communication with backward pass.
+
+### Key Methods:
+- `no_sync()`: Context manager to disable gradient synchronization (accumulate gradients locally).
+- `join()`: Handles uneven inputs across processes by shadowing collective operations.
+- `register_comm_hook()`: Customize gradient aggregation (e.g., compression, custom all-reduce).
+
+### Warnings:
+- **Model Consistency**: All processes must have identical models and parameter registration order.
+- **No Parameter Changes**: Do not add/remove parameters after wrapping with DDP.
+- **Gradient Accumulation**: Works only with gradient accumulation in `.grad` attributes (not `torch.autograd.grad`).
+- **Checkpointing**: Use `use_reentrant=False` for gradient checkpointing compatibility.
+
+### Example:
+```python
+torch.distributed.init_process_group(backend='nccl', world_size=4)
+model = DistributedDataParallel(model)
+```
+
+DDP is essential for scalable multi-GPU training, providing efficient gradient synchronization while supporting advanced features like custom communication hooks and uneven input handling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: [null]
+    structure: ["object"]
+    shape: ["No mention"]
+    default: "No default"
+  device_ids:
+    dtype: ["list", "int", "torch.device"]
+    range: ["None", "single element list"]
+    structure: ["list", "null"]
+    shape: ["1"]
+    default: "None"
+  output_device:
+    dtype: ["int", "torch.device"]
+    range: ["None"]
+    structure: ["scalar", "null"]
+    shape: ["No mention"]
+    default: "device_ids[0]"
+  dim:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "0"
+  broadcast_buffers:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  init_sync:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  process_group:
+    dtype: ["torch.distributed.ProcessGroup"]
+    range: ["None"]
+    structure: ["object", "null"]
+    shape: ["No mention"]
+    default: "None"
+  bucket_cap_mb:
+    dtype: ["int"]
+    range: ["None"]
+    structure: ["scalar", "null"]
+    shape: ["No mention"]
+    default: "None"
+  find_unused_parameters:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  check_reduction:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  gradient_as_bucket_view:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  static_graph:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  delay_all_reduce_named_params:
+    dtype: ["list", "tuple", "str", "torch.nn.Parameter"]
+    range: ["None"]
+    structure: ["list", "null"]
+    shape: ["No mention"]
+    default: "None"
+  param_to_hook_all_reduce:
+    dtype: ["torch.nn.Parameter"]
+    range: ["None"]
+    structure: ["object", "null"]
+    shape: ["No mention"]
+    default: "None"
+  mixed_precision:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  device_mesh:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  skip_all_reduce_unused_params:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "module"
+    Parameter 2: "device_ids"
+    Constraint: "(isinstance(module, torch.nn.Module) and module is single-device CUDA) implies (device_ids is None or (isinstance(device_ids, list) and len(device_ids) == 1))"
+  2:
+    Parameter 1: "module"
+    Parameter 2: "device_ids"
+    Constraint: "(isinstance(module, torch.nn.Module) and (module is multi-device or module is CPU)) implies (device_ids is None)"
+  3:
+    Parameter 1: "module"
+    Parameter 2: "output_device"
+    Constraint: "(isinstance(module, torch.nn.Module) and (module is multi-device or module is CPU)) implies (output_device is None)"
+  4:
+    Parameter 1: "device_ids"
+    Parameter 2: "output_device"
+    Constraint: "(device_ids is not None and isinstance(device_ids, list) and len(device_ids) == 1) implies (output_device == device_ids[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.parallel.DistributedDataParallel in a complex way */
+import torch

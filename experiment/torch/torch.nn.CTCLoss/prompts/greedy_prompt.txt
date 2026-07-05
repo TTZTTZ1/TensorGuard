@@ -1,0 +1,122 @@
+
+# You are a Python code generation assistant for the `torch.nn.CTCLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CTCLoss** is a PyTorch loss function for sequence-to-sequence tasks where input and output sequences may be unaligned (e.g., speech recognition, handwriting recognition). It computes the loss by summing probabilities over all possible alignments between a continuous input sequence and a discrete target sequence.
+
+---
+
+### **Key Parameters**
+- **blank** (int, default=0): Index of the blank label.
+- **reduction** (str): `'none'`, `'mean'`, or `'sum'` (default=`'mean'`).
+- **zero_infinity** (bool): If `True`, infinite losses (from overly short inputs) are zeroed (default=`False`).
+
+---
+
+### **Input Shapes**
+| Argument | Shape | Description |
+|----------|-------|-------------|
+| `log_probs` | `(T, N, C)` or `(T, C)` | Log-softmax probabilities. `T`=input length, `N`=batch size, `C`=number of classes (including blank). |
+| `targets` | `(N, S)` or `(sum(target_lengths),)` | Target sequences (class indices, excluding blank). |
+| `input_lengths` | `(N,)` or `()` | Lengths of each input sequence (`≤ T`). |
+| `target_lengths` | `(N,)` or `()` | Lengths of each target sequence (`≤ S`). |
+
+---
+
+### **Usage Notes**
+- **Target formats**:  
+  - **Padded**: Shape `(N, S)` with `target_lengths` specifying valid lengths.  
+  - **Unpadded**: Concatenated 1D tensor with `target_lengths` summing to its length.
+- **CuDNN requirements**:  
+  - Targets in concatenated format.  
+  - All `input_lengths = T`.  
+  - `target_lengths ≤ 256`, `dtype=torch.int32`, `log_probs.dtype=torch.float32`.
+- **Non-determinism**: CUDA+CuDNN may use non-deterministic algorithms; set `torch.backends.cudnn.deterministic = True` for reproducibility.
+
+---
+
+### **Example (Padded Targets)**
+```python
+ctc_loss = nn.CTCLoss()
+loss = ctc_loss(log_probs, targets, input_lengths, target_lengths)
+loss.backward()
+```
+Where `log_probs` is the output of `log_softmax` over classes.
+
+---
+
+### **Reference**
+Graves et al., *Connectionist Temporal Classification: Labelling Unsegmented Sequence Data with Recurrent Neural Networks* (ICML 2006).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  blank:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  reduction:
+    dtype: ["string"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  zero_infinity:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  log_probs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(T, N, C)", "(T, C)"]
+    default: "null"
+  targets:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(N, S)", "(sum(target_lengths))"]
+    default: "null"
+  input_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple", "tensor"]
+    shape: ["(N)", "()"]
+    default: "null"
+  target_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple", "tensor"]
+    shape: ["(N)", "()"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input_lengths"
+    Parameter 2: "log_probs"
+    Constraint: "torch.all(input_lengths <= log_probs.size(0))"
+  2:
+    Parameter 1: "target_lengths"
+    Parameter 2: "input_lengths"
+    Constraint: "torch.all(target_lengths <= input_lengths)"
+  3:
+    Parameter 1: "targets"
+    Parameter 2: "blank"
+    Constraint: "torch.all(targets != blank)"
+  4:
+    Parameter 1: "target_lengths"
+    Parameter 2: "targets"
+    Constraint: "if targets.dim() == 2: torch.all(target_lengths <= targets.size(1))"
+  5:
+    Parameter 1: "target_lengths"
+    Parameter 2: "targets"
+    Constraint: "if targets.dim() == 1: torch.sum(target_lengths) == targets.size(0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.CTCLoss in a complex way */
+import torch

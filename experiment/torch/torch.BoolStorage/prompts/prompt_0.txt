@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.BoolStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like shape, stride, and data type to interpret that storage.
+
+**Key Points:**
+
+*   **Purpose:** It's the fundamental data storage for tensors. A tensor's data is accessed via `tensor.untyped_storage()`.
+*   **Sharing:** Multiple tensors (e.g., views created by `.view()` or slicing) can share the same underlying `UntypedStorage`.
+*   **Identification:** Each storage has a unique `data_ptr()` (memory address pointer).
+*   **Independence:** The storage is somewhat independent; tensors with different dtypes or shapes can point to the same byte storage.
+*   **Manipulation:** It has methods for in-place operations (`fill_()`, `copy_()`), device transfer (`cuda()`, `cpu()`), and memory mapping (`from_file()`, `share_memory_()`).
+*   **Warning:** Direct storage manipulation is a low-level, risky operation. Standard tensor methods (like `.clone()` or `.fill_()`) are safer and should be preferred.
+*   **Special Cases:** Tensors on the `"meta"` device or `FakeTensor`s do not have actual storage. A tensor with a gradient (`requires_grad=True`) has separate storages for its data and its gradient.
+*   **Legacy:** The old `torch.TypedStorage` and dtype-specific classes (e.g., `torch.FloatStorage`) are deprecated. `torch.UntypedStorage` is the modern, universal class.
+
+**In essence:** `torch.UntypedStorage` is the raw byte bucket for tensor data. Most users will not need to interact with it directly, but it's crucial for understanding PyTorch's memory model and for advanced, low-level optimizations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.bool"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.bool"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: wrap_storage
+    Parameter 2: dtype
+    Constraint: "dtype == torch.bool or dtype is None"
+  2:
+    Parameter 1: wrap_storage
+    Parameter 2: device
+    Constraint: "device is None or device == wrap_storage.device"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.BoolStorage in a complex way */
+import torch

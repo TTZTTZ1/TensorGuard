@@ -1,0 +1,30 @@
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  op:
+    dtype: ["torch.distributed.ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM", "AVG"]]
+    structure: ["scalar"]
+    shape: null
+    default: "ReduceOp.SUM"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  async_op:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: op
+    Constraint: "not (torch.is_complex(tensor) and op in [torch.distributed.ReduceOp.MAX, torch.distributed.ReduceOp.MIN, torch.distributed.ReduceOp.PRODUCT])"

@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.TanhTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key features and usage:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `log_prob()`, `rsample()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Uniform, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Wishart, LKJCholesky
+
+### **3. Gradient Estimation Methods**
+
+**Score Function (REINFORCE)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Requires .has_rsample == True
+loss = -reward
+loss.backward()
+```
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Define valid parameter ranges (simplex, positive, interval, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for constrained optimization
+
+### **5. Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **KL Divergence**: Pre-implemented KL divergences between many distribution pairs
+- **Exponential Family**: Specialized class for distributions in exponential family form
+- **Validation**: Optional argument validation with `validate_args`
+
+### **6. Common Use Cases**
+- Reinforcement learning (policy gradients)
+- Variational inference
+- Probabilistic modeling
+- Bayesian methods
+- Stochastic optimization
+
+## **Basic Usage Pattern**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sampling
+samples = dist.sample([100])  # 100 samples
+
+# Probability evaluation
+log_probs = dist.log_prob(samples)
+
+# Reparameterized sampling (for gradients)
+reparam_samples = dist.rsample([100])
+```
+
+The package follows a design similar to TensorFlow Distributions and provides the necessary tools for building probabilistic models with automatic differentiation support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.TanhTransform in a complex way */
+import torch

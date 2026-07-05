@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.backward` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.backward()` computes gradients of the current tensor with respect to graph leaves (e.g., model parameters) using automatic differentiation.
+
+**Key points:**
+- **Purpose:** Performs backpropagation to accumulate gradients in leaf tensors' `.grad` attributes.
+- **Gradient argument:** Required for non-scalar tensors; must match shape and type.
+- **Gradient accumulation:** Gradients are added to existing values—typically zero them first.
+- **Graph management:**
+  - `retain_graph`: Keeps computation graph after backward (default inferred from `create_graph`).
+  - `create_graph`: Enables higher-order derivatives (e.g., for second-order optimization).
+- **Inputs parameter:** Optional sequence to restrict gradient accumulation to specific tensors.
+- **CUDA streams:** Requires careful handling when mixing forward/backward operations across streams.
+
+**Common usage:**
+```python
+loss.backward()  # scalar loss
+output.backward(gradient=torch.ones_like(output))  # non-scalar
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  gradient:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: "None"
+  retain_graph:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  create_graph:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  inputs:
+    dtype: ["Sequence[torch.Tensor]", "None"]
+    range: null
+    structure: ["sequence", "None"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "retain_graph"
+    Parameter 2: "create_graph"
+    Constraint: "not (create_graph and retain_graph is False)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.backward in a complex way */
+import torch

@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `torch.distributed.monitored_barrier` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Features**
+- **Multi-process parallelism** across nodes/machines
+- **Synchronous distributed training** via `DistributedDataParallel`
+- **Multiple backends**: Gloo (CPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI
+- **Collective operations**: all_reduce, broadcast, gather, scatter, etc.
+- **Point-to-point communication**: send/recv (sync/async)
+
+## **Key Components**
+
+### **1. Initialization**
+```python
+dist.init_process_group(backend="nccl", init_method="env://")
+# or
+mesh = init_device_mesh("cuda", mesh_shape=(8,))
+```
+
+### **2. Backend Selection**
+- **NCCL**: Best for CUDA GPU training (supports InfiniBand/GPUDirect)
+- **Gloo**: For CPU training or as GPU fallback
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires source build
+
+### **3. Communication Patterns**
+- **Collectives**: `all_reduce`, `broadcast`, `all_gather`, `reduce_scatter`
+- **P2P**: `send`/`recv`, `isend`/`irecv`
+- **Groups**: Create subgroups with `new_group()`
+- **DeviceMesh**: Higher-level abstraction for multi-dimensional parallelism
+
+### **4. Key APIs**
+- `init_process_group()`: Initialize distributed environment
+- `all_reduce()`: Reduce tensors across all processes
+- `broadcast()`: Broadcast tensor from one process to all
+- `all_gather()`: Gather tensors from all processes
+- `barrier()`: Synchronize all processes
+- `new_group()`: Create subgroup for fine-grained communication
+
+### **5. Performance Features**
+- **Async operations**: Set `async_op=True` for non-blocking calls
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+- **Symmetric Memory**: Optimized memory allocation for collectives
+
+### **6. Debugging Tools**
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `monitored_barrier()`: Timeout-aware barrier with failure reporting
+- `breakpoint()`: Debug single rank while others wait
+- HTTP debug server for runtime inspection
+
+### **7. Launch Utilities**
+- `torch.distributed.launch`: Spawn multiple processes per node
+- `torch.multiprocessing.spawn`: Python multiprocessing spawn helper
+
+## **Common Use Cases**
+1. **Data Parallel Training**: Use `DistributedDataParallel` wrapper
+2. **Model Parallelism**: Manual tensor sharding with collectives
+3. **Pipeline Parallelism**: P2P communication between pipeline stages
+4. **3D Parallelism**: Combine data, tensor, and pipeline parallelism
+
+## **Best Practices**
+- Use NCCL for GPU training, Gloo for CPU
+- Set `async_op=True` for computation/communication overlap
+- Call `destroy_process_group()` for clean shutdown
+- Use environment variables (`MASTER_ADDR`, `MASTER_PORT`) for initialization
+- Consider `DeviceMesh` for complex multi-dimensional parallelism
+
+The package enables scalable distributed training with support for various network interconnects and hardware configurations, while providing tools for debugging and performance optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  timeout:
+    dtype: ["timedelta", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  wait_all_ranks:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.monitored_barrier in a complex way */
+import torch

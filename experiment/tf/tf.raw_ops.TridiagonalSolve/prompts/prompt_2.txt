@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TridiagonalSolve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`tf.raw_ops.TridiagonalSolve`** solves linear systems with tridiagonal matrices, supporting batched inputs and multiple right-hand sides.
+
+**Key Features:**
+- **Inputs:**  
+  - `diagonals`: Shape `[..., 3, M]`, where the innermost dimension contains the superdiagonal, main diagonal, and subdiagonal (first/last elements of off-diagonals are ignored).  
+  - `rhs`: Shape `[..., M, K]`, representing `K` right-hand sides for each system.  
+  Both tensors must share the same dtype (`float32`, `float64`, `complex64`, `complex128`).
+
+- **Parameters:**  
+  - `partial_pivoting` (default `True`): Enhances numerical stability via Gaussian elimination with pivoting (CPU only).  
+  - `perturb_singular`: Controls handling of singular matrices (see documentation for details).
+
+- **Backend Behavior:**  
+  - CPU: Uses Gaussian elimination (with/without pivoting).  
+  - GPU: Leverages NVIDIA’s cuSPARSE library.  
+  - XLA: Does not support partial pivoting.
+
+**Output:**  
+A tensor of shape `[..., M, K]` containing the solutions for each tridiagonal system.
+
+**Use Case:** Efficiently solves structured linear systems common in PDE discretizations, spline computations, and other numerical methods.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonals:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., 3, M]"]
+    default: null
+  rhs:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  partial_pivoting:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  perturb_singular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "diagonals.dtype == rhs.dtype"
+  2:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "diagonals.shape[:-2] == rhs.shape[:-2] and diagonals.shape[-1] == rhs.shape[-2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TridiagonalSolve in a complex way */
+import tensorflow as tf

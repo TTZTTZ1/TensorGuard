@@ -1,0 +1,107 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.api.MultiprocessContext` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` module provides a unified interface to launch and manage multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment setup, and log management.
+
+**Key Features:**
+- **Unified Launch:** Supports both Python callables and binary executables via `start_processes()`.
+- **Per-Process Configuration:** Accepts separate arguments (`args`) and environment variables (`envs`) for each worker, indexed by local rank.
+- **Log Management:** Redirects or tees stdout/stderr to log files with configurable filtering.
+- **Error Handling:** Automatically generates error files for failed processes (for functions by default, for binaries with explicit annotation).
+
+**Basic Usage:**
+- For functions: Pass a callable with per-rank arguments and environments.
+- For binaries: Pass the command string; arguments are cast to strings.
+
+**Logging Control:**
+- `redirects`: Write selected streams to log files.
+- `tee`: Duplicate streams to both console and log files.
+- Filters can aggregate specific log lines across ranks.
+
+**Return Value:** Returns a `PContext` object (subclassed as `MultiprocessContext` or `SubprocessContext`) to manage process lifecycle, with `wait()` for synchronization and result collection.
+
+**Requirements:** The specified `log_dir` must exist, be empty, and be a directory.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  entrypoint:
+    dtype: ["Callable"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  args:
+    dtype: ["dict"]
+    range: ["keys are int, values are tuple"]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "No mention"
+  envs:
+    dtype: ["dict"]
+    range: ["keys are int, values are dict[str, str]"]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "No mention"
+  start_method:
+    dtype: ["str"]
+    range: ["spawn", "fork", "forkserver"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  log_line_prefixes:
+    dtype: ["null"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  numa_options:
+    dtype: ["null"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  duplicate_stdout_filters:
+    dtype: ["list", "null"]
+    range: ["list of str"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  duplicate_stderr_filters:
+    dtype: ["list", "null"]
+    range: ["list of str"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "set(args.keys()) == set(envs.keys())"
+  2:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "len(args) == len(envs) and max(args.keys()) == len(args) - 1 and min(args.keys()) == 0"
+  3:
+    Parameter 1: "entrypoint"
+    Parameter 2: "args"
+    Constraint: "not (isinstance(entrypoint, str) and not all(isinstance(arg, str) for arg in args.values()))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.api.MultiprocessContext in a complex way */
+import torch

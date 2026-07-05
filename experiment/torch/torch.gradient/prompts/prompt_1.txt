@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.gradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.gradient` estimates the gradient of a scalar-valued function from its sampled values using second-order central differences for interior points and first- or second-order estimates at boundaries. It computes partial derivatives along specified dimensions, with optional spacing parameters to define the coordinate mapping of input indices.
+
+**Key parameters:**
+- `input`: Tensor of function samples.
+- `spacing` (optional): Scalar, list, or tensors defining coordinate spacing per dimension.
+- `dim` (optional): Dimension(s) along which to compute gradients.
+- `edge_order` (optional): 1 or 2 for boundary estimation order.
+
+**Functionality:**
+- Default behavior treats tensor indices as coordinates.
+- Supports real and complex-valued functions.
+- Returns a list of tensors, each representing the partial derivative along one dimension.
+
+**Example use:**  
+`grad_x, grad_y = torch.gradient(values, spacing=[dx, dy])` computes partial derivatives with given spacings.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  spacing:
+    dtype: ["scalar", "list of scalar", "list of Tensor"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: "1"
+  dim:
+    dtype: ["int", "list of int"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: "None"
+  edge_order:
+    dtype: ["int"]
+    range: [[1, 2]]
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+constraints:
+  1:
+    Parameter 1: spacing
+    Parameter 2: dim
+    Constraint: "dim is None or not isinstance(spacing, (list, tuple)) or len(spacing) == (1 if isinstance(dim, int) else len(dim))"
+  2:
+    Parameter 1: input
+    Parameter 2: edge_order
+    Constraint: "all(s >= edge_order + 1 for s in input.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.gradient in a complex way */
+import torch

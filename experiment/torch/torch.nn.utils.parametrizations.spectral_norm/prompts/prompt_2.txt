@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrizations.spectral_norm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary:** `torch.nn.utils.parametrizations.spectral_norm` applies spectral normalization to a specified parameter (default: `'weight'`) of a module. This technique normalizes the weight matrix by its largest singular value (spectral norm), which helps stabilize GAN training by constraining the Lipschitz constant of the model.
+
+**Key Features:**
+- Uses power iteration (`n_power_iterations`) to approximate the spectral norm efficiently.
+- Automatically updates singular vectors during training when the weight is accessed.
+- Implemented via PyTorch's parametrization API, making it reversible and integrable into existing modules.
+- Supports tensors with dimensions >2 by reshaping for the power iteration.
+
+**Parameters:**
+- `module`: The target PyTorch module.
+- `name`: Parameter to normalize (default: `"weight"`).
+- `n_power_iterations`: Iterations for power method (default: 1).
+- `eps`: Numerical stability epsilon (default: 1e-12).
+- `dim`: Output dimension index (default: 0, except ConvTranspose layers where it is 1).
+
+**Returns:** The original module with spectral normalization registered as a parametrization.
+
+**Example:**
+```python
+snm = spectral_norm(nn.Linear(20, 40))
+# Weight is now normalized; its spectral norm ≈ 1
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: []
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "weight"
+  n_power_iterations:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1e-12"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrizations.spectral_norm in a complex way */
+import torch

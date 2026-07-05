@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.pca_lowrank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.pca_lowrank` performs approximate Principal Component Analysis (PCA) on a low‑rank matrix, batch of matrices, or sparse matrix. It returns a tuple `(U, S, V)` that approximates the SVD of the (optionally centered) input matrix `A`, where:
+
+- `V` contains the principal directions,
+- `S**2 / (m-1)` gives the eigenvalues of the covariance matrix when `center=True`,
+- `A @ V[:, :k]` projects data onto the top‑k principal components.
+
+**Key parameters:**
+- `A`: input tensor of shape `(*, m, n)`.
+- `q`: over‑estimated rank (default `min(6, m, n)`).
+- `center`: whether to center the data (default `True`).
+- `niter`: number of subspace iterations (default 2).
+
+The function is randomized; for reproducible results, set the random seed beforehand.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [["*", "m", "n"]]
+    default: null
+  q:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "min(6, m, n)"
+  center:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  niter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "2"
+constraints:
+  1:
+    Parameter 1: "q"
+    Parameter 2: "A"
+    Constraint: "1 <= q <= min(A.size(-2), A.size(-1))"
+  2:
+    Parameter 1: "niter"
+    Parameter 2: "niter"
+    Constraint: "niter >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.pca_lowrank in a complex way */
+import torch

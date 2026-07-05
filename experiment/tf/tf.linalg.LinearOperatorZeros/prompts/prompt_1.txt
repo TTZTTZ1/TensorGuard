@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorZeros` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorZeros` is a TensorFlow class representing a linear operator that behaves like a batch of zero matrices. It efficiently simulates a matrix filled with zeros without explicitly storing it, enabling optimized operations and broadcasting.
+
+**Key Features:**
+- **Initialization:** Define matrix dimensions (`num_rows`, `num_columns`), batch shape, and data type (`dtype`). If `num_columns` is omitted, it creates a square matrix.
+- **Matrix Properties:** Configure flags like `is_non_singular`, `is_self_adjoint`, etc., to specify mathematical traits (though a zero matrix is singular and not positive definite).
+- **Core Operations:** Supports operations like `matmul` (matrix multiplication), `solve`, `determinant`, `trace`, and `to_dense`. Multiplication with any compatible matrix/vector returns zeros.
+- **Broadcasting:** Can broadcast across batch dimensions when operating on tensors with different batch shapes.
+
+**Common Use Cases:**
+- Efficiently represent zero transformations in linear algebra computations.
+- Serve as a placeholder or initial state in algorithms without materializing large zero matrices.
+- Leverage broadcasting for batch operations where some matrices are zero.
+
+**Example:**
+```python
+import tensorflow as tf
+
+# Create a 3x3 zero matrix operator
+operator = tf.linalg.LinearOperatorZeros(num_rows=3, dtype=tf.float32)
+print(operator.to_dense())  # [[0., 0., 0.], ...]
+x = tf.constant([[1., 2.], [3., 4.], [5., 6.]])
+print(operator.matmul(x))   # Returns a 3x2 zero matrix
+```
+
+**Note:** This operator is non-invertible (singular), and its determinant is always zero. Use it when zero-matrix behavior is needed without the memory overhead of explicit storage.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_rows:
+    dtype: ["int32", "int64"]
+    range: [0, null]
+    structure: ["scalar", "tensor"]
+    shape: []
+    default: null
+  num_columns:
+    dtype: ["int32", "int64"]
+    range: [0, null]
+    structure: ["scalar", "tensor"]
+    shape: []
+    default: "None"
+  batch_shape:
+    dtype: ["int32", "int64"]
+    range: [0, null]
+    structure: ["tensor", "list"]
+    shape: [null]
+    default: "None"
+  dtype:
+    dtype: ["dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [[false]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [[true]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [[false]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  is_square:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  assert_proper_shapes:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'LinearOperatorZeros'"
+constraints:
+  1:
+    Parameter 1: "num_rows"
+    Parameter 2: null
+    Constraint: "num_rows >= 0"
+  2:
+    Parameter 1: "num_columns"
+    Parameter 2: null
+    Constraint: "num_columns >= 0"
+  3:
+    Parameter 1: "batch_shape"
+    Parameter 2: null
+    Constraint: "batch_shape is None or (tf.rank(batch_shape) == 1 and tf.reduce_min(batch_shape) >= 0)"
+  4:
+    Parameter 1: "is_self_adjoint"
+    Parameter 2: null
+    Constraint: "is_self_adjoint == True"
+  5:
+    Parameter 1: "is_non_singular"
+    Parameter 2: null
+    Constraint: "is_non_singular == False"
+  6:
+    Parameter 1: "is_positive_definite"
+    Parameter 2: null
+    Constraint: "is_positive_definite == False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorZeros in a complex way */
+import tensorflow as tf

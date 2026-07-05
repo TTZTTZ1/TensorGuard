@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.utils.checkpoint.checkpoint_sequential` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.checkpoint` module provides **activation checkpointing**, a technique that trades compute for memory by selectively saving and recomputing intermediate tensors during backpropagation.
+
+### Key Functions:
+
+1. **`checkpoint(function, *args, use_reentrant=False, **kwargs)`**  
+   - **Purpose**: Runs `function` without storing intermediate activations; recomputes them during backward pass.  
+   - **Recommendation**: Use `use_reentrant=False` (non-reentrant) for better flexibility (supports `autograd.grad`, keyword arguments, and nested structures).  
+   - **Key Parameters**:  
+     - `preserve_rng_state`: Ensures deterministic RNG (default `True`).  
+     - `context_fn`: Custom context managers for fine-grained control.  
+     - `determinism_check`: Validates recomputation correctness.  
+     - `debug`: Prints operator traces for debugging.  
+     - `early_stop`: Stops recomputation once needed tensors are available.
+
+2. **`checkpoint_sequential(functions, segments, input, **kwargs)`**  
+   - **Purpose**: Splits a sequential model into segments and checkpoints each (except the last).  
+   - **Usage**: Reduces memory for long sequential chains (e.g., transformer layers).
+
+### Advanced Features:
+- **Selective Checkpointing**:  
+  Use `create_selective_checkpoint_contexts()` with a policy function to control which operations are saved vs. recomputed (e.g., save expensive ops like matrix multiplies).
+- **RNG State Handling**:  
+  By default, RNG states are preserved for determinism (e.g., dropout). Disable with `preserve_rng_state=False` for performance if determinism isn’t required.
+- **Debugging**:  
+  Enable with `set_checkpoint_debug_enabled()` or the `debug` flag to trace forward/recompute steps.
+
+### Important Notes:
+- **Reentrant vs. Non-reentrant**:  
+  Non-reentrant (`use_reentrant=False`) is preferred—it supports more autograd features and doesn’t require `requires_grad` on inputs/outputs.
+- **Warnings**:  
+  - Ensure `function` is deterministic (no side effects) between forward/backward.  
+  - Explicitly pass `use_reentrant` (required from PyTorch 2.9 onward).  
+  - Avoid detached tensors inside checkpointed regions when using reentrant mode.
+
+### Use Case:
+Ideal for memory-intensive models (e.g., large CNNs, transformers), where you can trade extra computation for reduced GPU memory usage by checkpointing specific layers or segments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  functions:
+    dtype: ["torch.nn.Sequential", "list"]
+    range: null
+    structure: ["object", "list"]
+    shape: null
+    default: null
+  segments:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  preserve_rng_state:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  use_reentrant:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: functions
+    Parameter 2: segments
+    Constraint: "isinstance(functions, (torch.nn.Sequential, list)) and segments > 0 and segments <= len(functions) if isinstance(functions, list) else len(list(functions.children()))"
+  2:
+    Parameter 1: use_reentrant
+    Parameter 2: null
+    Constraint: "use_reentrant is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.checkpoint.checkpoint_sequential in a complex way */
+import torch

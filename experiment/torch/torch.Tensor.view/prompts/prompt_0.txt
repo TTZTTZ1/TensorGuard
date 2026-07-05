@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.view` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.view` returns a new tensor with the same underlying data as the original but with a different shape or dtype, without copying data.
+
+**Key points:**
+- **Shape view**: Reshapes the tensor; the new shape must be compatible with the original stride and size (otherwise, use `reshape()` or `contiguous()`). Use `-1` to infer a dimension.
+- **Dtype view**: Reinterprets the tensor’s data as a different dtype, adjusting the last dimension’s size based on the byte size ratio between dtypes. Requires specific stride and divisibility conditions.
+- **Shared data**: Changes to the viewed tensor affect the original.
+- **Warning**: The dtype-view overload is not supported in TorchScript.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int", "torch.Size"]
+    range: "No mention"
+    structure: ["tuple", "torch.Size"]
+    shape: "No mention"
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+constraints:
+  1:
+    Parameter 1: shape
+    Parameter 2: self
+    Constraint: "sum(1 for s in shape if s == -1) <= 1 and ( -1 not in shape or self.numel() % math.prod([s for s in shape if s != -1]) == 0 )"
+  2:
+    Parameter 1: shape
+    Parameter 2: self
+    Constraint: "self.numel() == math.prod(shape) if -1 not in shape else True"
+  3:
+    Parameter 1: dtype
+    Parameter 2: self
+    Constraint: "self.dim() > 0"
+  4:
+    Parameter 1: dtype
+    Parameter 2: self
+    Constraint: "self.stride(-1) == 1"
+  5:
+    Parameter 1: dtype
+    Parameter 2: self
+    Constraint: "if dtype.element_size > self.dtype.element_size: self.size(-1) % (dtype.element_size // self.dtype.element_size) == 0"
+  6:
+    Parameter 1: dtype
+    Parameter 2: self
+    Constraint: "if dtype.element_size > self.dtype.element_size: self.storage_offset() % (dtype.element_size // self.dtype.element_size) == 0"
+  7:
+    Parameter 1: dtype
+    Parameter 2: self
+    Constraint: "if dtype.element_size > self.dtype.element_size: all(self.stride(i) % (dtype.element_size // self.dtype.element_size) == 0 for i in range(self.dim() - 1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.view in a complex way */
+import torch

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.nn.LayerNorm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.LayerNorm` applies layer normalization over specified dimensions of an input tensor. It normalizes the input by subtracting the mean and dividing by the standard deviation over the last `D` dimensions defined by `normalized_shape`, then scales and shifts with learnable parameters if enabled.
+
+**Key Parameters:**
+- `normalized_shape`: Shape of dimensions to normalize (e.g., `embedding_dim` for NLP, `[C, H, W]` for images).
+- `eps`: Small constant for numerical stability (default: 1e-5).
+- `elementwise_affine`: If `True`, enables learnable scaling (`weight`) and shifting (`bias`) parameters (default: `True`).
+- `bias`: If `False`, disables the learnable bias (only when `elementwise_affine=True`).
+
+**Characteristics:**
+- Computes statistics from input data in both training and evaluation modes.
+- Unlike batch or instance normalization, it applies per-element affine transformations.
+- Variance is calculated using the biased estimator (`correction=0`).
+
+**Example Usage:**
+```python
+# NLP: Normalize over embedding dimension
+layer_norm = nn.LayerNorm(embedding_dim)
+# Image: Normalize over channel and spatial dimensions
+layer_norm = nn.LayerNorm([C, H, W])
+```
+
+**Input/Output Shape:** Same shape as input `(N, *)`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  normalized_shape:
+    dtype: ["int", "list", "torch.Size"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: null
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-05"
+  elementwise_affine:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  device:
+    dtype: ["str", "torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: elementwise_affine
+    Parameter 2: bias
+    Constraint: "not bias or elementwise_affine"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.LayerNorm in a complex way */
+import torch

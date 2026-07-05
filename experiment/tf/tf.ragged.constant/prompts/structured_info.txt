@@ -1,0 +1,50 @@
+params:
+  pylist:
+    dtype: No mention
+    range: No mention
+    structure: ["list", "tuple", "np.ndarray"]
+    shape: No mention
+    default: null
+  dtype:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: None
+  ragged_rank:
+    dtype: ["int"]
+    range: ["nonnegative"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: None
+  inner_shape:
+    dtype: No mention
+    range: ["nonnegative integers"]
+    structure: ["tuple"]
+    shape: No mention
+    default: None
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: None
+  row_splits_dtype:
+    dtype: ["int32", "int64"]
+    range: ["int32", "int64"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: tf.dtypes.int64
+constraints:
+  1:
+    Parameter 1: ragged_rank
+    Parameter 2: None
+    Constraint: "ragged_rank >= 0"
+  2:
+    Parameter 1: ragged_rank
+    Parameter 2: pylist
+    Constraint: "ragged_rank < get_nesting_depth(pylist)"
+  3:
+    Parameter 1: ragged_rank
+    Parameter 2: inner_shape
+    Constraint: "get_nesting_depth(pylist) == ragged_rank + (len(inner_shape) if inner_shape is not None else 0) + 1"

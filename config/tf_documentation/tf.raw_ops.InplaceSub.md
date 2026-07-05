@@ -1,0 +1,37 @@
+# tf.raw_ops.InplaceSub
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/InplaceSub](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/InplaceSub)
+
+---
+
+Subtracts `v` into specified rows of `x`.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.InplaceSub`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/InplaceSub)
+
+```
+tf.raw_ops.InplaceSub(
+    x, i, v, name=None
+)
+```
+
+Computes y = x; y[i, :] -= v; return y.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `x` | A `Tensor`. A `Tensor` of type T. |
+| `i` | A `Tensor` of type `int32`. A vector. Indices into the left-most dimension of `x`. |
+| `v` | A `Tensor`. Must have the same type as `x`. A `Tensor` of type T. Same dimension sizes as x except the first dimension, which must be the same as i's size. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `x`. | |

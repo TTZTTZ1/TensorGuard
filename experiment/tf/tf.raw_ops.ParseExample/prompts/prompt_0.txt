@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ParseExample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ParseExample` is a low-level TensorFlow operation that parses a batch of serialized `Example` protocol buffers (from TensorFlow's TFRecord format) into structured tensors. It extracts both sparse and dense features based on provided keys, types, shapes, and default values.
+
+**Key Parameters:**
+- `serialized`: A string tensor containing serialized `Example` protos.
+- `sparse_keys`/`dense_keys`: Keys for sparse and dense features to extract.
+- `sparse_types`/`dense_shapes`: Data types and shapes for the extracted features.
+- `dense_defaults`: Default values for missing dense features.
+
+**Returns:**
+- **Sparse features**: Indices, values, and shapes for each sparse key.
+- **Dense features**: Values for each dense key, batched and padded as needed.
+
+**Use Case:**  
+Primarily used in data input pipelines to decode TFRecord data into tensors ready for model training or inference, especially when working with heterogeneous feature types (sparse and dense).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "null"
+  names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "null"
+  sparse_keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  dense_keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  dense_defaults:
+    dtype: ["float32", "int64", "string"]
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  sparse_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  dense_shapes:
+    dtype: "No mention"
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  name:
+    dtype: "No mention"
+    range: [null]
+    structure: "No mention"
+    shape: "No mention"
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "names"
+    Parameter 2: "serialized"
+    Constraint: "tf.shape(names)[0] == 0 or tf.shape(names)[0] == tf.shape(serialized)[0]"
+  2:
+    Parameter 1: "sparse_keys"
+    Parameter 2: "sparse_types"
+    Constraint: "len(sparse_keys) == len(sparse_types)"
+  3:
+    Parameter 1: "dense_keys"
+    Parameter 2: "dense_shapes"
+    Constraint: "len(dense_keys) == len(dense_shapes)"
+  4:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_keys"
+    Constraint: "len(dense_defaults) == len(dense_keys)"
+  5:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_shapes"
+    Constraint: "all(tf.reduce_all(tf.equal(tf.shape(dense_defaults[j]), dense_shapes[j])) for j in range(len(dense_defaults)) if tf.size(dense_defaults[j]) > 0 and all(dim != -1 for dim in dense_shapes[j]))"
+  6:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_shapes"
+    Constraint: "all(tf.equal(tf.size(dense_defaults[j]), 1) for j in range(len(dense_defaults)) if dense_shapes[j][0] == -1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ParseExample in a complex way */
+import tensorflow as tf

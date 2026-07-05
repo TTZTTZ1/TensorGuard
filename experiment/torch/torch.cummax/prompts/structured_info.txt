@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: null
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (isinstance(out, tuple) and len(out) == 2 and out[0].size() == input.size() and out[1].size() == input.size())"

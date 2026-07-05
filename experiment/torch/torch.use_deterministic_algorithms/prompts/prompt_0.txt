@@ -1,0 +1,36 @@
+
+# You are a Python code generation assistant for the `torch.use_deterministic_algorithms` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.use_deterministic_algorithms` enables deterministic behavior in PyTorch operations, ensuring consistent outputs for identical inputs on the same hardware and software. When activated, it forces operations to use deterministic algorithms where available; otherwise, it raises a `RuntimeError` (or a warning if `warn_only=True`). This is useful for reproducibility but may impact performance.
+
+**Key points:**
+- **Usage:** Call `torch.use_deterministic_algorithms(True)` to enable; `False` to disable.
+- **Deterministic operations:** Some normally non-deterministic ops (e.g., convolutions on CUDA) become deterministic.
+- **Non-deterministic operations:** Others (e.g., certain pooling or loss functions on CUDA) will throw an error when differentiation is attempted.
+- **Limitations:** Does not guarantee full reproducibility (see PyTorch’s reproducibility notes) and does not prevent non-determinism from memory overlap issues.
+- **Performance:** Deterministic algorithms often run slower.
+- **Inductor impact:** Also enables deterministic mode in TorchInductor, disabling autotuning and benchmarking that affect numerics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mode:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  warn_only:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.use_deterministic_algorithms in a complex way */
+import torch

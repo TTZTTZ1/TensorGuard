@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.baddbmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.baddbmm` performs a batched matrix multiplication between two 3D tensors (`batch1` and `batch2`) and adds a third tensor (`input`) to the result. The operation is defined as:
+
+\[
+\text{out}_i = \beta \cdot \text{input}_i + \alpha \cdot (\text{batch1}_i \mathbin{@} \text{batch2}_i)
+\]
+
+**Key details:**
+- **Shapes:**  
+  - `batch1`: (b, n, m)  
+  - `batch2`: (b, m, p)  
+  - `input`: Broadcastable to (b, n, p)  
+  - Output: (b, n, p)
+
+- **Parameters:**  
+  - `beta` scales `input` (if 0, `input` is ignored).  
+  - `alpha` scales the matrix product.  
+  - `out_dtype` (optional): Specifies output dtype (CUDA only, for mixed precision).
+
+- **Use case:** Efficiently computes batched matrix multiplications with an added tensor, commonly used in linear algebra and neural network operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  batch1:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  batch2:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  out_dtype:
+    dtype: ["dtype"]
+    range: ["No mention"]
+    structure: ["dtype"]
+    shape: ["No mention"]
+    default: "None"
+  beta:
+    dtype: ["Number"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  alpha:
+    dtype: ["Number"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "batch1"
+    Parameter 2: "batch2"
+    Constraint: "batch1.ndim == 3 and batch2.ndim == 3 and batch1.shape[0] == batch2.shape[0] and batch1.shape[2] == batch2.shape[1]"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "batch1"
+    Constraint: "torch.broadcast_shapes(input.shape, (batch1.shape[0], batch1.shape[1], batch2.shape[2])) is not None"
+  3:
+    Parameter 1: "beta"
+    Parameter 2: "input"
+    Constraint: "(isinstance(input, (torch.FloatTensor, torch.DoubleTensor)) and isinstance(beta, (int, float))) or (not isinstance(input, (torch.FloatTensor, torch.DoubleTensor)) and isinstance(beta, int))"
+  4:
+    Parameter 1: "alpha"
+    Parameter 2: "input"
+    Constraint: "(isinstance(input, (torch.FloatTensor, torch.DoubleTensor)) and isinstance(alpha, (int, float))) or (not isinstance(input, (torch.FloatTensor, torch.DoubleTensor)) and isinstance(alpha, int))"
+  5:
+    Parameter 1: "out_dtype"
+    Parameter 2: "input"
+    Constraint: "out_dtype is None or (torch.cuda.is_available() and input.dtype in [torch.float16, torch.bfloat16] and out_dtype == torch.float32)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.baddbmm in a complex way */
+import torch

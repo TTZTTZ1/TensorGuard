@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n, n]", "[b, n, n]"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n, n]", "[b, n, n]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: input
+    Constraint: "input.dim() >= 2 and input.size(-2) == input.size(-1)"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or out.shape == input.shape"

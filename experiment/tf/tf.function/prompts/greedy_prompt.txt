@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `tf.function` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.function` is a TensorFlow decorator that compiles a Python function into a callable, optimized TensorFlow graph. It enhances performance by converting eager execution code into a static graph, enabling faster execution and better resource utilization.
+
+### Key Features:
+- **Graph Compilation**: Converts TensorFlow operations into a `tf.Graph`, improving execution speed.
+- **Polymorphism**: Internally manages multiple specialized graphs (`ConcreteFunction`s) for different input shapes/types, optimizing performance.
+- **Python Control Flow**: Supports data-dependent Python control flow (e.g., `if`, `for`) when `autograph=True` (default).
+- **Side Effects**: TensorFlow side effects (e.g., variable updates) are captured, but pure Python side effects (e.g., list appends) occur only during tracing.
+
+### Important Considerations:
+- **Retracing**: A new graph is traced for new input signatures, which can impact performance. Minimize retracing by using Tensor inputs instead of Python scalars/lists where possible.
+- **Input Signatures**: Use `input_signature` to restrict input types/shapes, reducing retracing.
+- **Variable Creation**: Variables should be created outside `tf.function` or only once inside to avoid errors.
+- **Python Operations**: Pure Python code runs only during tracing; use TensorFlow ops for dynamic behavior.
+
+### Parameters:
+- `func`: The function to compile.
+- `input_signature`: Specifies expected input shapes/types (`tf.TensorSpec`).
+- `autograph`: Enables AutoGraph for Python control flow (default `True`).
+- `jit_compile`: Enables XLA compilation for further optimizations (default `None`).
+- `reduce_retracing`: Reduces retracing by generalizing shapes (default `False`).
+
+### Returns:
+A `PolymorphicFunction` that executes the compiled graph, selecting the appropriate `ConcreteFunction` based on inputs.
+
+### Use Case:
+Ideal for optimizing performance-critical TensorFlow code, especially in loops or repeated calls, by leveraging graph execution while maintaining flexibility with Python-like syntax.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  input_signature:
+    dtype: ["sequence"]
+    range: ["No mention"]
+    structure: ["sequence", "nested sequence"]
+    shape: ["No mention"]
+    default: "None"
+  autograph:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "True"
+  jit_compile:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  reduce_retracing:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "False"
+  experimental_implements:
+    dtype: ["string", "NameAttrList"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_autograph_options:
+    dtype: ["tuple"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_attributes:
+    dtype: ["dict"]
+    range: ["No mention"]
+    structure: ["dictionary"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_relax_shapes:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_compile:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  experimental_follow_type_hints:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input_signature"
+    Parameter 2: "func"
+    Constraint: "input_signature is None or all(p.kind != inspect.Parameter.VAR_KEYWORD for p in inspect.signature(func).parameters.values())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.function in a complex way */
+import tensorflow as tf

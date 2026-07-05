@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.train.SequenceExample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.SequenceExample` is a TensorFlow data structure designed to represent sequential data, combining both time-independent context features and time-varying feature sequences. It is commonly used for sequence modeling tasks like video analysis, natural language processing, or time-series data.
+
+### Key Components:
+- **Context**: A dictionary of features (`tf.train.Feature`) that apply to the entire example (e.g., user demographics, video metadata).
+- **Feature Lists**: A dictionary where each key maps to a `tf.train.FeatureList`, representing a sequence of features over time (e.g., frame-by-frame ratings, word embeddings, or actor names per movie scene).
+
+### Usage:
+- **Parsing**: Use `tf.io.parse_sequence_example` to decode `SequenceExample` protos in TensorFlow.
+- **Data Structure**: It is a proto implementation of a Python `NamedTuple` with `context` and `feature_lists` fields.
+- **Conventions**:
+  - Context features follow the same rules as `tf.train.Example`.
+  - Feature lists must have consistent data types across all features within the same key.
+  - Feature lists can be empty or missing, depending on parser configuration.
+  - For sequence modeling, all feature lists typically have the same length (one feature per time step).
+
+### Example Application:
+In a movie recommendation system:
+- **Context**: User's locale, age, and favorite artists.
+- **Feature Lists**: Sequences of movie ratings, movie names, and actors per movie, aligned over time.
+
+### Conformance Rules:
+- Feature lists must not mix data types (e.g., floats and integers).
+- Feature sizes within a list may need to match, depending on parser settings.
+- Across examples, the same feature list key must have the same data type.
+
+`SequenceExample` enables efficient storage and processing of sequential data with associated global context, making it suitable for TensorFlow pipelines in sequence-based machine learning tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  context:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: null
+  feature_lists:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: feature_lists
+    Parameter 2: feature_lists
+    Constraint: "all( (all(f.bytes_list is not None for f in feature_lists[key]) or all(f.int64_list is not None for f in feature_lists[key]) or all(f.float_list is not None for f in feature_lists[key])) for key in feature_lists if feature_lists[key] and len(feature_lists[key]) > 0 )"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.SequenceExample in a complex way */
+import tensorflow as tf

@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.CorrCholeskyTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here’s a concise summary of its key features and usage:
+
+### **Core Purpose**
+- Enables construction of **stochastic computation graphs** and supports **gradient estimation** for optimization via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` and `log_prob()`.
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()` for differentiable sampling.
+
+### **Main Components**
+1. **Distribution Class** (Base Class)
+   - Abstract base class for all probability distributions.
+   - Key methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`, `mean`, `variance`, etc.
+   - Properties: `batch_shape`, `event_shape`, `support`.
+
+2. **Built-in Distributions**
+   - Includes common univariate and multivariate distributions:
+     - **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, MultivariateNormal, etc.
+     - **Discrete**: Bernoulli, Categorical, Binomial, Poisson, Geometric, etc.
+     - **Transformed distributions**: LogNormal, HalfNormal, Gumbel, etc. (via `TransformedDistribution`).
+
+3. **Key Functionalities**
+   - **Sampling**: `sample()` for regular sampling; `rsample()` for reparameterized sampling (differentiable).
+   - **Probability Calculations**: `log_prob()` for log-likelihood; `cdf()`/`icdf()` for cumulative/inverse CDF.
+   - **Statistics**: Properties like `mean`, `variance`, `entropy`.
+   - **Batch and Event Shapes**: Supports batched parameters and multi-dimensional events.
+
+4. **Specialized Classes**
+   - **ExponentialFamily**: Base class for exponential family distributions.
+   - **Independent**: Reinterprets batch dimensions as event dimensions.
+   - **TransformedDistribution**: Applies a sequence of transforms to a base distribution.
+   - **MixtureSameFamily**: Mixture distribution with components from the same family.
+
+5. **Gradient Estimation Examples**
+   - **REINFORCE (Policy Gradient)**:
+     ```python
+     m = Categorical(probs)
+     action = m.sample()
+     loss = -m.log_prob(action) * reward
+     loss.backward()
+     ```
+   - **Reparameterization Trick (VAE-style)**:
+     ```python
+     m = Normal(*params)
+     action = m.rsample()  # Differentiable
+     loss = -reward
+     loss.backward()
+     ```
+
+6. **Transforms & Constraints**
+   - **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) for mapping between constrained/unconstrained spaces.
+   - **Constraints**: Define valid parameter domains (e.g., `positive`, `simplex`, `interval`).
+   - **Registries**: `biject_to()` and `transform_to()` for converting between constrained parameters and unconstrained optimization spaces.
+
+7. **KL Divergence**
+   - `kl_divergence(p, q)` computes KL divergence between distributions.
+   - Pre-registered for many distribution pairs; extensible via `register_kl()`.
+
+### **Common Use Cases**
+- **Probabilistic Modeling**: Define and sample from complex distributions.
+- **Variational Inference**: Use reparameterized distributions in VAEs.
+- **Reinforcement Learning**: Policy gradients with categorical/multinomial policies.
+- **Bayesian Methods**: Priors/likelihoods in hierarchical models.
+
+### **Example Usage**
+```python
+import torch.distributions as dist
+
+# Create a normal distribution
+normal = dist.Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))          # Sample 100 values
+log_prob = normal.log_prob(samples)      # Compute log-likelihood
+
+# Create a Dirichlet distribution
+dirichlet = dist.Dirichlet(torch.tensor([0.5, 0.5]))
+samples = dirichlet.sample((10,))        # Sample 10 probability vectors
+```
+
+### **Key Design Notes**
+- Follows TensorFlow Distributions design.
+- Supports **batch dimensions** for vectorized operations.
+- Enables **gradient-based optimization** through stochastic nodes.
+- Modular with extensible constraints, transforms, and KL divergences.
+
+This package is essential for probabilistic deep learning, enabling gradient estimation, flexible distribution modeling, and integration with PyTorch’s autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.CorrCholeskyTransform in a complex way */
+import torch

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.fft.irfft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.irfft` computes the inverse real-valued Fast Fourier Transform, converting a one-sided Hermitian frequency spectrum (as produced by `rfft`) back to a real-valued time-domain signal. It requires the input to satisfy Hermitian symmetry, with imaginary parts at certain frequencies (like zero-frequency) being ignored.
+
+**Key parameters:**
+- `input`: One-sided Hermitian spectrum.
+- `n`: Output signal length (crucial for odd-length signals to ensure correct inversion).
+- `dim`: Dimension for the transform.
+- `norm`: Normalization mode (`"backward"` default, `1/n` normalization).
+
+**Important notes:**
+- Always specify `n` (original signal length) for accurate reconstruction, especially with odd-length signals.
+- Default `n` assumes even output: `2*(input.size(dim)-1)`.
+- Supports half-precision on CUDA (SM53+) with power-of-2 signal lengths.
+
+**Example:**
+```python
+t = torch.linspace(0, 1, 5)
+T = torch.fft.rfft(t)                 # Forward transform
+reconstructed = torch.fft.irfft(T, n=t.numel())  # Inverse with explicit length
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No default"
+  n:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2*(input.size(dim) - 1)"
+  dim:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  norm:
+    dtype: ["str"]
+    range: ["forward", "backward", "ortho"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"backward\""
+  out:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "dim"
+    Constraint: "-input.ndim <= dim < input.ndim"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "n"
+    Constraint: "n == None or n >= 0"
+  3:
+    Parameter 1: "input"
+    Parameter 2: "dim"
+    Parameter 3: "n"
+    Constraint: "n == None or input.size(dim) <= n"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.irfft in a complex way */
+import torch

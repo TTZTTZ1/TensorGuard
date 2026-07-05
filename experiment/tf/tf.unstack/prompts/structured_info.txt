@@ -1,0 +1,34 @@
+params:
+  value:
+    dtype: ["float32", "int32", "float64", "int64", "bool", "string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["rank > 0"]
+    default: null
+  num:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'unstack'"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: value
+    Constraint: "axis >= -tf.rank(value) and axis < tf.rank(value)"
+  2:
+    Parameter 1: num
+    Parameter 2: value
+    Constraint: "num is None or num == tf.shape(value)[axis]"

@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.repeat_interleave` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.repeat_interleave` repeats elements of a tensor along a specified dimension, similar to `numpy.repeat`.  
+
+**Key parameters:**
+- `input`: The tensor to repeat.
+- `repeats`: Number of repetitions per element (int or tensor).
+- `dim`: Dimension along which to repeat (default flattens the tensor).
+- `output_size`: Optional pre-specified output size for optimization.
+
+**Returns:** A new tensor with elements repeated along the given axis.
+
+**Examples:**
+- `x = torch.tensor([1, 2, 3])` → `x.repeat_interleave(2)` gives `[1, 1, 2, 2, 3, 3]`.
+- Can repeat with different counts per element using a tensor for `repeats`.
+- If only `repeats` is provided (no input tensor), it generates `[0, 1, 1, 2, 2, 2]` for `repeats = [1, 2, 3]`.
+
+**Note:** Different from `torch.Tensor.repeat()`, which repeats entire tensor blocks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  repeats:
+    dtype: ["Tensor", "int"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  output_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "dim is None or (dim >= -input.ndim and dim < input.ndim)"
+  2:
+    Parameter 1: "output_size"
+    Parameter 2: "repeats"
+    Parameter 3: "input"
+    Parameter 4: "dim"
+    Constraint: "output_size is None or (output_size == (input.size(dim) if dim is not None else input.numel()) * repeats if isinstance(repeats, int) else output_size == repeats.sum())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.repeat_interleave in a complex way */
+import torch

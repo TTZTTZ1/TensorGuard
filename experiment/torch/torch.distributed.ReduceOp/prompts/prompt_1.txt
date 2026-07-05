@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.distributed.ReduceOp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables distributed training with communication primitives and process management.
+
+## Key Components
+
+### Backends
+- **Gloo**: Best for CPU training, supports Ethernet/InfiniBand
+- **NCCL**: Best for CUDA GPU training, optimized for NVIDIA GPUs
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional backend requiring MPI installation
+
+### Initialization Methods
+1. **Environment Variables** (default): Uses `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared File System**: Uses a shared file for coordination
+
+### Core Functions
+- **`init_process_group()`**: Initialize distributed process group
+- **`new_group()`**: Create subgroups for fine-grained communication
+- **`DeviceMesh`**: Higher-level abstraction for managing process groups in multi-dimensional topologies
+
+### Communication Primitives
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`
+- **Point-to-Point**: `send`, `recv`, `isend`, `irecv`
+- **Synchronous/Asynchronous**: Operations can be blocking or non-blocking with `async_op=True`
+
+### Key Features
+- **Process Groups**: Default world group and custom subgroups
+- **Distributed DataParallel**: Wrapper for synchronous distributed training
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+- **Launch Utilities**: `torch.distributed.launch` and `torch.multiprocessing.spawn` for multi-process management
+- **Debugging Tools**: `monitored_barrier`, `TORCH_DISTRIBUTED_DEBUG`, Python breakpoint support
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU training
+- Ensure proper cleanup with `destroy_process_group()`
+- Set CUDA device before NCCL operations
+- Use environment variables for flexible initialization
+
+The package supports Linux, macOS, and Windows, with different backend availability per platform. It enables efficient distributed training by maintaining separate optimizers per process and avoiding Python GIL limitations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM", "AVG"]]
+    structure: ["scalar"]
+    shape: null
+    default: "ReduceOp.SUM"
+constraints:
+  1:
+    Parameter 1: op
+    Parameter 2: backend
+    Constraint: "backend !=
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.ReduceOp in a complex way */
+import torch

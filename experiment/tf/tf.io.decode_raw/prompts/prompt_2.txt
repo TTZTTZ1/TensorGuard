@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.io.decode_raw` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.decode_raw` converts raw byte sequences from a string tensor into numeric tensors of a specified data type (`out_type`). It interprets each element of the input as bytes, decoding them into numbers according to the output type's byte size and endianness.
+
+**Key features:**
+- **Output shape:** The output tensor always has one more dimension than the input, as each byte (or byte chunk) becomes a separate value.
+- **Endianness control:** Use `little_endian` to specify byte order (default is little-endian).
+- **Variable-length handling:** If input elements have different byte lengths, you must set `fixed_length` to pad or truncate them uniformly.
+- **Supported types:** Includes `uint8`, `int16`, `int32`, `int64`, `float`, `double`, etc.
+
+**Common use cases:** Parsing binary data, converting serialized bytes to numeric arrays, or processing fixed-format binary inputs in TensorFlow.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_bytes:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  out_type:
+    dtype: ["half", "float", "double", "int32", "uint16", "uint8", "int16", "int8", "int64"]
+    range: [["half", "float", "double", "int32", "uint16", "uint8", "int16", "int8", "int64"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  little_endian:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  fixed_length:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "fixed_length"
+    Parameter 2: "out_type"
+    Constraint: "fixed_length is None or fixed_length % tf.dtypes.as_dtype(out_type).size == 0"
+  2:
+    Parameter 1: "input_bytes"
+    Parameter 2: "fixed_length"
+    Constraint: "fixed_length is not None or tf.reduce_all(tf.equal(tf.strings.length(input_bytes), tf.strings.length(input_bytes)[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.decode_raw in a complex way */
+import tensorflow as tf

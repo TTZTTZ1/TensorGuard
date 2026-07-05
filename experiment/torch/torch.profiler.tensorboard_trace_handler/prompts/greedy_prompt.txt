@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.profiler.tensorboard_trace_handler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool for collecting metrics during model training and inference. It helps identify expensive operations, analyze input shapes, examine stack traces, and visualize execution traces.
+
+**Key Components:**
+
+1. **`torch.profiler.profile`** – Main context manager for profiling
+   - Supports CPU, CUDA, and XPU activities
+   - Configurable via `schedule()` for periodic profiling
+   - Can export traces for TensorBoard with `tensorboard_trace_handler()`
+
+2. **`_KinetoProfile`** – Lower-level profiler wrapper (experimental)
+
+3. **Profiling Features:**
+   - Record operator input shapes (`record_shapes=True`)
+   - Track memory allocation (`profile_memory=True`)
+   - Capture stack traces (`with_stack=True`)
+   - Estimate FLOPs for specific ops (`with_flops=True`)
+   - Module hierarchy recording (`with_modules=True`)
+
+4. **Output Methods:**
+   - `export_chrome_trace()` – Chrome JSON format
+   - `export_stacks()` – Save stack traces
+   - `key_averages()` – Generate summary tables
+   - `export_memory_timeline()` – Memory usage visualization (deprecated)
+
+5. **ITT APIs** – Intel Instrumentation and Tracing Technology for marking events and ranges
+
+**Basic Usage:**
+```python
+with torch.profiler.profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+    # Code to profile
+    model(input)
+    
+print(prof.key_averages().table(sort_by="cuda_time_total"))
+```
+
+The profiler replaces legacy `torch.autograd.profiler` and provides both simple continuous profiling and advanced scheduled profiling for long-running jobs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dir_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  worker_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "[hostname]_[pid]"
+  use_gzip:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: worker_name
+    Parameter 2: null
+    Constraint: "worker_name should be unique for each worker in distributed scenario"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.tensorboard_trace_handler in a complex way */
+import torch

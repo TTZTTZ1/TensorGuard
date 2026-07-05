@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorInversion` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorInversion` is a class that represents the inverse of another linear operator. It wraps an existing operator, swapping its `matmul` and `solve` operations (so `matmul` becomes `solve` and vice versa) and inverting its determinant. This is useful for efficiently representing and computing with operator inverses without explicitly forming dense matrices.
+
+**Key Features:**
+- **Initialization:** Requires a base `operator` that must be non-singular (or have `is_non_singular=None`). Optional hints (`is_non_singular`, `is_self_adjoint`, etc.) can be provided to specify mathematical properties.
+- **Performance:** Relies on the underlying operator's efficiency; `matmul` calls the base operator's `solve`, and `solve` calls its `matmul`.
+- **Common Use Case:** Solving linear systems or applying the inverse operator efficiently, as shown in the example where `operator_inv.matmul(x)` equals `operator.solve(x)`.
+
+**Example:**
+```python
+operator = LinearOperatorFullMatrix([[1., 0.], [0., 2.]])
+operator_inv = LinearOperatorInversion(operator)
+# operator_inv.matmul(x) computes operator.solve(x)
+```
+
+**Key Methods:**
+- `matmul(x)`: Computes `operator.solve(x)`.
+- `solve(rhs)`: Computes `operator.matmul(rhs)`.
+- `determinant()`: Returns `1 / operator.determinant()`.
+- `log_abs_determinant()`: Returns `-operator.log_abs_determinant()`.
+
+**Note:** The class inherits all other linear operator methods (e.g., `adjoint`, `trace`, `to_dense`) and propagates properties like shape and dtype from the base operator.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operator:
+    dtype: ["tf.linalg.LinearOperator"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  is_square:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "operator.name + '_inv'"
+constraints:
+  1:
+    Parameter 1: "operator"
+    Parameter 2: null
+    Constraint: "operator.is_non_singular is not False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorInversion in a complex way */
+import tensorflow as tf

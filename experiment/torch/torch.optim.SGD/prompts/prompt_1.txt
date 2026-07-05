@@ -1,0 +1,118 @@
+
+# You are a Python code generation assistant for the `torch.optim.SGD` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.SGD` class implements stochastic gradient descent (SGD), optionally with momentum, Nesterov acceleration, weight decay, and other enhancements.
+
+**Key Features:**
+- **Basic SGD:** Updates parameters using gradients scaled by the learning rate.
+- **Momentum:** Accumulates a velocity buffer to smooth updates and accelerate convergence.
+- **Nesterov Momentum:** A variant of momentum that can improve convergence.
+- **Weight Decay:** Applies L2 regularization.
+- **Maximization:** Can maximize the objective instead of minimizing.
+- **Performance Options:** Supports `foreach` (vectorized) and `fused` (CUDA-optimized) implementations for speed.
+
+**Algorithm Overview:**
+The optimizer follows a defined update rule that incorporates:
+1. Gradient computation (with optional sign flip for maximization).
+2. Addition of weight decay.
+3. Momentum accumulation (with dampening).
+4. Nesterov correction if enabled.
+5. Parameter update using the learning rate.
+
+**Important Implementation Notes:**
+- PyTorch's momentum implementation differs from some other frameworks (e.g., Sutskever et al.).
+- The momentum buffer is initialized to the first gradient (not zeros), so dampening doesn't apply to the first step.
+- The `foreach` and `fused` implementations are faster than the default for-loop, with `fused` being the fastest but newer.
+
+**Common Usage:**
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+**Additional Methods:**
+- `step()`: Performs a single optimization step.
+- `zero_grad()`: Resets gradients (optionally to `None` for memory efficiency).
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state.
+- `add_param_group()`: Add new parameter groups dynamically.
+- Various hook registration methods for customizing state dict handling and step execution.
+
+This optimizer is versatile and widely used for training neural networks, with several optimizations available for different hardware and performance requirements.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: "1e-3"
+  momentum:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  dampening:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  nesterov:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  fused:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "nesterov"
+    Parameter 2: "momentum"
+    Constraint: "not nesterov or momentum != 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.SGD in a complex way */
+import torch

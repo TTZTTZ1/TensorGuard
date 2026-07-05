@@ -1,0 +1,102 @@
+
+# You are a Python code generation assistant for the `torch.distributed.gather_object` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for distributed multiprocess parallelism across multiple machines or GPUs. It enables synchronous distributed training through communication primitives and process groups.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training  
+- **MPI**: Optional backend requiring source build
+
+### Initialization Methods
+1. **Environment variables** (default): Uses `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication between processes
+- **DeviceMesh**: Higher-level abstraction for managing process groups across device topologies
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`/`recv` (synchronous) and `isend`/`irecv` (asynchronous)
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Initialize DeviceMesh for multi-dimensional parallelism
+- `new_group()`: Create subgroups for fine-grained communication
+- `destroy_process_group()`: Clean up resources
+
+### Synchronization Modes
+- **Synchronous** (`async_op=False`): Block until operation completes
+- **Asynchronous** (`async_op=True`): Return Work object for non-blocking execution
+
+### Key-Value Stores
+- **TCPStore**: Network-based store for multi-machine coordination
+- **FileStore**: File-based store for shared filesystems
+- **HashStore**: In-memory store for single-process multi-threaded scenarios
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout and rank reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `torch.distributed.breakpoint()`: Debug single rank while others wait
+
+### Launch Utilities
+- `torch.distributed.launch`: Legacy module for spawning processes (being deprecated)
+- `torch.multiprocessing.spawn`: Recommended for spawning multiple processes
+
+## Best Practices
+- Use NCCL backend for GPU training, Gloo for CPU training
+- Always call `destroy_process_group()` for cleanup
+- Set appropriate timeouts for operations
+- Use `async_op=True` for overlapping communication with computation
+- Enable debugging flags (`TORCH_DISTRIBUTED_DEBUG`) when troubleshooting
+
+The package supports both collective communications (all-to-all patterns) and point-to-point communications, with optimizations like Copy Engine Collectives for offloading data movement to GPU DMA engines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  obj:
+    dtype: ["Any"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  object_gather_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list", "None"]
+    shape: ["group_size"]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [[0, "world_size-1"]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group:
+    dtype: ["ProcessGroup"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  group_dst:
+    dtype: ["int"]
+    range: [[0, "group_size-1"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "(dst is None and group_dst is None) or (dst is not None and group_dst is None) or (dst is None and group_dst is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.gather_object in a complex way */
+import torch

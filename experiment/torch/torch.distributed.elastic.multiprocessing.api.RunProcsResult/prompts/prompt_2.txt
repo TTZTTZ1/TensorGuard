@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.api.RunProcsResult` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` module provides a unified interface to launch and manage multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment setup, and log management.
+
+**Key Features:**
+- **Launch Methods:** Supports both Python functions (via `torch.multiprocessing`) and binaries (via `subprocess.Popen`).
+- **Process Management:** Manages `n` worker processes with configurable arguments and environment variables per worker.
+- **Logging & Output Control:** Redirects and/or tees stdout/stderr to log files, with optional filtering for aggregated logs.
+- **Error Handling:** Automatically records errors in JSON files for failed processes (default for functions, requires annotation for binaries).
+
+**Core Function:**
+- `start_processes()`: Main entry point to launch workers. Requires:
+  - `entrypoint`: Callable function or string command.
+  - `args`/`envs`: Dictionaries mapping local ranks to arguments and environment variables.
+  - `logs_specs`: Configuration for log directory, redirection, and tee behavior.
+
+**Return Value:** Returns a `PContext` object (specifically `MultiprocessContext` for functions, `SubprocessContext` for binaries) that allows monitoring and waiting for process completion via `wait()`.
+
+**Use Cases:**
+- Distributed training with multiple trainer instances.
+- Running parallel shell commands with managed output.
+
+**Note:** For binary entrypoints, arguments are cast to strings, and error recording requires explicit annotation with `@record`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  return_values:
+    dtype: ["Any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  failures:
+    dtype: ["Any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  stdouts:
+    dtype: ["string"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  stderrs:
+    dtype: ["string"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: stdouts
+    Parameter 2: stderrs
+    Constraint: "keys(stdouts) == keys(stderrs)"
+  2:
+    Parameter 1: return_values
+    Parameter 2: failures
+    Constraint: "keys(return_values).isdisjoint(keys(failures))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.api.RunProcsResult in a complex way */
+import torch

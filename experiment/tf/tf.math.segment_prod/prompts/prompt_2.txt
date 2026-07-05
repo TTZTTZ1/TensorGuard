@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.math.segment_prod` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.segment_prod` computes the product of elements in a tensor grouped by segments. It multiplies all values in `data` that share the same segment ID, producing one output per unique segment.
+
+**Key points:**
+- **Inputs:**  
+  - `data`: A tensor of numeric values.  
+  - `segment_ids`: A 1-D tensor with sorted, repeatable IDs matching the first dimension of `data`.
+- **Output:** A tensor where each element corresponds to the product of all entries in `data` belonging to that segment ID.
+- **Empty segments:** If no data corresponds to a segment ID, the output is `1`.
+- **Sorting requirement:** On CPU, `segment_ids` must be sorted; on GPU, unsorted IDs may lead to undefined behavior.
+- **Example:**  
+  ```python
+  c = tf.constant([[1,2,3,4], [4,3,2,1], [5,6,7,8]])
+  tf.math.segment_prod(c, [0, 0, 1])  # → [[4,6,6,4], [5,6,7,8]]
+  ```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "data"
+    Parameter 2: "segment_ids"
+    Constraint: "segment_ids.shape[0] == data.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.segment_prod in a complex way */
+import tensorflow as tf

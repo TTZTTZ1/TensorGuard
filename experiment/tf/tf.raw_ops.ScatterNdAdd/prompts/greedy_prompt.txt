@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ScatterNdAdd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ScatterNdAdd` performs sparse addition to update specific elements or slices of a mutable tensor (typically a Variable). It adds values from `updates` into `ref` at positions specified by `indices`. The operation supports optional locking for thread safety and works with various numeric data types.
+
+**Key Parameters:**
+- `ref`: Mutable input tensor (like a Variable) to be updated.
+- `indices`: Integer tensor specifying positions to update (innermost dimension corresponds to indices into `ref`).
+- `updates`: Values to add at the specified indices.
+- `use_locking`: If `True`, uses a lock to prevent contention during concurrent updates.
+
+**Example:**  
+Adding 4 values to a rank-1 tensor at given indices:
+```python
+ref = [1, 2, 3, 4, 5, 6, 7, 8]
+indices = [[4], [3], [1], [7]]
+updates = [9, 10, 11, 12]
+# Result: [1, 13, 3, 14, 14, 6, 7, 20]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ref:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: ref
+    Constraint: "indices.shape[-1] > 0 and indices.shape[-1] <= ref.ndim"
+  2:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape[:-1] + ref.shape[indices.shape[-1]:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ScatterNdAdd in a complex way */
+import tensorflow as tf

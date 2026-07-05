@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `torch.distributions.independent.Independent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Two gradient estimation methods**:
+  - **Score function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+  - **Pathwise derivative (reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## Main Components
+
+### 1. **Distribution Base Class**
+Abstract class with essential methods:
+- `sample()` / `rsample()`: Draw samples (latter is reparameterized)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Calculate distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+- `support`: Valid value constraints
+
+### 2. **Available Distributions**
+Includes both univariate and multivariate distributions:
+- **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, etc.
+- **Discrete**: Bernoulli, Categorical, Binomial, Poisson, etc.
+- **Multivariate**: MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, Gumbel (via `TransformedDistribution`)
+
+### 3. **Key Features**
+- **Batch support**: All distributions support batched parameters
+- **Gradient-friendly**: Designed for use in neural networks and optimization
+- **Constraint handling**: Automatic parameter validation via `arg_constraints`
+- **KL divergence**: Built-in computation between distributions
+- **Transforms**: Bijective transformations for reparameterization
+
+### 4. **Common Use Cases**
+- **Reinforcement Learning**: Policy gradients with categorical distributions
+- **Variational Inference**: Reparameterization with Normal distributions
+- **Probabilistic Modeling**: Building complex models via distribution chains
+- **Bayesian Methods**: Prior/posterior distributions in hierarchical models
+
+## Example Usage
+```python
+# Create a normal distribution
+dist = Normal(loc=torch.tensor([0.0]), scale=torch.tensor([1.0]))
+
+# Sample and compute probabilities
+sample = dist.rsample()  # Differentiable sample
+log_prob = dist.log_prob(sample)
+
+# Use in loss computation
+loss = -log_prob * reward  # REINFORCE style
+loss.backward()
+```
+
+The package follows a design similar to TensorFlow Distributions and provides the necessary tools for probabilistic deep learning, variational inference, and reinforcement learning applications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_distribution:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  reinterpreted_batch_ndims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: reinterpreted_batch_ndims
+    Parameter 2: 
+    Constraint: reinterpreted_batch_ndims >= 0
+  2:
+    Parameter 1: base_distribution
+    Parameter 2: reinterpreted_batch_ndims
+    Constraint: reinterpreted_batch_ndims <= len(base_distribution.batch_shape)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.independent.Independent in a complex way */
+import torch

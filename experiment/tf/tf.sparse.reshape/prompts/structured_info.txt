@@ -1,0 +1,32 @@
+params:
+  sp_input:
+    dtype: ["SparseTensor"]
+    range: null
+    structure: ["SparseTensor"]
+    shape: null
+    default: null
+  shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: sp_input
+    Parameter 2: null
+    Constraint: "isinstance(sp_input, SparseTensor)"
+  2:
+    Parameter 1: sp_input
+    Parameter 2: shape
+    Constraint: "tf.math.reduce_prod(shape) == tf.math.reduce_prod(sp_input.shape)"
+  3:
+    Parameter 1: shape
+    Parameter 2: null
+    Constraint: "sum(1 for s in shape if s == -1) <= 1"

@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `torch.distributed.barrier` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Process Groups**: Logical groups of processes for collective operations (default: `WORLD` group).
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional).
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+
+## **Key Components**
+
+### **Initialization**
+```python
+# Environment variable method (default)
+dist.init_process_group(backend="nccl")  # Auto-detects MASTER_ADDR, MASTER_PORT
+
+# Explicit initialization
+dist.init_process_group(
+    backend="nccl",
+    init_method="tcp://10.1.1.20:23456",
+    rank=args.rank,
+    world_size=4
+)
+
+# DeviceMesh initialization
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+### **Collective Operations**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: `all_reduce()`, `broadcast()`, `all_gather()`, `reduce_scatter()`, `all_to_all()`
+- **Object collectives**: Python object communication (with performance caveats)
+
+### **Key Features**
+1. **Synchronous/Asynchronous Operations**: Use `async_op=True` for non-blocking calls
+2. **Groups**: Create sub-groups with `new_group()` for fine-grained communication
+3. **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+4. **Process Management**: `spawn()` and `launch` utilities for multi-process execution
+
+## **Best Practices**
+- Use **NCCL** for CUDA GPU training, **Gloo** for CPU training
+- Call `destroy_process_group()` for clean shutdown
+- Set `torch.cuda.set_device()` before NCCL operations
+- Use `TORCH_DISTRIBUTED_DEBUG` for debugging hangs and synchronization issues
+
+## **Debugging Tools**
+- `monitored_barrier()`: Timeout-aware barrier with rank failure reporting
+- `breakpoint()`: Rank-specific debugging
+- HTTP debug server for runtime inspection
+- Environment variables for logging (`TORCH_CPP_LOG_LEVEL`, `TORCH_DISTRIBUTED_DEBUG`)
+
+## **Performance Features**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+- **Symmetric Memory**: Optimized memory allocation for collective operations
+- **Stream Synchronization**: Proper CUDA stream management for overlap
+
+The package enables scalable distributed training with support for complex topologies through `DeviceMesh`, efficient communication patterns, and comprehensive debugging capabilities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  device_ids:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "device_ids"
+    Parameter 2: null
+    Constraint: "len(device_ids) == 1 if device_ids is not None else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.barrier in a complex way */
+import torch

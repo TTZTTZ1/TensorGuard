@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.nn.batch_normalization` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.batch_normalization` is a TensorFlow function that normalizes an input tensor using the provided mean and variance, then optionally applies scaling (γ) and an offset (β). The formula applied is:  
+\[
+\frac{\gamma(x - \mu)}{\sigma} + \beta
+\]  
+where σ is computed as \(\sqrt{\text{variance} + \epsilon}\) to avoid division by zero.
+
+**Key points:**
+- **Inputs:**  
+  - `x`: Input tensor of any shape.  
+  - `mean`, `variance`: Tensors matching the dimensions being normalized (can be 1D for the last dimension or full shape with `keepdims=True`).  
+  - `offset` (β) and `scale` (γ): Optional; applied after normalization.  
+  - `variance_epsilon`: Small constant for numerical stability.
+
+- **Use cases:**  
+  - Commonly used with outputs from `tf.nn.moments` during training or with moving averages during inference.  
+  - Supports layouts like `[batch, depth]` (fully-connected) or `[batch, height, width, depth]` (convolutions).
+
+- **Purpose:**  
+  Stabilizes and accelerates deep network training by reducing internal covariate shift, as introduced in the Batch Normalization paper by Ioffe and Szegedy (2015).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  mean:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  variance:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  offset:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "None"]
+    shape: ["any"]
+    default: null
+  scale:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "None"]
+    shape: ["any"]
+    default: null
+  variance_epsilon:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["string"]
+    shape: No mention
+    default: None
+constraints:
+  1:
+    Parameter 1: mean
+    Parameter 2: x
+    Constraint: (len(mean.shape) == len(x.shape) and all(ms == xs or ms == 1 for ms, xs in zip(mean.shape, x.shape))) or (len(mean.shape) == 1 and mean.shape[0] == x.shape[-1])
+  2:
+    Parameter 1: variance
+    Parameter 2: x
+    Constraint: (len(variance.shape) == len(x.shape) and all(vs == xs or vs == 1 for vs, xs in zip(variance.shape, x.shape))) or (len(variance.shape) == 1 and variance.shape[0] == x.shape[-1])
+  3:
+    Parameter 1: offset
+    Parameter 2: x
+    Constraint: offset is None or ((len(offset.shape) == len(x.shape) and all(os == xs or os == 1 for os, xs in zip(offset.shape, x.shape))) or (len(offset.shape) == 1 and offset.shape[0] == x.shape[-1]))
+  4:
+    Parameter 1: scale
+    Parameter 2: x
+    Constraint: scale is None or ((len(scale.shape) == len(x.shape) and all(ss == xs or ss == 1 for ss, xs in zip(scale.shape, x.shape))) or (len(scale.shape) == 1 and scale.shape[0] == x.shape[-1]))
+  5:
+    Parameter 1: mean
+    Parameter 2: variance
+    Constraint: tuple(mean.shape) == tuple(variance.shape)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.batch_normalization in a complex way */
+import tensorflow as tf

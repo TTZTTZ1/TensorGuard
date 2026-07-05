@@ -1,0 +1,52 @@
+params:
+  alpha:
+    dtype: ["real", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["n"]
+    default: null
+  beta:
+    dtype: ["real", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["n-1"]
+    default: null
+  eigvals_only:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  select:
+    dtype: ["string"]
+    range: [["a", "v", "i"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'a'"
+  select_range:
+    dtype: ["numeric"]
+    range: null
+    structure: ["tuple", "list", "tensor"]
+    shape: ["2"]
+    default: null
+  tol:
+    dtype: ["numeric"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: alpha
+    Parameter 2: beta
+    Constraint: "len(beta) == len(alpha) - 1"
+  2:
+    Parameter 1: select
+    Parameter 2: select_range
+    Constraint: "not (select in ['v', 'i']) or (select_range is not None and len(select_range) == 2)"

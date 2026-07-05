@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.metrics.configure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Metrics API provides a system for publishing telemetry metrics to aid in debugging and monitoring. It allows users to define and emit metrics identified by a `(metric_group, metric_name)` tuple.
+
+**Key Features:**
+- **Metric Publishing:** Use `put_metric()` to log custom metrics (e.g., latency, counts).
+- **Automatic Profiling:** The `@prof` decorator automatically publishes success, failure, and duration metrics for functions.
+- **Configurable Handlers:** Metrics can be routed to different outputs (e.g., console, null, or custom destinations) via `configure()`.
+- **Reserved Groups:** The `torchelastic` group is reserved for platform-level metrics.
+
+**Basic Usage:**
+1. Configure a metrics handler (e.g., `ConsoleMetricHandler`).
+2. Publish metrics using `put_metric()` or decorate functions with `@prof`.
+3. Custom handlers can be implemented by extending `MetricHandler`.
+
+**Example:**
+```python
+import torch.distributed.elastic.metrics as metrics
+
+metrics.configure(metrics.ConsoleMetricHandler(), group="my_app")
+
+@metrics.prof
+def my_function():
+    # Automatically logs duration.ms, success, failure
+    pass
+
+metrics.put_metric("custom_metric", 42, "my_app")
+```
+
+This API is designed for both internal PyTorch Elastic use and user-defined application metrics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  handler:
+    dtype: ["MetricHandler"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: handler
+    Parameter 2: None
+    Constraint: "handler is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.metrics.configure in a complex way */
+import torch

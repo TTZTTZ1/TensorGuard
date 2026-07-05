@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `torch.nn.InstanceNorm1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`InstanceNorm1d` applies instance normalization to 1D inputs, normalizing each channel independently across each sample in a batch. It is commonly used for tasks like stylization on sequential or time-series data.
+
+**Key parameters:**
+- `num_features`: Number of channels in the input.
+- `affine`: If `True`, adds learnable scale (`γ`) and shift (`β`) parameters per channel.
+- `track_running_stats`: If `True`, tracks running mean/variance during training for use in evaluation (uncommon for instance norm, as it typically uses per-instance statistics).
+
+**Behavior:**
+- Computes mean and variance **per channel per sample**.
+- Normalizes as:  
+  \( y = \frac{x - E[x]}{\sqrt{Var[x] + \epsilon}} \times \gamma + \beta \)
+- By default, uses instance statistics in both training and evaluation (unless `track_running_stats=True`).
+
+**Input shape:**  
+- Batched: `(N, C, L)`  
+- Unbatched: `(C, L)`  
+
+**Output shape:** Same as input.
+
+**Example:**
+```python
+m = nn.InstanceNorm1d(100, affine=True)  # With learnable parameters
+output = m(input)  # input shape: (20, 100, 40)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-05"
+  momentum:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.1"
+  affine:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  track_running_stats:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.InstanceNorm1d in a complex way */
+import torch

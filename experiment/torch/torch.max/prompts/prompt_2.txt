@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.max` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.max` has three main usages:
+
+1. **Global maximum** – Returns the maximum value of all elements in the input tensor.
+2. **Maximum along a dimension** – When `dim` is specified, returns a namedtuple `(values, indices)` containing the maximum values and their indices along that dimension. Supports `keepdim` to retain dimensions.
+3. **Element-wise maximum** – Takes two tensors and returns their element-wise maximum (equivalent to `torch.maximum`).
+
+Key notes:
+- For gradient behavior: when reducing over all dimensions, gradients distribute evenly among equal max values; when reducing over a single dimension, gradients propagate only to the indexed element.
+- If multiple maximal values exist in a reduced row, the index of the first one is returned.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  keepdim:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["Tensor", "tuple"]
+    range: null
+    structure: ["tensor", "tuple"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "dim is None or (isinstance(dim, int) and -input.ndim <= dim < input.ndim)"
+  2:
+    Parameter 1: "keepdim"
+    Parameter 2: "dim"
+    Constraint: "dim is not None or keepdim == False"
+  3:
+    Parameter 1: "out"
+    Parameter 2: "dim"
+    Constraint: "out is None or ((dim is None and isinstance(out, torch.Tensor)) or (dim is not None and isinstance(out, tuple)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.max in a complex way */
+import torch

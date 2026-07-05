@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.LoadAndRemapMatrix` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.LoadAndRemapMatrix` loads a 2‑D tensor (matrix) from a TensorFlow checkpoint and optionally reorders its rows and columns using provided remapping tensors. It also allows filling missing entries (indicated by `-1` in the remappings) with specified initializing values.
+
+**Key Points:**
+- **Inputs:** Checkpoint path, tensor name, row/column remapping tensors, initializing values for missing cells, and output matrix dimensions.
+- **Remapping:**  
+  - `row_remapping` must have `num_rows` entries; output row `i` is taken from the old row `row_remapping[i]`.  
+  - `col_remapping` can be empty (no column reordering) or have `num_cols` entries.  
+  - A value of `-1` in either remapping denotes a missing entry, which is filled from `initializing_values`.
+- **Constraint:** The number of missing entries (rows and columns) must match the length of `initializing_values`.
+- **Use Case:** Primarily for vocabulary remapping in embedding matrices (e.g., after vocabulary changes). Most users should employ higher‑level wrappers like `tf.contrib.framework.load_and_remap_matrix_initializer`.
+
+**Example:**  
+With `row_remapping = [1, 0, -1]`, `col_remapping = [0, 2, -1]`, and `initializing_values = [0.5, -0.5, 0.25, -0.25, 42]`, the output combines rows/columns from the checkpoint and fills missing cells with the given values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ckpt_path:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  old_tensor_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  row_remapping:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  col_remapping:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  initializing_values:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  num_rows:
+    dtype: ["int"]
+    range: ["[0, inf]"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_cols:
+    dtype: ["int"]
+    range: ["[1, inf]"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  max_rows_in_memory:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: row_remapping
+    Parameter 2: num_rows
+    Constraint: "tf.shape(row_remapping)[0] == num_rows"
+  2:
+    Parameter 1: col_remapping
+    Parameter 2: num_cols
+    Constraint: "tf.size(col_remapping) == 0 or tf.shape(col_remapping)[0] == num_cols"
+  3:
+    Parameter 1: initializing_values
+    Parameter 2: row_remapping
+    Constraint: "tf.size(initializing_values) == (tf.reduce_sum(tf.cast(row_remapping == -1, tf.int32)) * num_cols) + (tf.reduce_sum(tf.cast(col_remapping == -1, tf.int32)) * num_rows) - (tf.reduce_sum(tf.cast(row_remapping == -1, tf.int32)) * tf.reduce_sum(tf.cast(col_remapping == -1, tf.int32)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.LoadAndRemapMatrix in a complex way */
+import tensorflow as tf

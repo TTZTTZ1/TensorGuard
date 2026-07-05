@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.distributions.pareto.Pareto` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key features include:
+
+## **Core Concepts**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for gradient estimation via likelihood ratio (common in reinforcement learning).
+- **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling via deterministic transformations (common in variational autoencoders).
+
+## **Main Classes**
+- **`Distribution`**: Abstract base class for all distributions with methods like:
+  - `sample()`, `rsample()`: Generate samples (with/without reparameterization)
+  - `log_prob()`: Compute log probability density/mass
+  - `entropy()`, `mean`, `variance`, `support`
+  - `cdf()`, `icdf()`: Cumulative/inverse cumulative distribution functions
+
+- **`ExponentialFamily`**: Base class for exponential family distributions.
+
+## **Available Distributions**
+Includes univariate (Bernoulli, Normal, Exponential, Gamma, etc.), multivariate (MultivariateNormal, Dirichlet), and specialized distributions (LKJCholesky, Gumbel, Wishart). Each distribution has parameterization options (e.g., `probs` vs `logits` for Bernoulli) and constraint validation.
+
+## **Key Functionalities**
+- **KL Divergence**: `kl_divergence(p, q)` computes KL(p∥q) for registered distribution pairs.
+- **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) for mapping between constrained/unconstrained spaces, used in `TransformedDistribution`.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive_definite`).
+- **Constraint Registry**: `biject_to()` and `transform_to()` provide transformations to/from constrained spaces for optimization and sampling.
+
+## **Usage Examples**
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs); action = m.sample()
+  loss = -m.log_prob(action) * reward; loss.backward()
+  ```
+- **Reparameterization**:
+  ```python
+  m = Normal(*params); action = m.rsample()
+  loss = -reward; loss.backward()
+  ```
+
+This package is essential for probabilistic modeling, variational inference, and reinforcement learning in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  alpha:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: alpha
+    Parameter 2: null
+    Constraint: "alpha > 0.0"
+  2:
+    Parameter 1: scale
+    Parameter 2: null
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.pareto.Pareto in a complex way */
+import torch

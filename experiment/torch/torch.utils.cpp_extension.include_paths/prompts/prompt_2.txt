@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.include_paths` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides utilities for building PyTorch C++ and CUDA extensions, supporting both ahead-of-time (via `setup.py`) and just-in-time (JIT) compilation.
+
+### Key Classes and Functions:
+
+1. **`CppExtension`** – Creates a `setuptools.Extension` for C++ extensions.
+2. **`CUDAExtension`** – Creates a `setuptools.Extension` for mixed C++/CUDA extensions, automatically handling CUDA paths and libraries.
+3. **`SyclExtension`** – Creates a `setuptools.Extension` for SYCL/C++ extensions (e.g., Intel XPU).
+4. **`BuildExtension`** – A custom `setuptools` build extension that handles compiler flags and mixed C++/CUDA/SYCL compilation, with optional Ninja backend for faster builds.
+5. **`load()`** – JIT compilation: builds and loads an extension from source files at runtime.
+6. **`load_inline()`** – JIT compilation from string sources, automatically generating bindings for specified functions.
+
+### Common Use Cases:
+
+- **Ahead-of-time compilation** (for distribution): Use `CppExtension`/`CUDAExtension`/`SyclExtension` with `setup.py` and `BuildExtension`.
+- **Just-in-time compilation** (for development/testing): Use `load()` or `load_inline()` to compile and import extensions dynamically.
+
+### Important Notes:
+
+- **CUDA/SYCL support**: Mixed compilation is automatic when `.cu`/`.cuh` (CUDA) or `.sycl` (SYCL) files are included.
+- **Compute architectures**: For CUDA, you can specify target architectures via `TORCH_CUDA_ARCH_LIST`. For SYCL, use `TORCH_XPU_ARCH_LIST`.
+- **Ninja**: Recommended for faster builds (default in `BuildExtension`). Use `MAX_JOBS` to control parallelism.
+- **Python limited API**: PyTorch's Python API (`libtorch_python`) cannot be built with `py_limited_api=True`.
+- **Relocatable Device Code (RDC)**: Required for cross-file device symbol references in CUDA; use `-rdc=true` and `dlink=True` in `CUDAExtension`.
+
+### Example Workflow:
+
+**AOT (setup.py):**
+```python
+from setuptools import setup
+from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+
+setup(
+    name='my_ext',
+    ext_modules=[CUDAExtension('my_ext', ['src.cpp', 'kernel.cu'])],
+    cmdclass={'build_ext': BuildExtension}
+)
+```
+
+**JIT:**
+```python
+from torch.utils.cpp_extension import load
+module = load(name='my_ext', sources=['src.cpp', 'kernel.cu'])
+```
+
+This module simplifies building high-performance custom operators and kernels integrated with PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  device_type:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: 'cpu'
+  torch_include_dirs:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: True
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.include_paths in a complex way */
+import torch

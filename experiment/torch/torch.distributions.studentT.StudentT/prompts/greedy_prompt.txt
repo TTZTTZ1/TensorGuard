@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.distributions.studentT.StudentT` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling in variational autoencoders
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods for sampling (`sample()`, `rsample()`), probability evaluation (`log_prob()`, `cdf()`), and statistics (`mean`, `variance`, `entropy`)
+2. **Distributions**: Includes common distributions (Normal, Bernoulli, Categorical, Gamma, etc.) and specialized ones (MultivariateNormal, Dirichlet, Gumbel, etc.)
+3. **Transforms**: Bijective transformations for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+4. **Constraints**: Domain constraints for distribution parameters
+5. **KL Divergence**: Computes KL divergence between distribution pairs
+
+**Common Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational inference
+- Probabilistic modeling
+- Bayesian methods
+
+**Example Usage:**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.rsample()  # Differentiable sampling
+log_prob = normal.log_prob(samples)
+
+# Categorical distribution (for discrete actions)
+probs = torch.tensor([0.2, 0.3, 0.5])
+categorical = Categorical(probs)
+action = categorical.sample()
+```
+
+The package follows TensorFlow Distributions design and integrates seamlessly with PyTorch's autograd system for end-to-end differentiable probabilistic models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  df:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "0.0"
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "1.0"
+  validate_args:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: df
+    Parameter 2: None
+    Constraint: "df > 0.0"
+  2:
+    Parameter 1: scale
+    Parameter 2: None
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.studentT.StudentT in a complex way */
+import torch

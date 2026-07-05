@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant` is a TensorFlow class that represents a circulant matrix as a linear operator without explicitly storing the full matrix. It leverages the convolution theorem for efficient operations using the Fast Fourier Transform (FFT).
+
+### Key Features:
+- **Efficiency**: Operations like `matmul` and `solve` have \(O(N \log N)\) complexity per column via FFT.
+- **Batch Support**: Handles batch dimensions seamlessly.
+- **Matrix-Free**: Only stores the spectrum (frequency domain representation), saving memory.
+
+### Core Concepts:
+- **Circulant Matrix**: Each row is a cyclic shift of a kernel vector.
+- **Spectrum**: The DFT of the convolution kernel, containing the operator's eigenvalues.
+- **Hermitian Spectrum**: If the spectrum is Hermitian, the operator corresponds to a real-valued matrix.
+
+### Common Use Cases:
+- Solving linear systems with circulant structure.
+- Efficient convolution operations in the frequency domain.
+- Real-valued matrix simulations when the spectrum is Hermitian.
+
+### Example:
+```python
+spectrum = [6., 4, 2]  # Real spectrum → self-adjoint operator
+operator = tf.linalg.LinearOperatorCirculant(spectrum)
+operator.to_dense()  # Returns the dense circulant matrix
+```
+
+### Performance:
+- Ideal for large-scale problems due to FFT-based computations.
+- Batch operations scale linearly with batch size.
+
+This operator is particularly useful in signal processing and solving PDEs with periodic boundary conditions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  input_output_dtype:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'LinearOperatorCirculant'"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant in a complex way */
+import tensorflow as tf

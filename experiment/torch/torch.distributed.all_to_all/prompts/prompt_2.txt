@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_to_all` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a distributed communication framework for multi‑process parallelism across multiple machines or GPUs. It supports synchronous distributed training via `DistributedDataParallel` and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+**Key Features:**
+- **Backends**: Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI (CPU/GPU with CUDA support if built).
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group. Methods include TCP, shared file‑system, and environment variables.
+- **Collective Operations**: Broadcast, all‑reduce, gather, scatter, all‑to‑all, barrier, etc., with synchronous (`async_op=False`) or asynchronous (`async_op=True`) modes.
+- **Point‑to‑Point**: `send`/`recv` and `isend`/`irecv` for direct communication between ranks.
+- **Groups**: Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh**: Higher‑level abstraction for managing multi‑dimensional device layouts and process groups.
+- **Key‑Value Stores**: `TCPStore`, `FileStore`, `HashStore` for exchanging connection info and shared data.
+- **Debugging Tools**: `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG` environment variable, and `torch.distributed.breakpoint()` for interactive debugging.
+- **Launch Utilities**: `torch.distributed.launch` (deprecated in favor of `torchrun`) and `torch.multiprocessing.spawn` for starting multiple processes.
+
+**Typical Workflow:**
+1. Initialize the process group with `init_process_group()`.
+2. Use collective or point‑to‑point communication primitives.
+3. Wrap models with `DistributedDataParallel` for data‑parallel training.
+4. Clean up with `destroy_process_group()`.
+
+**Performance Tips:**
+- Use NCCL for CUDA GPU training, Gloo for CPU, and XCCL for XPU GPU.
+- Set `async_op=True` to overlap communication with computation.
+- Tune NCCL environment variables (e.g., `NCCL_SOCKET_IFNAME`, `NCCL_DEBUG`) for network and debugging.
+
+**Debugging:**
+- Enable detailed logging with `TORCH_DISTRIBUTED_DEBUG=DETAIL` and `TORCH_CPP_LOG_LEVEL=INFO`.
+- Use `monitored_barrier()` to detect rank synchronization issues.
+- Start the debug HTTP server with `start_debug_server()` for runtime inspection.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, and requires explicit process launching (e.g., via `torchrun` or `mp.spawn`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  output_tensor_list:
+    dtype: ["list of Tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  input_tensor_list:
+    dtype: ["list of Tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "output_tensor_list"
+    Parameter 2: "input_tensor_list"
+    Constraint: "len(output_tensor_list) == len(input_tensor_list)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_to_all in a complex way */
+import torch

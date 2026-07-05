@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.fft.rfftn` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.rfftn` computes the N-dimensional discrete Fourier transform of a real-valued input tensor. It returns only the non-redundant half of the frequency spectrum (omitting negative frequencies in the last dimension), leveraging the Hermitian symmetry of real-signal FFTs. Key parameters include:
+
+- **`s`**: Optional size tuple for padding/trimming dimensions before transformation.
+- **`dim`**: Dimensions to transform (defaults to all dimensions or last `len(s)` if `s` is given).
+- **`norm`**: Normalization mode (`"forward"`, `"backward"`, or `"ortho"`).
+
+The function is separable and equivalent to applying 1D FFTs and RFFTs sequentially over specified dimensions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float", "double", "half"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  s:
+    dtype: ["int"]
+    range: [["-1 or positive"]]
+    structure: ["tuple"]
+    shape: null
+    default: "s = [input.size(d) for d in dim]"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "all dimensions, or last len(s) dimensions if s given"
+  norm:
+    dtype: ["str"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "backward"
+  out:
+    dtype: ["float", "double", "half"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim is None or all(0 <= d < input.ndim for d in dim)"
+  2:
+    Parameter 1: s
+    Parameter 2: dim
+    Constraint: "s is None or dim is None or len(s) == len(dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.rfftn in a complex way */
+import torch

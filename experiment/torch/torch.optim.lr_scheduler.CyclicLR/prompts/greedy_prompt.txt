@@ -1,0 +1,135 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.CyclicLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CyclicLR** is a PyTorch learning rate scheduler that implements a cyclical learning rate policy, cycling the learning rate between a lower bound (`base_lr`) and an upper bound (`max_lr`) over training iterations.
+
+**Key Features:**
+- **Cycles per batch**: Updates the learning rate after each batch (not epoch).
+- **Built-in policies**: `triangular` (linear cycle), `triangular2` (amplitude halves each cycle), and `exp_range` (exponential scaling).
+- **Custom scaling**: Optional user-defined `scale_fn` for custom cycle shapes.
+- **Momentum cycling**: Optionally cycles momentum inversely to the learning rate between `base_momentum` and `max_momentum`.
+- **Flexible cycle shape**: Asymmetric cycles via `step_size_up` and `step_size_down`.
+
+**Basic Usage:**
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+scheduler = torch.optim.lr_scheduler.CyclicLR(
+    optimizer,
+    base_lr=0.01,      # lower bound
+    max_lr=0.1,        # upper bound
+    step_size_up=10    # iterations to increase from base_lr to max_lr
+)
+
+# Call after each batch
+for batch in data_loader:
+    train_batch(...)
+    optimizer.step()
+    scheduler.step()
+```
+
+**Key Parameters:**
+- `base_lr`/`max_lr`: Cycle boundaries
+- `step_size_up`/`step_size_down`: Steps for increasing/decreasing halves
+- `mode`: Cycle policy (`'triangular'`, `'triangular2'`, `'exp_range'`)
+- `cycle_momentum`: Whether to cycle momentum inversely to LR
+- `last_epoch`: Batch index for resuming training
+
+**Note**: Since it updates per batch, `last_epoch` tracks total batches, not epochs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: null
+  base_lr:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: null
+  max_lr:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: null
+  step_size_up:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "2000"
+  step_size_down:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar", "null"]
+    shape: "No mention"
+    default: "None"
+  mode:
+    dtype: ["str"]
+    range: ["triangular", "triangular2", "exp_range"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'triangular'"
+  gamma:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  scale_fn:
+    dtype: ["function"]
+    range: "No mention"
+    structure: ["function"]
+    shape: "No mention"
+    default: "None"
+  scale_mode:
+    dtype: ["str"]
+    range: ["cycle", "iterations"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'cycle'"
+  cycle_momentum:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  base_momentum:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "0.8"
+  max_momentum:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "0.9"
+  last_epoch:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: "base_lr"
+    Parameter 2: "max_lr"
+    Constraint: "max_lr > base_lr"
+  2:
+    Parameter 1: "base_momentum"
+    Parameter 2: "max_momentum"
+    Constraint: "max_momentum > base_momentum"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.CyclicLR in a complex way */
+import torch

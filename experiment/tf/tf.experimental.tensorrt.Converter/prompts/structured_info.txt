@@ -1,0 +1,86 @@
+params:
+  input_saved_model_dir:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  input_saved_model_tags:
+    dtype: ["list"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "None"
+  input_saved_model_signature_key:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  use_dynamic_shape:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  dynamic_shape_profile_strategy:
+    dtype: ["string"]
+    range: ["Range", "Optimal", "Range+Optimal"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  max_workspace_size_bytes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "DEFAULT_TRT_MAX_WORKSPACE_SIZE_BYTES"
+  precision_mode:
+    dtype: ["string"]
+    range: ["FP32", "FP16", "INT8"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "FP32"
+  minimum_segment_size:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "3"
+  maximum_cached_engines:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  use_calibration:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  allow_build_at_runtime:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  conversion_params:
+    dtype: ["object"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "precision_mode"
+    Parameter 2: "use_calibration"
+    Constraint: "use_calibration == True implies precision_mode == 'INT8'"
+  2:
+    Parameter 1: "precision_mode"
+    Parameter 2: "maximum_cached_engines"
+    Constraint: "precision_mode == 'INT8' implies maximum_cached_engines == 1"
+  3:
+    Parameter 1: "use_dynamic_shape"
+    Parameter 2: "dynamic_shape_profile_strategy"
+    Constraint: "dynamic_shape_profile_strategy is not None implies use_dynamic_shape == True"

@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.stft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.stft` performs the Short‑Time Fourier Transform on a 1‑D or batched time‑series input. It splits the signal into overlapping windows, applies a window function, and computes the Fourier transform of each window to produce a time‑frequency representation.
+
+**Key parameters:**
+- `n_fft`: FFT size.
+- `hop_length`: Step between windows (default: `n_fft // 4`).
+- `win_length`: Window length (default: `n_fft`).
+- `window`: Window function tensor (e.g., Hann window); if `None`, a rectangular window is used (not recommended).
+- `center`: If `True`, pads the signal so frames are centered.
+- `onesided`: For real input, returns only positive frequencies (default: `True`).
+- `return_complex`: Must be explicitly set; returns complex output (preferred) or real with separate real/imaginary dimensions.
+- `normalized`: If `True`, scales output by `(frame_length)^{-0.5}`.
+
+**Returns:**
+- Complex tensor of shape `(*, N, T)` if `return_complex=True`.
+- Real tensor of shape `(*, N, T, 2)` if `return_complex=False`, where the last dimension holds real/imaginary parts.
+
+**Important warnings:**
+- Always specify `return_complex` explicitly (default is transitioning to `True`).
+- Provide a tapered window (e.g., `torch.hann_window`) to avoid artifacts.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["1D", "2D"]
+    shape: [["L"], ["B", "L"]]
+    default: null
+  n_fft:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  hop_length:
+    dtype: ["int", "None"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  win_length:
+    dtype: ["int", "None"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  window:
+    dtype: ["Tensor", "None"]
+    range: null
+    structure: ["1D"]
+    shape: [["win_length"]]
+    default: "None"
+  center:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  pad_mode:
+    dtype: ["str"]
+    range: [["reflect", "constant", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"reflect\""
+  normalized:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  onesided:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  return_complex:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "win_length"
+    Parameter 2: "n_fft"
+    Constraint: "win_length is None or win_length <= n_fft"
+  2:
+    Parameter 1: "window"
+    Parameter 2: "win_length"
+    Constraint: "window is None or (window.ndim == 1 and window.size(0) == win_length)"
+  3:
+    Parameter 1: "onesided"
+    Parameter 2: "input"
+    Constraint: "not (input.is_complex() or (window is not None and window.is_complex())) or onesided == False"
+  4:
+    Parameter 1: "return_complex"
+    Parameter 2: "input"
+    Constraint: "not input.is_complex() or return_complex is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.stft in a complex way */
+import torch

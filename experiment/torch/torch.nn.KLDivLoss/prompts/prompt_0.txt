@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.nn.KLDivLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**KLDivLoss** computes the Kullback-Leibler divergence loss between two probability distributions.  
+
+**Key points:**
+- **Input (`input`)**: Expected in **log-space** (e.g., `log_softmax` output) to avoid underflow.
+- **Target (`target`)**: Can be in probability space (default) or log-space if `log_target=True`.
+- **Formula** (pointwise):  
+  If `log_target=False`:  
+  `loss = target * (log(target) - input)`  
+  If `log_target=True`:  
+  `loss = exp(target) * (target - input)`
+- **Reduction options**:  
+  - `"batchmean"` (recommended): Sum divided by batch size — matches mathematical KL definition.  
+  - `"mean"`: Averages over all elements (does **not** give true KL divergence).  
+  - `"sum"`: Sums all elements.  
+  - `"none"`: Returns per-element loss.
+- **Warning**: Use `reduction="batchmean"` for correct KL divergence values.
+- **Shape**: Input and target must have the same shape; output is scalar unless `reduction="none"`.
+
+**Example usage:**
+```python
+kl_loss = nn.KLDivLoss(reduction="batchmean")
+input = F.log_softmax(model_output, dim=1)
+target = F.softmax(target_data, dim=1)
+loss = kl_loss(input, target)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size_average:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduction:
+    dtype: ["string"]
+    range: [["mean", "batchmean", "sum", "none"]]
+    structure: ["scalar"]
+    shape: null
+    default: "mean"
+  log_target:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.KLDivLoss in a complex way */
+import torch

@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.pad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.pad` function pads a tensor with specified values along each dimension. It requires a `paddings` tensor of shape `[n, 2]` (where `n` is the tensor's rank) to define how many values to add before and after the tensor's contents in each dimension. The function supports three padding modes:
+
+- **CONSTANT**: Pads with a constant value (default 0).
+- **REFLECT**: Pads by reflecting the tensor's values (paddings must be ≤ dimension size − 1).
+- **SYMMETRIC**: Pads by mirroring the tensor's values (paddings must be ≤ dimension size).
+
+The output tensor's size in each dimension is computed as:  
+`paddings[D, 0] + tensor.dim_size(D) + paddings[D, 1]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  paddings:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n,2]"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["CONSTANT", "REFLECT", "SYMMETRIC"]]
+    structure: ["scalar"]
+    shape: null
+    default: "CONSTANT"
+  constant_values:
+    dtype: ["same as tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: mode
+    Parameter 2: paddings
+    Constraint: (mode.upper() == 'REFLECT') -> (all(paddings[i, 0] <= tensor.shape[i] - 1 and paddings[i, 1] <= tensor.shape[i] - 1 for i in range(len(tensor.shape))))
+  2:
+    Parameter 1: mode
+    Parameter 2: paddings
+    Constraint: (mode.upper() == 'SYMMETRIC') -> (all(paddings[i, 0] <= tensor.shape[i] and paddings[i, 1] <= tensor.shape[i] for i in range(len(tensor.shape))))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.pad in a complex way */
+import tensorflow as tf

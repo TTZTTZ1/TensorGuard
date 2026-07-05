@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.nn.fractional_max_pool` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.fractional_max_pool` performs fractional max pooling on a 4‑D input tensor, allowing non‑integer down‑scaling ratios for height and width dimensions. Unlike regular max pooling, the pooling region sizes are randomly (or pseudorandomly) generated while maintaining a roughly uniform reduction.
+
+**Key parameters:**
+- `value`: 4‑D tensor of shape `[batch, height, width, channels]`.
+- `pooling_ratio`: List of 4 floats where the first and last must be 1.0 (no pooling on batch/channels), and the middle two specify height/width reduction ratios (e.g., `[1.0, 1.44, 1.73, 1.0]`).
+- `pseudo_random`: Controls whether the pooling sequence is pseudorandom or fully random.
+- `overlapping`: If `True`, boundary values can be reused in adjacent pooling cells.
+- `seed`: Seed for the random number generator.
+
+**Returns:**  
+A tuple `(output, row_pooling_sequence, col_pooling_sequence)` where `output` is the pooled tensor, and the two sequences describe the generated pooling regions.
+
+**Note:**  
+The pooling boundaries satisfy size constraints `K` or `K+1` (where `K = floor(alpha)`), ensuring the output size matches the requested ratio.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  pooling_ratio:
+    dtype: ["int", "float"]
+    range: ["[1.0, )"]
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: null
+  pseudo_random:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  overlapping:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1.
+    Parameter 1: pooling_ratio
+    Parameter 2: pooling_ratio
+    Constraint: "(isinstance(pooling_ratio, (int, float)) and pooling_ratio >= 1.0) or (isinstance(pooling_ratio, list) and all(isinstance(r, (int, float)) and r >= 1.0 for r in pooling_ratio))"
+  2.
+    Parameter 1: pooling_ratio
+    Parameter 2: pooling_ratio
+    Constraint: "not isinstance(pooling_ratio, list) or len(pooling_ratio) in [1, 2, 4]"
+  3.
+    Parameter 1: pooling_ratio
+    Parameter 2: pooling_ratio
+    Constraint: "not (isinstance(pooling_ratio, list) and len(pooling_ratio) == 4) or (pooling_ratio[0] == 1.0 and pooling_ratio[3] == 1.0)"
+  4.
+    Parameter 1: value
+    Parameter 2: value
+    Constraint: "value.shape.ndims == 4"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.fractional_max_pool in a complex way */
+import tensorflow as tf

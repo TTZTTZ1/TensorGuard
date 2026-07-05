@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrize.ParametrizationList` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: `ParametrizationList`**
+
+`ParametrizationList` is an internal PyTorch container that manages the original parameters or buffers of a parametrized module. It is automatically created when using `register_parametrization()` and is accessed via `module.parametrizations[tensor_name]`.
+
+**Key Points:**
+- **Purpose:** Stores and handles the original tensor(s) of a parametrized module, enabling parametrization (e.g., weight normalization, pruning masks).
+- **Creation:** Instantiated automatically by `register_parametrization()`; not intended for direct user instantiation.
+- **Storage:**  
+  - If the first parametrization’s `right_inverse` returns one tensor (or is identity), the original tensor is stored as `original`.  
+  - If multiple tensors are returned, they are stored as `original0`, `original1`, etc.
+- **Method:**  
+  - `right_inverse(value)`: Calls the `right_inverse` of each parametrization (in reverse order) and stores the result in the `original*` attributes.
+- **Safety:** The `unsafe` flag (default `False`) allows parametrizations that may change tensor dtype/shape, bypassing consistency checks.
+
+**Note:** This class is part of PyTorch’s parametrization API and is designed for internal use; users should interact with it indirectly via `register_parametrization()`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  modules:
+    dtype: ["sequence"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  original:
+    dtype: ["torch.nn.parameter.Parameter", "torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  unsafe:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrize.ParametrizationList in a complex way */
+import torch

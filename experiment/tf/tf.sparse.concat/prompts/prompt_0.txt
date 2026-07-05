@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.sparse.concat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.concat` concatenates multiple sparse tensors along a specified dimension. It preserves the ordering of non-zero elements and handles shape mismatches when `expand_nonconcat_dims` is enabled. The operation runs in **O(M log M)** time due to internal sorting, where M is the total number of non-zero values across all inputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  axis:
+    dtype: ["int"]
+    range: ["[-rank, rank)"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  sp_inputs:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  expand_nonconcat_dims:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  concat_dim:
+    dtype: ["int"]
+    range: ["[-rank, rank)"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: sp_inputs
+    Constraint: "all(-len(s.shape) <= axis < len(s.shape) for s in sp_inputs)"
+  2:
+    Parameter 1: sp_inputs
+    Parameter 2: expand_nonconcat_dims
+    Constraint: "expand_nonconcat_dims or (all(len(s.shape) == len(sp_inputs[0].shape) for s in sp_inputs) and all(s.shape[i] == sp_inputs[0].shape[i] for s in sp_inputs for i in range(len(s.shape)) if i != (axis if axis >=0 else len(s.shape) + axis)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.concat in a complex way */
+import tensorflow as tf

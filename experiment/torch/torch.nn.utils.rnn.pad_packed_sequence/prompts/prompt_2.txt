@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.rnn.pad_packed_sequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`pad_packed_sequence` converts a packed sequence (PackedSequence) back into a padded tensor, reversing the operation of `pack_padded_sequence`. It returns a tuple containing:
+
+1. **Padded tensor** of shape `(T, B, *)` (or `(B, T, *)` if `batch_first=True`), where `T` is the maximum sequence length.
+2. **Lengths tensor** of each original sequence in the batch.
+
+**Key parameters:**
+- `sequence`: The packed sequence to pad.
+- `batch_first`: If `True`, output tensor shape is `(B, T, *)`.
+- `padding_value`: Value used for padding (default 0.0).
+- `total_length`: Optionally pad sequences to a specified length (useful with DataParallel).
+
+**Example usage:**
+```python
+seq_unpacked, lens_unpacked = pad_packed_sequence(packed, batch_first=True)
+```
+This restores the original padded batch and sequence lengths, with batch order preserved.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sequence:
+    dtype: ["PackedSequence"]
+    range: null
+    structure: ["PackedSequence"]
+    shape: null
+    default: null
+  batch_first:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  padding_value:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.0"
+  total_length:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "total_length"
+    Parameter 2: "sequence"
+    Constraint: "total_length is None or total_length >= sequence.batch_sizes.size(0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.rnn.pad_packed_sequence in a complex way */
+import torch

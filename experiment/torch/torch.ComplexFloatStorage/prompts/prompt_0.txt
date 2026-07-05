@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.ComplexFloatStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: PyTorch Storage**
+
+PyTorch tensors are built on a low-level data container called **Storage**, which holds the raw, contiguous bytes of the tensor. The modern API uses **`torch.UntypedStorage`**, a byte-level container independent of data type or shape.
+
+### **Key Concepts:**
+
+1. **Tensor Components**:
+   - **Storage**: Underlying 1D byte array.
+   - **dtype**: Data type (e.g., `torch.float32`).
+   - **shape**: Dimensions.
+   - **stride**: Memory step per dimension.
+   - **offset**: Starting point in storage.
+
+2. **Untyped Storage**:
+   - Accessed via `tensor.untyped_storage()`.
+   - Can be shared by multiple tensors (e.g., tensor views).
+   - Has a unique identifier: `data_ptr()`.
+   - Allows low-level manipulation (e.g., `fill_()`, `clone()`), but this is **not recommended** for typical use.
+
+3. **Special Cases**:
+   - Tensors with gradients have separate storages for data and grad.
+   - Tensors on `"meta"` device or FakeTensors have no actual storage.
+   - Tensor subclasses may behave differently.
+
+4. **Legacy Typed Storage** (Deprecated):
+   - Classes like `torch.FloatStorage` are aliases for `torch.TypedStorage`.
+   - `torch.TypedStorage` wraps an `UntypedStorage` with a specific dtype.
+   - **Avoid using typed storage; use `torch.UntypedStorage` instead.**
+
+### **Common Operations**:
+- **Access**: `tensor.untyped_storage()`.
+- **Copy**: `storage.clone()`.
+- **Device transfer**: `storage.cuda()`, `storage.cpu()`.
+- **Memory mapping**: `UntypedStorage.from_file()`.
+- **Shared memory**: `storage.share_memory_()`.
+
+### **Warnings**:
+- Direct storage manipulation is **low-level and risky**.
+- Prefer high-level tensor methods (e.g., `clone()`, `fill_()`) when possible.
+- Typed storage APIs are deprecated and will be removed.
+
+### **Use Case**:
+Storage-level operations are **rarely needed** in typical workflows. They are useful for advanced tasks like memory optimization, inter-process communication, or custom serialization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "list", "tuple"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: [["torch.complex64"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "torch.complex64"
+  device:
+    dtype: ["torch.device", "str", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype is None or dtype == torch.complex64"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "*args"
+    Constraint: "wrap_storage is None or len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ComplexFloatStorage in a complex way */
+import torch

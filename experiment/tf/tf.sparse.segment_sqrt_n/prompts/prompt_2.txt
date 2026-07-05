@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.sparse.segment_sqrt_n` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.segment_sqrt_n` computes the sum of values along sparse segments of a tensor, normalized by the square root of the segment size. It is similar to `tf.sparse.segment_mean`, but divides by `sqrt(N)` instead of `N`, where `N` is the number of elements in each segment.
+
+**Key Parameters:**
+- `data`: Input tensor.
+- `indices`: 1-D tensor of indices into `data`.
+- `segment_ids`: 1-D tensor assigning each index to a segment (values should be sorted).
+- `num_segments`: Optional; specifies output dimension size.
+- `sparse_gradient`: If `True`, returns a sparse gradient (`IndexedSlices`) instead of dense.
+
+**Use Case:** Useful for sparse segmentation tasks where normalization by `sqrt(N)` is preferred over mean division, such as in certain embedding or aggregation operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float", "int"]
+    range: ["null"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices:
+    dtype: ["int"]
+    range: ["null"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  segment_ids:
+    dtype: ["int"]
+    range: ["null"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  num_segments:
+    dtype: ["int32"]
+    range: ["null"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["null"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  sparse_gradient:
+    dtype: ["bool"]
+    range: ["false", "true"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "indices.shape.rank == segment_ids.shape.rank"
+  2:
+    Parameter 1: "segment_ids"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.math.is_non_decreasing(segment_ids)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.segment_sqrt_n in a complex way */
+import tensorflow as tf

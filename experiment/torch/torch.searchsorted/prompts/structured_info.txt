@@ -1,0 +1,56 @@
+params:
+  sorted_sequence:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  values:
+    dtype: ["tensor", "scalar"]
+    range: null
+    structure: ["tensor", "scalar"]
+    shape: ["any", "scalar"]
+    default: null
+  out_int32:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  right:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  side:
+    dtype: ["string"]
+    range: [["left", "right"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  out:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as values"]
+    default: "None"
+  sorter:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as sorted_sequence"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: side
+    Parameter 2: right
+    Constraint: "not (side == 'left' and right == True)"
+  2:
+    Parameter 1: out
+    Parameter 2: values
+    Constraint: "out is None or out.shape == values.shape"
+  3:
+    Parameter 1: sorter
+    Parameter 2: sorted_sequence
+    Constraint: "sorter is None or sorter.shape == sorted_sequence.shape"

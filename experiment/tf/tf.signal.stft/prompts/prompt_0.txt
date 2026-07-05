@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.signal.stft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.signal.stft` computes the Short-time Fourier Transform of real-valued signals, converting time-domain data into a time-frequency representation. It splits the input signal into overlapping frames, applies an optional window function, and performs an FFT on each frame.
+
+**Key parameters:**
+- `signals`: Input tensor of shape `[..., samples]`
+- `frame_length`: Length of each analysis window
+- `frame_step`: Step size between consecutive frames
+- `window_fn`: Window function (default: Hann window)
+- `fft_length`: FFT size (defaults to next power of 2 ≥ frame_length)
+
+**Returns:** Complex-valued STFT tensor of shape `[..., frames, fft_length//2 + 1]`
+
+**Features:** GPU/TPU compatible, supports automatic differentiation, and includes optional zero-padding for incomplete frames.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  signals:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  frame_length:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  frame_step:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  fft_length:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+  window_fn:
+    dtype: ["callable", "None"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "tf.signal.hann_window"
+  pad_end:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "signals"
+    Parameter 2: "None"
+    Constraint: "tf.rank(signals) >= 1"
+  2:
+    Parameter 1: "frame_length"
+    Parameter 2: "None"
+    Constraint: "frame_length.shape == []"
+  3:
+    Parameter 1: "frame_step"
+    Parameter 2: "None"
+    Constraint: "frame_step.shape == []"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.signal.stft in a complex way */
+import tensorflow as tf

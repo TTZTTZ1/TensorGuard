@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.pareto.Pareto` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient-based optimization through two primary methods:
+
+## Key Features
+
+### 1. **Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### 2. **Core Components**
+
+#### **Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+- Batch and event shape handling
+
+#### **Available Distributions** (40+ implementations)
+- **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, MultivariateNormal, etc.
+- **Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, etc.
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull, etc.
+- **Specialized**: LKJCholesky, Wishart, MixtureSameFamily, etc.
+
+### 3. **Key Functionality**
+
+#### **Sampling & Evaluation**
+```python
+# Basic usage
+m = Normal(loc=0, scale=1)
+samples = m.sample([100])          # Regular sampling
+reparam_samples = m.rsample([100]) # Differentiable sampling
+log_probs = m.log_prob(samples)    # Log probability
+```
+
+#### **KL Divergence**
+```python
+kl = kl_divergence(p, q)  # Computes KL(p||q)
+```
+
+#### **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, etc.)
+- **Constraints**: Domain validation (positive, simplex, interval, etc.)
+- **Registry system**: `biject_to()` and `transform_to()` for constrained optimization
+
+### 4. **Common Use Cases**
+
+#### **Reinforcement Learning (REINFORCE)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+#### **Variational Inference (Reparameterization)**
+```python
+params = network(input)
+m = Normal(*params)
+z = m.rsample()  # Differentiable sample
+loss = -elbo(z)
+loss.backward()
+```
+
+### 5. **Design Principles**
+- Follows TensorFlow Distributions design
+- Supports batch and event dimensions
+- Parameter validation via constraints
+- Efficient reparameterization for continuous distributions
+- Extensible through custom distributions and transforms
+
+The module is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions within PyTorch's autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  alpha:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: alpha
+    Parameter 2: null
+    Constraint: "alpha > 0.0"
+  2:
+    Parameter 1: scale
+    Parameter 2: null
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.pareto.Pareto in a complex way */
+import torch

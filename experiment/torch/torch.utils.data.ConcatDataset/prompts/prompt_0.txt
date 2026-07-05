@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.ConcatDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for loading and processing data in PyTorch, centered around the `DataLoader` class. Here’s a concise overview:
+
+### Core Components
+- **`DataLoader`**: An iterable that combines a dataset and a sampler to load data efficiently. It supports:
+  - **Map‑style datasets** (implement `__getitem__` and `__len__`) for random access.
+  - **Iterable‑style datasets** (implement `__iter__`) for streaming data.
+  - **Automatic batching**, custom sampling, single‑/multi‑process loading, and memory pinning.
+
+### Key Features
+1. **Data Loading Order**:
+   - For map‑style datasets, use a `Sampler` (e.g., `RandomSampler`, `SequentialSampler`) to control index sequencing.
+   - Iterable‑style datasets define their own order via `__iter__`.
+
+2. **Batching**:
+   - Enable automatic batching with `batch_size` and `drop_last`.
+   - Disable it by setting `batch_size=None` and `batch_sampler=None` to process individual samples.
+   - Customize collation with `collate_fn` (default stacks tensors, converts NumPy arrays).
+
+3. **Multi‑Process Loading**:
+   - Set `num_workers > 0` to parallelize data loading across subprocesses.
+   - For iterable‑style datasets, use `get_worker_info()` or `worker_init_fn` to avoid duplicate data across workers.
+   - Platform‑specific behaviors: Unix uses `fork()`; Windows/MacOS use `spawn()` (requires guarding main script with `if __name__ == '__main__'`).
+
+4. **Memory Pinning**:
+   - Set `pin_memory=True` to accelerate GPU transfers by using pinned (page‑locked) memory.
+   - For custom batch types, define a `pin_memory()` method to enable pinning.
+
+### Common Dataset Utilities
+- **`Dataset`**: Abstract base class for map‑style datasets.
+- **`IterableDataset`**: Base for streaming datasets.
+- **`TensorDataset`**: Wraps tensors; each sample is indexed along the first dimension.
+- **`ConcatDataset`**, **`ChainDataset`**, **`Subset`**, **`StackDataset`**: For combining or subsetting datasets.
+- **`random_split`**: Randomly splits a dataset into non‑overlapping subsets.
+
+### Samplers
+- **`Sampler`**: Base class for index sampling.
+- **`SequentialSampler`**, **`RandomSampler`**, **`WeightedRandomSampler`**, **`BatchSampler`**: Provide different sampling strategies.
+- **`DistributedSampler`**: Used in distributed training to partition data across processes.
+
+### Collation Functions
+- **`default_collate`**: Default function that batches tensors, converts NumPy arrays, and preserves data structures (e.g., dicts, namedtuples).
+- **`default_convert`**: Converts NumPy arrays to tensors when batching is disabled.
+- **`collate`**: General collation function that can be extended via a `collate_fn_map`.
+
+### Important Notes
+- **Multi‑process randomness**: Each worker’s PyTorch seed is set to `base_seed + worker_id`. Seed other libraries in `worker_init_fn` to avoid duplicate random numbers.
+- **CUDA tensors**: Avoid returning CUDA tensors directly in multi‑process loading; use `pin_memory=True` instead.
+- **Memory usage**: In multi‑process loading, each worker replicates the parent’s Python objects, which can lead to high memory consumption. Use non‑refcounted data structures (e.g., NumPy arrays) when possible.
+
+### Example Usage
+```python
+from torch.utils.data import DataLoader, TensorDataset
+
+dataset = TensorDataset(data_tensor, label_tensor)
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4, pin_memory=True)
+
+for batch in loader:
+    # Training loop
+    pass
+```
+
+In summary, `torch.utils.data` provides a flexible, efficient pipeline for loading and batching data, with built‑in support for parallelism, custom sampling, and GPU acceleration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  datasets:
+    dtype: ["sequence"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.ConcatDataset in a complex way */
+import torch

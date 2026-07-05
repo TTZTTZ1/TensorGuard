@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.nn.MaxPool1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`MaxPool1d` performs 1D max pooling over an input tensor, reducing its length by taking the maximum value within sliding windows.
+
+**Key parameters:**
+- `kernel_size`: Size of the sliding window (must be > 0)
+- `stride`: Step size for the window (defaults to `kernel_size`)
+- `padding`: Adds implicit negative infinity padding on both sides (0 to kernel_size/2)
+- `dilation`: Spacing between window elements (must be > 0)
+- `return_indices`: Returns max value positions for use with `MaxUnpool1d`
+- `ceil_mode`: Uses ceiling instead of floor for output shape calculation
+
+**Input/Output shapes:**
+- Input: `(N, C, L_in)` or `(C, L_in)`
+- Output: `(N, C, L_out)` or `(C, L_out)`
+- Output length depends on `ceil_mode` and follows the documented formulas
+
+**Main features:**
+- Reduces spatial dimensions while preserving channels
+- Supports dilated pooling (spaced sampling within windows)
+- Can return indices for unpooling operations
+- Handles edge cases with padding and ceil/floor modes
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "kernel_size"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "1"
+  return_indices:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  ceil_mode:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "kernel_size"
+    Parameter 2: "kernel_size"
+    Constraint: "kernel_size > 0"
+  2:
+    Parameter 1: "stride"
+    Parameter 2: "stride"
+    Constraint: "stride > 0"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "padding"
+    Constraint: "padding >= 0"
+  4:
+    Parameter 1: "padding"
+    Parameter 2: "kernel_size"
+    Constraint: "padding <= kernel_size / 2"
+  5:
+    Parameter 1: "dilation"
+    Parameter 2: "dilation"
+    Constraint: "dilation > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MaxPool1d in a complex way */
+import torch

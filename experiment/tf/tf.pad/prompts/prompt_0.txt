@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.pad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.pad` pads a tensor along each dimension with specified values.  
+
+**Key parameters:**  
+- `tensor`: Input tensor to pad.  
+- `paddings`: Integer tensor of shape `[n, 2]` where `n` is the rank of `tensor`. For each dimension `D`, `paddings[D, 0]` is the padding before the content and `paddings[D, 1]` is the padding after.  
+- `mode`: Padding mode — `"CONSTANT"` (default), `"REFLECT"`, or `"SYMMETRIC"`.  
+- `constant_values`: Fill value for `"CONSTANT"` mode (default 0).  
+
+**Output size for dimension D:**  
+`paddings[D, 0] + tensor.dim_size(D) + paddings[D, 1]`  
+
+**Mode restrictions:**  
+- `"REFLECT"`: Padding size ≤ `tensor.dim_size(D) - 1`  
+- `"SYMMETRIC"`: Padding size ≤ `tensor.dim_size(D)`  
+
+**Example:**  
+For a 2×3 tensor, with `paddings = [[1,1], [2,2]]`, the padded tensor will be 4×7.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  paddings:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n,2]"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["CONSTANT", "REFLECT", "SYMMETRIC"]]
+    structure: ["scalar"]
+    shape: null
+    default: "CONSTANT"
+  constant_values:
+    dtype: ["same as tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: mode
+    Parameter 2: paddings
+    Constraint: (mode.upper() == 'REFLECT') -> (all(paddings[i, 0] <= tensor.shape[i] - 1 and paddings[i, 1] <= tensor.shape[i] - 1 for i in range(len(tensor.shape))))
+  2:
+    Parameter 1: mode
+    Parameter 2: paddings
+    Constraint: (mode.upper() == 'SYMMETRIC') -> (all(paddings[i, 0] <= tensor.shape[i] and paddings[i, 1] <= tensor.shape[i] for i in range(len(tensor.shape))))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.pad in a complex way */
+import tensorflow as tf

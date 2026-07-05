@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `torch.hub.load_state_dict_from_url` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+PyTorch Hub is a model repository system that enables sharing and loading pre-trained models with minimal setup. Here's a concise overview:
+
+## **Core Purpose**
+- Facilitate research reproducibility by providing a standardized way to publish and load pre-trained models
+- Eliminate complex installation procedures for using published models
+
+## **Publishing Models**
+- Add a `hubconf.py` file to your GitHub repository
+- Define entrypoints as Python functions that return models or utilities
+- Include `dependencies` list for required packages
+- Store pretrained weights locally or via URLs (use `torch.hub.load_state_dict_from_url()` for >2GB files)
+- Models must be published on a branch/tag, not random commits
+
+## **Loading Models**
+Three main functions:
+1. **`torch.hub.list()`** - List available entrypoints in a repository
+2. **`torch.hub.help()`** - Show documentation for a specific model
+3. **`torch.hub.load()`** - Load a model (primary usage)
+
+## **Key Features**
+- **Caching**: Models are cached locally; use `force_reload=True` to refresh
+- **Security**: `trust_repo` parameter controls repo verification (default will change to `"check"` in v2.0)
+- **Flexibility**: Load from GitHub (`source='github'`) or local directories (`source='local'`)
+- **Utilities**: Includes `download_url_to_file()` and `load_state_dict_from_url()` helpers
+
+## **Usage Example**
+```python
+# Load ResNet-50 from torchvision
+model = torch.hub.load('pytorch/vision', 'resnet50', weights='ResNet50_Weights.IMAGENET1K_V1')
+```
+
+## **Storage Locations**
+Models are cached in (in order):
+1. Directory set via `hub.set_dir()`
+2. `$TORCH_HOME/hub`
+3. `$XDG_CACHE_HOME/torch/hub`
+4. `~/.cache/torch/hub`
+
+## **Limitations**
+- Cannot load two different branches of the same repo in the same Python process
+- Import conflicts may occur if different repos use identical sub-package names
+
+PyTorch Hub simplifies model sharing to a single `torch.hub.load()` call, making state-of-the-art models accessible without complex setup.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  url:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  model_dir:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  map_location:
+    dtype: ["function", "dict", "str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  progress:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  check_hash:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  file_name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  weights_only:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hub.load_state_dict_from_url in a complex way */
+import torch

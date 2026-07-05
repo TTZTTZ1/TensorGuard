@@ -1,0 +1,136 @@
+
+# You are a Python code generation assistant for the `torch.distributed.Store` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Features**
+- **Multi-process parallelism** across nodes/machines
+- **Synchronous distributed training** via `DistributedDataParallel`
+- **Multiple backends**: Gloo (CPU), NCCL (GPU/CUDA), MPI, XCCL (XPU)
+- **DeviceMesh** for managing multi-dimensional device topologies
+- **Key-value stores** for process coordination (TCPStore, FileStore, HashStore)
+
+## **Key Components**
+
+### **1. Initialization**
+- `init_process_group()`: Initialize default process group
+- `init_device_mesh()`: Initialize DeviceMesh for multi-dimensional parallelism
+- Three initialization methods: TCP, shared file-system, environment variables
+
+### **2. Communication Primitives**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: 
+  - `all_reduce()`, `broadcast()`, `reduce()`
+  - `all_gather()`, `gather()`, `scatter()`
+  - `all_to_all()`, `reduce_scatter()`, `barrier()`
+- **Object collectives**: For Python objects (with performance caveats)
+
+### **3. Process Groups**
+- `new_group()`: Create sub-groups for fine-grained communication
+- `shrink_group()`: Exclude ranks from existing groups
+- Group rank translation utilities
+
+### **4. DeviceMesh**
+- Manages multi-dimensional device layouts
+- Creates process groups for each mesh dimension
+- Supports 1D, 2D, and N-D parallelism
+
+## **Backend Selection Guide**
+- **CUDA GPU training**: Use NCCL (best performance)
+- **CPU training**: Use Gloo
+- **XPU GPU training**: Use XCCL
+- **InfiniBand**: NCCL for GPU, Gloo/MPI for CPU
+- **Ethernet**: Gloo for CPU, NCCL for GPU (with Gloo fallback)
+
+## **Important Considerations**
+- **Initialization is not thread-safe**
+- **Each process maintains its own optimizer** (no parameter broadcast needed)
+- **Separate Python interpreters** per process avoid GIL issues
+- **Must call `destroy_process_group()`** for clean shutdown
+- **Debugging tools**: `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG`, Python breakpoints
+
+## **Common Patterns**
+- **Single-node multi-GPU**: Use NCCL backend
+- **Multi-node training**: Set `MASTER_ADDR` and `MASTER_PORT`
+- **Fault tolerance**: Use `shrink_group()` for excluding failed ranks
+- **Performance tuning**: NCCL environment variables for network optimization
+
+## **Launch Utilities**
+- `torch.distributed.launch`: Spawn multiple processes per node
+- `torch.multiprocessing.spawn`: Alternative spawning utility
+- **Deprecation**: `launch` being replaced by `torchrun`
+
+The package enables efficient distributed training with advantages over `DataParallel`, including reduced communication overhead and independent Python interpreters per process.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  key:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  amount:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  expected_value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  desired_value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  block:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  timeout:
+    dtype: ["timedelta"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "timedelta(seconds=300)"
+
+constraints:
+  1:
+    Parameter 1: "keys"
+    Parameter 2: "values"
+    Constraint: "len(keys) == len(values)"
+  2:
+    Parameter 1: "dst"
+    Parameter 2: "group_dst"
+    Constraint: "dst is None or group_dst is None"
+  3:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.Store in a complex way */
+import torch

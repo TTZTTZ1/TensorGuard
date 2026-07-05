@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerClient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Timer system provides a mechanism to detect and handle stuck workers in distributed training by using expiration timers. Here's a concise summary:
+
+## Core Concept
+Expiration timers allow processes to self-impose time limits on code blocks. If a worker doesn't release its timer before the deadline, the timer server can kill the stuck process, enabling the elastic agent to retry the worker.
+
+## Key Components
+
+### 1. **Client API**
+- `configure(timer_client)`: Must be called before using timers
+- `expires(after, scope=None, client=None)`: Context manager that acquires a timer expiring in `after` seconds
+
+### 2. **Built-in Implementations**
+- **LocalTimerServer/Client**: Uses `multiprocessing.Queue` for communication
+- **FileTimerServer/Client**: Uses named pipes (FIFO) for communication
+
+### 3. **Usage Pattern**
+```python
+# Setup
+server = LocalTimerServer(message_queue)
+server.start()
+
+# Worker function
+def trainer_func():
+    timer.configure(LocalTimerClient(message_queue))
+    with timer.expires(after=60):  # 60-second timeout
+        # Potentially stuck operations
+        pass
+```
+
+## Key Features
+- **Process Isolation**: Timer server runs separately from workers
+- **Automatic Cleanup**: Stuck workers are automatically terminated
+- **Retry Mechanism**: Elastic agent can restart failed workers
+- **Customizable**: Can implement custom server/client pairs by extending base classes
+- **Local Scope**: Each host manages timers for its local workers
+
+## When to Use
+- Distributed training operations that might hang (e.g., collective operations, I/O)
+- Ensuring training progress despite occasional worker stalls
+- Building fault-tolerant distributed systems
+
+The system provides a safety net for distributed operations, ensuring that temporary hangs don't permanently stall the entire training job.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scope_id:
+    dtype: ["string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  expiration_time:
+    dtype: ["int", "float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time > 0 for acquire requests"
+  2:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time < 0 for release requests"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerClient in a complex way */
+import torch

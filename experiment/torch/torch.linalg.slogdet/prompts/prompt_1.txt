@@ -1,0 +1,45 @@
+
+# You are a Python code generation assistant for the `torch.linalg.slogdet` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.slogdet` computes the **sign** and **natural logarithm of the absolute value** of the determinant of a square matrix (or batch of matrices).  
+
+**Key features:**  
+- Works for real and complex matrices (float, double, cfloat, cdouble).  
+- Handles singular matrices (returns `(0, -inf)` for zero determinant).  
+- Output: a named tuple `(sign, logabsdet)`, where `logabsdet` is always real-valued.  
+- The determinant can be recovered as `sign * exp(logabsdet)`.  
+
+**Use case:**  
+More numerically stable than computing `det()` directly, especially for large matrices or small/large determinant magnitudes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "A.ndim >= 2 and A.shape[-1] == A.shape[-2]"
+  2:
+    Parameter 1: out
+    Parameter 2: None
+    Constraint: "out is None or (isinstance(out, tuple) and len(out) == 2 and all(isinstance(t, torch.Tensor) for t in out))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.slogdet in a complex way */
+import torch

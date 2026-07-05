@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.LocalTimerServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timer system is a mechanism designed to detect and handle stuck or unresponsive worker processes in distributed training jobs. It operates on a client-server model where timers are managed to ensure workers complete tasks within specified time limits.
+
+### **Core Concept**
+- **Purpose**: Automatically terminate worker processes that exceed a predefined time limit for a given code block, allowing the system to retry or recover.
+- **Mechanism**: Workers acquire a timer before entering a potentially blocking operation and must release it upon completion. If the timer expires, the server kills the process.
+
+### **Key Components**
+1. **Timer Client**: Used within worker scripts to acquire and release timers.
+2. **Timer Server**: Runs independently (often per host) to monitor timers and terminate expired workers.
+
+### **Basic Usage**
+```python
+import torchelastic.timer as timer
+
+# Configure the timer client (must be done once per process)
+timer.configure(timer.LocalTimerClient(message_queue))
+
+# Use a timer to wrap a code block
+with timer.expires(after=60):  # 60-second deadline
+    # Long-running or potentially stuck operation
+    perform_work()
+```
+If the block exceeds 60 seconds, the worker process is killed.
+
+### **Provided Implementations**
+- **LocalTimerServer/LocalTimerClient**: Uses a `multiprocessing.Queue` for communication.
+- **FileTimerServer/FileTimerClient**: Uses a named pipe (FIFO file) for communication.
+
+### **Customization**
+You can implement custom servers and clients by extending:
+- `TimerServer` (abstract class)
+- `TimerClient` (abstract class)
+
+### **Typical Workflow**
+1. Start a timer server on each host.
+2. In each worker process, configure a timer client connected to the server.
+3. Wrap risky operations with `timer.expires(after=...)`.
+4. The server monitors all timers and terminates workers that expire.
+
+### **Use Case**
+Primarily for fault-tolerant distributed training where worker hangs (e.g., due to deadlocks, hardware issues) should not stall the entire job. The elastic agent can restart failed workers, maintaining overall job progress.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mp_queue:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  max_interval:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "60"
+  daemon:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.LocalTimerServer in a complex way */
+import torch

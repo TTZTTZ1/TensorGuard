@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.HalfStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` class is a low-level, contiguous, one-dimensional array of bytes that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like shape, stride, and data type.
+
+### **Key Concepts:**
+
+*   **Relationship to Tensors:** A tensor's data is stored in an `UntypedStorage`. You can access it via `tensor.untyped_storage()`.
+*   **Sharing:** Multiple tensors (e.g., views created by `.view()` or slicing) can share the same underlying storage.
+*   **Independence:** The storage is somewhat independent; tensors with different dtypes or shapes can point to the same storage block of bytes.
+*   **Identifier:** Use `.data_ptr()` to get the unique memory address of the storage.
+*   **Device & Memory:** Storages have device attributes (`.device`, `.is_cuda`) and support operations like `.pin_memory()` and `.cuda()`.
+
+### **Common Operations:**
+
+*   **Creation:** Often obtained from a tensor (`tensor.untyped_storage()`), or via `torch.UntypedStorage(nbytes)`.
+*   **Copying:** `.clone()` creates a separate copy.
+*   **In-place Modification:** `.fill_(value)` to set all bytes.
+*   **Memory-mapped Files:** `.from_file(filename, shared, nbytes)` creates a storage backed by a file.
+*   **Shared Memory:** `.share_memory_()` moves CPU storage to shared memory for multi-process access.
+
+### **Important Warnings:**
+
+1.  **Low-Level API:** Direct storage manipulation (e.g., using `.set_()`) is risky and not recommended for typical use. Prefer high-level tensor operations (`.clone()`, `.fill_()`) when possible.
+2.  **Legacy Typed Storage:** Classes like `torch.FloatStorage` are deprecated. Use `torch.UntypedStorage` for all new code.
+3.  **Special Tensors:** Tensors on the `"meta"` device or `FakeTensor`s do not have standard storage.
+4.  **Gradients:** For tensors with `requires_grad=True`, the `.grad` attribute is a separate tensor with its own storage (`tensor.grad.untyped_storage()`).
+
+### **When to Use It:**
+
+*   Advanced use cases requiring direct memory access or manipulation.
+*   Implementing custom serialization/deserialization.
+*   Working with memory-mapped files for large datasets.
+*   Advanced multi-process programming with shared memory.
+
+**In summary:** `torch.UntypedStorage` is the foundational byte container for PyTorch tensors. It's a powerful low-level tool but should be used with caution, as most user needs are better served by the higher-level Tensor API.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.float16"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.float16"
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: 
+    Constraint: "dtype == torch.float16"
+  2:
+    Parameter 1: wrap_storage
+    Parameter 2: *args
+    Constraint: "wrap_storage is not None implies len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.HalfStorage in a complex way */
+import torch

@@ -1,0 +1,42 @@
+
+# You are a Python code generation assistant for the `torch.linalg.matrix_power` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.matrix_power` computes the integer power \( n \) of a square matrix (or batch of matrices). For \( n = 0 \), it returns the identity matrix; for negative \( n \), it returns the inverse raised to \( |n| \) (if invertible). The function supports float, double, and complex dtypes, and it is recommended to use `torch.linalg.solve` instead for negative powers to improve speed and numerical stability.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, m) where * is zero or more batch dimensions and m is a positive integer"]
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  out:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: ["same as A"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: A
+    Constraint: "A.shape[-1] == A.shape[-2]"
+  2:
+    Parameter 1: n
+    Parameter 2: A
+    Constraint: "n >= 0 or torch.all(torch.linalg.det(A) != 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.matrix_power in a complex way */
+import torch

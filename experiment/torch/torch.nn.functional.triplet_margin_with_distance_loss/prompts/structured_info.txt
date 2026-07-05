@@ -1,0 +1,60 @@
+params:
+  anchor:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  positive:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  negative:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  distance_function:
+    dtype: ["callable"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "None"
+  margin:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  swap:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  reduction:
+    dtype: ["string"]
+    range: [["mean", "sum", "none"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "anchor"
+    Parameter 2: "positive"
+    Constraint: "anchor.shape == positive.shape and anchor.dtype == positive.dtype"
+  2:
+    Parameter 1: "anchor"
+    Parameter 2: "negative"
+    Constraint: "anchor.shape == negative.shape and anchor.dtype == negative.dtype"
+  3:
+    Parameter 1: "margin"
+    Parameter 2: "margin"
+    Constraint: "margin >= 0"
+  4:
+    Parameter 1: "reduction"
+    Parameter 2: "reduction"
+    Constraint: "reduction in ['mean', 'sum', 'none']"

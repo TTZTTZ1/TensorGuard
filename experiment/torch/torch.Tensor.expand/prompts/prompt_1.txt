@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.expand` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`expand` creates a **memory-efficient view** of a tensor by **broadcasting singleton dimensions** to larger sizes.  
+
+**Key points:**  
+- Expands dimensions of size `1` to any specified size without copying data.  
+- Use `-1` to keep a dimension unchanged.  
+- Can add new singleton dimensions at the front.  
+- **Warning:** Multiple elements may share memory, so in-place operations can be unsafe — clone first if writing.  
+
+**Example:**  
+A tensor of shape `(3, 1)` can be expanded to `(3, 4)`, repeating values along the second dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sizes:
+    dtype: ["torch.Size", "int"]
+    range: "No mention"
+    structure: ["tuple", "torch.Size"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: all(s == -1 or s >= 1 for s in sizes)
+  2:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: len(sizes) >= self.dim()
+  3:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: all(sizes[i] == -1 or (self.size(i - (len(sizes) - self.dim())) == 1) or (sizes[i] == self.size(i - (len(sizes) - self.dim()))) for i in range(len(sizes) - self.dim(), len(sizes)))
+  4:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: all(sizes[i] != -1 for i in range(0, len(sizes) - self.dim()))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.expand in a complex way */
+import torch

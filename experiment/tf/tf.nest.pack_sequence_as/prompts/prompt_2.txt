@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.nest.pack_sequence_as` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nest.pack_sequence_as` reconstructs a nested structure from a flattened sequence, matching the shape of a given template. It is the inverse operation of `tf.nest.flatten`.
+
+**Key Points:**
+- **Purpose:** Packs a flat list into a nested structure that mirrors the provided `structure`.
+- **Behavior with atoms:** If `structure` is a scalar (e.g., int, string, array, tensor), `flat_sequence` must be a single-element list.
+- **Dict handling:** Dictionary keys are sorted to ensure deterministic packing, even for `OrderedDict`.
+- **Composite tensors:** When `expand_composites=True`, composite tensors (like `tf.RaggedTensor`) are expanded into their component tensors for packing.
+- **Error cases:** Raises `ValueError` if the number of elements in `flat_sequence` doesn’t match the structure’s atom count, or `TypeError` for non-sortable dict keys.
+
+**Example:**
+```python
+structure = (('a', 'b'), ('c', 'd', 'e'), 'f')
+flat_sequence = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+tf.nest.pack_sequence_as(structure, flat_sequence)
+# Output: ((1.0, 2.0), (3.0, 4.0, 5.0), 6.0)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  structure:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "list", "tuple", "dict"]
+    shape: No mention
+    default: null
+  flat_sequence:
+    dtype: No mention
+    range: No mention
+    structure: ["list"]
+    shape: No mention
+    default: null
+  expand_composites:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: flat_sequence
+    Parameter 2: structure
+    Constraint: "len(flat_sequence) == len(tf.nest.flatten(structure, expand_composites=expand_composites))"
+  2:
+    Parameter 1: structure
+    Parameter 2: structure
+    Constraint: "def check_sortable(s): return (not isinstance(s, dict) or all(isinstance(k, (int, str, float, tuple)) for k in s.keys())) and all(check_sortable(sub) for sub in (s.values() if isinstance(s, dict) else s if isinstance(s, (list, tuple)) else [])); check_sortable(structure)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nest.pack_sequence_as in a complex way */
+import tensorflow as tf

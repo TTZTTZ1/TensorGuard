@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `torch.sparse.sum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.sparse.sum(input, dim=None, dtype=None)`  
+
+**Purpose:** Computes the sum of a sparse tensor along specified dimensions.  
+
+**Key behavior:**  
+- Sums over rows (or specified dimensions) of the sparse tensor.  
+- If `dim` includes all sparse dimensions, returns a **dense** tensor; otherwise, returns a **sparse** tensor.  
+- Summed dimensions are removed (squeezed), reducing the output dimensionality.  
+- During backpropagation, gradients propagate only to non-zero (`nnz`) positions in the input.  
+
+**Parameters:**  
+- `input`: Sparse input tensor.  
+- `dim`: Dimension(s) to reduce (int or tuple). Default reduces over all dimensions.  
+- `dtype`: Desired data type for the output (defaults to input dtype).  
+
+**Returns:** A tensor (sparse or dense) containing the summed values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["sparse tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: dim
+    Constraint: "dim is None or all(-input.ndim <= d < input.ndim for d in ([dim] if isinstance(dim, int) else dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sparse.sum in a complex way */
+import torch

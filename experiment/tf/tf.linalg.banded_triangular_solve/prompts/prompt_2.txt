@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.linalg.banded_triangular_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.banded_triangular_solve` solves linear systems \( A x = b \) where \( A \) is a batch of triangular banded matrices. It takes the banded representation of \( A \) as input (stored with LEFT_RIGHT alignment) and efficiently computes the solution for one or multiple right-hand sides.
+
+**Key features:**
+- **Input format:** `bands` is a tensor of shape `[..., K, M]`, where `K` is the number of bands and `M` is the matrix size.
+- **Alignment:** Uses LEFT_RIGHT padding (like cuSPARSE), where superdiagonals are right-padded and subdiagonals are left-padded.
+- **Options:** Supports both lower and upper triangular matrices (`lower`), and can solve with the adjoint (`adjoint`).
+- **Broadcasting:** Batch dimensions of `bands` and `rhs` are automatically broadcast.
+- **Efficiency:** More efficient than dense triangular solvers when matrices are banded.
+
+**Example use:** Solving \( A x = \mathbf{1} \) for a 3×3 lower-triangular banded matrix with 2 stored bands.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  bands:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., K, M]"]
+    default: null
+  rhs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M]", "[..., M, N]"]
+    default: null
+  lower:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  adjoint:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: bands
+    Parameter 2: rhs
+    Constraint: "bands.dtype == rhs.dtype"
+  2:
+    Parameter 1: bands
+    Parameter 2: rhs
+    Constraint: "(len(rhs.shape) == len(bands.shape) and bands.shape[-1] == rhs.shape[-2]) or (len(rhs.shape) == len(bands.shape) - 1 and bands.shape[-1] == rhs.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.banded_triangular_solve in a complex way */
+import tensorflow as tf

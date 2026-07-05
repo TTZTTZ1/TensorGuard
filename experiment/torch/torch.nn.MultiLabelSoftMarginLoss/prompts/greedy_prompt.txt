@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.nn.MultiLabelSoftMarginLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**MultiLabelSoftMarginLoss** is a PyTorch loss function for multi-label classification tasks, where each sample can belong to multiple classes simultaneously.
+
+**Key Features:**
+- Optimizes a multi-label one-versus-all loss based on max-entropy.
+- Input and target tensors have shape `(N, C)` where `N` is batch size and `C` is number of classes.
+- Target values are binary (`0` or `1`) indicating class presence/absence.
+
+**Loss Formula:**
+For each class `i`:
+```
+loss = -1/C * Σ [y[i] * log(sigmoid(x[i])) + (1-y[i]) * log(1 - sigmoid(x[i]))]
+```
+This is essentially a per-class binary cross-entropy loss averaged over classes.
+
+**Parameters:**
+- `weight` (optional): Class weighting tensor of size `C`
+- `reduction`: How to aggregate losses (`'none'`, `'mean'`, `'sum'`)
+- `size_average` and `reduce`: Deprecated parameters (use `reduction` instead)
+
+**Output:**
+- Scalar by default (with `reduction='mean'`)
+- Shape `(N,)` if `reduction='none'`
+
+**Use Case:** Suitable for multi-label classification problems where multiple correct labels can apply to each input sample.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weight:
+    dtype: ["Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["C"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "size_average"
+    Parameter 2: "reduction"
+    Constraint: "size_average is not None"
+  2:
+    Parameter 1: "reduce"
+    Parameter 2: "reduction"
+    Constraint: "reduce is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MultiLabelSoftMarginLoss in a complex way */
+import torch

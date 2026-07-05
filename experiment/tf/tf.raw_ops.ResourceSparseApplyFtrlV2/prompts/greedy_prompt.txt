@@ -1,0 +1,133 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceSparseApplyFtrlV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceSparseApplyFtrlV2` is a low-level TensorFlow operation that implements the **FTRL-Proximal optimization algorithm** for sparse updates. It efficiently updates only the rows of variables specified by `indices`, making it suitable for training models with large embedding tables or sparse features.
+
+**Key Functionality:**
+- Updates three resource variables (`var`, `accum`, `linear`) using the FTRL algorithm with L1 and L2 regularization.
+- Supports **L2 shrinkage regularization** (via `l2_shrinkage`), which distinguishes it from the V1 version.
+- Performs **sparse updates**: only modifies rows corresponding to the provided `indices`, reducing computational cost.
+- Includes optional locking for thread safety and a `multiply_linear_by_lr` flag for scaling behavior.
+
+**Typical Use Case:**  
+Training large-scale recommendation systems or NLP models where gradients are sparse and memory efficiency is critical.
+
+**Arguments Overview:**
+- `var`, `accum`, `linear`: Resource variables to update.
+- `grad`, `indices`: Sparse gradient values and their corresponding row indices.
+- `lr`, `l1`, `l2`, `l2_shrinkage`, `lr_power`: Hyperparameters for optimization (all scalars).
+- `use_locking`: Enables thread-safe updates.
+- `multiply_linear_by_lr`: Adjusts the linear term scaling.
+
+**Returns:**  
+A TensorFlow `Operation` that applies the updates when executed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  linear:
+    dtype: ["resource"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l2_shrinkage:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  lr_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  multiply_linear_by_lr:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "grad"
+    Parameter 2: "lr"
+    Constraint: "grad.dtype == lr.dtype"
+  2:
+    Parameter 1: "grad"
+    Parameter 2: "l1"
+    Constraint: "grad.dtype == l1.dtype"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "l2"
+    Constraint: "grad.dtype == l2.dtype"
+  4:
+    Parameter 1: "grad"
+    Parameter 2: "l2_shrinkage"
+    Constraint: "grad.dtype == l2_shrinkage.dtype"
+  5:
+    Parameter 1: "grad"
+    Parameter 2: "lr_power"
+    Constraint: "grad.dtype == lr_power.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceSparseApplyFtrlV2 in a complex way */
+import tensorflow as tf

@@ -1,0 +1,46 @@
+params:
+  data:
+    dtype: ["float", "int"]
+    range: ["null"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices:
+    dtype: ["int"]
+    range: ["null"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  segment_ids:
+    dtype: ["int"]
+    range: ["null"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  num_segments:
+    dtype: ["int32"]
+    range: ["null"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["null"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  sparse_gradient:
+    dtype: ["bool"]
+    range: ["false", "true"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "indices.shape.rank == segment_ids.shape.rank"
+  2:
+    Parameter 1: "segment_ids"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.math.is_non_decreasing(segment_ids)"

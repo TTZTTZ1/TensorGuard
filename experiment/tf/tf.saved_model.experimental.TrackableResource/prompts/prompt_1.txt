@@ -1,0 +1,39 @@
+
+# You are a Python code generation assistant for the `tf.saved_model.experimental.TrackableResource` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.saved_model.experimental.TrackableResource` is a base class for managing stateful TensorFlow resources (like lookup tables) that can be captured by `tf.function` and saved with `tf.saved_model.save`. It ensures resources are properly created, initialized, and destroyed.
+
+**Key Features:**
+- **Purpose:** Encapsulates resources requiring initialization (e.g., `tf.lookup.StaticHashTable`).
+- **Discovery:** Automatically detected during model saving via object attribute traversal.
+- **Core Methods to Override:**
+  1. `_create_resource()`: Creates the resource handle (e.g., using `tf.raw_ops.VarHandleOp`).
+  2. `_initialize()`: Initializes the resource (e.g., assigning initial values).
+  3. `_destroy_resource()`: Cleans up the resource (typically via `tf.raw_ops.DestroyResourceOp`).
+- **Main Attribute:** `resource_handle` provides access to the underlying resource tensor.
+
+**Example Use Case:**  
+Creating a custom resource (like a variable handle) within a `tf.Module`, enabling stateful operations that persist across function calls and can be saved/loaded.
+
+**Parameter:**  
+- `device` (optional): Specifies device placement (e.g., "CPU"); leave blank for flexible placement.
+
+**Note:** Primarily for advanced use when built-in TensorFlow resources are insufficient.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  device:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: ""
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.saved_model.experimental.TrackableResource in a complex way */
+import tensorflow as tf

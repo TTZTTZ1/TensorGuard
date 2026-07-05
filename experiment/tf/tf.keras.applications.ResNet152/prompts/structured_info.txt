@@ -1,0 +1,64 @@
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "NoneType"]
+    range: ["None", "'imagenet'", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["string", "NoneType"]
+    range: ["None", "'avg'", "'max'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "not (include_top and input_shape is not None)"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "classes == 1000 or include_top"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights is None or classes == 1000"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights != 'imagenet' or classifier_activation in [None, 'softmax']"
+  5:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top or input_shape is None or (input_shape[0] >= 32 and input_shape[1] >= 32 and input_shape[2] == 3)"

@@ -1,0 +1,28 @@
+params:
+  chol:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, M]"]
+    default: null
+  rhs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "cholesky_solve"
+constraints:
+  1:
+    Parameter 1: "chol"
+    Parameter 2: "rhs"
+    Constraint: "chol.dtype == rhs.dtype"
+  2:
+    Parameter 1: "chol"
+    Parameter 2: "rhs"
+    Constraint: "chol.shape[:-2] == rhs.shape[:-2] and chol.shape[-1] == rhs.shape[-2]"

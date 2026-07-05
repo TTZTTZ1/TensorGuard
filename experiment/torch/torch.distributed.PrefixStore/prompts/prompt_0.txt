@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.distributed.PrefixStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables distributed training across multiple processes and machines. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional). Choose based on hardware:
+  - CUDA GPU → NCCL
+  - XPU GPU → XCCL  
+  - CPU → Gloo
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations. Supports TCP, shared file-system, and environment variable initialization.
+- **Process Groups**: Default "world" group includes all processes. Create subgroups with `new_group()` for finer-grained communication.
+
+## **Key Components**
+- **Collective Operations**: Synchronous (`async_op=False`) and asynchronous (`async_op=True`) versions of:
+  - `broadcast`, `all_reduce`, `reduce`, `all_gather`, `gather`, `scatter`, `reduce_scatter`, `all_to_all`, `barrier`
+- **Point-to-Point**: `send`/`recv` (synchronous) and `isend`/`irecv` (asynchronous)
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for process coordination
+
+## **Best Practices**
+1. **Initialization**: Use environment variables (`MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`) for simplicity
+2. **Cleanup**: Call `destroy_process_group()` to release resources
+3. **Debugging**: Use `TORCH_DISTRIBUTED_DEBUG` and `TORCH_CPP_LOG_LEVEL` for troubleshooting
+4. **Performance**: 
+   - Use NCCL for GPU training with InfiniBand/Ethernet
+   - Use Gloo for CPU training
+   - Consider Copy Engine Collectives for better computation/communication overlap (NCCL 2.28+)
+
+## **Common Patterns**
+```python
+# Basic initialization
+dist.init_process_group(backend="nccl", init_method="env://")
+
+# Collective operation
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# Asynchronous operation
+work = dist.all_reduce(tensor, async_op=True)
+work.wait()
+
+# DeviceMesh for multi-dimensional parallelism
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+## **Important Notes**
+- Distributed package must be initialized before use
+- Each process maintains its own optimizer (no parameter broadcast needed)
+- Supports both single-machine and multi-machine training
+- Windows support is prototype-level (except NCCL)
+- Object collectives have performance limitations and should be used cautiously
+
+The package provides the foundation for `DistributedDataParallel` and enables scalable training across multiple GPUs and nodes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  prefix:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  store:
+    dtype: ["Store"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.PrefixStore in a complex way */
+import torch

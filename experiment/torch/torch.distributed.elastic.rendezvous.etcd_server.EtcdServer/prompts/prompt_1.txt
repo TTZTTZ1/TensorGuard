@@ -1,0 +1,132 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.rendezvous.etcd_server.EtcdServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Rendezvous** in PyTorch Distributed Elastic is a mechanism for **peer discovery** and **distributed synchronization** among nodes in a training job. It ensures that all participating nodes agree on the same membership list and roles before training begins or resumes.
+
+---
+
+### **Key Features**
+
+1. **Barrier Synchronization**  
+   - Nodes block until at least `min_nodes` join.  
+   - A short delay prevents premature completion.  
+   - If `max_nodes` join, the rendezvous completes immediately.  
+   - A timeout fails the rendezvous if `min_nodes` is not reached.
+
+2. **Exclusivity**  
+   - Only one active group per job exists at a time.  
+   - Late-joining nodes wait until the current group finishes.
+
+3. **Consistency**  
+   - All members agree on job membership and assigned ranks (0 to world size).  
+   - Ranks are **not stable** across re-rendezvous.
+
+4. **Fault Tolerance**  
+   - Handles node failures during rendezvous by triggering automatic re-rendezvous.  
+   - Post-rendezvous failures are managed by the training loop.
+
+5. **Shared Key-Value Store**  
+   - Returns a `torch.distributed.Store` for exchanging initialization data (e.g., MASTER_ADDR/MASTER_PORT).
+
+6. **Dynamic Scaling**  
+   - Tracks waiting nodes (`num_nodes_waiting()`) for future re-rendezvous.  
+   - Can be closed (`set_closed()`) to stop further joins.
+
+---
+
+### **Core Components**
+
+#### **1. RendezvousHandler**  
+Main interface for participating in rendezvous. Key methods:  
+- `next_rendezvous()`: Joins the barrier, returns `(store, rank, world_size)`.  
+- `num_nodes_waiting()`: Counts late-arriving nodes.  
+- `set_closed()` / `is_closed()`: Manages lifecycle.
+
+#### **2. DynamicRendezvousHandler**  
+Recommended implementation, backend-agnostic.  
+- Configured via `RendezvousTimeout` (join, last_call, close, heartbeat timeouts).  
+- Supports custom backends.
+
+#### **3. Backends**  
+- **C10dRendezvousBackend**: Uses `TCPStore` or `FileStore` (no external dependencies).  
+- **EtcdRendezvousBackend**: Uses etcd for distributed state (legacy `EtcdRendezvousHandler` is deprecated).
+
+#### **4. RendezvousParameters**  
+Holds configuration: `backend`, `endpoint`, `run_id`, `min/max_nodes`, etc.
+
+---
+
+### **Usage Example**
+
+```python
+from torch.distributed.elastic.rendezvous import DynamicRendezvousHandler
+from torch.distributed.elastic.rendezvous.c10d_rendezvous_backend import C10dRendezvousBackend
+from torch.distributed import TCPStore
+
+store = TCPStore("localhost", 0, is_master=True)
+backend = C10dRendezvousBackend(store, "my_run_id")
+
+rdzv_handler = DynamicRendezvousHandler.from_backend(
+    run_id="my_run_id",
+    store=store,
+    backend=backend,
+    min_nodes=2,
+    max_nodes=4
+)
+
+store, rank, world_size = rdzv_handler.next_rendezvous()
+# Proceed with distributed training
+```
+
+---
+
+### **Error Handling**  
+Specific exceptions indicate failures:  
+- `RendezvousClosedError`: Rendezvous was closed.  
+- `RendezvousTimeoutError`: Timeout reached.  
+- `RendezvousConnectionError`: Backend connection failed.  
+- `RendezvousStateError`: Corrupt state.
+
+---
+
+### **Legacy Note**  
+`EtcdRendezvousHandler` is deprecated; use `DynamicRendezvousHandler` with `EtcdRendezvousBackend` instead.
+
+---
+
+### **Summary**  
+Rendezvous enables **elastic training** by dynamically forming worker groups with synchronization, fault tolerance, and a shared store. It is backend-flexible, with built-in support for C10d and etcd.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  etcd_binary_path:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  port:
+    dtype: ["int"]
+    range: [[1, 65535]]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  data_dir:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: port
+    Parameter 2: null
+    Constraint: "1 <= port <= 65535"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.rendezvous.etcd_server.EtcdServer in a complex way */
+import torch

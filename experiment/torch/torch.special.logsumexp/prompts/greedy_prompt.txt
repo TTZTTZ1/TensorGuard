@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.special.logsumexp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.special` module provides a comprehensive collection of special mathematical functions, modeled after SciPy's `special` module. It includes:
+
+**Key categories of functions:**
+- **Bessel functions**: `bessel_j0`, `bessel_j1`, `bessel_y0`, `bessel_y1`, `i0`, `i1`, `modified_bessel_*`
+- **Error functions**: `erf`, `erfc`, `erfcx`, `erfinv`
+- **Gamma-related functions**: `gammaln`, `digamma`, `polygamma`, `gammainc`, `gammaincc`
+- **Exponential/logarithmic**: `expm1`, `log1p`, `exp2`, `xlogy`, `xlog1py`
+- **Polynomials**: Chebyshev (`chebyshev_polynomial_*`), Hermite, Legendre, Laguerre
+- **Statistical**: `log_ndtr`, `ndtr`, `ndtri`, `entr`, `logit`, `expit`
+- **Trigonometric**: `sinc`
+- **Other special functions**: `airy_ai`, `zeta`, `multigammaln`
+
+**Common characteristics:**
+- Accept tensor inputs with optional `out` parameter for output tensor
+- Support broadcasting and various dtypes
+- Provide numerical stability for edge cases (e.g., `expm1` for small values)
+- Include both regular and scaled versions of some functions
+- Many have SciPy equivalents
+
+**Usage example:**
+```python
+import torch
+x = torch.tensor([0.5, 1.0, 2.0])
+result = torch.special.gammaln(x)  # Natural log of absolute gamma
+```
+
+The module is essential for scientific computing, statistical analysis, and machine learning applications requiring specialized mathematical operations beyond basic arithmetic.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "float16", "bfloat16", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  keepdim:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  out:
+    dtype: ["tensor", "none"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (out.dtype == input.dtype and out.device == input.device and out.shape == (input.shape if keepdim else tuple(input.shape[i] for i in range(input.ndim) if i != dim)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.special.logsumexp in a complex way */
+import torch

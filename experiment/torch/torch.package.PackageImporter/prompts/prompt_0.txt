@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.package.PackageImporter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle both model artifacts and their source code dependencies. It enables reproducible model deployment by isolating packaged code from the host environment, ensuring consistent execution across different machines or over time.
+
+### **Key Features**
+- **Package Creation**: Bundle Python modules, pickled objects (models/data), and arbitrary resources (text/binary files) into a single `.pt` ZIP archive.
+- **Dependency Management**: Automatically resolves and includes required Python modules, with control over handling external dependencies (`extern`), internal code (`intern`), mocked modules (`mock`), or blocked modules (`deny`).
+- **Isolated Execution**: Loaded packages run in a hermetic environment, preventing conflicts with system-installed packages.
+- **Custom Packaging**: Define `__reduce_package__` methods to customize how classes are serialized/deserialized.
+- **Inspection & Debugging**: Tools to explore package contents, analyze dependencies, and patch code.
+
+### **Core Components**
+1. **`PackageExporter`**:  
+   - Creates packages via `save_pickle()`, `save_module()`, `save_text()`, `save_binary()`.
+   - Configures dependency actions (`intern`, `extern`, `mock`, `deny`) using glob patterns.
+2. **`PackageImporter`**:  
+   - Loads packages and provides access to packaged modules (`import_module()`) and resources (`load_pickle()`, `load_text()`, `load_binary()`).
+   - Implements `importlib.resources` API for resource access within packaged code.
+
+### **Common Use Cases**
+- **Model Deployment**: Package a trained model with its custom code for inference in production.
+- **Code Sharing**: Distribute reproducible research code without dependency conflicts.
+- **Resource Bundling**: Include configuration files, assets, or data alongside model code.
+
+### **Important Notes**
+- **Security**: Relies on Python `pickle`; only load packages from trusted sources.
+- **Global State**: Avoid mutable global state in modules, as each `PackageImporter` creates isolated environments.
+- **Type Isolation**: Classes from packages are distinct from system versions; `isinstance` checks may fail.
+
+### **Quick Example**
+```python
+# Export
+with PackageExporter("model.pt") as e:
+    e.save_pickle("model", "model.pkl", trained_model)
+    e.save_module("my_code")
+
+# Import
+importer = PackageImporter("model.pt")
+model = importer.load_pickle("model", "model.pkl")
+```
+
+`torch.package` simplifies model packaging by ensuring all dependencies are captured, enabling reliable execution in diverse environments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  file_or_buffer:
+    dtype: ["string", "PathLike", "IO", "PyTorchFileReader"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  module_allowed:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "<function PackageImporter.<lambda>>"
+  include:
+    dtype: ["string", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "**"
+  exclude:
+    dtype: ["string", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "()"
+  package:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  resource:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  encoding:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'utf-8'"
+  errors:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'strict'"
+  map_location:
+    dtype: ["string", "dict", "callable", "torch.device"]
+    range: null
+    structure: ["scalar", "dict"]
+    shape: null
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: encoding
+    Parameter 2: errors
+    Constraint: "encoding in ['utf-8', 'utf-16', 'ascii'] and errors in ['strict', 'ignore', 'replace']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.PackageImporter in a complex way */
+import torch

@@ -1,0 +1,52 @@
+params:
+  col:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  row:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "LinearOperatorToeplitz"
+constraints:
+  1:
+    Parameter 1: col
+    Parameter 2: row
+    Constraint: "col.shape == row.shape"
+  2:
+    Parameter 1: col
+    Parameter 2: row
+    Constraint: "col[..., 0] == row[..., 0]"

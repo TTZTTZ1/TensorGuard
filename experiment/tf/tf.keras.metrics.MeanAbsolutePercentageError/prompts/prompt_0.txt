@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.MeanAbsolutePercentageError` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.MeanAbsolutePercentageError` metric computes the mean absolute percentage error (MAPE) between true and predicted values, expressed as a percentage. It inherits from `MeanMetricWrapper` and uses the formula:
+
+\[
+\text{MAPE} = 100 \times \text{mean}\left( \left| \frac{y_{\text{true}} - y_{\text{pred}}}{y_{\text{true}}} \right| \right)
+\]
+
+**Key Features:**
+- **Purpose**: Measures regression accuracy as a percentage error.
+- **Usage**: Can be integrated into model training via `compile()` or used standalone.
+- **Handling of Zero Values**: The metric may produce large values (e.g., 250,000,000) when `y_true` contains zeros, due to division by near-zero values.
+- **Sample Weighting**: Supports `sample_weight` to adjust the importance of individual samples.
+
+**Example:**
+```python
+m = keras.metrics.MeanAbsolutePercentageError()
+m.update_state([[0, 1], [0, 0]], [[1, 1], [0, 0]])
+print(m.result())  # Output: 250000000.0
+```
+
+**Integration with `compile()`:**
+```python
+model.compile(
+    optimizer='sgd',
+    loss='mse',
+    metrics=[keras.metrics.MeanAbsolutePercentageError()]
+)
+```
+
+**Main Methods:**
+- `update_state()`: Accumulates error statistics.
+- `result()`: Returns the current MAPE value.
+- `reset_state()`: Clears the metric state.
+
+**Note**: MAPE is sensitive to small true values and can become extremely large when `y_true` is close to zero.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "mean_absolute_percentage_error"
+  dtype:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.MeanAbsolutePercentageError in a complex way */
+import tensorflow as tf

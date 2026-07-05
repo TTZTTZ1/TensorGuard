@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.inception_v3.InceptionV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `InceptionV3` function from TensorFlow/Keras instantiates the Inception v3 architecture, a convolutional neural network designed for image classification. It is commonly used for tasks like image recognition and transfer learning.
+
+**Key Features:**
+- **Pre-trained Weights:** Supports loading weights pre-trained on ImageNet (`weights='imagenet'`).
+- **Flexible Input:** Allows custom input shapes (minimum 75×75) when `include_top=False`.
+- **Output Options:** Can include a fully connected top layer for classification or exclude it for feature extraction.
+- **Pooling:** Supports global average or max pooling when the top layer is excluded.
+- **Input Preprocessing:** Requires scaling pixel values to [-1, 1] using `inception_v3.preprocess_input`.
+
+**Common Use Cases:**
+- Image classification (with `include_top=True`).
+- Feature extraction for transfer learning (with `include_top=False` and optional pooling).
+- Integration into larger models or custom pipelines.
+
+**Default Configuration:**
+- Input shape: `(299, 299, 3)` (with `include_top=True`).
+- Output classes: 1000 (ImageNet).
+- Top layer activation: Softmax (customizable via `classifier_activation`).
+
+**Reference:** Based on the paper ["Rethinking the Inception Architecture for Computer Vision"](http://arxiv.org/abs/1512.00567).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights
+    dtype: ["string", "None"]
+    range: ["None", "imagenet", "any string for path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor
+    dtype: ["tensor"]
+    range: ["None", "tensor"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  input_shape
+    dtype: ["tuple"]
+    range: ["tuple with exactly 3 inputs channels, width and height >= 75"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling
+    dtype: ["string", "None"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation
+    dtype: ["string", "callable"]
+    range: ["None", "softmax", "any string or callable"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+constraints:
+  1
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "include_top == True or classes is None"
+  3
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights is None or classes is None"
+  4
+    Parameter 1: "include_top"
+    Parameter 2: "classifier_activation"
+    Constraint: "include_top == True or classifier_activation is None"
+  5
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.inception_v3.InceptionV3 in a complex way */
+import tensorflow as tf

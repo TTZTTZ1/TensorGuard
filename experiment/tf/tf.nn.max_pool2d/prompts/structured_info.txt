@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  ksize:
+    dtype: ["int"]
+    range: [1, inf]
+    structure: ["scalar", "list"]
+    shape: [1, 2, 4]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: [1, inf]
+    structure: ["scalar", "list"]
+    shape: [1, 2, 4]
+    default: null
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar", "list"]
+    shape: [[1], [4,2]]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NCHW_VECT_C"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "NHWC"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: padding
+    Parameter 2: data_format
+    Constraint: not (isinstance(padding, list) and data_format == 'NCHW_VECT_C')
+  2:
+    Parameter 1: padding
+    Parameter 2: ksize
+    Constraint: not (isinstance(padding, list) and any(p > k for p, k in zip([padding[1][0], padding[1][1], padding[2][0], padding[2][1]] if data_format == 'NHWC' else [padding[2][0], padding[2][1], padding[3][0], padding[3][1]] if data_format in ['NCHW', 'NCHW_VECT_C'] else [], [ksize if isinstance(ksize, int) else (ksize[0] if len(ksize) == 1 else (ksize[0] if len(ksize) == 2 else ksize[1]) if data_format == 'NHWC' else (ksize[0] if len(ksize) == 1 else (ksize[0] if len(ksize) == 2 else ksize[2])) for _ in range(4)])))

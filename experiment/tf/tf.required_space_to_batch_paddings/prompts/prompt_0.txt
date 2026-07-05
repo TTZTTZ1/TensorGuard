@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.required_space_to_batch_paddings` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.required_space_to_batch_paddings` function calculates the necessary padding to ensure that an input tensor's shape is divisible by a given block shape. It is primarily used to generate appropriate `paddings` and `crops` arguments for operations like `space_to_batch_nd` and `batch_to_space_nd`.
+
+**Key Functionality:**
+- **Inputs:** 
+  - `input_shape`: A 1D int32 tensor of shape `[N]` representing the spatial dimensions of the input.
+  - `block_shape`: A 1D int32 tensor of shape `[N]` specifying the block sizes for each dimension.
+  - `base_paddings` (optional): A 2D int32 tensor of shape `[N, 2]` defining the minimum padding to apply. Defaults to zero.
+- **Outputs:** Returns a tuple `(paddings, crops)`:
+  - `paddings`: A 2D int32 tensor of shape `[N, 2]` representing the total padding to apply to each dimension.
+  - `crops`: A 2D int32 tensor of shape `[N, 2]` used later to crop the padded tensor back to its original size.
+- **Purpose:** Ensures that `(input_shape + paddings)` is divisible by `block_shape` in each dimension, facilitating block-based transformations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_shape:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  block_shape:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  base_paddings:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N, 2]"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: input_shape
+    Parameter 2: block_shape
+    Constraint: "tf.shape(input_shape)[0] == tf.shape(block_shape)[0]"
+  2:
+    Parameter 1: base_paddings
+    Parameter 2: input_shape
+    Constraint: "tf.shape(base_paddings)[0] == tf.shape(input_shape)[0] and tf.shape(base_paddings)[1] == 2"
+  3:
+    Parameter 1: base_paddings
+    Parameter 2: base_paddings
+    Constraint: "tf.reduce_all(base_paddings >= 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.required_space_to_batch_paddings in a complex way */
+import tensorflow as tf

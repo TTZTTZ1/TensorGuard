@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.RootMeanSquaredError` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`tf.keras.metrics.RootMeanSquaredError`** is a metric that computes the **root mean squared error (RMSE)** between true values (`y_true`) and predictions (`y_pred`). It inherits from `Mean` and `Metric` classes.
+
+### **Key Formula:**
+\[
+\text{RMSE} = \sqrt{\text{mean}((y\_\text{pred} - y\_\text{true})^2)}
+\]
+
+### **Main Usage:**
+- **During model training/evaluation** to measure regression performance.
+- Can be used directly in `model.compile()`:
+  ```python
+  model.compile(optimizer='sgd', 
+                loss='mse', 
+                metrics=[tf.keras.metrics.RootMeanSquaredError()])
+  ```
+
+### **Core Methods:**
+- **`update_state(y_true, y_pred, sample_weight=None)`**: Accumulates error statistics.
+- **`result()`**: Returns the current RMSE value as a scalar tensor.
+- **`reset_state()`**: Clears accumulated statistics (called between epochs/steps).
+
+### **Example:**
+```python
+m = tf.keras.metrics.RootMeanSquaredError()
+m.update_state([[0, 1], [0, 0]], [[1, 1], [0, 0]])
+print(m.result().numpy())  # Output: 0.5
+```
+
+### **Key Features:**
+- Supports **sample weighting**.
+- **Stateful**: Accumulates results across batches (use `reset_state()` to clear).
+- Compatible with TensorFlow's **stateless API** for distributed scenarios.
+
+This metric is commonly used in **regression tasks** (e.g., recommendation systems, forecasting) to quantify prediction errors in the original units of the target variable.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: 'root_mean_squared_error'
+  dtype:
+    dtype: ["dtype", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  y_true:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  y_pred:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  sample_weight:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "scalar"]
+    shape: "No mention"
+    default: '1'
+constraints:
+  1:
+    Parameter 1: sample_weight
+    Parameter 2: y_true
+    Constraint: "sample_weight is None or (tf.rank(sample_weight) == 0 or tf.rank(sample_weight) == tf.rank(y_true))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.RootMeanSquaredError in a complex way */
+import tensorflow as tf

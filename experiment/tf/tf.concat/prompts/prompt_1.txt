@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.concat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.concat` merges multiple tensors along a specified dimension (axis). The tensors must have identical shapes in all dimensions except the one being concatenated. The axis can be positive (0-based) or negative (counting from the end). This operation is commonly used for combining data sequences or features.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list", "tensor"]
+    shape: ["No mention"]
+    default: null
+  axis:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "concat"
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "all(tensor.shape.ndims == (values[0] if isinstance(values, list) else values).shape.ndims for tensor in (values if isinstance(values, list) else [values]))"
+  2:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "all(all((values[i] if isinstance(values, list) else [values][i]).shape[d] == (values[j] if isinstance(values, list) else [values][j]).shape[d] for d in range((values[0] if isinstance(values, list) else values).shape.ndims) if d != axis) for i in range(len(values if isinstance(values, list) else [values])) for j in range(len(values if isinstance(values, list) else [values])))"
+  3:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "-((values[0] if isinstance(values, list) else values).shape.ndims) <= axis < ((values[0] if isinstance(values, list) else values).shape.ndims)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.concat in a complex way */
+import tensorflow as tf

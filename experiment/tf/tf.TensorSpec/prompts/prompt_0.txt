@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.TensorSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TensorSpec` is a class in TensorFlow that describes the metadata of a tensor, including its shape, data type (`dtype`), and an optional name. It is primarily used to define and enforce constraints on tensor inputs or outputs in TensorFlow APIs, such as specifying the input signature for `tf.function` to control tracing and type checking.
+
+### Key Features:
+- **Purpose**: Defines the expected properties (shape, dtype) of tensors, enabling type validation and optimization (e.g., reducing retracing in `tf.function`).
+- **Initialization**: Created with `shape`, `dtype` (default: `tf.float32`), and an optional `name`.
+- **Compatibility Checking**: Provides methods like `is_compatible_with()` to verify if a tensor or another `TensorSpec` matches its constraints.
+- **Serialization**: Supports conversion to/from protobuf format for serialization.
+- **Subtyping and Supertype Resolution**: Implements `TraceType` interface for type hierarchy operations (e.g., `is_subtype_of`, `most_specific_common_supertype`).
+
+### Common Use Cases:
+1. **Input Signatures for `tf.function`**: Constrain input types to avoid unnecessary retracing and enforce shape/dtype consistency.
+   ```python
+   @tf.function(input_signature=[tf.TensorSpec([None, 10], tf.float32)])
+   def my_func(x):
+       return x * 2
+   ```
+2. **Tensor Metadata Extraction**: Generate a `TensorSpec` from an existing tensor using `from_tensor()`.
+3. **Type Validation**: Check compatibility between tensors or specs during runtime.
+
+### Example:
+```python
+spec = tf.TensorSpec(shape=(2, 3), dtype=tf.int32, name="my_tensor")
+# spec describes a 2x3 int32 tensor.
+```
+
+In summary, `TensorSpec` is a metadata wrapper for tensors that facilitates type-safe operations, performance optimizations, and serialization in TensorFlow.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int", "list", "tuple", "tf.TensorShape"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["tf.dtypes.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "tf.dtypes.float32"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "shape"
+    Parameter 2: "shape"
+    Constraint: "isinstance(shape, (int, list, tuple, tf.TensorShape))"
+  2:
+    Parameter 1: "dtype"
+    Parameter 2: "dtype"
+    Constraint: "isinstance(dtype, tf.dtypes.DType)"
+  3:
+    Parameter 1: "name"
+    Parameter 2: "name"
+    Constraint: "name is None or isinstance(name, str)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TensorSpec in a complex way */
+import tensorflow as tf

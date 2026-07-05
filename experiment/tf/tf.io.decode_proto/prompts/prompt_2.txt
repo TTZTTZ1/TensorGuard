@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.io.decode_proto` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.decode_proto` is a TensorFlow operation that decodes serialized protocol buffer messages into tensors. It extracts specified fields from the serialized data and converts them into dense tensors of the requested output types.
+
+**Key Features:**
+- **Input:** A tensor of serialized protos (binary or text format).
+- **Field Extraction:** Decodes specific fields listed in `field_names` into corresponding `output_types`.
+- **Output:** Returns a tuple `(sizes, values)`:
+  - `sizes`: A tensor indicating the number of valid entries per field per example.
+  - `values`: A list of tensors containing the decoded field data, padded to the maximum repeated length in the batch.
+- **Descriptor Source:** Supports linked-in descriptors, file-based descriptors, or raw bytes for protocol definitions.
+- **Use Cases:** Primarily intended for generated code or automated workflows rather than manual parsing.
+
+**Important Notes:**
+- Submessages are returned as serialized strings.
+- Handles unsigned integers via two's complement representation.
+- Map fields are treated as repeated fields of their implicit entry type.
+- Enum fields should be read as `int32`.
+
+**Example Workflow:**  
+Useful for converting serialized protos (e.g., from TF records) into tensors for model input, with optional conversion to ragged tensors using the `sizes` output for handling variable-length data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  bytes:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  message_type:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  field_names:
+    dtype: ["string"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  output_types:
+    dtype: ["tf.DType"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  descriptor_source:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "local://"
+  message_format:
+    dtype: ["string"]
+    range: [["binary", "text"]]
+    structure: ["scalar"]
+    shape: null
+    default: "binary"
+  sanitize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: field_names
+    Parameter 2: output_types
+    Constraint: "len(field_names) == len(output_types)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.decode_proto in a complex way */
+import tensorflow as tf

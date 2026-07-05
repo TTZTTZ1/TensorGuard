@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `torch.distributions.pareto.Pareto` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Features**
+
+### **1. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### **2. Distribution Classes**
+**Base Classes:**
+- `Distribution`: Abstract base class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+- `ExponentialFamily`: Specialized for exponential family distributions
+
+**Available Distributions (30+ types):**
+- Common: `Bernoulli`, `Normal`, `Uniform`, `Exponential`, `Gamma`, `Beta`
+- Multivariate: `MultivariateNormal`, `Dirichlet`, `Wishart`
+- Specialized: `Categorical`, `Poisson`, `StudentT`, `VonMises`, `LKJCholesky`
+- Transformed: `LogNormal`, `HalfNormal`, `Gumbel`, `Weibull`
+
+### **3. Key Methods**
+- `sample()` / `rsample()`: Generate samples (latter is reparameterized)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Distribution entropy
+- `cdf()` / `icdf()`: Cumulative distribution and inverse functions
+- `expand()`: Batch dimension expansion
+
+### **4. Advanced Components**
+- **Transforms**: Bijective transformations (`Transform` base class) for constrained parameter spaces
+- **Constraints**: Domain validation (`Constraint` base class) with registry system
+- **KL Divergence**: Pre-implemented KL divergences between distribution pairs
+- **Mixture Models**: `MixtureSameFamily` for mixture distributions
+
+### **5. Constraint System**
+- `transform_to()`: Maps unconstrained to constrained space (optimization-friendly)
+- `biject_to()`: Bijective mapping for HMC sampling
+- Built-in constraints: `simplex`, `positive_definite`, `interval`, etc.
+
+## **Typical Usage Patterns**
+
+```python
+# 1. Basic distribution usage
+m = Normal(loc=0, scale=1)
+samples = m.sample([100])
+log_probs = m.log_prob(samples)
+
+# 2. REINFORCE gradient estimation
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# 3. Reparameterization trick
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+
+# 4. Constrained parameters via transforms
+unconstrained = torch.randn(3)
+transform = transform_to(constraints.simplex)
+constrained = transform(unconstrained)  # Valid simplex values
+```
+
+## **Design Benefits**
+- **Modular**: Clean separation between distributions, transforms, and constraints
+- **Differentiable**: Supports gradient-based optimization through both score function and pathwise estimators
+- **Batch-aware**: Native support for batched parameters and samples
+- **Extensible**: Easy to register custom distributions, transforms, and constraints
+
+The package is particularly useful for reinforcement learning, variational inference, Bayesian modeling, and any application requiring probabilistic modeling with gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  alpha:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: alpha
+    Parameter 2: null
+    Constraint: "alpha > 0.0"
+  2:
+    Parameter 1: scale
+    Parameter 2: null
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.pareto.Pareto in a complex way */
+import torch

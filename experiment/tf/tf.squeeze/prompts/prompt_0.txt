@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.squeeze` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.squeeze` removes dimensions of size 1 from a tensor's shape. By default, it removes all such dimensions, but you can specify an `axis` list to target only certain dimensions. If the tensor has unknown dimensions (like `None`), squeezing without specifying `axis` may result in an unknown output shape. It works with standard tensors and `RaggedTensor` (where it takes O(N) time for squeezed dimensions).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["list", "None"]
+    shape: null
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "axis is None or all(-rank(input) <= ax < rank(input) for ax in axis)"
+  2:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "axis is None or all(input.shape[ax if ax >= 0 else ax + rank(input)] == 1 for ax in axis)"
+  3:
+    Parameter 1: input
+    Parameter 2: axis
+    Constraint: "not (isinstance(input, tf.RaggedTensor) and axis is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.squeeze in a complex way */
+import tensorflow as tf

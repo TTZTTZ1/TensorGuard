@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `tf.keras.callbacks.TensorBoard` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.callbacks.TensorBoard` callback enables TensorBoard visualizations for Keras model training and evaluation. It logs key information including:
+
+- **Metrics summary plots** (loss, accuracy, etc.)
+- **Training graph visualization** (when `write_graph=True`)
+- **Weight histograms** (frequency controlled by `histogram_freq`)
+- **Sampled profiling** (via `profile_batch`)
+- **Embedding visualizations** (via `embeddings_freq` and `embeddings_metadata`)
+
+### Key Parameters:
+- `log_dir`: Directory where TensorBoard log files are saved.
+- `histogram_freq`: How often (in epochs) to log weight histograms (0 to disable).
+- `update_freq`: Logging frequency (`"epoch"`, `"batch"`, or an integer number of batches).
+- `write_steps_per_second`: Whether to log training speed.
+- `profile_batch`: Batch or batch range to profile for performance insights.
+
+### Basic Usage:
+```python
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="./logs")
+model.fit(x_train, y_train, epochs=5, callbacks=[tensorboard_callback])
+```
+After training, launch TensorBoard from the command line:
+```bash
+tensorboard --logdir=./logs
+```
+
+### Advanced Features:
+- **Batch-level logging**: Use `update_freq=1` (or an integer) and add `tf.summary` calls in your model to log custom batch-level summaries.
+- **Profiling**: Profile specific batches (e.g., `profile_batch=5` or `profile_batch=(10,20)`) to analyze performance.
+
+This callback is essential for visualizing training progress, debugging, and optimizing model performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  log_dir:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "logs"
+  histogram_freq:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  write_graph:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  write_images:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  write_steps_per_second:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  update_freq:
+    dtype: ["string", "int"]
+    range: [["batch", "epoch"], null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "epoch"
+  profile_batch:
+    dtype: ["int", "tuple"]
+    range: [null, null]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  embeddings_freq:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  embeddings_metadata:
+    dtype: ["dict", "string", "null"]
+    range: null
+    structure: ["scalar", "dict"]
+    shape: [1, null]
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.callbacks.TensorBoard in a complex way */
+import tensorflow as tf

@@ -1,0 +1,40 @@
+params:
+  values:
+    dtype: ["tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: 
+    Constraint: "len(values) >= 2"
+  2:
+    Parameter 1: values
+    Parameter 2: 
+    Constraint: "all(tensor.dtype == values[0].dtype for tensor in values)"
+  3:
+    Parameter 1: values
+    Parameter 2: 
+    Constraint: "all(tensor.shape.ndims == values[0].shape.ndims for tensor in values)"
+  4:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "all(tensor.shape[i] == values[0].shape[i] for tensor in values for i in range(tensor.shape.ndims) if i != axis)"
+  5:
+    Parameter 1: axis
+    Parameter 2: values
+    Constraint: "axis >= -values[0].shape.ndims and axis < values[0].shape.ndims"

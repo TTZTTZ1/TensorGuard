@@ -1,0 +1,40 @@
+params:
+  inputs:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["list"]
+    shape: [1, 2]
+    default: "null"
+  equation:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "inputs"
+    Parameter 2: "null"
+    Constraint: "len(inputs) in [1, 2]"
+  2:
+    Parameter 1: "inputs"
+    Parameter 2: "null"
+    Constraint: "all(t.dtype == inputs[0].dtype for t in inputs) and len(inputs) > 0"
+  3:
+    Parameter 1: "equation"
+    Parameter 2: "inputs"
+    Constraint: "'->' in equation and equation.split('->')[0].count(',') + 1 == len(inputs)"
+  4:
+    Parameter 1: "equation"
+    Parameter 2: "null"
+    Constraint: "equation.count('->') == 1"
+  5:
+    Parameter 1: "equation"
+    Parameter 2: "null"
+    Constraint: "set(c for c in equation.split('->')[1] if c not in ',.->').issubset(set(c for part in equation.split('->')[0].split(',') for c in part if c not in ',.->'))"

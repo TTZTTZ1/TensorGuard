@@ -1,0 +1,72 @@
+params:
+  input_dataset:
+    dtype: ["variant"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  batch_size:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar"]
+    default: null
+  padded_shapes:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["list", "tensor"]
+    shape: ["any"]
+    default: null
+  padding_values:
+    dtype: ["any"]
+    range: [null]
+    structure: ["list", "tensor"]
+    shape: ["any"]
+    default: null
+  drop_remainder:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar"]
+    default: null
+  output_shapes:
+    dtype: ["any"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  parallel_copy:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  metadata:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ""
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: padded_shapes
+    Parameter 2: padded_shapes
+    Constraint: "len(padded_shapes) >= 1"
+  2:
+    Parameter 1: output_shapes
+    Parameter 2: output_shapes
+    Constraint: "len(output_shapes) >= 1"
+  3:
+    Parameter 1: padded_shapes
+    Parameter 2: padding_values
+    Constraint: "len(padded_shapes) == len(padding_values)"
+  4:
+    Parameter 1: padded_shapes
+    Parameter 2: output_shapes
+    Constraint: "len(padded_shapes) == len(output_shapes)"

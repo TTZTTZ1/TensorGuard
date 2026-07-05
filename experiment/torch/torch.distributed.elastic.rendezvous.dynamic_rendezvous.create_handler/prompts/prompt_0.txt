@@ -1,0 +1,142 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.rendezvous.dynamic_rendezvous.create_handler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Distributed Elastic Rendezvous is a distributed synchronization and peer discovery mechanism used to coordinate nodes in a training job. It ensures that all participating nodes agree on the same membership list, roles (ranks), and a shared key-value store before training begins or resumes.
+
+### Key Features:
+- **Barrier Synchronization**: Nodes block until a minimum number (`min_nodes`) join, with an optional wait time to allow latecomers. The rendezvous completes immediately if the maximum (`max_nodes`) is reached.
+- **Exclusivity**: Prevents multiple independent groups from forming for the same job; late nodes wait until the current rendezvous is destroyed.
+- **Consistency**: All members agree on job membership and assigned ranks (0 to world size), though ranks are not stable across re-rendezvous.
+- **Fault Tolerance**: Handles node failures during rendezvous by automatically triggering a re-rendezvous with healthy nodes.
+- **Shared Key-Value Store**: Returns a `torch.distributed.Store` for exchanging initialization data among members.
+
+### Main Components:
+1. **`RendezvousHandler`**: Main interface for participating in rendezvous. Key methods:
+   - `next_rendezvous()`: Blocks until rendezvous completes, returning `RendezvousInfo` (store, rank, world size).
+   - `is_closed()` / `set_closed()`: Manage rendezvous closure to signal job completion.
+   - `num_nodes_waiting()`: Checks for late nodes that can join in the next re-rendezvous.
+
+2. **`DynamicRendezvousHandler`**: The primary implementation, backend-agnostic and configurable with:
+   - **Backends**: 
+     - `C10dRendezvousBackend`: Uses C10d store (TCPStore/FileStore), no third-party dependencies.
+     - `EtcdRendezvousBackend`: Uses etcd for distributed state management (legacy `EtcdRendezvousHandler` is deprecated).
+   - **Parameters**: `run_id`, `min_nodes`, `max_nodes`, timeouts (join, last call, close, heartbeat).
+
+3. **`RendezvousParameters`**: Holds configuration for creating a handler (backend, endpoint, run ID, node limits, etc.).
+
+### Typical Usage:
+```python
+store = TCPStore("localhost", 1234)
+backend = C10dRendezvousBackend(store, "my_run_id")
+rdzv_handler = DynamicRendezvousHandler.from_backend(
+    run_id="my_run_id", store=store, backend=backend, min_nodes=2, max_nodes=4
+)
+store, rank, world_size = rdzv_handler.next_rendezvous()
+```
+
+### Error Handling:
+Defines specific exceptions (e.g., `RendezvousClosedError`, `RendezvousTimeoutError`) for robust error management.
+
+### Use Case:
+Essential for elastic training scenarios where nodes can dynamically join, leave, or fail, ensuring consistent coordination without manual intervention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  store:
+    dtype: ["Store"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+  backend:
+    dtype: ["RendezvousBackend"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+  params:
+    dtype: ["RendezvousParameters"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+  join_timeout:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "600"
+  last_call_timeout:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "30"
+  close_timeout:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "30"
+  heartbeat:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  keep_alive_interval:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "5"
+  keep_alive_max_attempt:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "3"
+  run_id:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  min_nodes:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  max_nodes:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  local_addr:
+    dtype: ["string", "null"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  timeout:
+    dtype: ["RendezvousTimeout", "null"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "None"
+
+constraints:
+  1:
+    Parameter 1: min_nodes
+    Parameter 2: max_nodes
+    Constraint: "min_nodes <= max_nodes"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.rendezvous.dynamic_rendezvous.create_handler in a complex way */
+import torch

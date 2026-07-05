@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.compat.forward_compatible` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.compat.forward_compatible` is a function used to manage forward compatibility in TensorFlow. It returns `True` if the current date is past a specified target date, indicating that newer features or changes can be safely enabled without breaking compatibility with older consumer binaries.
+
+**Purpose:**  
+To allow gradual rollout of new features or API changes while maintaining compatibility with older TensorFlow versions for a specified period (typically at least 3 weeks).
+
+**Usage:**  
+Wrap new or updated functionality with a conditional check using this function. If the current date is beyond the provided `(year, month, day)`, the new implementation is used; otherwise, the old one is retained to ensure forward compatibility.
+
+**Example:**  
+```python
+if tf.compat.forward_compatible(2023, 10, 15):
+    # Use new feature
+else:
+    # Fallback to old implementation
+```
+
+**Key Points:**  
+- Helps producers (model builders) transition to new features without immediately breaking consumers (model servers) running older TensorFlow versions.
+- The target date should be set at least 3 weeks after the change is committed to allow consumers to update.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  year:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  month:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  day:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: month
+    Parameter 2: month
+    Constraint: "1 <= month <= 12"
+  2:
+    Parameter 1: day
+    Parameter 2: month
+    Constraint: "1 <= day <= 31 and (month in [1,3,5,7,8,10,12] or day <= 30) and (month != 2 or day <= 29)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.compat.forward_compatible in a complex way */
+import tensorflow as tf

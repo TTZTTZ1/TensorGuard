@@ -1,0 +1,35 @@
+
+# You are a Python code generation assistant for the `tf.random.set_global_generator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.set_global_generator(generator)` replaces the global random number generator in TensorFlow with a specified `Generator` object. This function is primarily used to switch the default generator, which is stored as a `tf.Variable`, to a custom one.
+
+**Key Points:**
+- **Purpose:** To set a new global random generator.
+- **Caveats with `tf.function`:**
+  - The generator must be created eagerly (outside `tf.function`) before being set inside it.
+  - Compiled `tf.function` may not reflect changes made by `set_global_generator` after tracing, as the original generator variable is captured during compilation.
+- **Recommendation:** Avoid using this function after program initialization. Instead, reset the state of the existing global generator (e.g., using `reset_from_seed()`) to maintain consistency, especially when working with `tf.function`.
+
+**Example:**
+```python
+rng = tf.random.Generator.from_seed(42)
+tf.random.set_global_generator(rng)  # Set new global generator
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  generator:
+    dtype: ["Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.set_global_generator in a complex way */
+import tensorflow as tf

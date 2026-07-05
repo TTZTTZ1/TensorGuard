@@ -1,0 +1,33 @@
+# tf.raw_ops.OnesLike
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/OnesLike](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/OnesLike)
+
+---
+
+Returns a tensor of ones with the same shape and type as x.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.OnesLike`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/OnesLike)
+
+```
+tf.raw_ops.OnesLike(
+    x, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `x` | A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int8`, `uint8`, `int16`, `uint16`, `int32`, `uint32`, `int64`, `uint64`, `complex64`, `complex128`, `bool`. a tensor of type T. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `x`. | |

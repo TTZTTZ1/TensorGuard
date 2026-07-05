@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel` performs per-channel fake quantization on a float input tensor. It simulates quantization by mapping input values to a quantized range and then back to float values within a specified per-channel clamping range defined by `min` and `max` tensors. This operation supports gradient-based training of the `min` and `max` parameters.
+
+**Key Features:**
+- **Per-Channel Quantization:** Uses separate `min` and `max` values for each channel (shape `[d]`).
+- **Adjustable Range:** The clamping range `[min, max]` is automatically adjusted if zero is not included, ensuring stable quantization.
+- **Configurable Precision:** Allows setting quantization bitwidth (`num_bits`, 2–16) and optional narrow range.
+- **Gradient Support:** Enables training of the `min` and `max` variables via backpropagation.
+
+**Typical Use:** Simulating quantization effects during training to improve model compatibility with low-precision inference.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d]", "[b, d]", "[b, h, w, d]"]
+    default: null
+  min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d]"]
+    default: null
+  max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d]"]
+    default: null
+  num_bits:
+    dtype: ["int"]
+    range: [2, 16]
+    structure: ["scalar"]
+    shape: null
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: [False, True]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: min
+    Constraint: "inputs.shape[-1] == min.shape[0]"
+  2:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min.shape == max.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel in a complex way */
+import tensorflow as tf

@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.nn.ConvTranspose1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`ConvTranspose1d` is a PyTorch module that performs a 1D transposed convolution, often used for upsampling or generating outputs from compressed representations. It acts as the gradient of `Conv1d` and is sometimes called a deconvolution (though not a true inverse).  
+
+**Key parameters:**  
+- `in_channels`, `out_channels`: Input and output channel counts.  
+- `kernel_size`: Size of the convolving kernel.  
+- `stride`: Controls spacing between kernel applications (default 1).  
+- `padding`: Adds zero padding to input; amount is `dilation * (kernel_size - 1) - padding`.  
+- `output_padding`: Adjusts output shape to resolve ambiguity when `stride > 1`.  
+- `dilation`: Spacing between kernel elements.  
+- `groups`: Splits input/output into separate convolution paths.  
+
+**Output shape:**  
+\[
+L_{\text{out}} = (L_{\text{in}} - 1) \times \text{stride} - 2 \times \text{padding} + \text{dilation} \times (\text{kernel\_size} - 1) + \text{output\_padding} + 1
+\]
+
+**Notes:**  
+- With matching parameters, `Conv1d` and `ConvTranspose1d` can invert each other’s input/output shapes.  
+- `output_padding` only affects shape calculation, not actual padding.  
+- Supports TensorFloat32 and has optional deterministic operation settings for reproducibility.  
+
+**Example use:** Upsampling after a downsampling convolution to restore original dimensions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "0"
+  output_padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "0"
+  groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "1"
+  padding_mode:
+    dtype: ["string"]
+    range: [["zeros"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "zeros"
+  device:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: in_channels
+    Parameter 2: groups
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: out_channels
+    Parameter 2: groups
+    Constraint: "out_channels % groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.ConvTranspose1d in a complex way */
+import torch

@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorScaledIdentity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorScaledIdentity` represents a linear operator that behaves like a scaled identity matrix, defined as `A = c * I`, where `c` is a scalar multiplier and `I` is the identity matrix. It supports batched operations, meaning the multiplier can vary across different batch dimensions.
+
+### Key Features:
+- **Initialization**: Requires `num_rows` (size of the identity matrix) and a `multiplier` (scalar or batch of scalars).
+- **Efficiency**: Optimized for operations like matrix multiplication (`matmul`) and solving linear systems (`solve`), both with linear time complexity relative to the matrix size.
+- **Shape Compatibility**: Operates on batch matrices with compatible shapes, following TensorFlow broadcasting rules.
+- **Matrix Properties**: Allows hints (e.g., `is_non_singular`, `is_self_adjoint`) to enable performance optimizations.
+
+### Common Use Cases:
+- Representing scaled identity matrices in linear algebra operations.
+- Efficiently applying scalar scaling to vectors or matrices in batched computations.
+- Serving as a preconditioner or simplified operator in iterative solvers.
+
+### Example:
+```python
+operator = tf.linalg.LinearOperatorScaledIdentity(num_rows=2, multiplier=3.0)
+# operator acts like [[3, 0], [0, 3]]
+x = tf.constant([[1., 2.], [3., 4.]])  # Shape (2, 2)
+result = operator.matmul(x)  # Returns 3 * x
+```
+
+This operator is particularly useful when you need the computational benefits of an identity structure (e.g., fast solves) but with a non-unit scaling factor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_rows:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  multiplier:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  assert_proper_shapes:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'LinearOperatorScaledIdentity'"
+constraints:
+  1:
+    Parameter 1: "num_rows"
+    Parameter 2: null
+    Constraint: "num_rows >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorScaledIdentity in a complex way */
+import tensorflow as tf

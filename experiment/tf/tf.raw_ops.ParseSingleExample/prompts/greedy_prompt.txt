@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ParseSingleExample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ParseSingleExample` parses a single serialized `tf.Example` proto into structured tensors. It extracts both sparse and dense features based on provided keys, types, and shapes.
+
+**Key Parameters:**
+- `serialized`: A string tensor containing the serialized Example proto.
+- `sparse_keys`/`dense_keys`: Names of sparse and dense features to extract.
+- `sparse_types`/`dense_shapes`: Data types and shapes for the respective features.
+- `dense_defaults`: Default values for dense features if missing in the input.
+- `num_sparse`: Number of sparse features (must match lengths of `sparse_keys` and `sparse_types`).
+
+**Outputs:** Returns a tuple containing:
+- Sparse features: indices, values, and shapes.
+- Dense features: values matching the provided `dense_shapes`.
+
+**Use Case:** Primarily used in data preprocessing pipelines to decode TFRecord examples into tensors for model input.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  dense_defaults:
+    dtype: ["float32", "int64", "string"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  num_sparse:
+    dtype: ["int"]
+    range: ["[0, inf)"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  sparse_keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  dense_keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  sparse_types:
+    dtype: ["float32", "int64", "string"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  dense_shapes:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: num_sparse
+    Parameter 2: sparse_keys
+    Constraint: len(sparse_keys) == num_sparse
+  2:
+    Parameter 1: num_sparse
+    Parameter 2: sparse_types
+    Constraint: len(sparse_types) == num_sparse
+  3:
+    Parameter 1: dense_defaults
+    Parameter 2: dense_keys
+    Constraint: len(dense_defaults) == len(dense_keys)
+  4:
+    Parameter 1: dense_shapes
+    Parameter 2: dense_keys
+    Constraint: len(dense_shapes) == len(dense_keys)
+  5:
+    Parameter 1: dense_defaults
+    Parameter 2: dense_shapes
+    Constraint: all([dense_defaults[j].shape == dense_shapes[j] for j in range(len(dense_keys)) if dense_shapes[j].count(-1) == 0 and dense_defaults[j].shape.num_elements() > 0])
+  6:
+    Parameter 1: dense_defaults
+    Parameter 2: dense_shapes
+    Constraint: all([dense_defaults[j].shape.num_elements() == 1 for j in range(len(dense_keys)) if dense_shapes[j][0] == -1])
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ParseSingleExample in a complex way */
+import tensorflow as tf

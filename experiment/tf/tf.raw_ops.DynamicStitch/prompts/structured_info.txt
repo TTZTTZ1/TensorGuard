@@ -1,0 +1,32 @@
+params:
+  indices:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["list"]
+    shape: ["at least 1"]
+    default: null
+  data:
+    dtype: ["any"]
+    range: [null]
+    structure: ["list"]
+    shape: ["same length as indices"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "len(indices) == len(data)"
+  2:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "all(data[i].shape[:len(indices[i].shape)] == indices[i].shape for i in range(len(indices)))"
+  3:
+    Parameter 1: data
+    Parameter 2: data
+    Constraint: "all(data[i].shape[len(indices[i].shape):] == data[0].shape[len(indices[0].shape):] for i in range(1, len(data)))"

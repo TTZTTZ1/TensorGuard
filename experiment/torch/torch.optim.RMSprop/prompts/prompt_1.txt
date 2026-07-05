@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.optim.RMSprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RMSprop** is a gradient-based optimization algorithm that adapts the learning rate for each parameter by using a moving average of squared gradients. It's particularly effective for non-stationary objectives and recurrent neural networks.
+
+### Key Features:
+- **Adaptive Learning Rate**: Scales the learning rate for each parameter based on the magnitude of recent gradients.
+- **Centered Option**: When enabled, normalizes gradients by an estimate of their variance for more stable updates.
+- **Momentum Support**: Optional momentum term to accelerate convergence.
+- **Weight Decay**: L2 penalty (weight decay) is applied directly to gradients before the RMSprop update.
+
+### Algorithm Overview:
+1. Compute gradient \( g_t \)
+2. Apply weight decay if \( \lambda \neq 0 \)
+3. Update squared gradient moving average: \( v_t = \alpha v_{t-1} + (1-\alpha) g_t^2 \)
+4. If `centered=True`, adjust using gradient mean estimate
+5. Apply momentum if \( \mu > 0 \), else use scaled gradient directly
+6. Update parameters: \( \theta_t = \theta_{t-1} - \gamma \cdot \text{update} \)
+
+### Main Parameters:
+- `lr` (default: 0.01): Learning rate
+- `alpha` (default: 0.99): Smoothing constant for squared gradient average
+- `eps` (default: 1e-8): Added to denominator for numerical stability
+- `weight_decay` (default: 0): L2 penalty coefficient
+- `momentum` (default: 0): Momentum factor
+- `centered` (default: False): Whether to compute centered RMSProp
+- `foreach` (default: None): Use foreach implementation for better performance on CUDA (higher memory)
+- `maximize` (default: False): Maximize instead of minimize objective
+
+### Usage Example:
+```python
+optimizer = torch.optim.RMSprop(model.parameters(), lr=0.01, alpha=0.99)
+```
+
+### Additional Functionality:
+- Supports parameter groups with different hyperparameters
+- State dict serialization for saving/loading optimizer state
+- Various hooks for customizing step, state dict, and load operations
+- Options for CUDA graph capture, differentiability, and memory optimization
+
+RMSprop is especially useful for problems with noisy or sparse gradients, and is a popular choice for training RNNs and other architectures where adaptive learning rates are beneficial.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "0.01"
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.99"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  momentum:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  centered:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.RMSprop in a complex way */
+import torch

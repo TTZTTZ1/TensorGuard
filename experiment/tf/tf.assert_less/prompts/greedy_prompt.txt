@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.assert_less` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.assert_less` is a TensorFlow debugging operation that verifies the element-wise condition `x < y` for two numeric tensors. If the condition fails, it raises an `InvalidArgumentError` with an optional custom message and a summary of tensor values.
+
+**Key Features:**
+- Validates that every pair of elements in `x` and `y` satisfies `x[i] < y[i]`, supporting broadcasting.
+- Works in both eager execution and graph mode (e.g., inside `tf.function`).
+- Recommended to use with `tf.control_dependencies` to ensure proper execution order in graph mode.
+
+**Arguments:**
+- `x`, `y`: Numeric tensors of the same dtype (must be broadcastable).
+- `message` (optional): Custom error message prefix.
+- `summarize` (optional): Number of tensor entries to display in the error.
+- `name` (optional): Operation name.
+
+**Returns:**
+- An operation that raises `InvalidArgumentError` on failure, usable with `tf.control_dependencies` to enforce execution order.
+
+**Example:**
+```python
+with tf.control_dependencies([tf.debugging.assert_less(x, y)]):
+    # Proceed only if x < y holds
+    result = tf.add(x, y)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  message:
+    dtype: ["string"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: null
+  summarize:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: "assert_less"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "x.dtype == y.dtype"
+  2:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "all(sx == 1 or sy == 1 or sx == sy for sx, sy in zip(x.shape.as_list(), y.shape.as_list()))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.assert_less in a complex way */
+import tensorflow as tf

@@ -1,0 +1,40 @@
+params:
+  params_nested_splits:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  params_dense_values:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  OUTPUT_RAGGED_RANK:
+    dtype: ["int"]
+    range: [0, null]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "params_nested_splits"
+    Parameter 2: "params_nested_splits"
+    Constraint: "len(params_nested_splits) >= 1 and all(tensor.dtype in ['int32', 'int64'] for tensor in params_nested_splits) and len(set(tensor.dtype for tensor in params_nested_splits)) == 1"
+  2:
+    Parameter 1: "OUTPUT_RAGGED_RANK"
+    Parameter 2: "indices"
+    Constraint: "OUTPUT_RAGGED_RANK == indices.ndim + len(params_nested_splits) - 1"

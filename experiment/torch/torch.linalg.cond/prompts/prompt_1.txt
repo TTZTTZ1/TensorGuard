@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `torch.linalg.cond` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.cond` computes the condition number of a matrix (or batch of matrices) relative to a specified matrix norm, measuring the numerical stability of solving linear systems involving that matrix.
+
+**Key points:**
+- **Formula:** For matrix \( A \), condition number \( \kappa(A) = \|A\|_p \|A^{-1}\|_p \).
+- **Norms supported:** `p` can be `None` (default, 2-norm), `'fro'`, `'nuc'`, `inf`, `-inf`, `1`, `-1`, `2`, or `-2`.
+- **Input shape:** 
+  - For `p` in `('fro', 'nuc', inf, -inf, 1, -1)`: input must be square and invertible.
+  - For `p` in `(2, -2)`: any shape is allowed.
+- **Output:** Returns a real-valued tensor (even for complex inputs).
+- **Batch support:** Works on batched inputs, returning condition numbers per matrix in the batch.
+- **Device note:** For certain norms (`'fro'`, `'nuc'`, `inf`, `-inf`, `1`, `-1`), CUDA inputs synchronize with the CPU.
+
+**Example:**
+```python
+A = torch.tensor([[1., 0, -1], [0, 1, 0], [1, 0, 1]])
+torch.linalg.cond(A, 2)  # Output: tensor([1.4142])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, m, n)", "(*, n, n)"]
+    default: null
+  p:
+    dtype: ["int", "str", "float", "None"]
+    range: ["None", "'fro'", "'nuc'", "inf", "-inf", "1", "-1", "2", "-2"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.cond in a complex way */
+import torch

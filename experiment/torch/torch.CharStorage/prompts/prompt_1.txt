@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.CharStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### **Core Concept**
+- A **`torch.UntypedStorage`** is a contiguous, one-dimensional byte array that holds the raw data for tensors.
+- Tensors are multi-dimensional views over this storage, defined by metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### **Key Points**
+1. **Storage Sharing**: Multiple tensors (e.g., views created via `.view()` or slicing) can share the same underlying storage.
+2. **Access**: Use `tensor.untyped_storage()` to get the storage. The storage has a unique identifier via `.data_ptr()`.
+3. **Independence**: Storages are somewhat independent—tensors with different dtypes or shapes can point to the same storage.
+4. **Manipulation**: Low-level methods like `.fill_()`, `.clone()`, `.copy_()` exist but are **discouraged** for typical use. Prefer tensor-level operations.
+5. **Special Cases**:
+   - Tensors with gradients have separate storages for `.data` and `.grad`.
+   - Tensors on `"meta"` device or `FakeTensor` have no actual storage.
+6. **Legacy API**: Typed storage classes (e.g., `torch.FloatStorage`) are **deprecated**. Use `torch.UntypedStorage` instead.
+
+### **Common Use Cases**
+- **Memory-mapped files**: Create storage via `UntypedStorage.from_file()`.
+- **Shared memory**: Use `.share_memory_()` for inter-process communication.
+- **Device management**: Methods like `.cuda()`, `.cpu()`, `.pin_memory()` for moving storage across devices.
+
+### **Warning**
+Direct storage manipulation is a **low-level, risky operation** and should be avoided in favor of standard tensor APIs. Most applications do not need to interact with storage directly.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["variable"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["UntypedStorage", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  dtype:
+    dtype: ["dtype", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  device:
+    dtype: ["device", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.int8"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.CharStorage in a complex way */
+import torch

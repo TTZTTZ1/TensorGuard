@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `torch.distributions.lowrank_multivariate_normal.LowRankMultivariateNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` with reparameterization trick for VAEs
+
+### **3. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Relaxed distributions
+
+### **4. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits`
+- **Batch Support**: Native batch dimension handling
+- **Validation**: Argument validation with constraints
+- **Transforms**: Bijective transformations for constrained parameters
+- **KL Divergence**: Pre-registered KL computations between distributions
+
+### **5. Constraint System**
+- Defines valid parameter ranges (e.g., simplex, positive definite, interval)
+- `transform_to()` and `biject_to()` for unconstrained optimization
+- Automatic constraint validation
+
+### **6. Practical Applications**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders (reparameterization)
+- Bayesian modeling
+- Probabilistic programming
+- Statistical inference
+
+## **Basic Usage Pattern**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sample
+samples = dist.sample([100])
+
+# Compute probabilities
+log_probs = dist.log_prob(samples)
+
+# Reparameterized sampling (differentiable)
+reparam_samples = dist.rsample([100])
+```
+
+The module provides a unified interface for probabilistic modeling with automatic differentiation support, making it suitable for modern machine learning applications requiring stochastic computations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  cov_factor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape + (rank,)"]
+    default: null
+  cov_diag:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cov_factor
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 2)"
+  2:
+    Parameter 1: cov_diag
+    Parameter 2: 
+    Constraint: "IndependentConstraint(GreaterThan(lower_bound=0.0), 1)"
+  3:
+    Parameter 1: loc
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.lowrank_multivariate_normal.LowRankMultivariateNormal in a complex way */
+import torch

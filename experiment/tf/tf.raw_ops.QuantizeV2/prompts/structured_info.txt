@@ -1,0 +1,74 @@
+params:
+  input:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  min_range:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  max_range:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  T:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["MIN_COMBINED", "MIN_FIRST", "SCALED"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "MIN_COMBINED"
+  round_mode:
+    dtype: ["string"]
+    range: ["HALF_AWAY_FROM_ZERO", "HALF_TO_EVEN"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "HALF_AWAY_FROM_ZERO"
+  narrow_range:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  axis:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "-1"
+  ensure_minimum_range:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.01"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "narrow_range"
+    Parameter 2: "mode"
+    Constraint: "not narrow_range or mode == 'SCALED'"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "min_range"
+    Constraint: "axis == -1 or (min_range.ndim == 1 and min_range.shape[0] == input.shape[axis])"
+  3:
+    Parameter 1: "axis"
+    Parameter 2: "max_range"
+    Constraint: "axis == -1 or (max_range.ndim == 1 and max_range.shape[0] == input.shape[axis])"

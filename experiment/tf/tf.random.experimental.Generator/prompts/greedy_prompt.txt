@@ -1,0 +1,163 @@
+
+# You are a Python code generation assistant for the `tf.random.experimental.Generator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.experimental.Generator` is a stateful random number generator (RNG) in TensorFlow that provides enhanced control and reproducibility for random operations. It supports algorithms like Philox and ThreeFry, ensuring consistent outputs across different hardware (CPU, GPU, TPU) given the same seed.
+
+**Key Features:**
+- **State Management:** Uses a `tf.Variable` to track internal state, which updates after each random operation.
+- **Constructors:** Create generators via seeds (`from_seed`), non-deterministic states (`from_non_deterministic_state`), or explicit state/key-counter pairs.
+- **Distributed Compatibility:** Works within `tf.distribute.Strategy` scopes, providing different random streams across replicas while maintaining overall determinism when seeded.
+- **Checkpointing:** Can be saved and restored with `tf.train.Checkpoint`, even across different distribution setups.
+- **Methods:** Includes common distributions (`normal`, `uniform`, `binomial`, `truncated_normal`) and utilities like `split` (for independent generators) and `skip` (to advance RNG state).
+
+**Example Usage:**
+```python
+g = tf.random.Generator.from_seed(1234)
+values = g.normal(shape=(2, 3))  # Generates random values
+```
+
+**Global Generator:** Access a default global generator via `tf.random.get_global_generator()`.
+
+This class is ideal for applications requiring reproducible randomness, such as data augmentation, simulations, and distributed training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  copy_from:
+    dtype: ["Generator"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  state:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["algorithm-specific"]
+    default: "No mention"
+  alg:
+    dtype: ["int", "string"]
+    range: ["tf.random.Algorithm.PHILOX", "tf.random.Algorithm.THREEFRY", "philox", "threefry"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  shape:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor", "array"]
+    shape: [1]
+    default: "No mention"
+  counts:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["broadcastable with probs and rightmost dimensions of shape"]
+    default: "No mention"
+  probs:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["broadcastable with counts and rightmost dimensions of shape"]
+    default: "No mention"
+  dtype:
+    dtype: ["tf.dtype"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "tf.dtypes.int32"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  seed:
+    dtype: ["int", "tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: ["up to 1024-bit"]
+    default: "No mention"
+  key:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  counter:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["algorithm-specific"]
+    default: "No mention"
+  count:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  mean:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  stddev:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  minval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  maxval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  delta:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: minval
+    Parameter 2: maxval
+    Constraint: "(dtype is integer and minval is None and maxval is None) or (dtype is integer and minval is not None and maxval is not None)"
+  2:
+    Parameter 1: counts
+    Parameter 2: probs
+    Constraint: "counts and probs are broadcastable"
+  3:
+    Parameter 1: counts
+    Parameter 2: shape
+    Constraint: "counts is broadcastable with the rightmost dimensions of shape"
+  4:
+    Parameter 1: probs
+    Parameter 2: shape
+    Constraint: "probs is broadcastable with the rightmost dimensions of shape"
+  5:
+    Parameter 1: minval
+    Parameter 2: maxval
+    Constraint: "maxval is not None if dtype is integral"
+  6:
+    Parameter 1: alg
+    Parameter 2: state
+    Constraint: "state length is algorithm-specific"
+  7:
+    Parameter 1: seed
+    Parameter 2: alg
+    Constraint: "seed is 1024-bit or less, padded to 1024-bit"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.experimental.Generator in a complex way */
+import tensorflow as tf

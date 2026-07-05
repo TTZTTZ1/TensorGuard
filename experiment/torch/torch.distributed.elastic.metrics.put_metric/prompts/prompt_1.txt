@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.metrics.put_metric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Metrics API provides a framework for publishing telemetry metrics within distributed training jobs. It allows users to track custom metrics and performance data, similar to a logging system, with support for different output handlers.
+
+### **Key Concepts:**
+- **Metrics** are uniquely identified by a `(metric_group, metric_name)` tuple.
+- The `torchelastic` group is reserved for platform-level metrics.
+- Metrics are published via handlers, which determine where the data is sent (e.g., console, custom sinks).
+
+### **Core Usage:**
+
+1. **Configure Metrics Handler:**
+   - By default, metrics go to `/dev/null` (`NullMetricHandler`).
+   - You can configure handlers per metric group:
+     ```python
+     import torch.distributed.elastic.metrics as metrics
+     metrics.configure(metrics.ConsoleMetricHandler(), group="my_app")
+     ```
+
+2. **Publish Metrics:**
+   - Use `put_metric()` to record data:
+     ```python
+     metrics.put_metric("calculate_latency", latency_ms, "my_module")
+     ```
+
+3. **Profile Functions:**
+   - Use the `@prof` decorator to automatically track success, failure, and duration:
+     ```python
+     @metrics.prof(group="my_app")
+     def my_function():
+         pass
+     ```
+   - Publishes:
+     - `<module_or_class>.success`
+     - `<module_or_class>.failure`
+     - `<module_or_class>.duration.ms`
+
+### **Built-in Handlers:**
+- `ConsoleMetricHandler`: Outputs metrics to the console.
+- `NullMetricHandler`: Discards all metrics (default).
+
+### **Custom Handlers:**
+Implement the `MetricHandler` interface to send metrics to custom destinations (e.g., databases, monitoring systems).
+
+### **Example Workflow:**
+```python
+import torch.distributed.elastic.metrics as metrics
+
+# Configure console output for a specific group
+metrics.configure(metrics.ConsoleMetricHandler(), group="my_app")
+
+# Manually publish a metric
+metrics.put_metric("processing_time", 150, "my_app")
+
+# Automatically profile a function
+@metrics.prof(group="my_app")
+def train_step():
+    # training logic
+    pass
+```
+
+This API is designed for visibility and debugging in distributed PyTorch jobs, enabling both manual metric reporting and automated function profiling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  metric_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  metric_value:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  metric_group:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "torchelastic"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.metrics.put_metric in a complex way */
+import torch

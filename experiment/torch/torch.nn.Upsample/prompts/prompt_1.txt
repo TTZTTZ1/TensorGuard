@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.nn.Upsample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.Upsample` is a PyTorch module for increasing the spatial resolution of 1D, 2D, or 3D data. It supports nearest-neighbor and linear interpolation methods (linear, bilinear, bicubic, trilinear) depending on the input dimensions.
+
+**Key Parameters:**
+- `size` (tuple of ints, optional): Target output dimensions.
+- `scale_factor` (float or tuple, optional): Multiplier for spatial size.
+- `mode` (str): Interpolation algorithm (`'nearest'`, `'linear'`, `'bilinear'`, `'bicubic'`, `'trilinear'`).
+- `align_corners` (bool): Aligns corner pixels for linear interpolations (default `False`).
+- `recompute_scale_factor` (bool): Recomputes scale factor from output size.
+
+**Usage Notes:**
+- Provide either `size` or `scale_factor`, not both.
+- Input shape: `(N, C, [D,] H, W)`; output shape matches with upsampled spatial dimensions.
+- For general resizing (including downsampling), use `torch.nn.functional.interpolate()` instead.
+- The `align_corners` setting affects output values in linear interpolation modes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[1], [2], [3]]
+    default: null
+  scale_factor:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[1], [2], [3]]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["nearest", "linear", "bilinear", "bicubic", "trilinear"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "nearest"
+  align_corners:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  recompute_scale_factor:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: size
+    Parameter 2: scale_factor
+    Constraint: "size is None or scale_factor is None"
+  2:
+    Parameter 1: align_corners
+    Parameter 2: mode
+    Constraint: "not (align_corners == True and mode not in ['linear', 'bilinear', 'bicubic', 'trilinear'])"
+  3:
+    Parameter 1: recompute_scale_factor
+    Parameter 2: scale_factor
+    Constraint: "not (recompute_scale_factor == True and scale_factor is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Upsample in a complex way */
+import torch

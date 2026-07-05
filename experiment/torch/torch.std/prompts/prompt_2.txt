@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.std` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.std` computes the standard deviation of a tensor along specified dimensions.  
+
+**Key parameters:**  
+- `dim`: dimension(s) to reduce; if `None`, reduces all dimensions.  
+- `correction`: adjusts the denominator as \( N - \text{correction} \) (default is 1, applying Bessel’s correction for sample standard deviation).  
+- `keepdim`: if `True`, retains reduced dimensions as size 1.  
+
+**Formula:**  
+\[
+\sigma = \sqrt{\frac{1}{\max(0, N - \text{correction})} \sum (x_i - \bar{x})^2}
+\]  
+where \( N \) is the number of samples.  
+
+**Example:**  
+```python
+torch.std(a, dim=1, keepdim=True)
+```  
+calculates the standard deviation along each row, keeping the dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+  correction:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+  keepdim:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim is None or (isinstance(dim, int) and 0 <= dim < input.ndim) or (isinstance(dim, tuple) and all(0 <= d < input.ndim for d in dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.std in a complex way */
+import torch

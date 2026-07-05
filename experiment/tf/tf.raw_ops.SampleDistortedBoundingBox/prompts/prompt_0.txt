@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SampleDistortedBoundingBox` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SampleDistortedBoundingBox` generates a random bounding box for data augmentation in image tasks. It takes an image size and optional bounding boxes, then produces cropping coordinates (`begin`, `size`) and a normalized bounding box (`bboxes`). The function allows constraints like aspect ratio, area coverage, and overlap with provided boxes. If no bounding boxes are given, it can assume the whole image as a single box or raise an error. This is commonly used to randomly crop and distort images while preserving content for training models like object detectors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  image_size:
+    dtype: ["uint8", "int8", "int16", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  bounding_boxes:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  min_object_covered:
+    dtype: ["float"]
+    range: [0, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.1"
+  aspect_ratio_range:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [2]
+    default: "[0.75, 1.33]"
+  area_range:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [2]
+    default: "[0.05, 1]"
+  max_attempts:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "100"
+  use_image_if_no_bounding_boxes:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: min_object_covered
+    Parameter 2: min_object_covered
+    Constraint: "min_object_covered >= 0"
+  2:
+    Parameter 1: aspect_ratio_range
+    Parameter 2: aspect_ratio_range
+    Constraint: "aspect_ratio_range[0] < aspect_ratio_range[1]"
+  3:
+    Parameter 1: area_range
+    Parameter 2: area_range
+    Constraint: "0 <= area_range[0] < area_range[1] <= 1"
+  4:
+    Parameter 1: bounding_boxes
+    Parameter 2: use_image_if_no_bounding_boxes
+    Constraint: "use_image_if_no_bounding_boxes or tf.shape(bounding_boxes)[1] > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SampleDistortedBoundingBox in a complex way */
+import tensorflow as tf

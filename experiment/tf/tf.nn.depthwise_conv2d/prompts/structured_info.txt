@@ -1,0 +1,52 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["4-D"]
+    default: "No mention"
+  filter:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[filter_height, filter_width, in_channels, channel_multiplier]"]
+    default: "No mention"
+  strides:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list", "tensor"]
+    shape: ["4"]
+    default: "No mention"
+  padding:
+    dtype: ["No mention"]
+    range: ["SAME", "VALID"]
+    structure: ["string", "list"]
+    shape: ["No mention"]
+    default: "No mention"
+  data_format:
+    dtype: ["No mention"]
+    range: ["NHWC", "NCHW"]
+    structure: ["string"]
+    shape: ["No mention"]
+    default: "None"
+  dilations:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list", "tensor"]
+    shape: ["2"]
+    default: "None"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["string"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "strides[0] == 1 and strides[3] == 1"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "strides"
+    Constraint: "(dilations[0] <= 1 and dilations[1] <= 1) or (strides[0] == 1 and strides[1] == 1 and strides[2] == 1 and strides[3] == 1)"

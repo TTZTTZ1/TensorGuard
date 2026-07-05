@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CudnnRNNCanonicalToParamsV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.CudnnRNNCanonicalToParamsV2` function converts canonical RNN weights and biases into an opaque parameters buffer for use with cuDNN RNN operations. It supports LSTM projection and is designed to ensure compatibility across different GPU generations by using a canonical representation for saving and restoring models.
+
+**Key functionality:**
+- Takes canonical weights and biases along with RNN configuration details (layers, units, input size, mode, direction, dropout, etc.)
+- Outputs a single consolidated parameters tensor usable by cuDNN RNN kernels
+- Primarily used to prepare parameters for training or inference after loading from a saved canonical form
+
+**Main parameters:**
+- `num_layers`, `num_units`, `input_size`: Define RNN architecture
+- `weights`/`biases`: Canonical parameter lists
+- `rnn_mode`: Type of RNN (LSTM, GRU, etc.)
+- `direction`: Unidirectional or bidirectional
+- `num_proj`: Output dimensionality for LSTM projection (optional)
+
+This operation enables efficient parameter management for GPU-accelerated RNNs while maintaining cross-generation compatibility through canonical representations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_layers:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  num_units:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  input_size:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  weights:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  biases:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  rnn_mode:
+    dtype: ["string"]
+    range: ["rnn_relu", "rnn_tanh", "lstm", "gru"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "lstm"
+  input_mode:
+    dtype: ["string"]
+    range: ["linear_input", "skip_input", "auto_select"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "linear_input"
+  direction:
+    dtype: ["string"]
+    range: ["unidirectional", "bidirectional"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "unidirectional"
+  dropout:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0"
+  seed:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0"
+  num_proj:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0"
+  name:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "weights"
+    Parameter 2: "biases"
+    Constraint: "all(t.dtype == weights[0].dtype for t in biases)"
+  2:
+    Parameter 1: "input_mode"
+    Parameter 2: "input_size"
+    Constraint: "(input_mode != 'skip_input') or (input_size == num_units)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CudnnRNNCanonicalToParamsV2 in a complex way */
+import tensorflow as tf

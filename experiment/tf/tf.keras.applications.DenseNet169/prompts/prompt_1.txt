@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.DenseNet169` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.DenseNet169` is a pre-built deep learning model implementing the DenseNet-169 architecture, designed for image classification tasks. It supports loading weights pre-trained on ImageNet and offers flexibility for customization through several parameters:
+
+- **Model Configuration**:  
+  Control whether to include the top classification layer (`include_top`), specify input shape (required if `include_top=False`), and set pooling options (`None`, `avg`, or `max`) for feature extraction.
+
+- **Weights & Classes**:  
+  Load pre-trained ImageNet weights or use custom weights via the `weights` parameter. The number of output classes (`classes`) can be adjusted if `include_top=True`.
+
+- **Input Preprocessing**:  
+  Requires input images to be preprocessed with `tf.keras.applications.densenet.preprocess_input`.
+
+- **Use Cases**:  
+  Suitable for transfer learning, feature extraction, or as a backbone in computer vision pipelines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "True"
+  weights:
+    dtype: ["NoneType", "str"]
+    range: [None, "imagenet", "str"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 elements for channels, width and height >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["NoneType", "str"]
+    range: [None, "avg", "max"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: [0]
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable"]
+    range: [None, "softmax", "other str or callable"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "include_top == True or classes == 1000"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "not (include_top == True and weights is not None and classes != 1000)"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.DenseNet169 in a complex way */
+import tensorflow as tf

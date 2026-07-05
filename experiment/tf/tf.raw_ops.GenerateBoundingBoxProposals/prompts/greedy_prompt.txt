@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.GenerateBoundingBoxProposals` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.GenerateBoundingBoxProposals` generates region proposals for object detection by selecting top-scoring bounding boxes, decoding them relative to anchor boxes, and applying non-maximum suppression (NMS). It filters proposals based on size and NMS overlap thresholds, outputting a fixed number of top-scoring regions per image.
+
+**Key Inputs:**
+- `scores`: Per-anchor objectness scores `[batch, height, width, num_anchors]`.
+- `bbox_deltas`: Anchor-relative box adjustments `[batch, height, width, 4 * num_anchors]` as `[dy, dx, dh, dw]`.
+- `anchors`: Anchor boxes `[num_anchors, 4]` in `[y1, x1, y2, x2]` format.
+- `image_info`: Image dimensions and scale `[batch, 5]`.
+
+**Key Parameters:**
+- `pre_nms_topn`: Number of top-scoring boxes considered before NMS.
+- `nms_threshold`: IoU threshold for suppressing overlapping boxes.
+- `min_size`: Minimum box side length to retain.
+- `post_nms_topn`: Maximum number of output proposals per image.
+
+**Outputs:**
+- `rois`: Final region proposals `[batch, post_nms_topn, 4]`, zero-padded.
+- `roi_probabilities`: Corresponding scores `[batch, post_nms_topn]`, sorted descending.
+
+**Function:** Converts anchor-based predictions into refined, non-redundant region proposals for downstream detection tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scores:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  bbox_deltas:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  image_info:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  anchors:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  nms_threshold:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  pre_nms_topn:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  min_size:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  post_nms_topn:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "300"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scores"
+    Parameter 2: "bbox_deltas"
+    Constraint: "scores.shape[0] == bbox_deltas.shape[0] and scores.shape[1] == bbox_deltas.shape[1] and scores.shape[2] == bbox_deltas.shape[2]"
+  2:
+    Parameter 1: "scores"
+    Parameter 2: "bbox_deltas"
+    Constraint: "bbox_deltas.shape[3] == 4 * scores.shape[3]"
+  3:
+    Parameter 1: "scores"
+    Parameter 2: "anchors"
+    Constraint: "scores.shape[3] == anchors.shape[0]"
+  4:
+    Parameter 1: "scores"
+    Parameter 2: "image_info"
+    Constraint: "scores.shape[0] == image_info.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.GenerateBoundingBoxProposals in a complex way */
+import tensorflow as tf

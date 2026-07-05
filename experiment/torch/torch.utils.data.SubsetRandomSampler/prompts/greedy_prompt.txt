@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.SubsetRandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and batching in PyTorch, centered around the `DataLoader` class.
+
+**Core Components:**
+- **`DataLoader`**: Main class that creates an iterable over a dataset, supporting automatic batching, shuffling, multi-process loading, and memory pinning.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., indexed data like images).
+  - **Iterable-style**: Implements `__iter__()` (e.g., streams from databases or real-time logs).
+- **`Sampler`**: Controls data loading order for map-style datasets (e.g., random, sequential, weighted).
+
+**Key Features:**
+1. **Automatic Batching**: Combines samples into batches via `batch_size` and `collate_fn`.
+2. **Multi-process Loading**: Uses `num_workers` to parallelize data loading (avoiding GIL limitations).
+3. **Memory Pinning**: `pin_memory=True` accelerates GPU data transfer by using page-locked memory.
+4. **Customization**: Supports custom samplers, collation functions, and worker initialization.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+for batch in loader:
+    # Training loop
+```
+
+**Important Notes:**
+- Use `if __name__ == '__main__':` guards for multi-process loading on Windows/macOS.
+- For iterable datasets with multiple workers, implement sharding to avoid duplicate data.
+- Custom batch types need a `pin_memory()` method to enable memory pinning.
+
+This module enables scalable and efficient data pipeline construction for training machine learning models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int"]
+    range: null
+    structure: ["sequence"]
+    shape: []
+    default: null
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "len(indices) > 0"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "all(isinstance(i, int) for i in indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.SubsetRandomSampler in a complex way */
+import torch

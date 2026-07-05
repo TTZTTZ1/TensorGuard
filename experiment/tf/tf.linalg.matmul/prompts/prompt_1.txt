@@ -1,0 +1,118 @@
+
+# You are a Python code generation assistant for the `tf.linalg.matmul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.matmul` (or `tf.matmul`) performs matrix multiplication between two tensors `a` and `b`. It supports:
+
+- **Rank ≥ 2 tensors** where the inner two dimensions are compatible for matrix multiplication, and outer dimensions represent batch sizes.
+- **Data types**: `bfloat16`, `float16`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+- **Optional transformations**: Transpose or adjoint (conjugate and transpose) either input via `transpose_a`, `transpose_b`, `adjoint_a`, `adjoint_b`.
+- **Sparse optimizations**: Set `a_is_sparse` or `b_is_sparse` to `True` for efficiency with many zeros (only for rank-2 `float32`/`bfloat16` tensors, not `tf.SparseTensor`).
+- **Batch multiplication**: Automatically handles batch dimensions.
+- **Python operator**: Supports `@` syntax (e.g., `a @ b`).
+
+**Key arguments**:
+- `a`, `b`: Input tensors of same type and rank.
+- `output_type`: Optionally change output dtype (limited support).
+- `grad_a`/`grad_b`: Hints for gradient computation.
+
+**Returns**: A tensor with the same type as inputs, where each inner-most matrix is the product of corresponding matrices from `a` and `b`.
+
+**Raises**:
+- `ValueError` if both `transpose_*` and `adjoint_*` are set for the same input.
+- `TypeError` for invalid `output_type` usage.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["bfloat16", "float16", "float32", "float64", "int32", "int64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  b:
+    dtype: ["bfloat16", "float16", "float32", "float64", "int32", "int64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  transpose_a:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  adjoint_a:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  adjoint_b:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  a_is_sparse:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  b_is_sparse:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  output_type:
+    dtype: ["string", "None"]
+    range: [None, "int32"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  grad_a:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  grad_b:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "transpose_a"
+    Parameter 2: "adjoint_a"
+    Constraint: "not (transpose_a and adjoint_a)"
+  2:
+    Parameter 1: "transpose_b"
+    Parameter 2: "adjoint_b"
+    Constraint: "not (transpose_b and adjoint_b)"
+  3:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "output_type is None or (a.dtype in ['uint8', 'int8'] and b.dtype in ['uint8', 'int8'] and output_type == 'int32')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.matmul in a complex way */
+import tensorflow as tf

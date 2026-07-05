@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.distributed.barrier` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides distributed communication primitives for multi‑process parallelism across multiple machines or GPUs. It supports synchronous distributed training via `DistributedDataParallel` and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+**Key Features:**
+- **Initialization:** Use `init_process_group()` or `init_device_mesh()` to set up the process group before any collective operations.
+- **Backends:** Choose based on hardware:
+  - **NCCL:** Best for multi‑GPU training (CUDA).
+  - **XCCL:** For XPU GPUs.
+  - **Gloo:** For CPU‑based training or as a fallback.
+  - **MPI:** Optional, requires building from source.
+- **Collective Operations:** Supports synchronous/asynchronous collectives (broadcast, all‑reduce, gather, scatter, etc.) and point‑to‑point communication (send/recv).
+- **Groups:** Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh:** Higher‑level abstraction for managing multi‑dimensional process groups in N‑D parallelism.
+- **Key‑Value Stores:** `TCPStore`, `FileStore`, and `HashStore` for sharing information across processes.
+- **Debugging Tools:** Includes `monitored_barrier()`, environment variables (`TORCH_DISTRIBUTED_DEBUG`), and a Python breakpoint utility.
+- **Launch Utilities:** `torch.distributed.launch` (deprecated) and `torch.multiprocessing.spawn` for starting multi‑process jobs.
+
+**Common Workflow:**
+1. Initialize the process group with `init_process_group()`.
+2. Use collective operations (e.g., `all_reduce()`) or `DistributedDataParallel` for model training.
+3. Ensure proper cleanup with `destroy_process_group()`.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, and provides performance benefits over `DataParallel` by avoiding Python GIL limitations and redundant optimizer steps.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  device_ids:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "device_ids"
+    Parameter 2: null
+    Constraint: "len(device_ids) == 1 if device_ids is not None else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.barrier in a complex way */
+import torch

@@ -1,0 +1,120 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.CsvDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.CsvDataset` is a TensorFlow dataset class for reading and parsing CSV files. It provides a low-level interface to load CSV data directly into a `tf.data.Dataset` pipeline.
+
+**Key Features:**
+- Reads one or more CSV files line by line.
+- Supports custom data types, field delimiters, and optional compression.
+- Allows selection or exclusion of specific columns.
+- Handles missing values with default placeholders.
+
+**Basic Usage:**
+```python
+dataset = tf.data.experimental.CsvDataset(
+    filenames=['data.csv'],
+    record_defaults=[tf.float32, tf.int32, tf.string],
+    header=True,
+    select_cols=[0, 2, 4]  # Select specific columns
+)
+```
+
+**Parameters:**
+- `filenames`: Path(s) to CSV file(s).
+- `record_defaults`: Data types or default values for each column.
+- `header`: Whether to skip the first line as a header.
+- `select_cols`/`exclude_cols`: Choose specific columns to include or exclude.
+- `field_delim`: Custom field delimiter (default: `,`).
+- `na_value`: String to treat as missing/NaN.
+
+**Example Output:**
+For a CSV with columns `[1.5, 10, "text"]`, each iteration yields a tuple like `(1.5, 10, "text")`.
+
+**Notes:**
+- For higher-level features (automatic type inference, shuffling, batching), consider `tf.data.experimental.make_csv_dataset`.
+- Follows RFC 4180 CSV format standards.
+- Efficiently integrates into TensorFlow's data pipeline for scalable training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filenames:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  record_defaults:
+    dtype: ["float32", "float64", "int32", "int64", "string"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  compression_type:
+    dtype: ["string"]
+    range: [["", "ZLIB", "GZIP"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: ""
+  buffer_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "4MB"
+  header:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  field_delim:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: '","'
+  use_quote_delim:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  na_value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: '""'
+  select_cols:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "null"
+  exclude_cols:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "select_cols"
+    Parameter 2: "exclude_cols"
+    Constraint: "select_cols is None or exclude_cols is None"
+  2:
+    Parameter 1: "record_defaults"
+    Parameter 2: "select_cols"
+    Constraint: "select_cols is None or len(record_defaults) == len(select_cols)"
+  3:
+    Parameter 1: "record_defaults"
+    Parameter 2: "exclude_cols"
+    Constraint: "exclude_cols is None or len(record_defaults) + len(exclude_cols) == total_csv_columns"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.CsvDataset in a complex way */
+import tensorflow as tf

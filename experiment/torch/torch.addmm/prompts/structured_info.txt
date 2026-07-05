@@ -1,0 +1,68 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+  mat1:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+  mat2:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+  out_dtype:
+    dtype: ["dtype"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  beta:
+    dtype: ["int", "float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  alpha:
+    dtype: ["int", "float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "mat1"
+    Parameter 2: "mat2"
+    Constraint: "mat1.shape[1] == mat2.shape[0]"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "mat1"
+    Constraint: "(input.ndim == 0) or (input.ndim == 1 and input.shape[0] in [1, mat1.shape[0], mat2.shape[1]]) or (input.ndim == 2 and input.shape[0] in [1, mat1.shape[0]] and input.shape[1] in [1, mat2.shape[1]])"
+  3:
+    Parameter 1: "beta"
+    Parameter 2: "input"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(beta, (int, float))) or (input.dtype not in [torch.float32, torch.float64] and isinstance(beta, int))"
+  4:
+    Parameter 1: "alpha"
+    Parameter 2: "input"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(alpha, (int, float))) or (input.dtype not in [torch.float32, torch.float64] and isinstance(alpha, int))"
+  5:
+    Parameter 1: "out_dtype"
+    Parameter 2: "mat1"
+    Constraint: "out_dtype is None or (out_dtype == torch.float32 and mat1.dtype in [torch.float16, torch.bfloat16] and mat2.dtype in [torch.float16, torch.bfloat16] and input.device.type == 'cuda' and mat1.device.type == 'cuda' and mat2.device.type == 'cuda')"
+  6:
+    Parameter 1: "out"
+    Parameter 2: "input"
+    Constraint: "out is None or out.layout == input.layout"

@@ -1,0 +1,86 @@
+params:
+  input_shape:
+    dtype: ["tuple", "NoneType"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  alpha:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  depth_multiplier:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  dropout:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.001"
+  include_top:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "NoneType"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor", "NoneType"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  pooling:
+    dtype: ["string", "NoneType"]
+    range: [None, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "input_shape"
+    Parameter 2: "input_tensor"
+    Constraint: "input_tensor is None or input_shape is None"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "include_top == False or classes == 1000"
+  4:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "weights is None or classes == 1000"
+  5:
+    Parameter 1: "pooling"
+    Parameter 2: "include_top"
+    Constraint: "include_top == False or pooling is None"
+  6:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"

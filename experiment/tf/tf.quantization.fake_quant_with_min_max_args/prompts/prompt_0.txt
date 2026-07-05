@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.quantization.fake_quant_with_min_max_args` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.quantization.fake_quant_with_min_max_args` performs simulated quantization on a float32 input tensor. It clamps values within a specified `[min, max]` range, quantizes them to discrete levels based on `num_bits` (2–16), and outputs a float32 tensor of the same shape. This is useful for emulating quantization effects during training.
+
+**Key parameters:**
+- `inputs`: Float32 tensor to quantize.
+- `min`, `max`: Clamping range (default: -6, 6).
+- `num_bits`: Bit-width for quantization (default: 8).
+- `narrow_range`: If `True`, uses quantization range `[1, 2^num_bits - 1]`; otherwise `[0, 2^num_bits - 1]`.
+
+**Behavior:**
+- Adjusts `min` and `max` automatically if zero is not in the range.
+- Raises errors for invalid `num_bits` or if `min >= max`.
+
+**Example:**
+```python
+out = tf.quantization.fake_quant_with_min_max_args(inp, min=-5, max=5, num_bits=16)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-6"
+  max:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "6"
+  num_bits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: [["False", "True"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "inputs.dtype == 'float32'"
+  2:
+    Parameter 1: num_bits
+    Parameter 2: num_bits
+    Constraint: "2 <= num_bits <= 16"
+  3:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min < max"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.fake_quant_with_min_max_args in a complex way */
+import tensorflow as tf

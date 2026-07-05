@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.CategoricalCrossentropy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.CategoricalCrossentropy` class computes the cross-entropy loss between one-hot encoded labels and predictions, typically used for multi-class classification tasks.
+
+**Key Features:**
+- Designed for 2+ label classes, expecting one-hot encoded labels (e.g., `[2, 0, 1]` → `[[0,0,1], [1,0,0], [0,1,0]]`)
+- Configurable via `from_logits` (if predictions are logits) and `label_smoothing` (to relax label confidence)
+- Inherits from `MeanMetricWrapper`, averaging results across batches
+
+**Usage Example:**
+```python
+metric = tf.keras.metrics.CategoricalCrossentropy()
+metric.update_state([[0, 1, 0], [0, 0, 1]], 
+                    [[0.05, 0.95, 0], [0.1, 0.8, 0.1]])
+print(metric.result())  # Output: ~1.177
+```
+
+**Common Integration:**
+```python
+model.compile(
+    optimizer='sgd',
+    loss='categorical_crossentropy',
+    metrics=[tf.keras.metrics.CategoricalCrossentropy()]
+)
+```
+
+**Key Methods:**
+- `update_state()`: Accumulates metric statistics
+- `result()`: Returns current metric value
+- `reset_state()`: Clears state between epochs/steps
+- Supports sample weighting for imbalanced data
+
+This metric is essential for evaluating multi-class classification models, providing a differentiable measure of prediction quality aligned with categorical cross-entropy loss.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "categorical_crossentropy"
+  dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  from_logits:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  label_smoothing:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.CategoricalCrossentropy in a complex way */
+import tensorflow as tf

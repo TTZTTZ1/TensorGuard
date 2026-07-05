@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.QuantizedMatMulWithBias` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.QuantizedMatMulWithBias` performs a quantized matrix multiplication between tensors `a` and `b`, then adds a bias vector. It supports optional transposition of inputs and works with quantized integer types, requiring scale parameters (`min_*`, `max_*`) to represent the floating-point range of the quantized values. The result is returned as a quantized tensor along with its output scale parameters.
+
+**Key Parameters:**
+- **Inputs:** Quantized matrices `a` and `b` (2D), bias vector (1D), and their respective min/max float scales.
+- **Options:** Data type of output (`Toutput`), transpose flags, and quantization mode (`MIN_FIRST` or `SCALED`).
+- **Returns:** A tuple `(out, min_out, max_out)` containing the quantized result and its float scale range.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  b:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  bias:
+    dtype: ["float32", "qint32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  min_a:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  max_a:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  min_b:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  max_b:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  Toutput:
+    dtype: ["dtype"]
+    range: ["tf.qint8", "tf.quint8", "tf.qint32", "tf.qint16", "tf.quint16"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "tf.qint32"
+  transpose_a:
+    dtype: ["bool"]
+    range: [false, true]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: [false, true]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  input_quant_mode:
+    dtype: ["string"]
+    range: ["MIN_FIRST", "SCALED"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "MIN_FIRST"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "(a.shape[1] if not transpose_a else a.shape[0]) == (b.shape[0] if not transpose_b else b.shape[1])"
+  2:
+    Parameter 1: "bias"
+    Parameter 2: "b"
+    Constraint: "bias.shape[0] == (b.shape[1] if not transpose_b else b.shape[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.QuantizedMatMulWithBias in a complex way */
+import tensorflow as tf

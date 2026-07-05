@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.MobileNetV3Large` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.MobileNetV3Large` is a pre-trained convolutional neural network designed for efficient image classification, particularly on mobile and edge devices. It balances accuracy and computational cost, making it suitable for resource-constrained environments.
+
+**Key Features:**
+- **Architecture:** Based on the MobileNetV3 paper, optimized for speed and efficiency.
+- **Input:** Expects 3-channel images. With `include_preprocessing=True` (default), inputs should be in `[0, 255]` pixel range; if `False`, inputs should be normalized to `[-1, 1]`.
+- **Parameters:** 
+  - `alpha`: Width multiplier to adjust network capacity.
+  - `minimalistic`: Simplified version without advanced blocks, better for GPU/DSP.
+  - `include_top`: Whether to include the final classification layer.
+  - `weights`: Load pre-trained ImageNet weights or custom weights.
+  - `pooling`: Optional global pooling when `include_top=False`.
+  - `include_preprocessing`: Includes a built-in `Rescaling` layer for input normalization.
+
+**Use Cases:**
+1. **Image Classification:** Direct classification with `include_top=True`.
+2. **Transfer Learning:** Use as a feature extractor by setting `include_top=False` and adding custom layers.
+
+**Performance:** Provides various model sizes (e.g., MACs from 44M to 217M) with Top-1 accuracy ranging from ~61% to 75% on ImageNet, allowing trade-offs between speed and accuracy.
+
+**Typical Usage:**
+```python
+model = tf.keras.applications.MobileNetV3Large(
+    weights='imagenet',
+    include_top=False,
+    pooling='avg'
+)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  alpha:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  minimalistic:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["None", "string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '"imagenet"'
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  pooling:
+    dtype: ["string"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dropout_rate:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.2"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '"softmax"'
+  include_preprocessing:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "input_tensor"
+    Constraint: "(input_shape is None or input_tensor is None) or (input_shape == input_tensor.shape)"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes is not None implies include_top == True"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "classes is not None implies weights is None"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights == 'imagenet' implies classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.MobileNetV3Large in a complex way */
+import tensorflow as tf

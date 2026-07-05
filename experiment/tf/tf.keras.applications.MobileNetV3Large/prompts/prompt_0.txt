@@ -1,0 +1,133 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.MobileNetV3Large` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**MobileNetV3Large** is a lightweight convolutional neural network architecture designed for efficient image classification on mobile and edge devices. It balances accuracy and computational cost, making it suitable for resource-constrained environments.
+
+### **Key Features:**
+- **Efficiency:** Optimized for low Multiply-Adds (MACs) and parameters, enabling fast inference (e.g., 51.2 ms on Pixel1 CPU for the default model).
+- **Flexible Configuration:**  
+  - **Width Control:** Adjust network capacity via the `alpha` parameter (e.g., `alpha=0.75` reduces filters proportionally).  
+  - **Minimalistic Mode:** Strips advanced blocks (like squeeze-and-excite) for better GPU/DSP performance.  
+  - **Input Flexibility:** Supports custom input shapes (e.g., `(160, 160, 3)`) and optional preprocessing.
+- **Pre-trained Weights:** Includes `weights='imagenet'` for transfer learning, achieving up to 75.6% top-1 accuracy on ImageNet.
+
+### **Usage Notes:**
+1. **Input Preprocessing:**  
+   - By default (`include_preprocessing=True`), inputs should be float tensors with pixel values in **[0, 255]**. A built-in `Rescaling` layer normalizes them.  
+   - If disabled (`include_preprocessing=False`), inputs must be in **[-1, 1]**.
+2. **Output Options:**  
+   - Set `include_top=False` to remove the classification head for feature extraction. Use `pooling='avg'` or `'max'` to get 2D features.
+3. **Common Use Cases:**  
+   - Image classification (with `include_top=True`).  
+   - Transfer learning/fine-tuning (replace the top layer via `include_top=False`).
+
+### **Example Performance (ImageNet):**
+| Model Variant | MACs (M) | Params (M) | Top-1 Acc. |
+|---------------|----------|------------|------------|
+| Large (`alpha=1.0`) | 217 | 5.4 | 75.6% |
+| Small (`alpha=1.0`) | 66 | 2.9 | 68.1% |
+
+### **Quick Code Snippet:**
+```python
+model = tf.keras.applications.MobileNetV3Large(
+    weights='imagenet',          # Load pre-trained ImageNet weights
+    include_top=True,            # Use built-in classifier
+    input_shape=(224, 224, 3)    # Default resolution
+)
+```
+
+**Reference:** Howard et al., *Searching for MobileNetV3* (ICCV 2019).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  alpha:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  minimalistic:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["None", "string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '"imagenet"'
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  pooling:
+    dtype: ["string"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dropout_rate:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.2"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '"softmax"'
+  include_preprocessing:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "input_tensor"
+    Constraint: "(input_shape is None or input_tensor is None) or (input_shape == input_tensor.shape)"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes is not None implies include_top == True"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "classes is not None implies weights is None"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights == 'imagenet' implies classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.MobileNetV3Large in a complex way */
+import tensorflow as tf

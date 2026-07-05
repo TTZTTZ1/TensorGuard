@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.MeanIoU` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.MeanIoU` class computes the **mean Intersection-over-Union (IoU)** for semantic segmentation tasks. It calculates IoU per class and then averages them.
+
+**Key Parameters:**
+- `num_classes` (required): Number of possible labels.
+- `ignore_class`: Optional class ID to exclude from computation (e.g., void/background class).
+- `sparse_y_true` / `sparse_y_pred`: Whether inputs are integer-encoded (`True`) or probability/logit vectors (`False`).
+
+**How it works:**
+1. Accumulates predictions into a confusion matrix.
+2. Computes IoU for each class:  
+   `IoU = true_positives / (true_positives + false_positives + false_negatives)`
+3. Returns the mean across all classes (excluding ignored classes).
+
+**Example:**
+```python
+m = tf.keras.metrics.MeanIoU(num_classes=2)
+m.update_state([0, 0, 1, 1], [0, 1, 0, 1])
+print(m.result())  # Output: ~0.333
+```
+
+**Usage with `compile()`:**
+```python
+model.compile(
+    optimizer='sgd',
+    loss='mse',
+    metrics=[tf.keras.metrics.MeanIoU(num_classes=2)]
+)
+```
+
+**Main methods:**
+- `update_state()`: Updates confusion matrix with new predictions.
+- `result()`: Computes and returns current mean IoU.
+- `reset_state()`: Resets confusion matrix between epochs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_classes
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  ignore_class
+    dtype: ["int", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  sparse_y_true
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  sparse_y_pred
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  axis
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.MeanIoU in a complex way */
+import tensorflow as tf

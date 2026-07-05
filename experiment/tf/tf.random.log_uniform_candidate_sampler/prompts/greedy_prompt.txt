@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.random.log_uniform_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.log_uniform_candidate_sampler` is a TensorFlow function that samples candidate classes from a log-uniform (Zipfian) distribution, which is useful when class frequencies follow a power-law distribution (e.g., word frequencies in natural language). It returns sampled candidates and their expected occurrence counts, along with the expected counts for true target classes. This function is commonly used in candidate sampling algorithms for training large-scale classifiers efficiently, such as in word2vec models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  unique:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  range_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: true_classes
+    Parameter 2: range_max
+    Constraint: tf.math.reduce_all(true_classes < range_max)
+  2:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: tf.shape(true_classes)[1] == num_true
+  3:
+    Parameter 1: num_sampled
+    Parameter 2: range_max
+    Constraint: (not unique) or (num_sampled <= range_max)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.log_uniform_candidate_sampler in a complex way */
+import tensorflow as tf

@@ -1,0 +1,38 @@
+
+# You are a Python code generation assistant for the `tf.nn.compute_average_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.compute_average_loss` is a TensorFlow function used to scale per-example losses (e.g., from a loss function with `reduction='none'`) and compute their average, particularly in distributed training contexts. It multiplies each loss by an optional `sample_weight`, sums them, and divides by the specified `global_batch_size` (which typically equals the per-replica batch size multiplied by the number of replicas). This ensures proper loss scaling across devices. If `global_batch_size` is not provided, it defaults to the batch size times the number of replicas. The function returns a scalar loss value, or zero if the global batch size is zero.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  per_example_loss:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, ...]"]
+    default: null
+  sample_weight:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as per_example_loss", "[]"]
+    default: "None"
+  global_batch_size:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "sample_weight"
+    Parameter 2: "per_example_loss"
+    Constraint: "sample_weight is None or sample_weight.shape.ndims == 0 or sample_weight.shape == per_example_loss.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.compute_average_loss in a complex way */
+import tensorflow as tf

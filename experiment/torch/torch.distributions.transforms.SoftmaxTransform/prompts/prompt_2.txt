@@ -1,0 +1,102 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.SoftmaxTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling functions
+- Supports gradient estimation via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` + `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions** (Partial List)
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Continuous**: ContinuousBernoulli, Gumbel, LogNormal, Pareto, StudentT, VonMises, Weibull
+- **Transformed**: HalfCauchy, HalfNormal, LogNormal (via `TransformedDistribution`)
+- **Specialized**: LKJCholesky, MixtureSameFamily, RelaxedBernoulli, Wishart
+
+### **3. ExponentialFamily Subclass**
+- Specialized base class for exponential family distributions
+- Provides optimized entropy and KL divergence calculations
+
+### **4. Gradient Estimation Methods**
+
+**REINFORCE (Score Function)**:
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization)**:
+```python
+params = policy_network(state)
+m = Normal(*params)  # Requires .has_rsample == True
+action = m.rsample()
+loss = -reward
+loss.backward()
+```
+
+### **5. Transform System**
+- `Transform` objects for bijective transformations
+- Common transforms: `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`, `StickBreakingTransform`
+- Used in `TransformedDistribution` for constructing complex distributions
+
+### **6. Constraint System**
+- Defines valid parameter ranges for distributions
+- Registry system (`biject_to`, `transform_to`) for mapping constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **7. KL Divergence**
+- `kl_divergence(p, q)` computes KL(p∥q)
+- Extensive registry of pre-implemented KL divergences between distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Key Features**
+- **Batch support**: All distributions support batched parameters
+- **Gradient compatibility**: Designed for use in stochastic computation graphs
+- **Validation**: Optional argument validation with `validate_args`
+- **Extensibility**: Easy to create custom distributions and transforms
+- **Numerical stability**: Careful implementation of log-probabilities and sampling
+
+## **Typical Use Cases**
+1. **Variational Inference**: Using reparameterized distributions in VAEs
+2. **Reinforcement Learning**: Policy gradients with categorical/multinomial distributions
+3. **Bayesian Modeling**: Building hierarchical models with distributions
+4. **Probabilistic Programming**: Constructing complex probabilistic models
+5. **Statistical Modeling**: Fitting and sampling from various distributions
+
+The package follows a design similar to TensorFlow Distributions and provides a flexible, efficient foundation for probabilistic modeling in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.SoftmaxTransform in a complex way */
+import torch

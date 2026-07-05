@@ -1,0 +1,142 @@
+
+# You are a Python code generation assistant for the `tf.while_loop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.while_loop` is a TensorFlow operation that repeatedly executes a loop body while a specified condition remains true. It is commonly used to implement dynamic loops in TensorFlow graphs, especially within `tf.function` where Python loops are automatically converted.
+
+### Key Features:
+- **Condition and Body**:  
+  Takes two callables:  
+  - `cond`: Returns a boolean scalar tensor indicating whether to continue looping.  
+  - `body`: Returns updated loop variables (same structure and types as input `loop_vars`).
+
+- **Loop Variables**:  
+  A tuple, list, or namedtuple of tensors/TensorArrays passed to both `cond` and `body`.
+
+- **Shape Invariants**:  
+  Enforces shape consistency across iterations. If shapes vary, `shape_invariants` can be specified to allow more flexibility (e.g., dynamic dimensions).
+
+- **Parallel Execution**:  
+  Supports non-strict semantics, allowing multiple iterations to run in parallel (controlled by `parallel_iterations`).
+
+- **Memory Management**:  
+  The `swap_memory` option enables GPU-CPU memory swapping to handle large models or long sequences.
+
+- **Gradient Control**:  
+  The deprecated `back_prop=False` is replaced with `tf.stop_gradient` for disabling backpropagation.
+
+- **Early Stopping**:  
+  Optional `maximum_iterations` limits the number of iterations, overriding `cond` if reached.
+
+### Common Use Cases:
+- Dynamic iteration counts (e.g., while `i < n`).
+- Recurrent models (RNNs, custom loops).
+- Loops with tensor-dependent termination conditions.
+
+### Example:
+```python
+i = tf.constant(0)
+cond = lambda i: i < 10
+body = lambda i: i + 1
+result = tf.while_loop(cond, body, [i])[0]  # Returns 10
+```
+
+### Note:
+In `tf.function`, Python `while` loops are automatically converted to `tf.while_loop`, making explicit use optional unless fine-grained control is needed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cond:
+    dtype: No mention
+    range: No mention
+    structure: ["callable"]
+    shape: No mention
+    default: null
+  body:
+    dtype: No mention
+    range: No mention
+    structure: ["callable"]
+    shape: No mention
+    default: null
+  loop_vars:
+    dtype: No mention
+    range: No mention
+    structure: ["tuple", "namedtuple", "list"]
+    shape: No mention
+    default: null
+  shape_invariants:
+    dtype: No mention
+    range: No mention
+    structure: ["list", "tuple"]
+    shape: No mention
+    default: "None"
+  parallel_iterations:
+    dtype: ["int"]
+    range: ["[1, inf]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "10"
+  back_prop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  swap_memory:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  maximum_iterations:
+    dtype: ["int", "None"]
+    range: ["None", "[1, inf]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cond
+    Parameter 2: cond
+    Constraint: "callable(cond)"
+  2:
+    Parameter 1: body
+    Parameter 2: body
+    Constraint: "callable(body)"
+  3:
+    Parameter 1: loop_vars
+    Parameter 2: loop_vars
+    Constraint: "len(loop_vars) > 0"
+  4:
+    Parameter 1: cond
+    Parameter 2: loop_vars
+    Constraint: "cond.__code__.co_argcount == len(loop_vars)"
+  5:
+    Parameter 1: body
+    Parameter 2: loop_vars
+    Constraint: "body.__code__.co_argcount == len(loop_vars)"
+  6:
+    Parameter 1: parallel_iterations
+    Parameter 2: parallel_iterations
+    Constraint: "parallel_iterations > 0"
+  7:
+    Parameter 1: shape_invariants
+    Parameter 2: loop_vars
+    Constraint: "shape_invariants is None or (isinstance(shape_invariants, (list, tuple)) and len(shape_invariants) == len(loop_vars))"
+  8:
+    Parameter 1: maximum_iterations
+    Parameter 2: maximum_iterations
+    Constraint: "maximum_iterations is None or maximum_iterations > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.while_loop in a complex way */
+import tensorflow as tf

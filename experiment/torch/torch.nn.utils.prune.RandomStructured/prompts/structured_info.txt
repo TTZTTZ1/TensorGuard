@@ -1,0 +1,56 @@
+params:
+  amount:
+    dtype: ["int", "float"]
+    range: ["0.0 to 1.0 when float"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "-1"
+  module:
+    dtype: ["torch.nn.Module"]
+    range: ["No mention"]
+    structure: ["object"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "t"
+    Constraint: "dim < len(t.shape)"
+  2:
+    Parameter 1: "default_mask"
+    Parameter 2: "t"
+    Constraint: "default_mask.shape == t.shape"
+  3:
+    Parameter 1: "importance_scores"
+    Parameter 2: "t"
+    Constraint: "importance_scores.shape == t.shape"

@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.fft.irfft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.irfft` computes the inverse real-valued Fast Fourier Transform, converting a one-sided Hermitian frequency spectrum (as produced by `rfft`) back to a real-valued time-domain signal. It requires the input to satisfy Hermitian symmetry, ignoring any invalid imaginary components. The output length `n` should be specified to ensure correct reconstruction, especially for odd-length signals. By default, normalization is applied (`1/n`), but other modes (`"forward"`, `"ortho"`) are available.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No default"
+  n:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2*(input.size(dim) - 1)"
+  dim:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  norm:
+    dtype: ["str"]
+    range: ["forward", "backward", "ortho"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"backward\""
+  out:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "dim"
+    Constraint: "-input.ndim <= dim < input.ndim"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "n"
+    Constraint: "n == None or n >= 0"
+  3:
+    Parameter 1: "input"
+    Parameter 2: "dim"
+    Parameter 3: "n"
+    Constraint: "n == None or input.size(dim) <= n"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.irfft in a complex way */
+import torch

@@ -1,0 +1,56 @@
+params:
+  graph:
+    dtype: ["Graph"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  op:
+    dtype: ["string"]
+    range: [["call_function", "call_method", "get_attr", "call_module", "placeholder", "output"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  target:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["scalar", "object", "string"]
+    shape: [null]
+    default: null
+  args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["tuple", "list", "dict", "scalar", "object"]
+    shape: [null]
+    default: null
+  kwargs:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["dict", "tuple", "list", "scalar", "object"]
+    shape: [null]
+    default: null
+  return_type:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["scalar", "object", "string"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: op
+    Parameter 2: args
+    Constraint: "op in ['placeholder', 'output'] and isinstance(args, (tuple, list))"
+  2:
+    Parameter 1: op
+    Parameter 2: target
+    Constraint: "op == 'call_function' and callable(target) or op == 'call_method' and isinstance(target, str) or op == 'get_attr' and isinstance(target, str) or op == 'call_module' and isinstance(target, str) or op == 'placeholder' and isinstance(target, str) or op == 'output' and target == 'output'"
+  3:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "isinstance(args, (tuple, list, dict, Node, str, int, float, bool, complex, torch.dtype, torch.Tensor, torch.device, torch.memory_format, torch.layout, OpOverload, torch.SymInt, torch.SymBool, torch.SymFloat, type(None))) and isinstance(kwargs, (dict, tuple, list, Node, str, int, float, bool, complex, torch.dtype, torch.Tensor, torch.device, torch.memory_format, torch.layout, OpOverload, torch.SymInt, torch.SymBool, torch.SymFloat, type(None)))"

@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.GatherV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.GatherV2` selects slices from a tensor (`params`) along a specified axis (`axis`) using index positions provided by another tensor (`indices`). The operation supports scalar, vector, or higher-rank indices, and the output shape depends on the shapes of both input tensors and the chosen axis. Out-of-bounds indices trigger an error on CPU but return zeros on GPU. The optional `batch_dims` parameter enables batch dimension handling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices:
+    dtype: ["int16", "int32", "int64"]
+    range: ["[0, params.shape[axis])"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  axis:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  batch_dims:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "params"
+    Parameter 2: "axis"
+    Constraint: "tf.rank(params) >= axis + 1"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "params"
+    Constraint: "tf.reduce_all(tf.logical_and(indices >= 0, indices < tf.gather(tf.shape(params), axis)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.GatherV2 in a complex way */
+import tensorflow as tf

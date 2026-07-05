@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.package.PackageImporter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle model code, data, and dependencies into a single archive (`.pt` file). It enables reproducible execution across different environments and machines, including deployment via `torch::deploy`.
+
+### **Key Features**
+- **Packaging**: Bundle Python source code, pickled objects (models/data), and arbitrary resources (text/binary files).
+- **Dependency Management**: Automatically captures code dependencies (via AST analysis) and allows control over how they are handled:
+  - `intern`: Package the module inside.
+  - `extern`: Rely on the external environment.
+  - `mock`: Replace with stubs.
+  - `deny`: Block usage.
+- **Isolation**: Each package loads in a hermetic environment, preventing conflicts with the system’s Python installation.
+- **Inspection**: Tools to explore package contents and dependency graphs.
+
+### **Core Workflow**
+1. **Export** with `PackageExporter`:
+   ```python
+   with PackageExporter('model.pt') as e:
+       e.save_pickle('model', 'data.pkl', my_model)
+       e.save_module('my_code')
+   ```
+2. **Import** with `PackageImporter`:
+   ```python
+   importer = PackageImporter('model.pt')
+   model = importer.load_pickle('model', 'data.pkl')
+   module = importer.import_module('my_code')
+   ```
+
+### **Use Cases**
+- Deploy models without worrying about environment differences.
+- Share reproducible research code with all dependencies.
+- Patch or customize code inside a package after creation.
+- Access packaged resources using `importlib.resources` or the importer’s API.
+
+### **Important Notes**
+- **Security**: Uses `pickle`, which can execute arbitrary code—only load trusted packages.
+- **Best Practices**: Avoid mutable global state in modules; refactor code to minimize dependencies.
+- **Type Isolation**: Classes from packages are distinct from those in the main environment (no `isinstance` equivalence).
+
+`torch.package` is ideal for creating portable, versioned ML artifacts that ensure consistent behavior wherever they are run.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  file_or_buffer:
+    dtype: ["string", "PathLike", "IO", "PyTorchFileReader"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  module_allowed:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "<function PackageImporter.<lambda>>"
+  include:
+    dtype: ["string", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "**"
+  exclude:
+    dtype: ["string", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "()"
+  package:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  resource:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  encoding:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'utf-8'"
+  errors:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'strict'"
+  map_location:
+    dtype: ["string", "dict", "callable", "torch.device"]
+    range: null
+    structure: ["scalar", "dict"]
+    shape: null
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: encoding
+    Parameter 2: errors
+    Constraint: "encoding in ['utf-8', 'utf-16', 'ascii'] and errors in ['strict', 'ignore', 'replace']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.PackageImporter in a complex way */
+import torch

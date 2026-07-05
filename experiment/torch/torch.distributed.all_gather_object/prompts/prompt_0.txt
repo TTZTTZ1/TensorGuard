@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_gather_object` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables multi‑process parallel training across multiple machines or GPUs. It provides communication primitives for distributed training, supports different backends (Gloo, NCCL, MPI, XCCL), and offers collective operations (e.g., `all_reduce`, `broadcast`, `all_gather`). Key features include:
+
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group.
+- **Backends**: Choose based on hardware:
+  - **NCCL** for CUDA GPU training (best performance).
+  - **XCCL** for XPU GPU training.
+  - **Gloo** for CPU training or as a fallback.
+- **Collective Operations**: Synchronous (`async_op=False`) or asynchronous (`async_op=True`) communication functions.
+- **Point‑to‑Point**: `send`/`recv` and `isend`/`irecv` for direct rank communication.
+- **Groups**: Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh**: Higher‑level abstraction for managing multi‑dimensional process groups.
+- **Key‑Value Store**: `TCPStore`, `FileStore`, `HashStore` for sharing information.
+- **Debugging**: Tools like `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG`, and `breakpoint()`.
+- **Launch Utilities**: `torch.distributed.launch` (deprecated, use `torchrun`) and `torch.multiprocessing.spawn` for starting processes.
+
+The package is essential for scaling PyTorch models across multiple devices/nodes, offering better performance than `DataParallel` by avoiding Python GIL limitations and enabling explicit control over communication.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  object_list:
+    dtype: ["object"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  obj:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar", "list", "tuple", "dict", "other"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: object_list
+    Parameter 2: group
+    Constraint: "len(object_list) == (group.size() if group is not None else torch.distributed.get_world_size())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_gather_object in a complex way */
+import torch

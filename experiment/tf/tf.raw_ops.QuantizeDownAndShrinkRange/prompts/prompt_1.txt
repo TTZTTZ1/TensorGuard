@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.QuantizeDownAndShrinkRange` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.QuantizeDownAndShrinkRange` operation converts a quantized input tensor to a lower-precision output by analyzing the actual data distribution to optimize the use of the reduced bit depth. It adjusts the output's min and max ranges based on the observed values, minimizing precision loss during downscaling.
+
+**Key Parameters:**
+- **`input`**: A quantized tensor (`qint8`, `quint8`, `qint32`, `qint16`, or `quint16`).
+- **`input_min`** / **`input_max`**: Scalar floats defining the float interpretation range of the input.
+- **`out_type`**: The target lower-precision data type (must have fewer bits than the input type).
+
+**Returns:**  
+A tuple containing:
+- **`output`**: The downscaled quantized tensor.
+- **`output_min`** / **`output_max`**: Adjusted float ranges representing the new min and max values.
+
+**Use Case:**  
+Useful for reducing bit depth (e.g., 32-bit to 8-bit) after operations like `QuantizedMatMul`, where the actual data uses only a fraction of the possible range, enabling efficient compression with minimal accuracy loss.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input_min:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  input_max:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  out_type:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: out_type
+    Constraint: "{'qint8':8, 'quint8':8, 'qint16':16, 'quint16':16, 'qint32':32}[str(out_type)] < {'qint8':8, 'quint8':8, 'qint16':16, 'quint16':16, 'qint32':32}[str(input.dtype)]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.QuantizeDownAndShrinkRange in a complex way */
+import tensorflow as tf

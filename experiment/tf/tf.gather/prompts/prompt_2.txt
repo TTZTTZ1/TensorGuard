@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.gather` selects slices from a tensor (`params`) along a specified axis using an index tensor (`indices`). It extends basic indexing to handle non‑sequential or batched selections.
+
+**Key features:**
+- **Basic usage**: Like scalar indexing but works with tensor indices.
+- **Axis selection**: Gathers along any axis (default is 0).
+- **Batching**: Use `batch_dims` to gather independently per batch element.
+- **Shape rules**: Output shape replaces the gathered axis with the shape of `indices`.
+- **Validation**: Indices are validated on CPU (errors if out‑of‑bounds); GPU stores zeros for invalid indices.
+
+**Example:**
+```python
+params = tf.constant([[0, 1, 2], [10, 11, 12]])
+tf.gather(params, indices=[1, 0], axis=0)  # Gather rows
+# Output: [[10, 11, 12], [0, 1, 2]]
+```
+
+**Related ops**: `tf.gather_nd`, `tf.boolean_mask`, `tf.slice`, `tf.scatter`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: ["[0, params.shape[axis])"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  validate_indices:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  axis:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "None"
+  batch_dims:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: "params"
+    Parameter 2: "axis"
+    Constraint: "tf.rank(params) >= axis + 1"
+  2.
+    Parameter 1: "indices"
+    Parameter 2: "params"
+    Constraint: "tf.reduce_all(indices >= 0) and tf.reduce_all(indices < tf.gather(tf.shape(params), axis))"
+  3.
+    Parameter 1: "axis"
+    Parameter 2: "batch_dims"
+    Constraint: "axis >= batch_dims"
+  4.
+    Parameter 1: "batch_dims"
+    Parameter 2: "indices"
+    Constraint: "batch_dims <= tf.rank(indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.gather in a complex way */
+import tensorflow as tf

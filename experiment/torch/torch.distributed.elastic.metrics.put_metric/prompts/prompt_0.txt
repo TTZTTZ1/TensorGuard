@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.metrics.put_metric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Metrics API provides a framework for publishing telemetry metrics, designed primarily for internal use but available for custom applications. It allows tracking timeseries data identified by a `(metric_group, metric_name)` tuple.
+
+**Key Features:**
+- **Publishing Metrics:** Use `put_metric()` to log data points or the `@prof` decorator to automatically record function success, failure, and duration.
+- **Configurable Handlers:** Metrics are routed via handlers. By default, they go to a null handler (`/dev/null`). Built-in handlers include `ConsoleMetricHandler` for output to console and `NullMetricHandler` to suppress output.
+- **Custom Handlers:** Implement the `MetricHandler` interface to send metrics to custom destinations (e.g., logs, monitoring systems).
+- **Group-Based Configuration:** Different metric groups can be assigned separate handlers using `configure()`.
+
+**Example Usage:**
+```python
+import torch.distributed.elastic.metrics as metrics
+
+# Configure console output for specific groups
+metrics.configure(metrics.ConsoleMetricHandler(), group="my_app")
+
+# Manually publish a metric
+metrics.put_metric("latency_ms", 150, "my_app")
+
+# Automatically profile a function
+@metrics.prof(group="my_app")
+def my_function():
+    # This publishes: my_function.success, my_function.failure, my_function.duration.ms
+    pass
+```
+
+**Note:** The `torchelastic` metric group is reserved for platform-level metrics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  metric_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  metric_value:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  metric_group:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "torchelastic"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.metrics.put_metric in a complex way */
+import torch

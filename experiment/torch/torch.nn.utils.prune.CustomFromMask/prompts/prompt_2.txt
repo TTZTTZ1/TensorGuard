@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.CustomFromMask` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: `torch.nn.utils.prune.CustomFromMask`**
+
+**Purpose:**  
+Enables custom pruning of PyTorch model parameters using a user-defined mask, allowing on-the-fly pruning and reparameterization.
+
+**Key Functionality:**
+- **`apply(module, name, mask)`**: Attaches a forward pre-hook to a tensor within a module to apply pruning dynamically. Reparameterizes the tensor into an original version (`name+'_orig'`) and a pruning mask (`name+'_mask'`).
+- **`apply_mask(module)`**: Retrieves the mask and original tensor from the module and returns the pruned tensor (original tensor multiplied by the mask).
+- **`prune(t, default_mask, importance_scores)`**: Computes and returns a pruned version of input tensor `t` based on the mask. If no mask is provided, it uses the tensor itself as importance scores.
+- **`remove(module)`**: Removes the pruning reparameterization hooks and buffers, leaving the parameter permanently pruned (original tensor and mask are deleted).
+
+**Usage Flow:**
+1. Create a `CustomFromMask` instance with a predefined mask.
+2. Use `apply()` to attach pruning to a specific tensor in a module.
+3. The mask is applied automatically during forward passes via `apply_mask()`.
+4. Optionally, use `prune()` to compute pruned tensors directly.
+5. Use `remove()` to clean up the pruning setup while keeping the tensor pruned.
+
+**Note:** Pruning is irreversible after `remove()` is called.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  module:
+    dtype: ["nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor", "null"]
+    range: null
+    structure: ["tensor", "null"]
+    shape: [null]
+    default: "null"
+  importance_scores:
+    dtype: ["torch.Tensor", "null"]
+    range: null
+    structure: ["tensor", "null"]
+    shape: [null]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: t
+    Parameter 2: default_mask
+    Constraint: "default_mask is None or t.shape == default_mask.shape"
+  2:
+    Parameter 1: importance_scores
+    Parameter 2: t
+    Constraint: "importance_scores is None or importance_scores.shape == t.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.CustomFromMask in a complex way */
+import torch

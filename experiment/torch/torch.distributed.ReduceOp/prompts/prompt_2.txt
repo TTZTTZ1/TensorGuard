@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.distributed.ReduceOp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables multi‑process parallel training across multiple machines or GPUs. It provides communication primitives (collectives, point‑to‑point) and higher‑level abstractions like `DistributedDataParallel` for synchronous distributed training.
+
+**Key Features:**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), `mpi` (CPU/GPU with MPI), and third‑party backends.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group. Methods include TCP, shared file‑system, or environment variables (`env://`).
+- **Collective Operations**: Synchronous/asynchronous collectives like `all_reduce`, `broadcast`, `all_gather`, `reduce_scatter`, `all_to_all`, etc.
+- **Point‑to‑Point**: `send`/`recv` and async `isend`/`irecv` for direct rank communication.
+- **Groups**: Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh**: Higher‑level abstraction for managing multi‑dimensional process groups (e.g., for 2D/3D parallelism).
+- **Key‑Value Stores**: `TCPStore`, `FileStore`, `HashStore` for sharing metadata and initialization.
+- **Utilities**: Launch scripts (`torch.distributed.launch`), spawn helper, and debugging tools (monitored barrier, breakpoint, debug server).
+
+**Typical Workflow:**
+1. Initialize the process group with a backend (e.g., `nccl` for CUDA).
+2. Use collective or point‑to‑point communication to exchange tensors.
+3. Wrap models with `DistributedDataParallel` for data‑parallel training.
+4. Clean up with `destroy_process_group()`.
+
+**Debugging & Logging:**
+- Set `TORCH_DISTRIBUTED_DEBUG=INFO|DETAIL` for detailed logs and consistency checks.
+- Use `monitored_barrier()` to detect hanging ranks.
+- Enable `torch.distributed.breakpoint()` for interactive debugging on a single rank.
+
+**Performance Tips:**
+- Use NCCL for multi‑GPU training; Gloo for CPU‑only.
+- Overlap communication and computation with async operations (`async_op=True`).
+- Consider Copy Engine Collectives (NCCL 2.28+) for offloading communication to GPU DMA engines.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, each with a unique rank ID and potentially different data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM", "AVG"]]
+    structure: ["scalar"]
+    shape: null
+    default: "ReduceOp.SUM"
+constraints:
+  1:
+    Parameter 1: op
+    Parameter 2: backend
+    Constraint: "backend !=
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.ReduceOp in a complex way */
+import torch

@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Conv3DBackpropFilterV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Conv3DBackpropFilterV2` computes the gradient of a 3D convolution operation with respect to the filter (kernel). It is used during backpropagation to update the convolutional filter based on the error signal.
+
+**Key Parameters:**
+- **`input`**: The original input tensor of shape `[batch, depth, height, width, in_channels]`.
+- **`filter_sizes`**: An integer tensor specifying the shape of the filter `[depth, height, width, in_channels, out_channels]`.
+- **`out_backprop`**: Gradient tensor from the next layer, with shape matching the convolution output.
+- **`strides`**: Sliding window stride for each dimension (must have `strides[0] = strides[4] = 1`).
+- **`padding`**: Either `"SAME"` or `"VALID"`.
+- **`data_format`**: Specifies data layout (`"NDHWC"` default or `"NCDHW"`).
+- **`dilations`**: Controls spacing between kernel elements (default is `[1,1,1,1,1]`).
+
+**Returns:** A tensor containing the filter gradients, with the same data type as `input`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["5-D"]
+    default: null
+  filter_sizes:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1-D with length 5"]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["5-D"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["length 5"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NDHWC", "NCDHW"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "NDHWC"
+  dilations:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["length 5"]
+    default: "[1, 1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "strides[0] == 1 and strides[4] == 1"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NDHWC' and dilations[0] == 1 and dilations[1] == 1) or (data_format == 'NCDHW' and dilations[0] == 1 and dilations[2] == 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Conv3DBackpropFilterV2 in a complex way */
+import tensorflow as tf

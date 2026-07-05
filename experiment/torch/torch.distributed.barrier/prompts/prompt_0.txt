@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.distributed.barrier` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.distributed` package enables distributed parallel training across multiple processes and machines. It provides communication primitives and supports several backends (GLOO, NCCL, MPI, XCCL) with different device capabilities. Key features include:
+
+## **Initialization**
+- Use `init_process_group()` or `init_device_mesh()` to set up the distributed environment.
+- Initialization methods: TCP, shared file-system, or environment variables (default: `env://`).
+- Backend selection:
+  - **NCCL** for CUDA GPU training (best performance).
+  - **XCCL** for XPU GPU training.
+  - **GLOO** for CPU training or as a fallback for GPU.
+
+## **Core Concepts**
+- **Process Groups**: Default group (world) or custom groups via `new_group()`.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous variants (`isend`/`irecv`).
+
+## **Key Functions**
+- **Environment Variables**: `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK` for initialization.
+- **Backend Configuration**: Set network interfaces (`NCCL_SOCKET_IFNAME`, `GLOO_SOCKET_IFNAME`) and debug flags (`NCCL_DEBUG=INFO`).
+- **Copy Engine Collectives**: Optimize NCCL operations by offloading data movement to GPU copy engines (requires NCCL ≥2.28 and P2P GPU access).
+
+## **Debugging & Profiling**
+- **Debugging**: Use `torch.distributed.breakpoint()`, `monitored_barrier()`, and `TORCH_DISTRIBUTED_DEBUG` environment variable.
+- **Profiling**: Integrates with `torch.profiler` to profile collective communication.
+- **Logging**: Control log levels via `TORCH_CPP_LOG_LEVEL` and `TORCH_DISTRIBUTED_DEBUG`.
+
+## **Utilities**
+- **Launch Scripts**: `torch.distributed.launch` (deprecated, use `torchrun`) for multi-process training.
+- **Spawn**: `torch.multiprocessing.spawn` for spawning processes.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for inter-process coordination.
+
+## **Best Practices**
+- Ensure exclusive GPU access per process when using NCCL.
+- Call `destroy_process_group()` to clean up resources.
+- Use `async_op=True` for overlapping communication and computation.
+- Prefer tensor collectives over object collectives for performance.
+
+This package is essential for scalable multi-node/multi-GPU training, offering both low-level communication APIs and high-level abstractions like `DistributedDataParallel`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  device_ids:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "device_ids"
+    Parameter 2: null
+    Constraint: "len(device_ids) == 1 if device_ids is not None else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.barrier in a complex way */
+import torch

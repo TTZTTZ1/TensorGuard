@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.gaussian_nll_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.functional.gaussian_nll_loss` function computes the negative log-likelihood loss for a Gaussian distribution. It measures how well the predicted mean (`input`) and variance (`var`) match the observed data (`target`). 
+
+**Key parameters:**
+- `input`: Predicted mean of the Gaussian.
+- `target`: Ground truth values.
+- `var`: Predicted variance (can be scalar, per-element, or per-batch).
+- `full`: If `True`, includes the constant term from the Gaussian log-likelihood.
+- `eps`: Small value added to variance for numerical stability.
+- `reduction`: Specifies how to aggregate the loss (`'none'`, `'mean'`, or `'sum'`).
+
+**Use case:** Commonly used in regression problems where both the mean and uncertainty (variance) of predictions are modeled.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  target:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  var:
+    dtype: No mention
+    range: ["positive"]
+    structure: ["tensor", "scalar"]
+    shape: No mention
+    default: null
+  full:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  eps:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1e-06"
+  reduction:
+    dtype: ["string"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: target
+    Parameter 2: input
+    Constraint: target.shape == input.shape
+  2:
+    Parameter 1: var
+    Parameter 2: input
+    Constraint: not torch.is_tensor(var) or var.shape == input.shape or var.ndim == 0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.gaussian_nll_loss in a complex way */
+import torch

@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.record_stream` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`record_stream()` marks a tensor as used by a specified CUDA stream, preventing its memory from being reused until all operations on that stream are complete. This is necessary when tensors are accessed on streams other than their creation stream, to avoid unsafe memory reuse by the caching allocator.
+
+**Key points:**
+- **Purpose:** Ensures stream safety when tensors are shared across multiple CUDA streams.
+- **Use case:** Simplifies safe tensor usage across streams, especially in library functions where users shouldn't manage stream synchronization manually.
+- **Trade-off:** Adds performance overhead due to stream polling; manual synchronization via `wait_stream()` may be more efficient in performance-critical scenarios.
+- **Alternative:** Manual synchronization using `wait_stream()` on the creation stream before deallocation, allowing overlapping computation and communication while controlling memory lifetime.
+
+**Example alternative (manual management):**
+```python
+# Tensor created on stream s0, used on s1
+s1.wait_stream(s0)        # Ensure s1 doesn't start before s0 creates tensor
+with torch.cuda.stream(s1):
+    y = operation(x)
+
+# ... compute on s0 ...
+
+s0.wait_stream(s1)        # Sync before deallocating x
+del x
+```
+
+**Recommendation:** Use `record_stream()` for convenience in shared utilities; prefer manual stream synchronization in performance-sensitive code where you control the tensor lifecycle.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    stream:
+        dtype: ["torch.cuda.Stream"]
+        range: null
+        structure: ["object"]
+        shape: null
+        default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.record_stream in a complex way */
+import torch

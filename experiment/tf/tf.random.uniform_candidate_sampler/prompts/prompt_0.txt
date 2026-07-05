@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.random.uniform_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.random.uniform_candidate_sampler` function performs uniform random sampling of candidate classes for candidate sampling algorithms. It returns three outputs: sampled classes, and the expected frequencies for both true and sampled classes under the uniform distribution.
+
+**Key Parameters:**
+- `true_classes`: Target class IDs (shape `[batch_size, num_true]`)
+- `num_sampled`: Number of classes to sample
+- `unique`: Whether sampled classes should be unique
+- `range_max`: Total number of possible classes
+
+**Returns:**
+- `sampled_candidates`: Sampled class IDs (may overlap with true classes)
+- `true_expected_count`: Expected frequency of true classes
+- `sampled_expected_count`: Expected frequency of sampled classes
+
+**Important Notes:**
+- This is a low-level utility for implementing candidate sampling algorithms (like NCE or sampled softmax)
+- The function only provides the sampling components; algorithm-specific logic (like excluding true classes) must be implemented separately
+- When `unique=True`, sampling is without replacement and `num_sampled ≤ range_max`
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  unique:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  range_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: unique
+    Parameter 2: num_sampled
+    Constraint: "unique == False or num_sampled <= range_max"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.uniform_candidate_sampler in a complex way */
+import tensorflow as tf

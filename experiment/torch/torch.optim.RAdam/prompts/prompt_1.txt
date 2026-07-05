@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.optim.RAdam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **RAdam** optimizer in PyTorch implements the Rectified Adam algorithm, which adaptively adjusts the learning rate to reduce variance in early training stages. It combines elements of Adam with a dynamic warm-up mechanism.
+
+**Key Features:**
+- **Algorithm**: Uses adaptive learning rates with a rectification term (ρₜ) to switch between adaptive and non-adaptive updates during early iterations.
+- **Weight Decay Options**: 
+  - Standard Adam-style (applied to gradient, default)
+  - Decoupled AdamW-style (applied directly to weights) via `decoupled_weight_decay=True`
+- **Parameters**: 
+  - `lr` (default: 1e-3), `betas` (default: (0.9, 0.999)), `eps` (default: 1e-8)
+  - `weight_decay` (L2 penalty), `maximize` (maximizes objective)
+  - Performance options: `foreach` (CUDA optimization), `capturable` (graph safety), `differentiable` (autograd through step)
+
+**Core Behavior:**
+- When ρₜ ≤ 5: Performs simple momentum update (like SGD with momentum)
+- When ρₜ > 5: Applies adaptive learning rate scaling with rectification factor rₜ
+- Automatically transitions from warm-up phase to adaptive updates as training progresses
+
+**Typical Usage:**
+```python
+optimizer = torch.optim.RAdam(model.parameters(), lr=0.001, weight_decay=0.01)
+```
+
+**Additional Functionality:**
+- Standard optimizer methods: `step()`, `zero_grad()`, `state_dict()`, `load_state_dict()`
+- Hook registration for state dict and step operations
+- Parameter group management via `add_param_group()`
+
+The optimizer is particularly useful for stabilizing early training while maintaining the benefits of adaptive learning rates in later stages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.001"
+  betas:
+    dtype: ["float"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach:
+    dtype: ["bool", "null"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.RAdam in a complex way */
+import torch

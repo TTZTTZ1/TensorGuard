@@ -1,0 +1,22 @@
+params:
+  ary:
+    dtype: ["int", "float", "complex"]
+    range: null
+    structure: ["array", "tensor"]
+    shape: ["any shape with ndim >= 3"]
+    default: null
+  indices_or_sections:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: ["scalar", "1D"]
+    default: null
+constraints:
+  1:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, int) and indices_or_sections > 0 and ary.shape[2] % indices_or_sections == 0"
+  2:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, (list, tuple)) and all(isinstance(i, int) for i in indices_or_sections) and all(0 <= i <= ary.shape[2] for i in indices_or_sections) and list(indices_or_sections) == sorted(indices_or_sections)"

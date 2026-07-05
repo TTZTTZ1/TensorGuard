@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.orthogonal_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions to initialize neural network parameters. These functions operate in `torch.no_grad()` mode, meaning they do not affect autograd.
+
+### Key Functions:
+
+1. **`calculate_gain(nonlinearity, param=None)`**  
+   Returns recommended gain values for common activation functions (e.g., 1 for Linear/Sigmoid, √2 for ReLU, 5/3 for Tanh).
+
+2. **Basic Initializers**  
+   - `uniform_()`: Fills tensor with values from a uniform distribution.  
+   - `normal_()`: Fills tensor with values from a normal distribution.  
+   - `constant_()`, `ones_()`, `zeros_()`: Fill tensor with constant values.  
+   - `eye_()`: Initializes a 2D tensor as an identity matrix.  
+   - `dirac_()`: Preserves input identity in convolutional layers (for 3D–5D tensors).
+
+3. **Advanced Initializers**  
+   - **Xavier/Glorot** (`xavier_uniform_()`, `xavier_normal_()`): Suitable for tanh/sigmoid activations; balances variance between input and output dimensions.  
+   - **Kaiming/He** (`kaiming_uniform_()`, `kaiming_normal_()`): Designed for ReLU/Leaky ReLU; uses `fan_in` or `fan_out` mode to preserve forward/backward variance.  
+   - `orthogonal_()`: Initializes with (semi) orthogonal matrices for gradient stability.  
+   - `sparse_()`: Creates sparse matrices with a specified sparsity ratio.  
+   - `trunc_normal_()`: Samples from a truncated normal distribution.
+
+### Usage Notes:
+- All functions modify tensors **in-place** (suffix `_`).  
+- For Xavier/Kaiming, ensure correct `fan_in`/`fan_out` alignment with your layer’s weight shape (e.g., use `w.T` if needed).  
+- Use `calculate_gain()` to adjust scaling for specific activations when using Xavier/Kaiming.  
+- Specialized initializers like `dirac_` and `eye_` preserve input identity in specific layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["at least 2-dimensional"]
+    default: null
+  gain:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "1"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["generator"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "tensor"
+    Parameter 2: "None"
+    Constraint: "tensor.dim() >= 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.orthogonal_ in a complex way */
+import torch

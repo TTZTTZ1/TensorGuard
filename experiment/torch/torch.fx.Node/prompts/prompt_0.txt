@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.fx.Node` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch models, enabling programmatic modification of `nn.Module` instances. It works by:
+
+1. **Symbolic Tracing** – Executes the module with proxy values to capture operations into a graph.
+2. **Intermediate Representation (IR)** – Represents the traced code as a `Graph` of nodes (placeholders, calls, outputs).
+3. **Code Generation** – Converts the graph back into executable Python code wrapped in a `GraphModule`.
+
+### Key Use Cases:
+- **Transformations**: Modify models by rewriting the graph (e.g., op substitution, fusion, quantization).
+- **Analysis**: Inspect or profile model execution using interpreters.
+- **Code Generation**: Programmatically create models from configurations.
+
+### Core Components:
+- **`symbolic_trace()`**: Traces a module/function to produce a `GraphModule`.
+- **`Graph`**: IR representing the computation as nodes.
+- **`GraphModule`**: A runnable `nn.Module` with generated code from a `Graph`.
+- **`Tracer`**: Customizable tracing frontend.
+- **`Proxy`**: Wraps nodes to record operations during tracing/transformation.
+- **`Interpreter`/`Transformer`**: Patterns for executing or transforming graphs node-by-node.
+
+### Writing Transformations:
+- Directly manipulate the `Graph` (insert/delete nodes).
+- Use `replace_pattern()` for subgraph rewriting.
+- Leverage `Proxy`-based retracing for complex rewrites.
+
+### Limitations:
+- **No dynamic control flow** (conditions/loops dependent on input values).
+- Requires `wrap()` for non-`torch` functions (e.g., `math.sqrt`).
+- Customizable via `Tracer` subclassing (e.g., leaf modules).
+
+### Debugging:
+- Compare outputs with `torch.allclose()`.
+- Inspect generated code via `print(gm.code)` or `gm.graph.print_tabular()`.
+- Use `pdb` or `to_folder()` to export and examine code.
+
+FX is designed for composable, Python-native model transformation, supporting both full pipeline usage and independent component-level operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  graph:
+    dtype: ["Graph"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  op:
+    dtype: ["string"]
+    range: [["call_function", "call_method", "get_attr", "call_module", "placeholder", "output"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  target:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["scalar", "object", "string"]
+    shape: [null]
+    default: null
+  args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["tuple", "list", "dict", "scalar", "object"]
+    shape: [null]
+    default: null
+  kwargs:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["dict", "tuple", "list", "scalar", "object"]
+    shape: [null]
+    default: null
+  return_type:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["scalar", "object", "string"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: op
+    Parameter 2: args
+    Constraint: "op in ['placeholder', 'output'] and isinstance(args, (tuple, list))"
+  2:
+    Parameter 1: op
+    Parameter 2: target
+    Constraint: "op == 'call_function' and callable(target) or op == 'call_method' and isinstance(target, str) or op == 'get_attr' and isinstance(target, str) or op == 'call_module' and isinstance(target, str) or op == 'placeholder' and isinstance(target, str) or op == 'output' and target == 'output'"
+  3:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "isinstance(args, (tuple, list, dict, Node, str, int, float, bool, complex, torch.dtype, torch.Tensor, torch.device, torch.memory_format, torch.layout, OpOverload, torch.SymInt, torch.SymBool, torch.SymFloat, type(None))) and isinstance(kwargs, (dict, tuple, list, Node, str, int, float, bool, complex, torch.dtype, torch.Tensor, torch.device, torch.memory_format, torch.layout, OpOverload, torch.SymInt, torch.SymBool, torch.SymFloat, type(None)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Node in a complex way */
+import torch

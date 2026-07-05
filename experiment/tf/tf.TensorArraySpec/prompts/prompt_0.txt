@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.TensorArraySpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TensorArraySpec` is a **type specification class** for `tf.TensorArray`, used to define and validate the structure of a `TensorArray` in TensorFlow. It inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+
+### **Key Features:**
+- **Purpose**: Specifies the expected properties of a `TensorArray`, such as element shape, data type, and dynamic behavior.
+- **Use Cases**: Commonly used in APIs that require type checking, serialization, or compatibility validation for `TensorArray` objects (e.g., in `tf.function`, distributed computing, or custom ops).
+
+### **Constructor Parameters:**
+| Parameter | Description |
+|-----------|-------------|
+| `element_shape` | Shape of each element in the `TensorArray` (e.g., `(None, 10)` for variable-length vectors of size 10). |
+| `dtype` | Data type of elements (default: `tf.float32`). |
+| `dynamic_size` | If `True`, the `TensorArray` can grow beyond its initial size (default: `False`). |
+| `infer_shape` | If `True`, enables shape inference (default: `True`). |
+
+### **Core Functionality:**
+1. **Type Compatibility Checking**:
+   - `is_compatible_with()`: Checks if another `TypeSpec` or value matches this specification.
+   - `is_subtype_of()`: Determines subtype relationships (implements `TraceType` for advanced type tracing).
+
+2. **Type Inference & Relationships**:
+   - `most_specific_common_supertype()`: Finds the most specific supertype shared with other `TypeSpec`s.
+   - `most_specific_compatible_type()`: **Deprecated**; use `most_specific_common_supertype` instead.
+
+3. **Serialization Support**:
+   - `experimental_as_proto()` / `experimental_from_proto()`: Convert to/from protobuf for serialization.
+   - `experimental_type_proto()`: Returns the protobuf type used for serialization.
+
+4. **Utility Methods**:
+   - `from_value()`: Creates a `TensorArraySpec` from an existing `TensorArray`.
+   - `__eq__()` / `__ne__()`: Enable equality comparisons between specs.
+
+### **Example Usage:**
+```python
+spec = tf.TensorArraySpec(element_shape=(None, 5), dtype=tf.float32)
+# Use spec to validate or describe a TensorArray in typed APIs.
+```
+
+### **Notes:**
+- Part of TensorFlow’s **type system** for graph-based execution and polymorphism.
+- Essential for ensuring consistency in dynamic or polymorphic TensorFlow code (e.g., inside `tf.function`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_shape:
+    dtype: ["None", "tuple"]
+    range: null
+    structure: ["None", "tuple"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["tf.dtypes.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "tf.dtypes.float32"
+  dynamic_size:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  infer_shape:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TensorArraySpec in a complex way */
+import tensorflow as tf

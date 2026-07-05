@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `tf.OptionalSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.OptionalSpec` is a **type specification class** for `tf.experimental.Optional` objects in TensorFlow. It defines the structure and type constraints for optional values, enabling type checking and compatibility validation in TensorFlow's graph execution.
+
+### **Key Purpose**
+- Specifies the type and shape of elements contained within a `tf.experimental.Optional` (similar to how `tf.TensorSpec` describes tensors).
+- Used primarily in **`tf.function` input signatures** to handle optional inputs.
+
+### **Core Attributes**
+- **`element_spec`**: A nested structure of `TypeSpec` objects describing the optional element's type.
+- **`value_type`**: The Python type compatible with this spec (always `tf.experimental.Optional`).
+
+### **Basic Usage Example**
+```python
+@tf.function(input_signature=[tf.OptionalSpec(tf.TensorSpec(shape=(), dtype=tf.int32))])
+def maybe_square(optional):
+    if optional.has_value():
+        x = optional.get_value()
+        return x * x
+    return -1
+```
+
+### **Key Methods**
+- **`is_compatible_with()`**: Checks compatibility with another spec or value.
+- **`is_subtype_of()`** / **`most_specific_common_supertype()`**: For type hierarchy operations (implement `TraceType` interface).
+- **`experimental_as_proto()`** / **`experimental_from_proto()`**: Serialization/deserialization support.
+
+### **Inheritance**
+- Inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+- Enables integration with TensorFlow's type system and function tracing.
+
+### **Use Case**
+Essential for defining typed signatures when working with **optional data pipelines** or **conditional data flow** in TensorFlow graphs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_spec:
+    dtype: ["TypeSpec"]
+    range: null
+    structure: ["nested structure"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.OptionalSpec in a complex way */
+import tensorflow as tf

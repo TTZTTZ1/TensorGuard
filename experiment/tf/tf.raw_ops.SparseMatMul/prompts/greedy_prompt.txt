@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseMatMul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseMatMul` performs matrix multiplication between two 2D tensors (`a` and `b`), optimized for when at least one input is sparse (containing many zeros). It supports optional transposition of either input and requires matching inner dimensions. The operation is beneficial when matrices have a high proportion of zeros (typically >30%), though gradients only leverage sparsity when coming from a ReLU activation. Inputs must be dense tensors of type `float32` or `bfloat16`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["float32", "bfloat16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2"]
+    default: null
+  b:
+    dtype: ["float32", "bfloat16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2"]
+    default: null
+  transpose_a:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  a_is_sparse:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  b_is_sparse:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "(tf.shape(a)[1] if not transpose_a else tf.shape(a)[0]) == (tf.shape(b)[0] if not transpose_b else tf.shape(b)[1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseMatMul in a complex way */
+import tensorflow as tf

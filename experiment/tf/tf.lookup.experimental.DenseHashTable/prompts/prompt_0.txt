@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `tf.lookup.experimental.DenseHashTable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.experimental.DenseHashTable` is a mutable hash table implementation in TensorFlow that offers faster lookups, inserts, and removes compared to `MutableHashTable`, at the cost of higher memory usage. It uses open addressing with quadratic probing and requires two reserved keys (`empty_key` and `deleted_key`) that cannot be inserted.
+
+**Key Features:**
+- **Mutable**: Supports dynamic insertion (`insert`/`insert_or_assign`) and removal (`remove`/`erase`) of key-value pairs.
+- **Fast Operations**: Optimized for performance in lookup, insert, and remove operations.
+- **Reserved Keys**: Requires unique `empty_key` and `deleted_key` values to manage internal bucket states.
+- **Checkpointing**: Supports saving/restoring table contents from checkpoints (if `checkpoint=True`).
+- **Anonymous Mode**: Optional anonymous resource management for automatic deletion when all handles are released.
+
+**Basic Usage:**
+1. **Create Table**: Specify key/value dtypes, `default_value` for missing keys, and the reserved keys.
+2. **Insert Data**: Use `insert()` to add key-value pairs.
+3. **Lookup Values**: Use `lookup()` to retrieve values (returns `default_value` for missing keys).
+4. **Remove Entries**: Use `remove()` or `erase()` to delete keys.
+5. **Utilities**: Get table size (`size()`) or export all keys/values (`export()`).
+
+**Example:**
+```python
+table = tf.lookup.experimental.DenseHashTable(
+    key_dtype=tf.string,
+    value_dtype=tf.int64,
+    default_value=-1,
+    empty_key='',
+    deleted_key='$')
+table.insert(['a', 'b'], [0, 1])
+print(table.lookup(['a', 'b', 'c']))  # Output: [0, 1, -1]
+```
+
+**Important Notes:**
+- The reserved keys (`empty_key`, `deleted_key`) must never be used in regular operations.
+- The default `initial_num_buckets` is large (~1MB); reduce it when creating many tables to save memory.
+- Does not support initialization via a single `init` operation; use `insert` for data population.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  key_dtype:
+    dtype: ["int", "float", "string", "bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.experimental.DenseHashTable in a complex way */
+import tensorflow as tf

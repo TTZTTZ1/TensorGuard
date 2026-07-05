@@ -1,0 +1,48 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "kernel_size"
+  padding:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  ceil_mode:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  count_include_pad:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  divisor_override:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: kernel_size
+    Parameter 2: padding
+    Constraint: "all((padding if isinstance(padding, tuple) else (padding, padding))[i] <= ((kernel_size if isinstance(kernel_size, tuple) else (kernel_size, kernel_size))[i] - 1) / 2 for i in [0,1])"

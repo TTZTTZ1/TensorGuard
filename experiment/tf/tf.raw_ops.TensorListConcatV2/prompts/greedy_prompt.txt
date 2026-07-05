@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorListConcatV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorListConcatV2` concatenates all tensors within a TensorFlow tensor list along their first dimension (axis 0). It requires that all tensors in the list have identical shapes except for their leading dimension.
+
+**Key Parameters:**
+- `input_handle`: A variant tensor representing the input tensor list.
+- `element_shape`: Specifies the shape of uninitialized elements in the list (int32/int64).
+- `leading_dims`: Provides leading dimensions for uninitialized list elements (int64).
+- `element_dtype`: The data type of the tensors in the list.
+
+**Returns:**
+- `tensor`: The concatenated result (dtype = `element_dtype`).
+- `lengths`: A 1D int64 tensor containing the sizes of each input tensor's first dimension, useful for gradient computation.
+
+**Note:** This is a low-level operation; prefer higher-level APIs like `tf.concat` for general use.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_handle:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  element_shape:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  leading_dims:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  element_dtype:
+    dtype: ["dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1.
+    Parameter 1: input_handle
+    Parameter 2: element_dtype
+    Constraint: "tf.raw_ops.TensorListElementDtype(input_handle) == element_dtype"
+  2.
+    Parameter 1: input_handle
+    Parameter 2: element_shape
+    Constraint: "tf.raw_ops.TensorListElementShape(input_handle) == element_shape or element_shape[0] == -1"
+  3.
+    Parameter 1: element_shape
+    Parameter 2: leading_dims
+    Constraint: "element_shape[0] != -1 or tf.size(leading_dims) > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorListConcatV2 in a complex way */
+import tensorflow as tf

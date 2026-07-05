@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Layer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.Layer` class is the foundational base class for all layers in Keras. It encapsulates both state (trainable and non-trainable weights) and computation (defined in the `call` method). Layers are callable objects that transform input tensors into output tensors.
+
+### **Key Features:**
+- **State Management:** Weights can be created via `add_weight()` in `__init__` or `build` (for shape-dependent weights).
+- **Composability:** Layers can be nested; outer layers automatically track inner layers' weights.
+- **Lifecycle:** `build` is automatically called before the first `__call__`, followed by `call` for forward computation.
+- **Configurability:** Supports serialization via `get_config`/`from_config`.
+
+### **Core Methods to Implement:**
+1. **`__init__`**: Define layer attributes and create input-shape-independent weights.
+2. **`build(input_shape)`**: Create weights that depend on input shapes.
+3. **`call(inputs, training=None, mask=None)`**: Define the forward pass logic.
+4. **`get_config()`**: Return layer configuration for serialization.
+
+### **Example (Simple Dense Layer):**
+```python
+class SimpleDense(Layer):
+    def __init__(self, units=32):
+        super().__init__()
+        self.units = units
+
+    def build(self, input_shape):
+        self.kernel = self.add_weight(shape=(input_shape[-1], self.units),
+                                      initializer="glorot_uniform")
+        self.bias = self.add_weight(shape=(self.units,), initializer="zeros")
+
+    def call(self, inputs):
+        return ops.matmul(inputs, self.kernel) + self.bias
+```
+
+### **Important Attributes:**
+- `trainable_weights` / `non_trainable_weights`: Differentiate weights updated during backpropagation.
+- `dtype` / `compute_dtype`: Control precision for weights and computations.
+- `losses`: Track losses added via `add_loss`.
+
+### **Use Case:**
+Used to create custom layers by subclassing, enabling flexible model architectures while integrating seamlessly with Keras APIs for training, saving, and loading.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  activity_regularizer
+    dtype: ["object", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  trainable
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  dtype
+    dtype: ["string", "object", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  autocast
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  name
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Layer in a complex way */
+import tensorflow as tf

@@ -1,0 +1,34 @@
+params:
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  partitions:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_partitions:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: partitions
+    Parameter 2: num_partitions
+    Constraint: "tf.reduce_all(tf.logical_and(partitions >= 0, partitions < num_partitions))"
+  2:
+    Parameter 1: partitions
+    Parameter 2: data
+    Constraint: "data.shape[:len(partitions.shape)] == partitions.shape"

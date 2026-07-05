@@ -1,0 +1,247 @@
+
+# You are a Python code generation assistant for the `tf.RaggedTensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.RaggedTensor` is a TensorFlow class for representing tensors with variable-length dimensions (ragged dimensions). It's useful for handling nested data like sequences of varying lengths.
+
+### Key Features:
+- **Ragged Dimensions**: Slices can have different lengths (e.g., `[[1, 2], [3, 4, 5]]`).
+- **Fixed Ragged-Rank**: The number of ragged dimensions is determined at graph creation.
+- **Internal Representation**: Uses `values` (flattened data) and `row_splits` (row boundaries) to store data efficiently.
+
+### Construction Methods:
+Use factory methods like:
+- `from_row_splits()`, `from_row_lengths()`, `from_value_rowids()`
+- `from_nested_row_splits()` for multiple ragged dimensions.
+
+### Attributes:
+- `values`: Concatenated rows.
+- `row_splits`: Indices where rows start/end in `values`.
+- `ragged_rank`: Number of ragged dimensions.
+- `shape`: Static shape (ragged dimensions are `None`).
+
+### Common Operations:
+- Convert to/from dense tensors (`to_tensor()`, `from_tensor()`).
+- Merge dimensions (`merge_dims()`).
+- Get row information (`row_lengths()`, `value_rowids()`).
+
+### Use Cases:
+- Natural language processing (variable-length sentences).
+- Irregularly structured data (e.g., nested lists).
+
+### Example:
+```python
+rt = tf.RaggedTensor.from_row_splits(
+    values=[3, 1, 4, 1, 5, 9, 2, 6],
+    row_splits=[0, 4, 4, 7, 8, 8]
+)
+# Output: [[3, 1, 4, 1], [], [5, 9, 2], [6], []]
+```
+
+For more details, see the [Ragged Tensor Guide](https://tensorflow.google.cn/guide/ragged_tensor).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor", "ragged_tensor"]
+    shape: ["[nvals, ...]"]
+    default: null
+  row_splits:
+    dtype: ["integer"]
+    range: ["non-empty", "sorted ascending", "row_splits[0] == 0", "row_splits[-1] == nvals"]
+    structure: ["tensor"]
+    shape: ["[nrows+1]"]
+    default: null
+  row_lengths:
+    dtype: ["integer"]
+    range: ["nonnegative", "sum(row_lengths) == nvals"]
+    structure: ["tensor"]
+    shape: ["[nrows]"]
+    default: null
+  value_rowids:
+    dtype: ["integer"]
+    range: ["nonnegative", "sorted ascending"]
+    structure: ["tensor"]
+    shape: ["[nvals]"]
+    default: null
+  nrows:
+    dtype: ["integer"]
+    range: ["for from_value_rowids: greater than value_rowids[-1] if not empty, else >= 0", "for from_uniform_row_length: related to uniform_row_length and nvals"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "for from_value_rowids: value_rowids[-1] + 1 or 0 if empty"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  validate:
+    dtype: ["boolean"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  uniform_row_length:
+    dtype: ["integer"]
+    range: ["nonnegative", "values.shape[0] % uniform_row_length == 0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  flat_values:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor", "ragged_tensor"]
+    shape: ["[nvals, ...]"]
+    default: null
+  nested_row_splits:
+    dtype: ["integer"]
+    range: [null]
+    structure: ["list of tensors"]
+    shape: ["variable"]
+    default: null
+  nested_row_lengths:
+    dtype: ["integer"]
+    range: [null]
+    structure: ["list of tensors"]
+    shape: ["variable"]
+    default: null
+  nested_value_rowids:
+    dtype: ["integer"]
+    range: [null]
+    structure: ["list of tensors"]
+    shape: ["variable"]
+    default: null
+  nested_nrows:
+    dtype: ["integer"]
+    range: [null]
+    structure: ["list of scalars"]
+    shape: ["variable"]
+    default: null
+  st_input:
+    dtype: ["No mention"]
+    range: ["rank 2"]
+    structure: ["sparse tensor"]
+    shape: ["[d0, d1]"]
+    default: null
+  tensor:
+    dtype: ["No mention"]
+    range: ["rank ragged_rank + 1 or higher"]
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  lengths:
+    dtype: ["integer"]
+    range: ["nonnegative", "optional"]
+    structure: ["tensor", "list", "tuple"]
+    shape: ["[nrows] or nested"]
+    default: null
+  padding:
+    dtype: ["same as tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["tensor.shape[ragged_rank + 1:]"]
+    default: null
+  ragged_rank:
+    dtype: ["integer"]
+    range: ["greater than zero"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  row_splits_dtype:
+    dtype: ["integer"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.int64"
+  axis:
+    dtype: ["integer"]
+    range: ["scalar or vector within tensor rank"]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar or [k]"]
+    default: null
+  out_type:
+    dtype: ["integer"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "self.row_splits.dtype"
+  default_value:
+    dtype: ["same as values"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "zero"
+  shape:
+    dtype: ["integer"]
+    range: [null]
+    structure: ["tensor", "list"]
+    shape: ["[rank]"]
+    default: null
+  new_values:
+    dtype: ["No mention"]
+    range: ["rank > 0", "same number of rows as self.flat_values or self.values"]
+    structure: ["tensor", "ragged_tensor"]
+    shape: ["variable"]
+    default: null
+  dtype:
+    dtype: ["integer"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  outer_axis:
+    dtype: ["integer"]
+    range: ["within tensor rank", "may be negative if rank known"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  inner_axis:
+    dtype: ["integer"]
+    range: ["within tensor rank", "may be negative if rank known"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+
+constraints:
+  1:
+    Parameter 1: row_splits
+    Parameter 2: values
+    Constraint: "row_splits[0] == 0 and row_splits[-1] == values.shape[0]"
+  2:
+    Parameter 1: row_lengths
+    Parameter 2: values
+    Constraint: "sum(row_lengths) == values.shape[0]"
+  3:
+    Parameter 1: nrows
+    Parameter 2: value_rowids
+    Constraint: "(value_rowids.shape[0] == 0 and nrows >= 0) or (value_rowids.shape[0] > 0 and nrows > value_rowids[-1])"
+  4:
+    Parameter 1: uniform_row_length
+    Parameter 2: values
+    Constraint: "values.shape[0] % uniform_row_length == 0"
+  5:
+    Parameter 1: uniform_row_length
+    Parameter 2: nrows
+    Constraint: "uniform_row_length * nrows == values.shape[0]"
+  6:
+    Parameter 1: nested_value_rowids
+    Parameter 2: nested_nrows
+    Constraint: "len(nested_value_rowids) == len(nested_nrows)"
+  7:
+    Parameter 1: lengths
+    Parameter 2: padding
+    Constraint: "not (lengths is not None and padding is not None)"
+  8:
+    Parameter 1: tensor
+    Parameter 2: ragged_rank
+    Constraint: "tensor.rank >= ragged_rank + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.RaggedTensor in a complex way */
+import tensorflow as tf

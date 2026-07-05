@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.saved_model.save` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.saved_model.save` exports a TensorFlow module (like `tf.Module` or `tf.keras.Model`) to the SavedModel format for deployment or sharing. It serializes the model's architecture, variables, and computation graphs.
+
+**Key Features:**
+- **Input:** A trackable object (e.g., `tf.Module`, `tf.keras.Model`).
+- **Output:** SavedModel saved to `export_dir`.
+- **Signatures (Optional):** Define input/output specs for serving; can be a single `tf.function`, concrete function, or dictionary mapping keys to functions.
+- **Variables:** Must be tracked (automatically handled by Keras layers/optimizers).
+
+**Usage Example:**
+```python
+class Adder(tf.Module):
+    @tf.function(input_signature=[tf.TensorSpec(shape=None, dtype=tf.float32)])
+    def add(self, x):
+        return x + x
+
+model = Adder()
+tf.saved_model.save(model, '/tmp/adder')
+```
+
+**Notes:**
+- If `signatures` is omitted, it exports all `@tf.function`-decorated methods.
+- Keras models can be exported; models built with Input/Output layers have implicit signatures.
+- Exported models can be loaded with `tf.saved_model.load`.
+- Device placements are generally flexible (e.g., GPU-trained models can run on CPU), except for hard-coded `tf.device` annotations or device-specific ops.
+- Not recommended inside loops or function bodies in graph mode (TensorFlow 1.x).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  obj:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  export_dir:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  signatures:
+    dtype: ["NoneType", "function", "dict"]
+    range: null
+    structure: ["scalar", "dict"]
+    shape: []
+    default: "None"
+  options:
+    dtype: ["SaveOptions", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "obj"
+    Parameter 2: "obj"
+    Constraint: "isinstance(obj, tf.Module) or isinstance(obj, tf.train.Checkpoint)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.saved_model.save in a complex way */
+import tensorflow as tf

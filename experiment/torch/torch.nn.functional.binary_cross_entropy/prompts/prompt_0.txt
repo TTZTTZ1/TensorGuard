@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.binary_cross_entropy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.binary_cross_entropy` computes the binary cross-entropy loss between predicted probabilities (`input`) and target values (`target`), both of which must be tensors of the same shape. The `input` values should represent probabilities (typically from a sigmoid activation), while `target` values must lie between 0 and 1.
+
+**Key parameters:**
+- `weight` (optional): A tensor to rescale loss per element.
+- `reduction`: Controls how the loss is aggregated (`'none'`, `'mean'`, or `'sum'`; default is `'mean'`).
+- `size_average` and `reduce` are deprecated and overridden by `reduction`.
+
+**Example usage:**
+```python
+loss = F.binary_cross_entropy(torch.sigmoid(input), target)
+```
+This function is equivalent to `BCELoss` but is called directly as a function.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["[0, 1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  target:
+    dtype: ["No mention"]
+    range: ["[0, 1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  reduce:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "target"
+    Constraint: "input.shape == target.shape"
+  2:
+    Parameter 1: "weight"
+    Parameter 2: "input"
+    Constraint: "weight is None or (weight.ndim <= input.ndim and all(weight.shape[i] == 1 or weight.shape[i] == input.shape[input.ndim - weight.ndim + i] for i in range(weight.ndim)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.binary_cross_entropy in a complex way */
+import torch

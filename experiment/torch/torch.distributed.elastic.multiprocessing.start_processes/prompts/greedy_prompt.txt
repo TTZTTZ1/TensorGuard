@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.start_processes` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` module provides a unified interface to launch and manage multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment setup, and log management.
+
+**Key Features:**
+- **Unified Launch:** Use `start_processes()` to start multiple copies of a worker, specifying either a callable function or a command string.
+- **Flexible Configuration:** Pass different arguments and environment variables per worker via `args` and `envs` dictionaries keyed by local rank.
+- **Comprehensive Logging:** Automatically redirects or tees stdout/stderr to log files. Supports filtering and aggregation of logs across ranks.
+- **Error Handling:** Automatically generates error files for failed processes (for functions by default, for binaries with explicit annotation).
+
+**Core Components:**
+- **`start_processes()`:** Main function to launch workers. Returns a `PContext` object for managing the processes.
+- **`PContext`:** Base class for process management. Specific implementations:
+  - `MultiprocessContext`: For function-based workers (uses `torch.multiprocessing`).
+  - `SubprocessContext`: For binary workers (uses `subprocess.Popen`).
+- **`LogsSpecs`:** Defines logging behavior (redirection, tee-ing, filtering).
+- **`RunProcsResult`:** Contains the results (return values, failures, log paths) after processes complete.
+
+**Typical Usage:**
+1. Define your worker function or binary command.
+2. Call `start_processes()` with appropriate configuration (entrypoint, per-rank args/envs, log directory).
+3. Use the returned context to wait for completion or manage the processes.
+
+This module is particularly useful for distributed training setups where multiple processes need to be coordinated with consistent logging and error handling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+  entrypoint:
+    dtype: ["Callable", "str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+  args:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: "null"
+  envs:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: "null"
+  log_dir:
+    dtype: ["str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+  start_method:
+    dtype: ["str"]
+    range: ["spawn", "fork", "forkserver"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "'spawn'"
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: "No mention"
+    structure: ["object"]
+    shape: ["1"]
+    default: "null"
+  local_ranks_filter:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "null"
+  duplicate_stdout_filters:
+    dtype: ["list", "None"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "None"
+  duplicate_stderr_filters:
+    dtype: ["list", "None"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "set(args.keys()) == set(envs.keys())"
+  2:
+    Parameter 1: "entrypoint"
+    Parameter 2: "args"
+    Constraint: "not (isinstance(entrypoint, str) and any(not isinstance(arg, str) for args_tuple in args.values() for arg in args_tuple))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.start_processes in a complex way */
+import torch

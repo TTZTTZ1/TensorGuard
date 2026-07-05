@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `tf.cond` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.cond` is a TensorFlow function that conditionally executes one of two callable functions based on a boolean predicate. It returns the output of `true_fn` if `pred` is true, otherwise it returns the output of `false_fn`.
+
+**Key Features:**
+- **Automatic in `tf.function`:** Python `if` statements with tensor predicates are automatically converted to `tf.cond` when using `tf.function` (unless `autograph=False`).
+- **Branch Execution:** Only the selected branch (`true_fn` or `false_fn`) is executed at runtime.
+- **Output Consistency:** Both callables must return the same number and type of outputs (or compatible nested structures).
+- **Eager Execution:** Operations defined *outside* either branch are always executed, regardless of the predicate.
+
+**Important Notes:**
+- Do not use tensors created inside a branch outside of `tf.cond` directly; instead, return them as outputs from the branch.
+- The function is designed for TensorFlow's dataflow graph and may execute more eagerly than typical Python conditionals.
+
+**Example:**
+```python
+result = tf.cond(x < y, lambda: x + 1, lambda: y - 1)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  pred:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  true_fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "None"
+  false_fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "true_fn"
+    Parameter 2: "false_fn"
+    Constraint: "hasattr(true_fn, '__call__') and hasattr(false_fn, '__call__') and len([t for t in tf.nest.flatten(true_fn()) if tf.is_tensor(t)]) == len([t for t in tf.nest.flatten(false_fn()) if tf.is_tensor(t)]) and all(t1.dtype == t2.dtype for t1, t2 in zip(tf.nest.flatten(true_fn()), tf.nest.flatten(false_fn())))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.cond in a complex way */
+import tensorflow as tf

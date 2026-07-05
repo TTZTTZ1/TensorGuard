@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.OptionalSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.OptionalSpec` is a **type specification class** for `tf.experimental.Optional` objects in TensorFlow. It defines the structure and type constraints for optional values, enabling type checking and compatibility validation in TensorFlow's graph-based execution.
+
+---
+
+### **Key Purpose**
+- Specifies the type and shape of elements that an `tf.experimental.Optional` object may contain.
+- Used primarily in **`tf.function` input signatures** to define functions that accept optional inputs.
+
+---
+
+### **Core Attributes**
+- **`element_spec`**: A (possibly nested) structure of `TypeSpec` objects describing the type of the optional element (e.g., `tf.TensorSpec`).
+- **`value_type`**: The Python type of values compatible with this spec (always `tf.experimental.Optional`).
+
+---
+
+### **Main Methods**
+- **`is_compatible_with(spec_or_value)`**: Checks compatibility with another spec or value.
+- **`is_subtype_of(other)`**: Determines if this spec is a subtype of another (implements `TraceType`).
+- **`most_specific_common_supertype(others)`**: Finds the most specific common supertype spec.
+- **`from_value(value)`**: Creates an `OptionalSpec` from an `Optional` instance.
+
+---
+
+### **Example Usage**
+```python
+@tf.function(input_signature=[tf.OptionalSpec(tf.TensorSpec(shape=(), dtype=tf.int32))])
+def maybe_square(optional):
+    if optional.has_value():
+        x = optional.get_value()
+        return x * x
+    return -1
+```
+This allows the function to safely handle optional tensor inputs with defined type guarantees.
+
+---
+
+### **Inheritance**
+- Inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+- Supports serialization via `experimental_as_proto()`/`experimental_from_proto()`.
+
+---
+
+### **Note**
+- Replaces deprecated `tf.compat.v1.data.experimental.OptionalStructure`.
+- Essential for **type-safe TF2 graph mode** when working with optional data structures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_spec:
+    dtype: ["TypeSpec"]
+    range: null
+    structure: ["nested structure"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.OptionalSpec in a complex way */
+import tensorflow as tf

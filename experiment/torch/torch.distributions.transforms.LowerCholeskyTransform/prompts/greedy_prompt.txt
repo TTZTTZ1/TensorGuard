@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.LowerCholeskyTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling functions
+- Supports gradient estimation via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` and `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Pareto, Poisson, StudentT, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Transformed**: Created via `TransformedDistribution` with transforms like `ExpTransform`, `SigmoidTransform`, etc.
+- **Specialized**: MixtureSameFamily, Independent, Relaxed distributions (for Gumbel-Softmax)
+
+### **3. Key Features**
+- **Batch and event shapes**: Support for batched parameters and samples
+- **Parameter constraints**: Automatic validation via `arg_constraints`
+- **Exponential family**: Specialized class for distributions with exponential family form
+- **KL divergence**: Built-in computation between distributions
+- **Transform system**: Composable transforms for creating complex distributions
+
+### **4. Gradient Estimation Methods**
+
+**REINFORCE (Score Function)**:
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization)**:
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### **5. Constraint System**
+- Defines valid parameter ranges for distributions
+- `transform_to()` and `biject_to()` for unconstrained optimization
+- Built-in constraints: `positive`, `simplex`, `interval`, `corr_cholesky`, etc.
+
+### **6. Practical Applications**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders
+- Bayesian modeling
+- Probabilistic programming
+- Any scenario requiring differentiable sampling
+
+The package follows a design similar to TensorFlow Distributions and provides a flexible, modular system for probabilistic modeling with automatic differentiation support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: null
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.LowerCholeskyTransform in a complex way */
+import torch

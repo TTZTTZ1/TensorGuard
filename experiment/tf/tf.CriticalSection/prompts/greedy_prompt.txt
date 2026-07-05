@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.CriticalSection` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.CriticalSection` is a TensorFlow resource that ensures **serial execution** of specified subgraphs, preventing concurrent access conflicts. It is primarily used to enforce atomic operations on shared resources, such as variables.
+
+### **Key Features:**
+- **Serial Execution:** Functions executed via a `CriticalSection` run one at a time, guaranteeing ordered access.
+- **Atomic Operations:** Useful for scenarios like counters or updates where intermediate states must not be interleaved.
+- **Device Colocation:** The critical section and its captured resources are automatically placed on the same device (CPU/GPU).
+
+### **Core Method:**
+- **`execute(fn, exclusive_resource_access=True, name=None)`**  
+  Runs the function `fn` (which takes no arguments) inside the critical section.  
+  - `exclusive_resource_access=True` (default) ensures no other `CriticalSection` can concurrently access the same resources.  
+  - Set to `False` for read-only sharing across sections.
+
+### **Important Notes:**
+- **Deadlock Prevention:** Nesting or recursively locking the same `CriticalSection` is prohibited.
+- **No Cross-Section Guarantees:** Using multiple critical sections on the same resource does **not** ensure exclusivity unless `exclusive_resource_access=True` is set for all.
+
+### **Example Use Case:**
+```python
+v = tf.Variable(0.0)
+def increment():
+    value = v.read_value()
+    with tf.control_dependencies([v.assign_add(1)]):
+        return tf.identity(value)
+
+cs = tf.CriticalSection()
+result = cs.execute(increment)  # Ensures atomic read-increment-write
+```
+This pattern is essential for implementing thread-safe operations in TensorFlow graphs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name_class:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  shared_name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  critical_section_def:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  import_scope:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  fn:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["function"]
+    shape: ["No mention"]
+    default: "null"
+  exclusive_resource_access:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name_execute:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "fn"
+    Parameter 2: "exclusive_resource_access"
+    Constraint: "not (fn attempts to lock CriticalSection in nested way)"
+  2:
+    Parameter 1: "exclusive_resource_access"
+    Parameter 2: "fn"
+    Constraint: "not (exclusive_resource_access == True and resources_conflict(fn))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.CriticalSection in a complex way */
+import tensorflow as tf

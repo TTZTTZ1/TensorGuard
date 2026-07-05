@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.map_fn` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.map_fn` applies a given function `fn` to each element of a tensor (or sequence of tensors) along the first dimension, stacking the results back together. It supports single or multi‑arity inputs/outputs, ragged and sparse tensors, and parallel execution when used within `tf.function`. Use `fn_output_signature` to specify output types when they differ from inputs. While flexible, `map_fn` is less efficient than vectorized operations and is best suited when vectorization is difficult, memory intensive, or readability is prioritized.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["callable"]
+    shape: ["No mention"]
+    default: "null"
+  elems:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "sequence", "RaggedTensor", "SparseTensor"]
+    shape: ["any"]
+    default: "null"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  parallel_iterations:
+    dtype: ["int"]
+    range: ["positive integers"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "10 (graph building), 1 (eager execution)"
+  back_prop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  swap_memory:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  infer_shape:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: ["any string"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  fn_output_signature:
+    dtype: ["DType", "TensorSpec", "RaggedTensorSpec", "SparseTensorSpec", "tuple", "list", "dict"]
+    range: ["No mention"]
+    structure: ["DType", "TensorSpec", "RaggedTensorSpec", "SparseTensorSpec", "nested structure"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "fn"
+    Parameter 2: "elems"
+    Constraint: "fn must accept one argument with the same (possibly nested) structure as elems"
+  2:
+    Parameter 1: "fn"
+    Parameter 2: "fn_output_signature"
+    Constraint: "if fn's input and output signatures differ (in structure, dtypes, or tensor types), fn_output_signature must be specified"
+  3:
+    Parameter 1: "fn"
+    Parameter 2: "fn_output_signature"
+    Constraint: "fn's output must have the same structure as fn_output_signature if provided, otherwise the same structure as elems"
+  4:
+    Parameter 1: "elems"
+    Parameter 2: "None"
+    Constraint: "elems must consist of at least one tensor"
+  5:
+    Parameter 1: "fn_output_signature"
+    Parameter 2: "None"
+    Constraint: "fn_output_signature can be specified using tf.DType, tf.TensorSpec, tf.RaggedTensorSpec, tf.SparseTensorSpec, or a (possibly nested) tuple, list, or dict containing these types"
+  6:
+    Parameter 1: "dtype"
+    Parameter 2: "fn_output_signature"
+    Constraint: "dtype is deprecated and equivalent to fn_output_signature"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.map_fn in a complex way */
+import tensorflow as tf

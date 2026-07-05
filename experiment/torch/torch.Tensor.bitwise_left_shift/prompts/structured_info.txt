@@ -1,0 +1,16 @@
+params:
+  other:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: self
+    Parameter 2: other
+    Constraint: "self.dtype in [torch.int8, torch.int16, torch.int32, torch.int64] and (not isinstance(other, torch.Tensor) or other.dtype in [torch.int8, torch.int16, torch.int32, torch.int64])"
+  2:
+    Parameter 1: self
+    Parameter 2: other
+    Constraint: "torch.broadcast_shapes(self.shape, other.shape if isinstance(other, torch.Tensor) else ()) is not None"

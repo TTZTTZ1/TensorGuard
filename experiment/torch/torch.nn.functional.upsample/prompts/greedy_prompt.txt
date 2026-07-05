@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.upsample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.upsample` is a deprecated function for upsampling tensors, now replaced by `torch.nn.functional.interpolate`. It resizes input tensors (3D, 4D, or 5D) to a specified `size` or `scale_factor`. Supported interpolation modes include nearest, linear, bilinear, bicubic, and trilinear, depending on input dimensions. The `align_corners` parameter controls pixel alignment for linear interpolations. Note: bicubic mode may produce out-of-range values, and CUDA tensors can yield nondeterministic gradients.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [3, 4, 5]
+    default: null
+  size:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "tuple of 1 to 3 elements"]
+    default: "None"
+  scale_factor:
+    dtype: ["float", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "tuple"]
+    default: "None"
+  mode:
+    dtype: ["str"]
+    range: ["nearest", "linear", "bilinear", "bicubic", "trilinear"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'nearest'"
+  align_corners:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "scale_factor"
+    Parameter 2: "input"
+    Constraint: "not isinstance(scale_factor, tuple) or len(scale_factor) == input.ndim - 2"
+  2:
+    Parameter 1: "mode"
+    Parameter 2: "input"
+    Constraint: "mode == 'nearest' or (mode == 'linear' and input.ndim == 3) or (mode in ['bilinear', 'bicubic'] and input.ndim == 4) or (mode == 'trilinear' and input.ndim == 5)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.upsample in a complex way */
+import torch

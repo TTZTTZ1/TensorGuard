@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.distributed.HashStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Process Groups**: Default group (world) and custom groups for fine-grained communication.
+- **Backends**: Supports Gloo (CPU), NCCL (CUDA GPUs), XCCL (XPU GPUs), MPI, and UCC (experimental).
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies.
+
+## **Initialization**
+- Must call `init_process_group()` or `init_device_mesh()` before any distributed operations.
+- **Initialization methods**:
+  - TCP: `tcp://IP:PORT`
+  - Shared file system: `file:///path/to/file`
+  - Environment variables (default): `env://` using `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+
+## **Key Functions**
+- **Collective Operations**: `broadcast`, `all_reduce`, `reduce`, `all_gather`, `gather`, `scatter`, `reduce_scatter`, `all_to_all`, `barrier`
+- **Point-to-Point**: `send`, `recv`, `isend`, `irecv`, `batch_isend_irecv`
+- **Process Management**: `get_rank()`, `get_world_size()`, `new_group()`, `destroy_process_group()`
+
+## **Best Practices**
+- **Backend Selection**:
+  - Use NCCL for CUDA GPU training
+  - Use XCCL for XPU GPU training  
+  - Use Gloo for CPU training
+- **Synchronization**: Operations can be synchronous (`async_op=False`) or asynchronous (`async_op=True`) returning `Work` objects.
+- **Cleanup**: Call `destroy_process_group()` to release resources.
+
+## **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout and rank failure reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for additional logging (`OFF`, `INFO`, `DETAIL`)
+- `torch.distributed.breakpoint()`: Debug single rank while others wait
+- HTTP debug server for runtime diagnostics
+
+## **Important Notes**
+- Follow SPMD programming model (same code runs on all ranks)
+- Ensure consistent mesh/group configurations across ranks
+- Use `DistributedDataParallel` wrapper for synchronous distributed training
+- Object collectives have performance limitations and should be used cautiously
+
+The package enables efficient distributed training with advantages over `DataParallel`, including per-process optimizers, reduced parameter broadcasting, and independent Python interpreters avoiding GIL contention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.HashStore in a complex way */
+import torch

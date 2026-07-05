@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.nn.experimental.stateless_dropout` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.experimental.stateless_dropout` is a deterministic dropout function that randomly sets input elements to zero to prevent overfitting, with the same seed always producing the same output. Unlike the stateful `tf.nn.dropout`, it ensures reproducibility across multiple calls.
+
+**Key Features:**
+- **Deterministic:** Given the same `seed`, the output is identical every time.
+- **Preserves Expectation:** Dropped elements are set to zero, while remaining elements are scaled by `1/(1-rate)` to maintain the expected value.
+- **Customizable Masking:** Optional `noise_shape` allows dropping entire channels (e.g., columns or feature maps) together.
+- **Validation:** Raises an error if `rate` is outside `[0, 1)` or if `x` is not a floating-point tensor.
+
+**Parameters:**
+- `x`: Floating-point input tensor.
+- `rate`: Drop probability (scalar, 0 ≤ rate < 1).
+- `seed`: Integer tensor of shape `[2]` controlling randomness.
+- `rng_alg` (optional): Random number generator algorithm.
+- `noise_shape` (optional): Shape for broadcasting dropout mask.
+- `name` (optional): Operation name.
+
+**Returns:** A tensor of the same shape and dtype as `x`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["float16", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  rate:
+    dtype: ["float16", "float32", "float64"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[2]]
+    default: null
+  rng_alg:
+    dtype: ["string"]
+    range: [["philox", "threefry", "auto_select"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "auto_select"
+  noise_shape:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[null]]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: null
+    Constraint: x.dtype.is_floating
+  2:
+    Parameter 1: rate
+    Parameter 2: null
+    Constraint: rate >= 0 and rate < 1
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.experimental.stateless_dropout in a complex way */
+import tensorflow as tf

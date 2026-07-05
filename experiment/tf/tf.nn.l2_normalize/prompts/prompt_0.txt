@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.nn.l2_normalize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.l2_normalize` (aliased as `tf.nn.l2_normalize`) normalizes a tensor along a specified axis using the L2 norm. It divides each element by the square root of the sum of squares along that axis, ensuring the resulting slice has a unit L2 norm (unless the norm is below a small epsilon threshold).  
+
+**Key parameters:**  
+- `x`: Input tensor.  
+- `axis`: Dimension(s) to normalize along.  
+- `epsilon`: Small constant to avoid division by zero (default 1e-12).  
+
+**Behavior:**  
+- For a 1‑D tensor with `axis=0`: `output = x / sqrt(max(sum(x²), epsilon))`.  
+- For higher dimensions, each 1‑D slice along the chosen axis is normalized independently.  
+
+**Example:**  
+```python
+x = tf.constant([3.0, 4.0])
+tf.math.l2_normalize(x).numpy()  # → [0.6, 0.8]
+```  
+
+**Note:** The `dim` argument is deprecated; use `axis` instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  axis:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["any"]
+    default: "None"
+  epsilon:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-12"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "epsilon"
+    Parameter 2: "epsilon"
+    Constraint: "epsilon >= 0"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "x"
+    Constraint: "axis is None or (tf.rank(x) > 0 and tf.reduce_all(tf.logical_and(axis >= -tf.rank(x), axis < tf.rank(x))))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.l2_normalize in a complex way */
+import tensorflow as tf

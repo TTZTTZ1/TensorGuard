@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.package.EmptyMatchError` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`torch.package`** is a PyTorch module for creating self-contained, portable packages that bundle model code, data, and dependencies into a single archive (`.pt` file). It enables reproducible execution across different environments and supports deployment via `torch::deploy`.
+
+### **Key Features**
+- **Packaging**: Bundle Python source code, pickled objects (models/data), and arbitrary resources (text/binary files).
+- **Dependency Management**: Automatically resolves and controls dependencies using patterns (`intern`, `extern`, `mock`, `deny`).
+- **Isolation**: Loaded packages run in isolated environments, preventing conflicts with system modules.
+- **Inspection**: Tools to explore package contents and dependency graphs.
+
+### **Core Components**
+1. **`PackageExporter`**: Creates packages.
+   - `save_pickle()`, `save_text()`, `save_binary()`: Add resources.
+   - `save_module()`: Include Python modules.
+   - Dependency actions: `intern()` (include), `extern()` (external dep), `mock()` (stub), `deny()` (block).
+
+2. **`PackageImporter`**: Loads and executes packages.
+   - `load_pickle()`, `load_text()`, `load_binary()`: Retrieve resources.
+   - `import_module()`: Import packaged code.
+   - `file_structure()`: Inspect package contents.
+
+### **Common Use Cases**
+- **Model Deployment**: Package a trained model with its custom code for inference elsewhere.
+- **Dependency Snapshotting**: Capture exact code versions to ensure reproducibility.
+- **Code Patching**: Modify or patch modules within a package via `save_source_string()`.
+- **Resource Bundling**: Include configuration files, assets, or data alongside code.
+
+### **Important Notes**
+- **Security**: Uses `pickle`; only load trusted packages.
+- **Dependency Resolution**: Based on static analysis (AST parsing); dynamic imports may not be detected.
+- **Type Isolation**: Classes from packages are distinct from system versions (`isinstance` checks fail).
+- **Global State**: Avoid mutable global state in modules to prevent issues when packaged.
+
+### **Workflow Example**
+```python
+# 1. Export a model
+with PackageExporter('model.pt') as e:
+    e.save_pickle('model', 'data.pkl', my_model)
+    e.intern('my_code.**')
+
+# 2. Import elsewhere
+importer = PackageImporter('model.pt')
+loaded_model = importer.load_pickle('model', 'data.pkl')
+```
+
+### **Sharp Edges**
+- Prefer refactoring over `mock` to avoid behavioral differences.
+- Use `importlib.resources` (standard) to access packaged resources from within packaged code.
+- Check `__torch_package__` attribute to detect packaged execution (use sparingly).
+
+In summary, `torch.package` is a robust tool for creating hermetic, shareable PyTorch packages, ensuring consistency across environments while offering fine-grained control over dependencies and resources.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.EmptyMatchError in a complex way */
+import torch

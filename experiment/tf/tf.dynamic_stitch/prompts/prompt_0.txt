@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.dynamic_stitch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.dynamic_stitch` interleaves values from multiple tensors into a single merged tensor using specified indices. Each element in `data[m]` is placed into the output at the corresponding position given by `indices[m]`. The function requires that the shape of each `data[i]` starts with the shape of its corresponding `indices[i]`, and the output shape is determined by the maximum index plus one, followed by the constant trailing dimensions from the data tensors.
+
+If indices overlap, later values (based on the order of the input lists) overwrite earlier ones. This operation is commonly used in conjunction with `tf.dynamic_partition` to update subsets of data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  data:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: indices
+    Constraint: "len(indices) >= 1"
+  2:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "len(indices) == len(data)"
+  3:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "all(data[i].shape[:len(indices[i].shape)] == indices[i].shape for i in range(len(indices))) and len(set(tuple(data[i].shape[len(indices[i].shape):]) for i in range(len(indices)))) == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.dynamic_stitch in a complex way */
+import tensorflow as tf

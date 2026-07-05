@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.fft.irfftn` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.irfftn` computes the inverse real-valued n-dimensional FFT, transforming a one-sided Hermitian frequency-domain signal (as produced by `rfftn`) back to a real-valued spatial/temporal signal. It requires the input to satisfy Hermitian symmetry, with imaginary components at required real frequencies (e.g., zero-frequency) being ignored.
+
+**Key Parameters:**
+- `input`: Hermitian symmetric frequency-domain tensor.
+- `s`: Output signal shape per dimension (crucial for odd/even length correctness).
+- `dim`: Dimensions to transform (last must be the compressed half-Hermitian dimension).
+- `norm`: Normalization mode (`"backward"` default, `1/n` scaling).
+
+**Important Notes:**
+- Always specify `s` (original signal shape) to ensure correct odd/even length handling and proper round-trip consistency with `rfftn`.
+- The last dimension of `input` is half-Hermitian (size: `n//2 + 1` for even `n`, or `(n+1)//2` for odd `n`).
+- Supports specialized half-precision types on CUDA (SM53+) with power-of-2 signal lengths.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  s:
+    dtype: ["int"]
+    range: ["each element is an int, can be -1 or a positive integer (>=1)"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "even output in the last dimension: s[-1] = 2*(input.size(dim[-1]) - 1)"
+  dim:
+    dtype: ["int"]
+    range: ["each element must be a valid dimension index for the input tensor"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "all dimensions, or the last len(s) dimensions if s is given"
+  norm:
+    dtype: ["string"]
+    range: ["forward", "backward", "ortho"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "backward"
+  out:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: s
+    Parameter 2: dim
+    Constraint: "len(s) == len(dim) if s is not None and dim is not None"
+  2:
+    Parameter 1: norm
+    Parameter 2: None
+    Constraint: "norm in ['forward', 'backward', 'ortho']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.irfftn in a complex way */
+import torch

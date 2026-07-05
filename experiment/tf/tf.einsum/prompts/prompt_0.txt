@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `tf.einsum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.einsum` performs tensor operations (contractions, outer products, etc.) using Einstein summation notation. It takes an equation string and input tensors, then computes the result based on index rules.
+
+**Key features:**
+- **Equation format:** Uses labels like `'ij,jk->ik'` for matrix multiplication.
+- **Summation:** Repeated indices not in the output are summed (e.g., `'ij,jk'` sums over `j`).
+- **Common operations:** Supports matrix multiplication, dot products, transposes, traces, batch operations, etc.
+- **Ellipsis:** Allows broadcasting over unspecified dimensions (e.g., `'...ij,...jk->...ik'`).
+- **No broadcasting on named axes:** Matching labels must have the same length.
+
+**Example:**
+```python
+# Matrix multiplication
+result = tf.einsum('ij,jk->ik', A, B)  # C[i,k] = sum_j A[i,j] * B[j,k]
+```
+
+**Arguments:**
+- `equation`: String describing the operation (similar to NumPy's `einsum`).
+- `*inputs`: Tensors to contract.
+- `optimize`: Optional contraction path optimization strategy.
+- `name`: Optional operation name.
+
+**Returns:** Contracted tensor with shape determined by the equation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  equation:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  inputs:
+    dtype: ["tensor"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+  optimize:
+    dtype: ["string"]
+    range: [["greedy", "optimal", "branch-2", "branch-all", "auto"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'greedy'"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "equation"
+    Parameter 2: "inputs"
+    Constraint: "len(inputs) == (equation.split('->')[0] if '->' in equation else equation).count(',') + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.einsum in a complex way */
+import tensorflow as tf

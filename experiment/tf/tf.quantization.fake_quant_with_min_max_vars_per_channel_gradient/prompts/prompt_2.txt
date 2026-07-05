@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.quantization.fake_quant_with_min_max_vars_per_channel_gradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+This function computes gradients for the `FakeQuantWithMinMaxVarsPerChannel` operation, which is used in quantization-aware training. It calculates the gradients with respect to the input, minimum, and maximum values for per-channel quantization.
+
+**Key Parameters:**
+- `gradients`: Backpropagated gradients from the layer above.
+- `inputs`: Original input values to the quantization operation.
+- `min`, `max`: Per-channel quantization bounds (each a 1D tensor with size matching the channel dimension).
+- `num_bits`: Bitwidth for quantization (default 8).
+- `narrow_range`: If `True`, quantizes to \(2^{\text{num\_bits}} - 1\) values.
+
+**Returns:**  
+A tuple containing:
+1. `backprops_wrt_input`: Gradient with respect to the input.
+2. `backprop_wrt_min`: Gradient with respect to the minimum values.
+3. `backprop_wrt_max`: Gradient with respect to the maximum values.
+
+This function enables gradient-based optimization of the quantization ranges during training, supporting per-channel adjustments for improved model accuracy.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  gradients:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"], ["b", "d"], ["b", "h", "w", "d"]]
+    default: null
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"], ["b", "d"], ["b", "h", "w", "d"]]
+    default: null
+  min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"]]
+    default: null
+  max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"]]
+    default: null
+  num_bits:
+    dtype: ["int"]
+    range: [2, 16]
+    structure: ["scalar"]
+    shape: null
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "false"
+  name:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: gradients
+    Parameter 2: inputs
+    Constraint: "gradients.shape == inputs.shape"
+  2:
+    Parameter 1: gradients
+    Parameter 2: min
+    Constraint: "gradients.shape[-1] == min.shape[0]"
+  3:
+    Parameter 1: gradients
+    Parameter 2: max
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.fake_quant_with_min_max_vars_per_channel_gradient in a complex way */
+import tensorflow as tf

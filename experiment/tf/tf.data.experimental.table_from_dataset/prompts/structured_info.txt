@@ -1,0 +1,64 @@
+params:
+  dataset:
+    dtype: No mention
+    range: No mention
+    structure: ["dataset of pairs"]
+    shape: No mention
+    default: "None"
+  num_oov_buckets:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  vocab_size:
+    dtype: ["int"]
+    range: [">0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  default_value:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  hasher_spec:
+    dtype: ["HasherSpec"]
+    range: No mention
+    structure: ["object"]
+    shape: No mention
+    default: "lookup_ops.FastHashSpec"
+  key_dtype:
+    dtype: ["int", "string"]
+    range: No mention
+    structure: ["dtype"]
+    shape: No mention
+    default: "tf.dtypes.string"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dataset"
+    Parameter 2: "None"
+    Constraint: "isinstance(dataset.element_spec, tuple) and len(dataset.element_spec) == 2"
+  2:
+    Parameter 1: "dataset"
+    Parameter 2: "default_value"
+    Constraint: "tf.dtypes.as_dtype(dataset.output_types[1]).is_compatible_with(tf.dtypes.as_dtype(type(default_value)))"
+  3:
+    Parameter 1: "num_oov_buckets"
+    Parameter 2: "None"
+    Constraint: "num_oov_buckets >= 0"
+  4:
+    Parameter 1: "vocab_size"
+    Parameter 2: "None"
+    Constraint: "vocab_size > 0"
+  5:
+    Parameter 1: "key_dtype"
+    Parameter 2: "None"
+    Constraint: "key_dtype in [tf.dtypes.int32, tf.dtypes.int64, tf.dtypes.string]"

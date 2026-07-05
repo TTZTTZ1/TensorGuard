@@ -1,0 +1,48 @@
+params:
+  sparse_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  sparse_values:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  sparse_shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  out_type:
+    dtype: ["string", "variant"]
+    range: [["string", "variant"]]
+    structure: ["scalar"]
+    shape: null
+    default: "string"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: sparse_shape
+    Parameter 2: sparse_shape
+    Constraint: "tf.size(sparse_shape) > 1"
+  2:
+    Parameter 1: sparse_indices
+    Parameter 2: sparse_shape
+    Constraint: "tf.shape(sparse_indices)[0] == sparse_shape[0]"
+  3:
+    Parameter 1: sparse_indices
+    Parameter 2: sparse_values
+    Constraint: "tf.shape(sparse_indices)[0] == tf.shape(sparse_values)[0]"
+  4:
+    Parameter 1: out_type
+    Parameter 2: out_type
+    Constraint: "out_type in [tf.string, tf.variant]"

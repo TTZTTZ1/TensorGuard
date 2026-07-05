@@ -1,0 +1,126 @@
+
+# You are a Python code generation assistant for the `tf.GradientTape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.GradientTape` is a TensorFlow context manager that records operations for automatic differentiation (computing gradients). It is primarily used to compute gradients of outputs with respect to inputs or variables, enabling machine learning model training via backpropagation.
+
+### Key Features:
+- **Automatic Tracking**: By default, it automatically watches all trainable variables (e.g., `tf.Variable` objects) accessed within its context.
+- **Manual Control**: You can manually specify tensors to watch using `watch()`, and disable automatic tracking with `watch_accessed_variables=False`.
+- **Gradient Computation**: Use `gradient(target, sources)` to compute gradients of `target` with respect to `sources`.
+- **Higher-Order Derivatives**: Supports nested tapes for computing higher-order derivatives (e.g., second derivatives).
+- **Persistent Mode**: Set `persistent=True` to compute multiple gradients from the same tape (resources are released when the tape is garbage collected).
+- **Additional Methods**:
+  - `jacobian()`: Computes the Jacobian matrix.
+  - `batch_jacobian()`: Efficiently computes per-example Jacobians for batched data.
+  - `reset()`: Clears all recorded operations without exiting the context.
+  - `stop_recording()`: Temporarily pauses operation recording to reduce memory usage.
+
+### Common Use Case:
+```python
+import tensorflow as tf
+
+x = tf.constant(3.0)
+with tf.GradientTape() as tape:
+    tape.watch(x)
+    y = x * x  # Recorded operation
+dy_dx = tape.gradient(y, x)  # Computes gradient: dy/dx = 2x = 6.0
+```
+
+### Notes:
+- By default, a non-persistent tape can only compute gradients once.
+- For better performance (especially with `jacobian`/`batch_jacobian`), wrap the tape code in `@tf.function`.
+- Only tensors with real or complex dtypes are differentiable.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  persistent:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  watch_accessed_variables:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  target:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "list", "nested structure"]
+    shape: "No mention"
+    default: "null"
+  sources:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "list", "nested structure"]
+    shape: "No mention"
+    default: "null"
+  source:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  output_gradients:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "None"
+  unconnected_gradients:
+    dtype: ["string", "enum"]
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "tf.UnconnectedGradients.NONE"
+  parallel_iterations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  experimental_use_pfor:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  tensor:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "list"]
+    shape: "No mention"
+    default: "null"
+  typ:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  value:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  traceback:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "target"
+    Parameter 2: "source"
+    Constraint: "target.shape[0] == source.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.GradientTape in a complex way */
+import tensorflow as tf

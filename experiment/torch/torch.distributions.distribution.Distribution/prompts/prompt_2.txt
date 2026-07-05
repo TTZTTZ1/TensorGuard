@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.distributions.distribution.Distribution` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable Distributions**: Includes common distributions (Normal, Bernoulli, Categorical, etc.) with parameterization via `probs`/`logits` or location/scale parameters.
+- **Gradient Estimation**: Supports two main methods for backpropagation through random samples:
+  1. **Score Function/REINFORCE**: Uses `sample()` and `log_prob()` for policy gradient methods
+  2. **Pathwise Derivative/Reparameterization**: Uses `rsample()` for differentiable sampling (e.g., in VAEs)
+
+## Key Components
+
+### Distribution Base Class
+- Abstract base class with methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `stddev`, `mode`, `support`
+- Batch and event shape handling
+
+### Available Distributions
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Transformed**: LogNormal, HalfNormal, HalfCauchy, Gumbel, Weibull, etc.
+- **Specialized**: LKJCholesky (correlation matrices), MixtureSameFamily, Relaxed distributions (Gumbel-Softmax)
+
+### Transforms
+- Bijective transformations for reparameterization: `AffineTransform`, `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`, `StickBreakingTransform`, etc.
+- Used in `TransformedDistribution` to create complex distributions from simple ones
+
+### Constraints & Registry
+- **Constraints**: Define valid parameter ranges (simplex, positive, interval, etc.)
+- **Registry System**: `transform_to()` and `biject_to()` for mapping between constrained and unconstrained spaces
+- Enables unconstrained optimization of constrained parameters
+
+### KL Divergence
+- `kl_divergence()` computes KL divergence between distributions
+- Extensive registry of pairwise KL implementations
+
+## Common Usage Patterns
+
+### REINFORCE (Score Function)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### Distribution Creation
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample([100])
+
+# Categorical distribution
+categorical = Categorical(probs=torch.tensor([0.2, 0.3, 0.5]))
+```
+
+## Key Features
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Compatibility**: Designed for use in stochastic computation graphs
+- **Numerical Stability**: Careful handling of log-probabilities and constraints
+- **Extensible**: Users can register custom distributions, transforms, and KL divergences
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  batch_shape:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  event_shape:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.distribution.Distribution in a complex way */
+import torch

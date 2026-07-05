@@ -1,0 +1,72 @@
+params:
+  shape:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  low:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  high:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  requires_grad:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  noncontiguous:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  exclude_zero:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  memory_format:
+    dtype: ["torch.memory_format"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: requires_grad
+    Parameter 2: dtype
+    Constraint: "not (requires_grad and dtype in [torch.uint8, torch.int8, torch.int16, torch.int32, torch.int64])"
+  2:
+    Parameter 1: low
+    Parameter 2: high
+    Constraint: "low < high"
+  3:
+    Parameter 1: low
+    Parameter 2: high
+    Constraint: "not (math.isnan(low) or math.isnan(high))"
+  4:
+    Parameter 1: noncontiguous
+    Parameter 2: memory_format
+    Constraint: "not (noncontiguous and memory_format is not None)"

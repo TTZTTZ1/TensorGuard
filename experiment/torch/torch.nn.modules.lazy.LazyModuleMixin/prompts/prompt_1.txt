@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.nn.modules.lazy.LazyModuleMixin` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**LazyModuleMixin** is a PyTorch mixin for modules that defer parameter initialization until the first forward pass, allowing automatic shape inference from input data.  
+
+### Key Features:
+- **Lazy initialization**: Parameters remain as `torch.nn.UninitializedParameter` until the first forward call, after which they become regular `torch.nn.Parameter` objects.
+- **Convenience**: Eliminates the need to manually specify certain dimensions (e.g., `in_features` for linear layers).
+- **Usage workflow**:
+  1. Construct the network with lazy modules.
+  2. Move the network to the desired device/dtype.
+  3. Perform a "dry run" (forward pass with dummy input) to initialize all lazy parameters.
+  4. Use the network normally (e.g., attach optimizers, train).
+- **Serialization**: Lazy modules can be saved/loaded via state dicts, preserving initialization state.
+- **Caveats**:
+  - Parameter initialization order may differ from non‑lazy networks, potentially affecting reproducibility.
+  - Once initialized via state dict, lazy modules won’t re‑initialize on a dry run.
+
+### Example:
+```python
+class LazyMLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.LazyLinear(10)  # in_features inferred later
+        self.fc2 = nn.LazyLinear(1)
+
+    def forward(self, x):
+        return self.fc2(self.fc1(x))
+
+model = LazyMLP().cuda()          # 1. Create and move to GPU
+model(torch.ones(10, 5).cuda())   # 2. Dry run to infer shapes
+optim = torch.optim.SGD(model.parameters(), lr=0.01)  # 3. Now parameters exist
+```
+
+### Methods:
+- `has_uninitialized_params()`: Checks if any parameters remain uninitialized.
+- `initialize_parameters(*args, **kwargs)`: Explicitly triggers parameter initialization using input batch properties.
+
+Lazy modules streamline network prototyping by inferring shapes dynamically, but require careful handling of initialization order and device/dtype placement.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["object"]
+    range: null
+    structure: ["tuple"]
+    shape: ["variable"]
+    default: null
+  kwargs:
+    dtype: ["object"]
+    range: null
+    structure: ["dict"]
+    shape: ["variable"]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.modules.lazy.LazyModuleMixin in a complex way */
+import torch

@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.distributed.scatter_object_list` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines. It supports synchronous distributed training via `DistributedDataParallel` and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+## Key Features:
+- **Backends**: Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI (CPU/GPU with CUDA support if built with MPI)
+- **Initialization**: TCP, shared file-system, or environment variable methods
+- **Collective Operations**: broadcast, all_reduce, reduce, all_gather, scatter, etc.
+- **Point-to-Point Communication**: send/recv (synchronous) and isend/irecv (asynchronous)
+- **Process Groups**: Create subgroups for fine-grained communication
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+- **Key-Value Stores**: TCPStore, FileStore, HashStore for distributed coordination
+- **Debugging Tools**: Monitored barriers, debug logging, and HTTP debug server
+
+## Common Usage Patterns:
+1. **Initialization**: Use `init_process_group()` or `init_device_mesh()` before any distributed operations
+2. **Rule of Thumb**: 
+   - Use NCCL for CUDA GPU training
+   - Use XCCL for XPU GPU training  
+   - Use Gloo for CPU training
+3. **Best Practices**: Each process should have exclusive GPU access with NCCL, and proper cleanup with `destroy_process_group()`
+
+## Important Notes:
+- Supports Linux (stable), macOS (stable), Windows (prototype)
+- Object collectives have performance limitations and should be used cautiously
+- Third-party backends can be registered via `Backend.register_backend()`
+- Comprehensive debugging tools available via environment variables and monitored barriers
+
+The package enables efficient distributed training with advantages over `DataParallel`, including independent optimizers per process and avoidance of Python GIL limitations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scatter_object_output_list:
+    dtype: ["any"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  scatter_object_input_list:
+    dtype: ["any"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  src:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  group_src:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.scatter_object_list in a complex way */
+import torch

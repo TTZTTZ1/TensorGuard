@@ -1,0 +1,44 @@
+params:
+  shapes:
+    dtype: ["dict", "list"]
+    range: "No mention"
+    structure: ["dictionary", "list"]
+    shape: "No mention"
+    default: "null"
+  data:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  summarize:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  message:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "assert_shapes"
+constraints:
+  1:
+    Parameter 1: shapes
+    Parameter 2: shape entries
+    Constraint: "isinstance(shape_entry, iterable) for each shape in shapes"
+  2:
+    Parameter 1: size entries in shape
+    Parameter 2: other size entries
+    Constraint: "size_entry is int or size_entry in [None, '.'] or isinstance(size_entry, str)"
+  3:
+    Parameter 1: first entry of shape
+    Parameter 2: inner dimensions
+    Constraint: "first_entry in ['...', '*'] indicates variable outer dimensions, applying constraint to inner-most dimensions only"

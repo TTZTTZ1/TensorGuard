@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DepthwiseConv2dNative` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DepthwiseConv2dNative` performs a 2‑D depthwise convolution using a 4‑D input tensor and a 4‑D filter tensor. It applies each filter independently to every input channel, expanding the channel dimension by a factor called `channel_multiplier`, and then concatenates the results.
+
+**Key parameters:**
+- **`input`**: Shape `[batch, height, width, in_channels]`.
+- **`filter`**: Shape `[filter_height, filter_width, in_channels, channel_multiplier]`.
+- **`strides`**: List of 4 integers for sliding‑window strides (must have `strides[0] = strides[3] = 1`).
+- **`padding`**: `"SAME"`, `"VALID"`, or `"EXPLICIT"`.
+- **`data_format`**: `"NHWC"` (default) or `"NCHW"`.
+- **`dilations`**: Dilation factors for each dimension (batch and depth must be 1).
+
+**Output shape:**  
+`[batch, out_height, out_width, in_channels * channel_multiplier]` (for `"NHWC"`).
+
+The operation is commonly used in lightweight neural networks (e.g., MobileNet) to reduce computation while preserving channel‑wise spatial features.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: "null"
+  filter:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: "null"
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: "null"
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID", "EXPLICIT"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  explicit_paddings:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "None"
+    Constraint: "strides[0] == 1 and strides[3] == 1"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DepthwiseConv2dNative in a complex way */
+import tensorflow as tf

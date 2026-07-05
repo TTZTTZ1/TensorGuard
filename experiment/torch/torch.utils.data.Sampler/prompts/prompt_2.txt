@@ -1,0 +1,191 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.Sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for loading and processing data in PyTorch, centered around the `DataLoader` class. Here’s a concise summary of its core functionality:
+
+### **Key Components**
+1. **`DataLoader`**  
+   - Main entry point for iterating over datasets.
+   - Supports **map-style** (index-based) and **iterable-style** (stream-based) datasets.
+   - Configurable via arguments like `batch_size`, `shuffle`, `num_workers`, `collate_fn`, and `pin_memory`.
+
+2. **Dataset Types**  
+   - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk).
+   - **Iterable-style**: Implements `__iter__()` (e.g., streaming from a database or real-time logs).
+
+3. **Data Loading Order & Samplers**  
+   - **Samplers** (e.g., `RandomSampler`, `SequentialSampler`) control index sequencing for map-style datasets.
+   - Custom samplers can be provided via the `sampler` or `batch_sampler` arguments.
+
+4. **Batching**  
+   - Automatic batching is enabled by default (`batch_size > 1`).
+   - A `collate_fn` merges samples into batches (customizable for padding, etc.).
+   - Batching can be disabled for manual handling (e.g., variable-sized batches).
+
+5. **Single- vs. Multi-process Loading**  
+   - **Single-process** (`num_workers=0`): Simple but may block computation.
+   - **Multi-process** (`num_workers>0`): Parallelizes data loading across worker processes.
+     - Requires careful handling for Windows/macOS (use `if __name__ == '__main__':`).
+     - For iterable datasets, avoid duplicate data across workers using `worker_init_fn` or `get_worker_info()`.
+
+6. **Memory Pinning**  
+   - Set `pin_memory=True` to accelerate GPU data transfer by using pinned (page-locked) memory.
+   - Custom batch types can enable pinning by defining a `pin_memory()` method.
+
+### **Common Use Cases**
+- **Basic loading**:  
+  ```python
+  loader = DataLoader(dataset, batch_size=32, shuffle=True)
+  ```
+- **Custom batching/padding**: Implement a `collate_fn`.
+- **Multi-GPU/distributed training**: Use `DistributedSampler`.
+- **Streaming data**: Subclass `IterableDataset` and handle worker sharding.
+
+### **Important Notes**
+- **Iterable datasets** require explicit sharding logic in multi-process mode to prevent data duplication.
+- **Multi-process loading** may increase memory usage; avoid large in-memory objects in the dataset.
+- **Platform differences**: On Unix, workers are forked; on Windows/macOS, they are spawned (requires serializable functions/datasets).
+
+This module enables efficient, flexible data pipelines suitable for everything from small in-memory datasets to large-scale streaming applications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  shuffle:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  num_workers:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  collate_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  pin_memory:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  drop_last:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  timeout:
+    dtype: ["numeric"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  worker_init_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  multiprocessing_context:
+    dtype: ["string", "multiprocessing.context.BaseContext"]
+    range: [null]
+    structure: ["scalar", "object"]
+    shape: [null]
+    default: null
+  generator:
+    dtype: ["torch.Generator"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  prefetch_factor:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  persistent_workers:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pin_memory_device:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "''"
+  in_order:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "shuffle"
+    Parameter 2: "sampler"
+    Constraint: "sampler is not None implies shuffle is not specified"
+  2:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "batch_size"
+    Constraint: "batch_sampler is not None implies batch_size is None"
+  3:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "shuffle"
+    Constraint: "batch_sampler is not None implies shuffle is not specified"
+  4:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "sampler"
+    Constraint: "batch_sampler is not None implies sampler is not specified"
+  5:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "drop_last"
+    Constraint: "batch_sampler is not None implies drop_last is not specified"
+  6:
+    Parameter 1: "num_workers"
+    Parameter 2: "prefetch_factor"
+    Constraint: "num_workers == 0 implies prefetch_factor is None"
+  7:
+    Parameter 1: "num_workers"
+    Parameter 2: "in_order"
+    Constraint: "num_workers > 0 for in_order to be applicable"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.Sampler in a complex way */
+import torch

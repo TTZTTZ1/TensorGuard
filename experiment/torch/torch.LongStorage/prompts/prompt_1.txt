@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.LongStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+- **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (`torch.UntypedStorage`)
+- The modern, recommended storage class that holds raw bytes without type information.
+- Multiple tensors can share the same underlying storage (e.g., tensor views).
+- Accessed via `tensor.untyped_storage()`.
+- Provides low-level methods like `data_ptr()`, `clone()`, `fill_()`, `pin_memory()`, and device management (`cpu()`, `cuda()`).
+- **Warning**: Direct storage manipulation is risky; prefer high-level tensor operations.
+
+### Key Behaviors
+- Tensors with gradients have separate storages for data and grad attributes.
+- Special tensor types (meta device, FakeTensor) may have no storage.
+- Storage can be memory-mapped from files using `from_file()`.
+- Shared memory across processes is supported via `share_memory_()`.
+
+### Legacy Typed Storage (Deprecated)
+- Classes like `torch.FloatStorage`, `torch.IntStorage`, etc., are deprecated.
+- They are type-specific wrappers around `torch.UntypedStorage`.
+- `torch.TypedStorage` still exists but `torch.UntypedStorage` is the future-proof API.
+
+### Practical Guidance
+- Most users should operate at the tensor level, not the storage level.
+- Storage APIs are low-level and primarily for advanced use cases (e.g., memory optimization, inter-process communication).
+- Avoid typed storage classes; use `torch.UntypedStorage` when necessary.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["object", "None"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.LongStorage in a complex way */
+import torch

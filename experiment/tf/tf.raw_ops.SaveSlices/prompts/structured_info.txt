@@ -1,0 +1,44 @@
+params:
+  filename:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: [[1]]
+    default: null
+  tensor_names:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  shapes_and_slices:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  data:
+    dtype: ["int32", "int64", "float32", "float64", "string", "bool"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: filename
+    Parameter 2: null
+    Constraint: "filename.shape == [1]"
+  2:
+    Parameter 1: tensor_names
+    Parameter 2: shapes_and_slices
+    Constraint: "tensor_names.shape == shapes_and_slices.shape"
+  3:
+    Parameter 1: tensor_names
+    Parameter 2: data
+    Constraint: "len(data) == tensor_names.shape[0]"

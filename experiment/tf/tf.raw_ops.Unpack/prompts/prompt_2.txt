@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Unpack` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Unpack` splits a tensor along a specified axis into multiple tensors, reducing the rank by one. Given an input tensor of rank `R` and `num` slices along the chosen `axis`, it returns `num` tensors each of rank `R-1`. This operation is the inverse of `pack`.
+
+**Key parameters:**
+- `value`: Input tensor (rank ≥ 1) where the size along `axis` must equal `num`.
+- `num`: Number of tensors to produce.
+- `axis`: Dimension to unpack (default 0; supports negative indexing).
+
+**Example:**  
+For a shape `(A, B, C, D)` tensor with `axis=1` and `num=B`, each output tensor has shape `(A, C, D)`, corresponding to slices `value[:, i, :, :]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  axis:
+    dtype: ["int"]
+    range: ["[-R, R)"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: value
+    Constraint: "axis >= -tf.rank(value) and axis < tf.rank(value)"
+  2:
+    Parameter 1: value
+    Parameter 2: num
+    Constraint: "tf.shape(value)[axis] == num"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Unpack in a complex way */
+import tensorflow as tf

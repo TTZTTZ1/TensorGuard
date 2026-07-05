@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.distributions.constraint_registry.ConstraintRegistry` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows TensorFlow Distributions design patterns
+- Supports two main gradient estimation methods:
+  - **Score function estimator** (REINFORCE): Uses `sample()` and `log_prob()`
+  - **Pathwise derivative estimator** (reparameterization trick): Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Core methods: `sample()`, `log_prob()`, `rsample()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, etc.
+**Multivariate**: MultivariateNormal, Dirichlet, Wishart, LKJCholesky
+**Transformed**: LogNormal, HalfNormal, HalfCauchy, Weibull (via `TransformedDistribution`)
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` (but not both)
+- **Batch support**: All distributions support batched parameters
+- **Gradient computation**: Designed for compatibility with autograd
+- **Validation**: Optional argument validation via `validate_args`
+
+### **4. Specialized Classes**
+- **ExponentialFamily**: Base for distributions with exponential family form
+- **Independent**: Reinterprets batch dimensions as event dimensions
+- **MixtureSameFamily**: Mixture distributions with same component type
+- **TransformedDistribution**: Applies transforms to base distributions
+
+### **5. Supporting Infrastructure**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain constraints for distribution parameters
+- **KL Divergence**: Pre-registered KL divergence computations between distributions
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+## **Common Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+
+# Bernoulli with probabilities
+bern = Bernoulli(probs=torch.tensor([0.3]))
+
+# Multivariate normal
+mvn = MultivariateNormal(loc=torch.zeros(2), covariance_matrix=torch.eye(2))
+```
+
+## **Design Philosophy**
+- **Flexibility**: Supports both discrete and continuous distributions
+- **Efficiency**: Batched operations and reparameterization for gradient flow
+- **Extensibility**: Easy to add new distributions and transforms
+- **Numerical stability**: Careful handling of edge cases and constraints
+
+The module is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  constraint:
+    dtype: ["type", "Constraint"]
+    range: null
+    structure: ["class", "instance"]
+    shape: null
+    default: null
+  factory:
+    dtype: ["callable"]
+    range: null
+    structure: ["function", "callable object"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: constraint
+    Parameter 2: factory
+    Constraint: "(isinstance(constraint, type) and issubclass(constraint, Constraint)) or isinstance(constraint, Constraint) and callable(factory)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.constraint_registry.ConstraintRegistry in a complex way */
+import torch

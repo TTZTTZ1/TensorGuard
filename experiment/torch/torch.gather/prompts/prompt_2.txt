@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.gather` selects values from a source tensor along a specified dimension using an index tensor. The output tensor has the same shape as the index, with each element determined by looking up the corresponding index value along the chosen dimension.
+
+**Key points:**
+- **Purpose:** Collect specific elements from `input` based on `index` along dimension `dim`.
+- **Shape rules:** `input` and `index` must have the same number of dimensions. For all dimensions `d` except `dim`, `index.size(d) <= input.size(d)`. Output shape matches `index`.
+- **No broadcasting:** The tensors do not broadcast.
+- **Example:** For a 2D tensor and `dim=1`, `out[i][j] = input[i][index[i][j]]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  index:
+    dtype: ["longtensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  sparse_grad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: index
+    Constraint: "input.dim() == index.dim()"
+  2:
+    Parameter 1: index
+    Parameter 2: input
+    Constraint: "all(index.size(d) <= input.size(d) for d in range(input.dim()) if d != dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.gather in a complex way */
+import torch

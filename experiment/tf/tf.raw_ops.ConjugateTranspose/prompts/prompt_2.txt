@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ConjugateTranspose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ConjugateTranspose` operation performs two actions on a tensor: it permutes its dimensions according to a specified order and then applies complex conjugation to the result.
+
+**Key Functionality:**
+- **Permutation:** Reorders the dimensions of input tensor `x` based on the `perm` argument.
+- **Conjugation:** Takes the complex conjugate of all elements after permutation.
+
+**Arguments:**
+- `x`: Input tensor (any data type).
+- `perm`: A 1D tensor of type `int32` or `int64` specifying the dimension permutation.
+- `name` (optional): Operation name.
+
+**Output:** Returns a tensor with the same data type as `x`, where dimensions are reordered as defined by `perm`, and all values are complex conjugated.
+
+**Mathematical Relationship:**  
+For each element, `y[i, j, k, ...] = conj(x[perm[i], perm[j], perm[k], ...])`.  
+The output shape satisfies: `y.shape[i] == x.shape[perm[i]]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: []
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  perm:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: perm
+    Constraint: "tf.rank(perm) == 1 and tf.shape(perm)[0] == tf.rank(x) and tf.reduce_all(tf.sort(perm) == tf.range(tf.rank(x)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ConjugateTranspose in a complex way */
+import tensorflow as tf

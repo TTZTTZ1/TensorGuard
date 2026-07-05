@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.gather` selects slices from a tensor (`params`) along a specified axis using an integer index tensor (`indices`). It generalizes indexing to allow non‑sequential and multi‑dimensional indices, with optional batching support via `batch_dims`. The output shape replaces the indexed axis with the shape of `indices`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: ["[0, params.shape[axis])"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  validate_indices:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  axis:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "None"
+  batch_dims:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: "params"
+    Parameter 2: "axis"
+    Constraint: "tf.rank(params) >= axis + 1"
+  2.
+    Parameter 1: "indices"
+    Parameter 2: "params"
+    Constraint: "tf.reduce_all(indices >= 0) and tf.reduce_all(indices < tf.gather(tf.shape(params), axis))"
+  3.
+    Parameter 1: "axis"
+    Parameter 2: "batch_dims"
+    Constraint: "axis >= batch_dims"
+  4.
+    Parameter 1: "batch_dims"
+    Parameter 2: "indices"
+    Constraint: "batch_dims <= tf.rank(indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.gather in a complex way */
+import tensorflow as tf

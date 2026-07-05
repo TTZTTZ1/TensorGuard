@@ -1,0 +1,64 @@
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  weights:
+    dtype: ["None", "string"]
+    range: ["None", "\"imagenet\"", "any string"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "\"imagenet\""
+  input_tensor:
+    dtype: ["Keras tensor", "None"]
+    range: ["None", "Keras tensor"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["(height, width, 3) for channels_last", "(3, height, width) for channels_first", "height >= 32", "width >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["string", "None"]
+    range: ["None", "\"avg\"", "\"max\""]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: ["positive integer"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: ["str or callable", "for pretrained weights: None or \"softmax\""]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "\"softmax\""
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "pooling"
+    Constraint: "include_top == False or pooling is None"
+  3:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "include_top == True or classes == 1000"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights is None or classes == 1000"
+  5:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"

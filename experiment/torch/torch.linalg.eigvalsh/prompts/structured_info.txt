@@ -1,0 +1,32 @@
+params:
+  A:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  UPLO:
+    dtype: ["string"]
+    range: [["L", "U"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "L"
+  out:
+    dtype: ["float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["(*, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: null
+    Constraint: "A.shape[-1] == A.shape[-2]"
+  2:
+    Parameter 1: UPLO
+    Parameter 2: null
+    Constraint: "UPLO in ['L', 'U']"
+  3:
+    Parameter 1: out
+    Parameter 2: A
+    Constraint: "out is None or (out.dtype in [torch.float32, torch.float64] and out.shape == A.shape[:-1])"

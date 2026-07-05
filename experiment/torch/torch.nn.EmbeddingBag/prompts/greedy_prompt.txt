@@ -1,0 +1,140 @@
+
+# You are a Python code generation assistant for the `torch.nn.EmbeddingBag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.EmbeddingBag` efficiently computes sums, means, or max values over "bags" (groups) of embeddings without creating intermediate embeddings. It is more memory and time-efficient than using `Embedding` followed by reduction operations.
+
+**Key Features:**
+- **Modes:** Supports `"sum"`, `"mean"`, and `"max"` reduction over each bag.
+- **Input Formats:** Accepts 2D inputs (fixed-length bags) or 1D inputs with offsets (variable-length bags).
+- **Per-sample Weights:** Optional weighting for each index (only supported with `mode="sum"`).
+- **Sparse Gradients:** Option to compute sparse gradients for memory efficiency (not supported with `"max"` mode).
+- **Padding Index:** Allows a padding index to be ignored during reduction and gradient updates.
+
+**Common Use Cases:**
+- Aggregating word embeddings in bag-of-words models.
+- Efficiently handling variable-length sequences via offsets.
+- Loading pretrained embeddings with `from_pretrained()`.
+
+**Example:**
+```python
+embedding_bag = nn.EmbeddingBag(num_embeddings=10, embedding_dim=3, mode='sum')
+input = torch.tensor([1, 2, 4, 5, 4, 3, 2, 9], dtype=torch.long)
+offsets = torch.tensor([0, 4], dtype=torch.long)  # Two bags: [1,2,4,5] and [4,3,2,9]
+output = embedding_bag(input, offsets)  # Shape: (2, 3)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_embeddings:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  embedding_dim:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_norm:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  norm_type:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2.0"
+  scale_grad_by_freq:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  mode:
+    dtype: ["string"]
+    range: ["sum", "mean", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'mean'"
+  sparse:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  _weight:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [2]
+    default: "None"
+  include_last_offset:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  padding_idx:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device", "string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scale_grad_by_freq"
+    Parameter 2: "mode"
+    Constraint: "not (mode == 'max' and scale_grad_by_freq == True)"
+  2:
+    Parameter 1: "sparse"
+    Parameter 2: "mode"
+    Constraint: "not (mode == 'max' and sparse == True)"
+  3:
+    Parameter 1: "input"
+    Parameter 2: "offsets"
+    Constraint: "input.dtype == offsets.dtype"
+  4:
+    Parameter 1: "input"
+    Parameter 2: "offsets"
+    Constraint: "input.ndim == 2 implies offsets is None"
+  5:
+    Parameter 1: "input"
+    Parameter 2: "offsets"
+    Constraint: "input.ndim == 1 implies offsets is not None and offsets.ndim == 1"
+  6:
+    Parameter 1: "per_sample_weights"
+    Parameter 2: "input"
+    Constraint: "per_sample_weights is None or per_sample_weights.shape == input.shape"
+  7:
+    Parameter 1: "per_sample_weights"
+    Parameter 2: "mode"
+    Constraint: "per_sample_weights is not None implies mode == 'sum'"
+  8:
+    Parameter 1: "padding_idx"
+    Parameter 2: "num_embeddings"
+    Constraint: "padding_idx is None or (padding_idx >= 0 and padding_idx < num_embeddings)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.EmbeddingBag in a complex way */
+import torch

@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.nn.BCEWithLogitsLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`BCEWithLogitsLoss` combines a sigmoid activation and binary cross-entropy loss into a single, numerically stable operation. It is primarily used for binary classification or multi-label classification tasks where targets are values between 0 and 1.
+
+**Key Features:**
+- **Numerical Stability:** Uses the log-sum-exp trick to avoid precision issues from separate sigmoid and BCE steps.
+- **Class Imbalance Handling:** Supports `pos_weight` to adjust for imbalanced datasets by weighting positive examples.
+- **Reduction Options:** Loss can be output per element (`'none'`), averaged (`'mean'`), or summed (`'sum'`).
+
+**Parameters:**
+- `weight` (optional): Rescaling weight per batch element.
+- `reduction`: Specifies loss reduction method (`'none'`, `'mean'`, `'sum'`).
+- `pos_weight` (optional): Weight for positive examples; useful for recall/precision trade-offs.
+
+**Shape:**
+- Input and target can have any shape, but must match.
+- Output is a scalar unless `reduction='none'`, in which case it matches the input shape.
+
+**Example Use:**
+```python
+loss_fn = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+loss = loss_fn(logits, targets)  # logits are raw model outputs
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: []
+    default: "None"
+  size_average:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["string"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "mean"
+  pos_weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "size_average"
+    Parameter 2: "reduce"
+    Constraint: "size_average is not None or reduce is not None"
+  2:
+    Parameter 1: "weight"
+    Parameter 2: "input"
+    Constraint: "weight is None or weight.shape == input.shape[:1] or weight.shape == input.shape"
+  3:
+    Parameter 1: "pos_weight"
+    Parameter 2: "target"
+    Constraint: "pos_weight is None or pos_weight.shape == target.shape[1:] or pos_weight.shape == target.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.BCEWithLogitsLoss in a complex way */
+import torch

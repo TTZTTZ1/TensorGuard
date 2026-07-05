@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.nn.DataParallel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.DataParallel` is a container that enables data parallelism by splitting input across multiple GPUs along the batch dimension. It replicates the module on each specified device, processes portions of the input in parallel during the forward pass, and aggregates gradients during backpropagation.
+
+**Key Points:**
+- **Usage:** Wrap any module to parallelize across GPUs (e.g., `DataParallel(model, device_ids=[0, 1, 2])`).
+- **Input Handling:** Tensors are scattered on a given dimension (default dim=0); other types (tuples, lists, dicts) are shallow-copied.
+- **Requirements:** The module’s parameters and buffers must reside on `device_ids[0]` before wrapping.
+- **Limitations & Warnings:**
+  - Recommended to use `DistributedDataParallel` instead for better performance.
+  - Batch size should exceed the number of GPUs.
+  - In-place updates in `forward()` are lost except for parameters/buffers on device 0.
+  - Hooks are invoked per device, and order isn’t guaranteed across devices.
+  - Returns a vector of outputs if the module outputs a scalar.
+
+**Example:**
+```python
+net = torch.nn.DataParallel(model, device_ids=[0, 1, 2])
+output = net(input_var)  # input_var can be on CPU or GPU
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["Module"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  device_ids:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  output_device:
+    dtype: ["int", "torch.device"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "device_ids[0]"
+  dim:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "module"
+    Parameter 2: "device_ids"
+    Constraint: "next(module.parameters()).device == torch.device(device_ids[0]) if device_ids is not None else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.DataParallel in a complex way */
+import torch

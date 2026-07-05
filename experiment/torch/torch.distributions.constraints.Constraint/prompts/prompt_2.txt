@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.distributions.constraints.Constraint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows TensorFlow Distributions design patterns
+- Supports both discrete and continuous distributions
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `log_prob()`, `rsample()`, `entropy()`, `mean`, `variance`
+- Batch and event shape handling for vectorized operations
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling (e.g., VAE reparameterization trick)
+
+### **3. Available Distributions**
+**Common distributions include:**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, HalfCauchy, Gumbel, Pareto, Weibull
+- **Specialized**: LKJCholesky, Wishart, VonMises, MixtureSameFamily
+
+### **4. Transforms System**
+- Transformations between constrained/unconstrained spaces
+- Built-in transforms: Exp, Sigmoid, Softmax, StickBreaking, Affine, etc.
+- Used in `TransformedDistribution` for constructing complex distributions
+
+### **5. Constraints System**
+- Validates distribution parameter ranges
+- Common constraints: `positive`, `simplex`, `interval`, `real`
+- Registry system (`biject_to`, `transform_to`) for optimization in unconstrained space
+
+### **6. KL Divergence**
+- Automatic KL divergence computation between distributions
+- Extensive pairwise implementations registered via `register_kl()`
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAE-style)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Construction**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample([100])  # 100 samples
+
+# Transformed distribution
+base = Normal(0, 1)
+transforms = [ExpTransform()]
+log_normal = TransformedDistribution(base, transforms)
+```
+
+## **Key Features**
+- **Batched operations**: All distributions support batch dimensions
+- **Gradient support**: Compatible with PyTorch autograd
+- **Validation**: Optional argument validation
+- **Extensible**: Users can register custom distributions, transforms, and KL divergences
+- **Efficient**: Vectorized operations and reparameterization where possible
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  is_discrete:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  event_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "event_dim"
+    Parameter 2: "None"
+    Constraint: "event_dim >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.constraints.Constraint in a complex way */
+import torch

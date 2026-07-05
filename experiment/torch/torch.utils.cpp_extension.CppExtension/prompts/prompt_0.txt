@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.CppExtension` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides tools for building and loading PyTorch C++ extensions, supporting CPU, CUDA, and SYCL code. Key components include:
+
+- **Extension Classes**:  
+  - `CppExtension`: Creates a `setuptools.Extension` for C++ code.  
+  - `CUDAExtension`: For CUDA/C++ extensions, automatically handles CUDA paths and libraries. Supports specifying compute capabilities via `TORCH_CUDA_ARCH_LIST`.  
+  - `SyclExtension`: For SYCL/C++ extensions, with architecture control via `TORCH_XPU_ARCH_LIST`.
+
+- **Build System**:  
+  - `BuildExtension`: A custom `setuptools` build extension that manages compiler flags and mixed C++/CUDA/SYCL compilation. Uses Ninja by default for faster builds.
+
+- **JIT Loading**:  
+  - `load()`: Compiles and loads an extension from source files at runtime.  
+  - `load_inline()`: Compiles and loads from string sources, auto-generating bindings if needed.
+
+- **Key Features**:  
+  - Mixed compilation of C++, CUDA (`.cu`/`.cuh`), and SYCL (`.sycl`) files.  
+  - Control over compiler/linker flags per language.  
+  - Environment variables (`TORCH_EXTENSIONS_DIR`, `CUDA_HOME`) to customize build paths.  
+  - Ninja integration for faster builds (optional).  
+  - Relocatable Device Code (RDC) support for CUDA.
+
+- **Warnings**:  
+  - Avoid `py_limited_api=True` if using PyTorch’s Python API.  
+  - On Windows with CUDA 11.5, prefer pure C++ bindings to avoid nvcc issues.  
+  - Ninja is required for RDC linking and SYCL extensions.
+
+**Typical Workflow**:  
+1. Define extension with `CppExtension`/`CUDAExtension`/`SyclExtension`.  
+2. Use `BuildExtension` in `setup.py`.  
+3. Or load dynamically at runtime with `load()`/`load_inline()`.
+
+This enables high-performance custom operations integrated seamlessly with PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  sources:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  *args:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  **kwargs:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: name
+    Parameter 2: null
+    Constraint: "name must be a string specifying the extension name"
+  2:
+    Parameter 1: sources
+    Parameter 2: null
+    Constraint: "sources must be a list of strings containing paths to C++ source files"
+  3:
+    Parameter 1: py_limited_api
+    Parameter 2: null
+    Constraint: "py_limited_api=True requires avoiding libtorch_python APIs and using only libtorch APIs"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.CppExtension in a complex way */
+import torch

@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.distributed.DistributedSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for loading and processing data in PyTorch, centered around the `DataLoader` class. Here's a concise summary of its core functionality:
+
+### **Key Components**
+1. **`DataLoader`** – The main class that creates an iterable over a dataset, supporting:
+   - **Map‑style datasets** (implement `__getitem__` and `__len__`) for random access.
+   - **Iterable‑style datasets** (implement `__iter__`) for streaming/sequential data.
+   - **Automatic batching**, shuffling, parallel loading, and memory pinning.
+
+2. **Dataset Types**
+   - **Map‑style**: Indexable (e.g., `dataset[idx]` returns a sample).
+   - **Iterable‑style**: Stream‑based (e.g., reading from a database or real‑time logs).
+
+3. **Data Loading Order & Samplers**
+   - For map‑style datasets, a `Sampler` (e.g., `RandomSampler`, `SequentialSampler`) defines the index sequence.
+   - Custom samplers can be provided via the `sampler` or `batch_sampler` arguments.
+
+4. **Batching**
+   - Automatic batching is enabled by setting `batch_size` (default: 1).
+   - A `collate_fn` merges individual samples into a batch (default: stacks tensors, converts NumPy arrays).
+   - Batching can be disabled (set `batch_size=None`) for manual batch handling.
+
+5. **Parallel Loading**
+   - `num_workers > 0` enables multi‑process loading to avoid blocking the main process.
+   - Platform‑specific behavior: Unix uses `fork()`; Windows/MacOS use `spawn()` (requires guarding main script with `if __name__ == '__main__'`).
+   - For iterable‑style datasets, care must be taken to avoid duplicate data across workers (use `get_worker_info()` or `worker_init_fn`).
+
+6. **Memory Pinning**
+   - `pin_memory=True` copies data tensors into pinned (page‑locked) memory, accelerating GPU transfers.
+
+### **Common Use‑Case**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # batch is a collated tensor (or tuple/dict of tensors)
+    train_model(batch)
+```
+
+### **Important Notes**
+- **IterableDataset with multi‑processing**: Each worker gets a replica; implement `__iter__` with `get_worker_info()` to shard data.
+- **Custom collation**: Override `collate_fn` for padding, custom batching, or non‑tensor data.
+- **Randomness in workers**: Seed management may be needed to avoid identical random numbers across workers.
+- **Windows compatibility**: Place dataset/loader creation inside `if __name__ == '__main__'` and define helper functions at the top level.
+
+### **Utility Classes**
+- `TensorDataset`, `ConcatDataset`, `Subset`, `ChainDataset`, `StackDataset` – for combining or subsetting datasets.
+- `random_split` – splits a dataset randomly.
+- `get_worker_info()` – returns worker‑specific information (id, seed, dataset copy) in multi‑process loading.
+
+In short, `torch.utils.data` offers a flexible, efficient pipeline for feeding data into PyTorch models, with built‑in support for batching, shuffling, parallel loading, and GPU‑optimized data transfer.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["torch.utils.data.Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  num_replicas:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  shuffle:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  drop_last:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "rank"
+    Parameter 2: "num_replicas"
+    Constraint: "(rank is None or num_replicas is None) or (rank < num_replicas)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.distributed.DistributedSampler in a complex way */
+import torch

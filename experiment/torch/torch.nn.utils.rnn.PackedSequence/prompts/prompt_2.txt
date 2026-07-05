@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.rnn.PackedSequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`PackedSequence` is a PyTorch class used to efficiently handle variable-length sequences in RNNs. It stores sequences in a compressed format where padding is removed, along with metadata (`batch_sizes`) that tracks how many sequences are active at each time step.  
+
+**Key points:**
+- **Creation**: Not meant to be created manually; use `pack_padded_sequence()`.
+- **Purpose**: Enables faster RNN computations by eliminating unnecessary padding calculations.
+- **Attributes**:
+  - `data`: The packed sequence tensor (no padding).
+  - `batch_sizes`: CPU tensor indicating active sequences per time step.
+  - `sorted_indices` / `unsorted_indices`: Track original ordering for reconstruction.
+- **Constraints**: `batch_sizes` must be a CPU `int64` tensor; indices must match `data`’s device.
+- **Methods**: Includes `to()` for device/dtype conversion and `is_cuda` / `is_pinned()` for memory checks.
+
+**Example**:  
+Sequences `abc` and `x` become `axbc` with `batch_sizes=[2,1,1]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  batch_sizes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  sorted_indices:
+    dtype: ["int64", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: null
+  unsorted_indices:
+    dtype: ["int64", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: sorted_indices
+    Parameter 2: data
+    Constraint: "sorted_indices is None or (sorted_indices.dtype == torch.int64 and sorted_indices.device == data.device)"
+  2:
+    Parameter 1: unsorted_indices
+    Parameter 2: data
+    Constraint: "unsorted_indices is None or (unsorted_indices.dtype == torch.int64 and unsorted_indices.device == data.device)"
+  3:
+    Parameter 1: batch_sizes
+    Parameter 2: data
+    Constraint: "batch_sizes.dtype == torch.int64 and batch_sizes.device.type == 'cpu'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.rnn.PackedSequence in a complex way */
+import torch

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.service.distribute` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.service.distribute` is a transformation that offloads dataset processing to a distributed tf.data service cluster, improving scalability and performance. It moves dataset operations before the transformation to remote workers, while subsequent steps run locally.
+
+**Key Features:**
+- **Processing Modes:**
+  - `"distributed_epoch"`: Splits dataset across workers (requires splittable sources).
+  - `"parallel_epochs"`: Processes full dataset independently on each worker.
+- **Job Sharing:** Multiple datasets can share a job using `job_name`.
+- **Coordinated Consumption:** Supports round-robin reading across consumers via `consumer_index` and `num_consumers`.
+- **Integration:** Compatible with Keras and Distribution Strategies.
+
+**Common Use Cases:**
+- Distributing data loading across multiple workers.
+- Coordinating data consumption in synchronous training.
+- Sharing dataset processing across concurrent trainers.
+
+**Example Usage:**
+```python
+dataset = dataset.apply(tf.data.experimental.service.distribute(
+    processing_mode="distributed_epoch",
+    service="grpc://dispatcher:port",
+    job_name="shared_job"
+))
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  processing_mode:
+    dtype: ["string", "ShardingPolicy"]
+    range: [["parallel_epochs", "distributed_epoch"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  service:
+    dtype: ["string", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: null
+  job_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  consumer_index:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  num_consumers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  max_outstanding_requests:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  data_transfer_protocol:
+    dtype: ["string"]
+    range: null
+    structure:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.service.distribute in a complex way */
+import tensorflow as tf

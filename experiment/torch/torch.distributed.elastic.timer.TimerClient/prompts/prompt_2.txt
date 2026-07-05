@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerClient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers provide a mechanism to automatically terminate ("reap") worker processes that become stuck or exceed a specified time limit for a code block. This is essential for fault-tolerant distributed training.
+
+### **Core Concept**
+- A **TimerServer** runs on each host, monitoring timers for local worker processes.
+- Workers use a **TimerClient** to acquire timers before entering a critical code section and release them upon completion.
+- If a worker fails to release a timer before its deadline, the server kills that process, allowing the agent to restart it.
+
+### **Basic Usage**
+1. **Start a TimerServer** (e.g., `LocalTimerServer` using a multiprocessing queue).
+2. **Configure the TimerClient** in each worker using `torch.distributed.elastic.timer.configure()`.
+3. **Wrap risky code blocks** with `with timer.expires(after=seconds):`. If execution exceeds the timeout, the worker is killed.
+
+### **Provided Implementations**
+- **LocalTimerServer/Client**: Uses a `multiprocessing.Queue` for communication.
+- **FileTimerServer/Client**: Uses a named pipe (FIFO file) for communication.
+
+### **Customization**
+You can implement custom servers/clients by extending the abstract base classes:
+- `TimerServer`: Must implement `register_timers()`, `get_expired_timers()`, and `clear_timers()`.
+- `TimerClient`: Must implement `acquire()` and `release()` methods.
+- Communication uses `TimerRequest` objects to pass timer acquisition/release messages.
+
+### **Key Points**
+- Timers are **per-host**; each machine runs its own server.
+- The timer ensures **liveness** but not exact deadline enforcement; the server checks timers periodically (`max_interval`).
+- This system is integrated with PyTorch Elastic's agent, which automatically handles worker failures and restarts.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scope_id:
+    dtype: ["string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  expiration_time:
+    dtype: ["int", "float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time > 0 for acquire requests"
+  2:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time < 0 for release requests"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerClient in a complex way */
+import torch

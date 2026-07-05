@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `torch.jit.annotate` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.jit.annotate` is a type‑hinting utility for TorchScript that explicitly specifies the type of a value or expression when automatic type inference is insufficient or incorrect. It is a no‑op outside of TorchScript.
+
+**Key use cases:**
+- Empty containers (e.g., `[]`, `{}`) that TorchScript would otherwise assume hold `Tensor`.
+- Optional types that are assigned a concrete value, to preserve `Optional[T]` instead of inferring `T`.
+
+**Important limitation:**  
+It does not work inside `__init__` of a `torch.nn.Module` subclass; use `torch.jit.Attribute` for module attributes instead.
+
+**Example:**
+```python
+d = torch.jit.annotate(Dict[str, int], {})
+d["key"] = 42  # Works; without annotation this would fail.
+```
+
+**Parameters:**
+- `the_type`: Python type hint for TorchScript.
+- `the_value`: Value or expression to annotate.
+
+**Returns:**  
+The same `the_value` unchanged.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  the_type:
+    dtype: ["type"]
+    range: null
+    structure: ["type"]
+    shape: null
+    default: null
+  the_value:
+    dtype: ["python_object"]
+    range: null
+    structure: ["scalar", "list", "dict", "tuple", "tensor"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.jit.annotate in a complex way */
+import torch

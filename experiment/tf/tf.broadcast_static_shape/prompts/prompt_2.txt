@@ -1,0 +1,45 @@
+
+# You are a Python code generation assistant for the `tf.broadcast_static_shape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.broadcast_static_shape` computes the resulting shape from broadcasting two statically known tensor shapes (`TensorShape` objects). It validates whether the shapes are broadcastable and returns the final shape, which is useful for static shape inference and error checking.
+
+**Key points:**
+- **Inputs:** Two `TensorShape` objects (`shape_x` and `shape_y`).
+- **Output:** A `TensorShape` representing the broadcasted shape.
+- **Raises:** `ValueError` if the shapes are incompatible for broadcasting.
+- **Use case:** Validating or determining the result shape of a broadcasting operation when shapes are known at graph construction time.
+
+**Example:**
+```python
+shape_x = tf.TensorShape([1, 2, 3])
+shape_y = tf.TensorShape([5, 1, 3])
+result = tf.broadcast_static_shape(shape_x, shape_y)  # TensorShape([5, 2, 3])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape_x:
+    dtype: ["int"]
+    range: null
+    structure: ["TensorShape"]
+    shape: null
+    default: null
+  shape_y:
+    dtype: ["int"]
+    range: null
+    structure: ["TensorShape"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: shape_x
+    Parameter 2: shape_y
+    Constraint: "(lambda sx=shape_x.as_list(), sy=shape_y.as_list(): all(dx == dy or dx == 1 or dy == 1 for dx, dy in zip([1]*(max(len(sx), len(sy)) - len(sx)) + sx, [1]*(max(len(sx), len(sy)) - len(sy)) + sy)))()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.broadcast_static_shape in a complex way */
+import tensorflow as tf

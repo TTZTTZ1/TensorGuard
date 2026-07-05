@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.XlaConcatND` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.XlaConcatND` merges multiple input tensor slices across all dimensions, optionally removing specified paddings from the merged result. It is primarily used in TPU contexts and requires all inputs to have identical shapes.
+
+**Key Parameters:**
+- `inputs`: A list of tensors (same type/shape) in row-major order to concatenate.
+- `num_concats`: List of integers specifying how many splits to merge per dimension.
+- `paddings`: Optional list of integers indicating right paddings to remove from each dimension after merging.
+
+**Example:**  
+Given 4 slices of a 2×2 matrix and `num_concats=[2,2]`, the operation reconstructs the full tensor. If `paddings=[1,1]`, it removes one element from the end of each dimension after merging.
+
+**Returns:**  
+A single tensor of the same type as `inputs`, containing the merged result without paddings.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  num_concats:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  paddings:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1.
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "all(tensor.shape == inputs[0].shape for tensor in inputs)"
+  2.
+    Parameter 1: num_concats
+    Parameter 2: inputs
+    Constraint: "len(num_concats) == len(inputs[0].shape)"
+  3.
+    Parameter 1: inputs
+    Parameter 2: num_concats
+    Constraint: "len(inputs) == math.prod(num_concats)"
+  4.
+    Parameter 1: paddings
+    Parameter 2: num_concats
+    Constraint: "not paddings or len(paddings) == len(num_concats)"
+  5.
+    Parameter 1: paddings
+    Parameter 2: inputs
+    Constraint: "all(paddings[i] <= inputs[0].shape[i] * num_concats[i] for i in range(len(num_concats)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.XlaConcatND in a complex way */
+import tensorflow as tf

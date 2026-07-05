@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.distributed.FileStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It supports synchronous distributed training and is essential for scaling deep learning models.
+
+## Key Features
+
+### Backends
+- **Gloo**: Best for CPU training and Ethernet networks
+- **NCCL**: Recommended for CUDA GPU training (especially with InfiniBand)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional backend requiring source build
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication subsets via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`/`recv` and asynchronous `isend`/`irecv`
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Create DeviceMesh for multi-dimensional parallelism
+- `destroy_process_group()`: Clean up resources
+- `get_rank()` / `get_world_size()`: Get process information
+
+### Synchronous vs Asynchronous
+- **Synchronous** (`async_op=False`): Block until operation completes
+- **Asynchronous** (`async_op=True`): Return Work object for non-blocking execution
+
+### Key-Value Stores
+- **TCPStore**: Network-based store for multi-machine coordination
+- **FileStore**: File-based store for shared filesystems
+- **HashStore**: In-memory store for single-process multi-threading
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `torch.distributed.breakpoint()`: Debug single rank with pdb
+- Debug HTTP server for runtime diagnostics
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU
+- Call `destroy_process_group()` for cleanup
+- Set `torch.cuda.set_device()` before NCCL operations
+- Be cautious with object collectives due to performance overhead
+
+The package enables efficient distributed training with advantages over `DataParallel`, including per-process optimizers and independent Python interpreters to avoid GIL contention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  file_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  world_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.FileStore in a complex way */
+import torch

@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.distributions.beta.Beta` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimation for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients (e.g., reinforcement learning).
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling (e.g., variational autoencoders).
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `entropy()`, and `rsample()`.
+2. **Distributions**: Includes common distributions (Bernoulli, Normal, Beta, Categorical, etc.) and multivariate variants (MultivariateNormal, Dirichlet).
+3. **TransformedDistribution**: Applies a sequence of transforms to a base distribution (e.g., LogNormal, Gumbel).
+4. **KL Divergence**: Computes Kullback-Leibler divergence between distributions via `kl_divergence()`.
+5. **Transforms**: Bijective transformations (e.g., ExpTransform, SigmoidTransform) with computable log-determinant Jacobians.
+6. **Constraints**: Define valid parameter domains (e.g., simplex, positive definite) with registry systems (`biject_to`, `transform_to`) for unconstrained optimization.
+
+**Usage Examples:**
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization**:
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  ```
+
+**Additional Tools:**
+- **Mixture Models**: `MixtureSameFamily` for mixture distributions.
+- **KL Registry**: Extensible via `register_kl()` for custom distribution pairs.
+- **Constraint Handling**: Transforms between constrained and unconstrained spaces for optimization.
+
+This package is essential for probabilistic modeling, variational inference, and reinforcement learning in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration1:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  concentration0:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration1
+    Parameter 2: None
+    Constraint: "concentration1 > 0"
+  2:
+    Parameter 1: concentration0
+    Parameter 2: None
+    Constraint: "concentration0 > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.beta.Beta in a complex way */
+import torch

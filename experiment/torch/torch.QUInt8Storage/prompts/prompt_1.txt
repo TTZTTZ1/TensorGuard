@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.QUInt8Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: PyTorch Storage**
+
+PyTorch tensors are built on top of a low-level data container called **Storage**, which is a contiguous, one-dimensional array of bytes. The current and recommended API is **`torch.UntypedStorage`**.
+
+### **Key Concepts:**
+
+1.  **Tensor Components:** A tensor is defined by:
+    *   **Storage:** The raw data (bytes).
+    *   **`dtype`:** Data type (e.g., `float32`).
+    *   **`shape`:** Dimensions.
+    *   **`stride` & `offset`:** Memory layout metadata.
+
+2.  **Untyped Storage (`torch.UntypedStorage`):**
+    *   The fundamental byte array underlying a tensor. Access via `tensor.untyped_storage()`.
+    *   **Shared Storage:** Multiple tensors (e.g., views) can share the same underlying storage.
+    *   **Independent of Tensors:** A single storage can be referenced by tensors with different `dtype` or `shape`.
+    *   **Key Attributes/Methods:**
+        *   `data_ptr()`: Unique identifier (memory address) for the storage.
+        *   `device`, `is_cuda`: Device information.
+        *   `clone()`, `copy_()`, `fill_()`: Manipulation methods.
+        *   `from_file()`: Create storage memory-mapped from a file.
+        *   `share_memory_()`: Move storage to shared memory for multiprocessing.
+    *   **⚠️ Warning:** Direct storage manipulation is a low-level, risky operation. Prefer standard tensor methods (e.g., `clone()`, `fill_()`) when possible.
+
+3.  **Special Cases (No Storage):**
+    *   Tensors on `"meta"` device (for shape inference).
+    *   `FakeTensor` (internal compiler tool).
+    *   Certain tensor subclasses.
+
+4.  **Legacy API (Deprecated):**
+    *   `torch.TypedStorage` and type-specific classes like `torch.FloatStorage` are **deprecated**.
+    *   They are wrappers around `UntypedStorage` that include `dtype` information.
+    *   **Always use `torch.UntypedStorage` for new code.**
+
+### **Main Use Cases for Storage API:**
+
+*   **Low-level Memory Inspection:** Checking if tensors share memory (`data_ptr()`).
+*   **Advanced Serialization/Deserialization:** Optimizing speed when multiple tensors share storage.
+*   **Memory-mapped I/O:** Creating storages backed by files (`from_file()`).
+*   **Shared Memory for Multiprocessing:** Using `share_memory_()`.
+*   **Understanding PyTorch Internals:** Educational insight into how tensors manage data.
+
+**Conclusion:** The `torch.UntypedStorage` class provides direct access to the raw data buffer of tensors. It is a powerful but low-level tool primarily useful for advanced memory management, interoperability, and performance optimizations. For most high-level tensor operations, standard tensor methods are safer and more appropriate. The legacy typed storage classes should be avoided.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "str", "int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QUInt8Storage in a complex way */
+import torch

@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.index_copy_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`index_copy_` copies elements from a source tensor into specified positions of the target tensor along a given dimension, using an index tensor to map source rows (or slices) to target positions.  
+
+**Key points:**  
+- **Parameters:**  
+  - `dim` (int): Dimension along which to index.  
+  - `index` (LongTensor): Indices where source slices are placed in the target.  
+  - `tensor` (Tensor): Source tensor containing values to copy.  
+
+- **Requirements:**  
+  - The size of `tensor` along `dim` must equal the length of `index`.  
+  - Other dimensions of `tensor` must match those of the target tensor.  
+
+- **Note:** Duplicate indices cause nondeterministic overwrites.  
+
+**Example:**  
+Copies rows from `t` into rows `[0, 4, 2]` of `x` along dimension 0.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["torch.LongTensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: index
+    Constraint: tensor.shape[dim] == index.shape[0]
+  2:
+    Parameter 1: tensor
+    Parameter 2: self
+    Constraint: tensor.ndim == self.ndim and all(tensor.shape[i] == self.shape[i] for i in range(tensor.ndim) if i != dim)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.index_copy_ in a complex way */
+import torch

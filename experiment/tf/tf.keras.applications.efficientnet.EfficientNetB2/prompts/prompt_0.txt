@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.efficientnet.EfficientNetB2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.efficientnet.EfficientNetB2` function instantiates the EfficientNetB2 architecture, a convolutional neural network designed for image classification. It is based on the EfficientNet model scaling approach introduced in the 2019 ICML paper.
+
+**Key Features:**
+- **Pre-trained Weights:** Supports loading weights pre-trained on ImageNet (default) or custom weights.
+- **Flexible Input:** Accepts optional input tensors or shapes, with built-in preprocessing (pixel values scaled to [0, 255]).
+- **Top Layer Control:** Allows inclusion or exclusion of the final classification layer via `include_top`.
+- **Pooling Options:** When `include_top=False`, supports global average or max pooling for feature extraction.
+- **Customization:** Configurable number of output classes and activation function for the classifier layer.
+
+**Common Use Cases:**
+- **Image Classification:** Direct use with the included top layer for classifying images into predefined categories.
+- **Transfer Learning:** Removing the top layer to use the model as a feature extractor for custom tasks.
+
+**Important Notes:**
+- Input images should be float tensors with pixel values in the range [0, 255].
+- The model includes built-in rescaling; the `preprocess_input` function is essentially a pass-through.
+- For transfer learning, refer to Keras guides on fine-tuning and feature extraction.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["str", "None"]
+    range: ["None", "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 elements, last element 3"]
+    structure: ["tuple"]
+    shape: ["3"]
+    default: null
+  pooling:
+    dtype: ["str", "None"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable", "None"]
+    range: ["string", "callable", "null"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+  **kwargs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["dict"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: input_shape
+    Parameter 2: include_top
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: pooling
+    Parameter 2: include_top
+    Constraint: "include_top == False or pooling is None"
+  3:
+    Parameter 1: classes
+    Parameter 2: include_top
+    Constraint: "include_top == True or classes is None"
+  4:
+    Parameter 1: classes
+    Parameter 2: weights
+    Constraint: "weights is None or classes is None"
+  5:
+    Parameter 1: classifier_activation
+    Parameter 2: weights
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.efficientnet.EfficientNetB2 in a complex way */
+import tensorflow as tf

@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.DeviceSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.DeviceSpec` is a TensorFlow class used to specify the device placement for operations and variables. It allows you to define or parse device specifications programmatically, supporting components like job, replica, task, device type (e.g., CPU/GPU), and device index.
+
+**Key Features:**
+- **Device Specification:** Represents where computations or data are placed in a distributed or multi-device environment.
+- **String Parsing:** Can be constructed from or converted to a string format (e.g., `/job:ps/device:GPU:0`).
+- **Merging and Overriding:** Supports merging specs where inner scopes override outer ones, and fields can be updated via `replace()`.
+- **Immutable in TF 2.x:** In TensorFlow 2.x, `DeviceSpec` instances are immutable; modifications create new instances.
+
+**Common Use Cases:**
+- Assigning operations to specific devices (e.g., GPUs) in a job.
+- Managing device configurations in distributed training.
+
+**Example:**
+```python
+spec = tf.DeviceSpec(job="train", device_type="GPU", device_index=0)
+with tf.device(spec.to_string()):
+    # Operations placed on /job:train/device:GPU:0
+    var = tf.Variable(...)
+```
+
+**Important Methods:**
+- `from_string()`: Creates a `DeviceSpec` from a string.
+- `to_string()`: Converts the spec to a string.
+- `replace()`: Returns a new spec with updated fields.
+- `make_merged_spec()`: Merges another spec into the current one.
+
+**Note:** In TensorFlow 2.x with eager execution enabled, use `to_string()` when passing to `tf.device()`. In graph mode (TF 1.x or disabled eager execution), the `DeviceSpec` object can be used directly.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  job:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  replica:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  task:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  device_type:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  device_index:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.DeviceSpec in a complex way */
+import tensorflow as tf

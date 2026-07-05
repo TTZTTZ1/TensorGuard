@@ -1,0 +1,88 @@
+params:
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  sources:
+    dtype: ["str", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  extra_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_cuda_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_sycl_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_ldflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_include_paths:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  build_directory:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  verbose:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  with_cuda:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  with_sycl:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_python_module:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  is_standalone:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: with_cuda
+    Parameter 2: sources
+    Constraint: "with_cuda is None or (isinstance(with_cuda, bool) and (with_cuda == any('.cu' in str(source) or '.cuh' in str(source) for source in (sources if isinstance(sources, list) else [sources]))))"
+  2:
+    Parameter 1: with_sycl
+    Parameter 2: sources
+    Constraint: "with_sycl is None or (isinstance(with_sycl, bool) and (with_sycl == any('.sycl' in str(source) for source in (sources if isinstance(sources, list) else [sources]))))"

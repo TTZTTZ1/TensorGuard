@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.rnn.pack_sequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.rnn.pack_sequence` packs a list of variable-length tensors into a single `PackedSequence` object. It internally pads the sequences and then packs them for efficient RNN processing.
+
+**Key points:**
+- **Input:** A list of tensors, each of shape `L x *` (where `L` is sequence length).
+- **Sorting:** By default, expects sequences sorted by decreasing length (`enforce_sorted=True`). Set `enforce_sorted=False` for unsorted input.
+- **Output:** A `PackedSequence` containing concatenated data and batch size information.
+- **Use case:** Prepares variable-length sequences for RNN models, reducing computational overhead.
+
+**Example:**
+```python
+pack_sequence([torch.tensor([1,2,3]), torch.tensor([4,5]), torch.tensor([6])])
+# Returns PackedSequence with data: [1,4,6,2,5,3], batch_sizes: [3,2,1]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sequences:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  enforce_sorted:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: sequences
+    Parameter 2: enforce_sorted
+    Constraint: "not enforce_sorted or len(sequences) == 0 or all(sequences[i].size(0) >= sequences[i+1].size(0) for i in range(len(sequences)-1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.rnn.pack_sequence in a complex way */
+import torch

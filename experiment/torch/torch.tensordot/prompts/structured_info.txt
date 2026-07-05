@@ -1,0 +1,46 @@
+params:
+  a:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  b:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  dims:
+    dtype: ["int", "tuple", "list", "torch.Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list", "tensor"]
+    shape: ["No mention"]
+    default: "2"
+  out:
+    dtype: ["torch.Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dims"
+    Parameter 2: "a"
+    Constraint: "isinstance(dims, int) and dims >= 0 and dims <= a.ndim"
+  2:
+    Parameter 1: "dims"
+    Parameter 2: "b"
+    Constraint: "isinstance(dims, int) and dims >= 0 and dims <= b.ndim"
+  3:
+    Parameter 1: "dims"
+    Parameter 2: "a"
+    Constraint: "isinstance(dims, (tuple, list)) and len(dims) == 2 and all(isinstance(d, int) and 0 <= d < a.ndim for d in dims[0])"
+  4:
+    Parameter 1: "dims"
+    Parameter 2: "b"
+    Constraint: "isinstance(dims, (tuple, list)) and len(dims) == 2 and all(isinstance(d, int) and 0 <= d < b.ndim for d in dims[1])"
+  5:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "if isinstance(dims, int): all(a.shape[-dims:][i] == b.shape[:dims][i] or a.shape[-dims:][i] == 1 or b.shape[:dims][i] == 1 for i in range(dims)) elif isinstance(dims, (tuple, list)) and len(dims) == 2: all(a.shape[dims[0][i]] == b.shape[dims[1][i]] or a.shape[dims[0][i]] == 1 or b.shape[dims[1][i]] == 1 for i in range(len(dims[0]))) else True"

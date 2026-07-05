@@ -1,0 +1,31 @@
+{
+  "id": "PAPER-TF-009",
+  "title": "conv transpose output_shape mismatch aborts on CPU but errors on GPU",
+  "framework": "TensorFlow",
+  "api": "tf.nn.conv2d_transpose",
+  "related_apis": [
+    "tf.nn.conv1d_transpose",
+    "tf.nn.conv3d_transpose",
+    "tf.nn.depthwise_conv2d_backprop_input",
+    "tf.raw_ops.Conv2DBackpropInput",
+    "tf.raw_ops.Conv3DBackpropInputV2",
+    "tf.raw_ops.DepthwiseConv2dNativeBackpropInput"
+  ],
+  "bug_type": "CPU/GPU exception inconsistency / fatal check failure",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例"
+  },
+  "trigger": "Pass an output_shape with rank 3 to conv2d_transpose, which expects rank 4 or rank 2 in this path.",
+  "expected": "CPU and GPU should consistently return a framework-level InvalidArgumentError.",
+  "observed": "GPU reports InvalidArgumentError; CPU aborts after a CHECK failure about invalid dimension index.",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["tensorflow", "cpu-gpu-inconsistency", "fatal-check", "conv-transpose", "shape-validation"]
+}

@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.Join` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Generic Join Context Manager** in PyTorch enables distributed training with uneven inputs across processes. It prevents hanging or errors by allowing processes that finish early to "shadow" the collective communications of still-running processes.
+
+### **Key Components:**
+
+1. **`Join` (Context Manager)**  
+   - Manages the join process for multiple `Joinable` objects.
+   - Parameters:  
+     - `joinables`: List of participating joinable objects.  
+     - `enable`: Enables uneven input detection (default `True`).  
+     - `throw_on_early_termination`: Throws an exception if uneven inputs are detected (default `False`).
+
+2. **`Joinable` (Abstract Base Class)**  
+   Classes that participate in the join must inherit from `Joinable` and implement:  
+   - `join_hook()` → Returns a `JoinHook` instance.  
+   - `join_device` property → Device for collective communications.  
+   - `join_process_group` property → Process group for join communications.
+
+3. **`JoinHook` (Hook Class)**  
+   Defines two methods:  
+   - `main_hook()`: Called repeatedly while some processes are still running, to shadow collective communications.  
+   - `post_hook(is_last_joiner)`: Called after all processes have joined.
+
+### **Usage Flow:**
+1. Wrap training loop with `Join([model, optimizer, ...])`.
+2. Each `Joinable` must call `Join.notify_join_context()` before per-iteration collective communications.
+3. The context manager ensures that finished processes execute hooks to mimic communications until all processes complete.
+
+### **Example:**
+```python
+with Join([ddp_model, zero_optimizer]):
+    for input in uneven_data:
+        Join.notify_join_context(ddp_model)
+        loss = ddp_model(input).sum()
+        loss.backward()
+        zero_optimizer.step()
+```
+This allows ranks with different input sizes to complete without hanging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  joinables:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  enable:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  throw_on_early_termination:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.Join in a complex way */
+import torch

@@ -1,0 +1,40 @@
+params:
+  input:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  scales:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n]"]
+    default: null
+  zero_points:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n]"]
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.quint8", "torch.qint8", "torch.qint32"]]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+constraints:
+  1:
+    Parameter 1: scales
+    Parameter 2: input
+    Constraint: "scales.size(0) == input.size(axis)"
+  2:
+    Parameter 1: zero_points
+    Parameter 2: input
+    Constraint: "zero_points.size(0) == input.size(axis)"

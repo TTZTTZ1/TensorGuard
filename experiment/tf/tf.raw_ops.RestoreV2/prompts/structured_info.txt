@@ -1,0 +1,44 @@
+params:
+  prefix:
+    dtype: ["string"]
+    range: []
+    structure: ["tensor"]
+    shape: ["[1]"]
+    default: null
+  tensor_names:
+    dtype: ["string"]
+    range: []
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  shape_and_slices:
+    dtype: ["string"]
+    range: []
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  dtypes:
+    dtype: ["list"]
+    range: []
+    structure: ["list"]
+    shape: ["[N]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: []
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "tensor_names"
+    Parameter 2: "shape_and_slices"
+    Constraint: "tf.shape(tensor_names)[0] == tf.shape(shape_and_slices)[0]"
+  2:
+    Parameter 1: "tensor_names"
+    Parameter 2: "dtypes"
+    Constraint: "tf.shape(tensor_names)[0] == len(dtypes)"
+  3:
+    Parameter 1: "shape_and_slices"
+    Parameter 2: "dtypes"
+    Constraint: "tf.shape(shape_and_slices)[0] == len(dtypes)"

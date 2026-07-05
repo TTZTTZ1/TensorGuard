@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Conv2DBackpropFilter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Conv2DBackpropFilter` computes the gradient of a 2D convolution with respect to the filter (kernel). It is used during backpropagation in convolutional neural networks to update the filter weights.
+
+**Key Arguments:**
+- **`input`**: 4‑D input tensor of shape `[batch, height, width, in_channels]`.
+- **`filter_sizes`**: Integer tensor specifying the shape `[filter_height, filter_width, in_channels, out_channels]` of the filter.
+- **`out_backprop`**: 4‑D gradient tensor with respect to the convolution output, shape `[batch, out_height, out_width, out_channels]`.
+- **`strides`**: Sliding‑window strides for each dimension.
+- **`padding`**: Padding algorithm (`"SAME"`, `"VALID"`, or `"EXPLICIT"`).
+- **`data_format`**: Layout of data (`"NHWC"` (default) or `"NCHW"`).
+- **`dilations`**: Dilation rates for each dimension (default `[1,1,1,1]`).
+
+**Returns:**  
+A 4‑D tensor containing the gradient with respect to the filter, with the same shape as `filter_sizes`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filter_sizes:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID", "EXPLICIT"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  use_cudnn_on_gpu:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  explicit_paddings:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "out_backprop"
+    Constraint: "input.dtype == out_backprop.dtype"
+  2:
+    Parameter 1: "padding"
+    Parameter 2: "explicit_paddings"
+    Constraint: "(padding == 'EXPLICIT' and explicit_paddings != []) or (padding != 'EXPLICIT' and explicit_paddings == [])"
+  3:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Conv2DBackpropFilter in a complex way */
+import tensorflow as tf

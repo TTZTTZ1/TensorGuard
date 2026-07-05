@@ -1,0 +1,72 @@
+params:
+  scores:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  bbox_deltas:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  image_info:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  anchors:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  nms_threshold:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  pre_nms_topn:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  min_size:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  post_nms_topn:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "300"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scores"
+    Parameter 2: "bbox_deltas"
+    Constraint: "scores.shape[0] == bbox_deltas.shape[0] and scores.shape[1] == bbox_deltas.shape[1] and scores.shape[2] == bbox_deltas.shape[2]"
+  2:
+    Parameter 1: "scores"
+    Parameter 2: "bbox_deltas"
+    Constraint: "bbox_deltas.shape[3] == 4 * scores.shape[3]"
+  3:
+    Parameter 1: "scores"
+    Parameter 2: "anchors"
+    Constraint: "scores.shape[3] == anchors.shape[0]"
+  4:
+    Parameter 1: "scores"
+    Parameter 2: "image_info"
+    Constraint: "scores.shape[0] == image_info.shape[0]"

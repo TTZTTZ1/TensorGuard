@@ -1,0 +1,34 @@
+params:
+  tensor_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: tensor_list
+    Parameter 2: tensor
+    Constraint: tensor.device == tensor_list[0].device and tensor.dtype == tensor_list[0].dtype
+  2:
+    Parameter 1: tensor_list
+    Parameter 2: group
+    Constraint: len(tensor_list) == (group.size() if group is not None else torch.distributed.get_world_size())

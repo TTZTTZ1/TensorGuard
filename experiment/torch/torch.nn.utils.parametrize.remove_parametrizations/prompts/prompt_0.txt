@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrize.remove_parametrizations` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.nn.utils.parametrize.remove_parametrizations`  
+**Purpose:** Removes a parametrization from a specified tensor within a module.
+
+**Key Parameters:**
+- `module`: The module containing the parametrized tensor.
+- `tensor_name`: Name of the tensor whose parametrization is to be removed.
+- `leave_parametrized` (optional, default `True`):  
+  - If `True`: The tensor retains its current parametrized output.  
+  - If `False`: Reverts the tensor to its original, unparametrized state (only allowed if the parametrization depends on a single tensor).
+
+**Returns:** The updated module.
+
+**Raises `ValueError` if:**
+- The specified tensor is not parametrized.
+- `leave_parametrized=False` is used for a parametrization depending on multiple tensors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  tensor_name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  leave_parametrized:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: module
+    Parameter 2: tensor_name
+    Constraint: "hasattr(module, 'parametrizations') and tensor_name in module.parametrizations"
+  2:
+    Parameter 1: leave_parametrized
+    Parameter 2: tensor_name
+    Constraint: "leave_parametrized or isinstance(module.parametrizations[tensor_name].original, torch.Tensor)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrize.remove_parametrizations in a complex way */
+import torch

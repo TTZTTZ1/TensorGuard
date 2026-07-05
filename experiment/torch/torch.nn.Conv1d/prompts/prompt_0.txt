@@ -1,0 +1,122 @@
+
+# You are a Python code generation assistant for the `torch.nn.Conv1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.Conv1d` applies a 1D convolution over an input signal. It is commonly used for processing sequential data such as time series or audio.
+
+**Key Parameters:**
+- `in_channels`: Number of input channels
+- `out_channels`: Number of output channels
+- `kernel_size`: Size of the convolution kernel
+- `stride`: Step size for convolution (default: 1)
+- `padding`: Amount of padding (default: 0; can be 'valid' or 'same')
+- `dilation`: Spacing between kernel elements (default: 1)
+- `groups`: Controls input-output connections (default: 1)
+- `bias`: Whether to add a learnable bias (default: True)
+
+**Output Size Formula:**
+\[
+L_{out} = \left\lfloor\frac{L_{in} + 2 \times \text{padding} - \text{dilation} \times (\text{kernel\_size} - 1) - 1}{\text{stride}} + 1\right\rfloor
+\]
+
+**Key Features:**
+- Supports depthwise convolution when `groups = in_channels`
+- Works with complex data types
+- Multiple padding modes: 'zeros', 'reflect', 'replicate', 'circular'
+- 'same' padding maintains input length when stride=1
+
+**Example:**
+```python
+conv = nn.Conv1d(16, 33, 3, stride=2)  # 16 input channels, 33 output channels, kernel size 3
+input = torch.randn(20, 16, 50)        # (batch_size, channels, sequence_length)
+output = conv(input)                   # Output shape: (20, 33, 24)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  out_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "null"
+  stride:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple", "str"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "string"]
+    shape: ["No mention"]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  padding_mode:
+    dtype: ["str"]
+    range: ["'zeros'", "'reflect'", "'replicate'", "'circular'"]
+    structure: ["string"]
+    shape: ["any"]
+    default: "'zeros'"
+  device:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "stride"
+    Constraint: "padding != 'same' or stride == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Conv1d in a complex way */
+import torch

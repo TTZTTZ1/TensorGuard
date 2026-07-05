@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.Module` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.Module` is the base class for creating modular, reusable components in TensorFlow. It provides a structured way to manage variables, submodules, and operations, with built-in support for naming scopes and automatic tracking of variables.
+
+**Key Features:**
+- **Variable & Module Tracking:** Automatically collects `tf.Variable` and `tf.Module` instances assigned as attributes via `variables`, `trainable_variables`, and `submodules` properties.
+- **Name Scoping:** Each module has an associated `tf.name_scope` for organizing operations and variables in TensorBoard, aiding debugging and visualization.
+- **Decorator Support:** Use `@tf.Module.with_name_scope` to automatically enter the module's name scope in methods (except `__init__`).
+
+**Example Usage:**
+```python
+class Dense(tf.Module):
+    def __init__(self, input_dim, output_size, name=None):
+        super().__init__(name=name)
+        self.w = tf.Variable(tf.random.normal([input_dim, output_size]), name='w')
+        self.b = tf.Variable(tf.zeros([output_size]), name='b')
+    def __call__(self, x):
+        return tf.nn.relu(tf.matmul(x, self.w) + self.b)
+```
+
+**Main Attributes:**
+- `name`: Module name.
+- `name_scope`: Context manager for hierarchical naming.
+- `variables` / `trainable_variables` / `non_trainable_variables`: Sequences of variables owned by the module and its submodules.
+- `submodules`: Sequence of nested submodules.
+
+**Best Practices:**
+- Inherit from `tf.Module` for custom layers/models.
+- Use `self.name_scope` or `@tf.Module.with_name_scope` for clear operation/variable naming.
+- Cache variable properties if they don’t change frequently for performance.
+
+This class is foundational for building and managing neural network components in TensorFlow's Core API.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  method:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.Module in a complex way */
+import tensorflow as tf

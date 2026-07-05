@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `torch.nn.Conv3d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.Conv3d` applies a 3D convolution over an input tensor with shape `(N, C_in, D, H, W)`. It uses a learnable kernel to produce an output tensor `(N, C_out, D_out, H_out, W_out)`.
+
+**Key parameters:**
+- `in_channels` / `out_channels`: Input and output channel counts.
+- `kernel_size`: Size of the 3D convolution kernel (int or tuple).
+- `stride`, `padding`, `dilation`: Control the convolution's spatial behavior (can be ints or 3-tuples).
+- `groups`: Splits input/output channels into separate convolution paths (e.g., `groups=in_channels` for depthwise convolution).
+- `padding_mode`: Supports `'zeros'`, `'reflect'`, `'replicate'`, or `'circular'`.
+
+**Output shape formulas:**
+For each spatial dimension (D, H, W):
+```
+output_dim = floor((input_dim + 2×padding - dilation×(kernel_size-1) - 1) / stride + 1)
+```
+
+**Notes:**
+- Supports complex data types and various padding strategies.
+- `padding='same'` maintains input spatial dimensions but only works with `stride=1`.
+- Weight initialization follows a uniform distribution based on channel counts and kernel size.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  out_channels:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "null"
+  stride:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple", "str"]
+    range: ["valid", "same"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  padding_mode:
+    dtype: ["str"]
+    range: ["zeros", "reflect", "replicate", "circular"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "zeros"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "stride"
+    Constraint: "padding != 'same' or all(s == 1 for s in (stride if isinstance(stride, tuple) else (stride,)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Conv3d in a complex way */
+import torch

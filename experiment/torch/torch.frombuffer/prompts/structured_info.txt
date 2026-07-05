@@ -1,0 +1,36 @@
+params:
+  buffer:
+    dtype: ["object"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  count:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  offset:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  requires_grad:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "count"
+    Parameter 2: "buffer"
+    Constraint: "(count > 0 and memoryview(buffer).nbytes > offset + count * torch.tensor(0, dtype=dtype).element_size()) or (count < 0 and (memoryview(buffer).nbytes - offset) % torch.tensor(0, dtype=dtype).element_size() == 0)"

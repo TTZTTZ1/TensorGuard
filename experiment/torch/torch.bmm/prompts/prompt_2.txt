@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.bmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.bmm` performs batch matrix multiplication between two 3D tensors. Each tensor must contain the same number of matrices, with shapes `(b, n, m)` and `(b, m, p)`, producing an output of shape `(b, n, p)`. It computes the matrix product for each corresponding pair in the batch without broadcasting.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["3-D"]
+    default: null
+  mat2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["3-D"]
+    default: null
+  out_dtype:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: mat2
+    Constraint: "input.dim() == 3 and mat2.dim() == 3 and input.size(0) == mat2.size(0) and input.size(2) == mat2.size(1)"
+  2:
+    Parameter 1: out_dtype
+    Parameter 2: input
+    Constraint: "out_dtype is None or (torch.cuda.is_available() and input.dtype in [torch.float16, torch.bfloat16] and out_dtype == torch.float32)"
+  3:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (out.dim() == 3 and out.size(0) == input.size(0) and out.size(1) == input.size(1) and out.size(2)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.bmm in a complex way */
+import torch

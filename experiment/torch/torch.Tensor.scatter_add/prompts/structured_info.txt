@@ -1,0 +1,36 @@
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  index:
+    dtype: ["torch.LongTensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  src:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: index
+    Parameter 2: src
+    Constraint: "index.shape == src.shape"
+  2:
+    Parameter 1: index
+    Parameter 2: dim
+    Constraint: "index.dtype == torch.int64"
+  3:
+    Parameter 1: index
+    Parameter 2: self
+    Constraint: "index.max().item() < self.size(dim)"
+  4:
+    Parameter 1: index
+    Parameter 2: self
+    Constraint: "index.min().item() >= 0"

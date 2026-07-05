@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.cat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cat` concatenates a sequence of tensors along a specified dimension. All input tensors must have identical shapes except in the concatenation dimension, or be a 1-D empty tensor of size `(0,)`. It serves as the inverse operation to `torch.split()` and `torch.chunk()`.
+
+**Parameters:**
+- `tensors`: Sequence of tensors to concatenate.
+- `dim` (optional): Dimension along which to concatenate (default is 0).
+- `out` (optional): Output tensor.
+
+**Example:**
+```python
+>>> x = torch.randn(2, 3)
+>>> torch.cat((x, x, x), dim=0)  # Concatenates along rows (dimension 0)
+>>> torch.cat((x, x, x), dim=1)  # Concatenates along columns (dimension 1)
+```
+
+**Note:** Unlike `torch.stack()`, which adds a new dimension, `torch.cat()` combines tensors along an existing dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensors:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["sequence"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  out:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "tensors"
+    Parameter 2: "dim"
+    Constraint: "all(tensor.ndim == 1 and tensor.shape[0] == 0 for tensor in tensors) or (all(tensor.ndim > 0 for tensor in tensors) and len(set(tuple(tensor.shape[i] for i in range(tensor.ndim) if i != dim) for tensor in tensors)) == 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cat in a complex way */
+import torch

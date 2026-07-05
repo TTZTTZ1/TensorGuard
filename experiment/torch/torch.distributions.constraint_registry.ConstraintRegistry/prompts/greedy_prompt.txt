@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.distributions.constraint_registry.ConstraintRegistry` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling functions
+- Supports gradient estimation via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` + `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate**: MultivariateNormal, Dirichlet, Wishart, LKJCholesky
+**Transformed**: LogNormal, HalfNormal, Pareto, Weibull (via `TransformedDistribution`)
+**Specialized**: MixtureSameFamily, Independent, RelaxedBernoulli
+
+### **3. Key Features**
+- **Batch/Event Shape**: Supports batched parameters and samples
+- **Parameter Validation**: Through `arg_constraints`
+- **Exponential Family**: Specialized class for distributions with exponential family form
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Transforms**: Bijective transformations for reparameterization (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Domain validation (real, positive, simplex, interval, etc.)
+
+### **4. Constraint Registry System**
+- `transform_to()`: Maps constraints to transforms (not necessarily bijective)
+- `biject_to()`: Maps constraints to bijective transforms (for HMC)
+- Enables unconstrained optimization of constrained parameters
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients using REINFORCE
+2. **Variational Inference**: Reparameterization trick for VAEs
+3. **Probabilistic Modeling**: Building complex distributions via transformations
+4. **Bayesian Methods**: Hamiltonian Monte Carlo sampling
+
+## **Example Patterns**
+```python
+# REINFORCE (score function estimator)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (pathwise derivative)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+```
+
+The package follows a design similar to TensorFlow Distributions and provides essential tools for probabilistic deep learning, with careful attention to gradient propagation through stochastic operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  constraint:
+    dtype: ["type", "Constraint"]
+    range: null
+    structure: ["class", "instance"]
+    shape: null
+    default: null
+  factory:
+    dtype: ["callable"]
+    range: null
+    structure: ["function", "callable object"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: constraint
+    Parameter 2: factory
+    Constraint: "(isinstance(constraint, type) and issubclass(constraint, Constraint)) or isinstance(constraint, Constraint) and callable(factory)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.constraint_registry.ConstraintRegistry in a complex way */
+import torch

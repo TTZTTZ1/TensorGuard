@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `tf.experimental.dispatch_for_api` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.dispatch_for_api` is a decorator that allows you to override the default implementation of a TensorFlow API for specific input types. It enables custom handling when the API is called with parameters matching defined type signatures.
+
+### Key Features:
+- **Custom Dispatch**: The decorated function is called instead of the default API implementation when input parameters match specified type signatures.
+- **Multiple Signatures**: Supports multiple signatures; dispatch is triggered if any signature matches.
+- **Type Annotations**: Signatures use dictionaries mapping parameter names to type annotations (e.g., custom classes, `typing.List`, `typing.Union`).
+- **Requirements**:
+  - At least one parameter in the signature must be a subclass of `tf.CompositeTensor` (including `tf.ExtensionType`).
+  - The dispatch target’s parameter names and order must match the original API, though the `name` parameter can be omitted.
+
+### Example Use Case:
+Override `tf.math.add` for custom `MaskedTensor` types:
+```python
+@dispatch_for_api(tf.math.add, {'x': MaskedTensor, 'y': MaskedTensor})
+def masked_add(x, y, name=None):
+    return MaskedTensor(x.values + y.values, x.mask & y.mask)
+```
+
+This mechanism is particularly useful for extending TensorFlow APIs to work with custom data types like `ExtensionType`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  api:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  signatures:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "api"
+    Parameter 2: "signatures"
+    Constraint: "all(param_name in inspect.signature(api).parameters for sig in signatures for param_name in sig.keys())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.dispatch_for_api in a complex way */
+import tensorflow as tf

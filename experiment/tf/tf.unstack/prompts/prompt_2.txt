@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.unstack` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.unstack` splits a tensor along a specified axis into a list of smaller tensors, each with one dimension removed. It is the inverse operation of `tf.stack`.
+
+**Key features:**
+- **Input:** A rank‑R tensor (R > 0).
+- **Output:** A list of rank‑(R‑1) tensors. The number of tensors equals the size of the original tensor along the chosen axis.
+- **Parameters:**
+  - `value`: The tensor to split.
+  - `axis`: The dimension to unpack (default 0). Supports negative indexing.
+  - `num`: Optional integer specifying the length of the axis; required if the axis length is unknown (e.g., inside a `@tf.function` with dynamic shapes).
+  - `name`: Optional operation name.
+
+**Important notes:**
+- In eager execution, Python iterable unpacking (e.g., `a, b, c = t`) works for the 0th axis, but inside a `@tf.function` you must use `tf.unstack` because symbolic tensors are not iterable.
+- If the axis length is unknown in graph mode, you must provide `num` explicitly; otherwise, use a `tf.TensorArray` with a loop for dynamic splitting.
+
+**Example:**
+```python
+x = tf.reshape(tf.range(12), (3, 4))   # shape (3, 4)
+a, b, c = tf.unstack(x)                # 3 tensors, each shape (4,)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["float32", "int32", "float64", "int64", "bool", "string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["rank > 0"]
+    default: null
+  num:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'unstack'"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: value
+    Constraint: "axis >= -tf.rank(value) and axis < tf.rank(value)"
+  2:
+    Parameter 1: num
+    Parameter 2: value
+    Constraint: "num is None or num == tf.shape(value)[axis]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.unstack in a complex way */
+import tensorflow as tf

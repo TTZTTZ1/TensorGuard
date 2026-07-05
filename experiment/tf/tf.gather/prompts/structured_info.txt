@@ -1,0 +1,54 @@
+params:
+  params:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: ["[0, params.shape[axis])"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  validate_indices:
+    dtype: ["any"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  axis:
+    dtype: ["int32", "int64"]
+    range: ["any"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  batch_dims:
+    dtype: ["int"]
+    range: ["[0, rank(indices)]"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["any"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: params
+    Constraint: "axis >= -rank(params) and axis < rank(params)"
+  2:
+    Parameter 1: indices
+    Parameter 2: params
+    Constraint: "all(0 <= indices < params.shape[axis])"
+  3:
+    Parameter 1: axis
+    Parameter 2: batch_dims
+    Constraint: "axis >= batch_dims"
+  4:
+    Parameter 1: batch_dims
+    Parameter 2: indices
+    Constraint: "batch_dims <= rank(indices)"

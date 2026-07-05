@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `tf.lookup.StaticHashTable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.StaticHashTable` is an immutable hash table for key-value lookups in TensorFlow. Once initialized, it maps keys to values and returns a specified default for missing keys.
+
+**Key Features:**
+- **Immutable:** Cannot be modified after creation.
+- **Flexible Input:** Supports dense, sparse, or ragged tensors as keys.
+- **Default Handling:** Returns a predefined `default_value` for unknown keys.
+
+**Basic Usage:**
+```python
+table = tf.lookup.StaticHashTable(initializer, default_value)
+values = table.lookup(keys)  # or table[keys]
+```
+
+**Main Methods:**
+- `lookup(keys)`: Retrieve values for given keys.
+- `size()`: Get the number of entries.
+- `export()`: Return all keys and values as tensors.
+
+**Example:**
+```python
+table = tf.lookup.StaticHashTable(
+    tf.lookup.KeyValueTensorInitializer(keys, values),
+    default_value=-1
+)
+result = table.lookup(['a', 'x'])  # Returns [7, -1] if 'x' is missing
+```
+
+**Attributes:** Includes `key_dtype`, `value_dtype`, `default_value`, and `resource_handle`.
+
+This class is commonly used for efficient, static mappings in preprocessing, feature engineering, and federated learning workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initializer:
+    dtype: ["int", "float", "string"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  default_value:
+    dtype: ["int", "float", "string"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  experimental_is_anonymous:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "initializer"
+    Parameter 2: "default_value"
+    Constraint: "initializer.value_dtype == default_value.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.StaticHashTable in a complex way */
+import tensorflow as tf

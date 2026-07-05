@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.multinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.multinomial` samples indices from a multinomial distribution defined by input probabilities or weights. Each row of the input tensor is treated as a separate distribution.  
+
+- **Input**: A 1D or 2D tensor of non-negative values (probabilities or weights).  
+- **Output**: A tensor where each row contains `num_samples` sampled indices, ordered by sampling sequence.  
+- **Replacement**: If `True`, sampling is with replacement; if `False`, `num_samples` must not exceed the number of non-zero entries per row.  
+- **Use case**: Useful for random selection based on given probabilities, such as in reinforcement learning or weighted random sampling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D", "2-D"]
+    default: null
+  num_samples:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  replacement:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  generator:
+    dtype: ["torch.Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "None"
+  out:
+    dtype: ["long"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D", "2-D"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: num_samples
+    Parameter 2: input
+    Constraint: "replacement or (num_samples < torch.sum(input > 0, dim=-1).min())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.multinomial in a complex way */
+import torch

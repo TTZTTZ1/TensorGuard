@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.lookup.experimental.DenseHashTable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.experimental.DenseHashTable` is a mutable hash table implementation in TensorFlow that provides faster lookups, inserts, and removes compared to `MutableHashTable`, at the cost of higher memory usage. It uses open addressing with quadratic reprobing to resolve collisions.
+
+**Key Features:**
+- **Mutable**: Supports dynamic insertion (`insert`) and removal (`remove`) of key-value pairs.
+- **High Performance**: Optimized for faster operations but uses more memory.
+- **Collision Resolution**: Requires two reserved keys (`empty_key` and `deleted_key`) that cannot be inserted into the table.
+- **Checkpoint Support**: Can save and restore table contents if `checkpoint=True`.
+
+**Usage Example:**
+```python
+table = tf.lookup.experimental.DenseHashTable(
+    key_dtype=tf.string,
+    value_dtype=tf.int64,
+    default_value=-1,
+    empty_key='',
+    deleted_key='$')
+table.insert(keys, values)
+result = table.lookup(query_keys)
+```
+
+**Main Methods:**
+- `insert(keys, values)`: Adds or updates key-value pairs.
+- `lookup(keys)`: Retrieves values for given keys, returning `default_value` for missing keys.
+- `remove(keys)`: Deletes keys and their associated values.
+- `export()`: Returns all keys and values in the table.
+- `size()`: Returns the number of elements in the table.
+
+**Important Notes:**
+- `empty_key` and `deleted_key` must be unique and never used in regular operations.
+- The default `initial_num_buckets` is large (~1MB); reduce it when creating many tables to save memory.
+- Supports anonymous mode (`experimental_is_anonymous=True`) for automatic resource management.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  key_dtype:
+    dtype: ["int", "float", "string", "bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.experimental.DenseHashTable in a complex way */
+import tensorflow as tf

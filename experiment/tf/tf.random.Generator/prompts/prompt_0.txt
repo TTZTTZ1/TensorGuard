@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.random.Generator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.Generator` is a TensorFlow class for generating random numbers with controllable state and algorithms. It supports two main RNG algorithms (Philox and ThreeFry) and provides methods for creating generators from seeds, non-deterministic states, or existing states. Key features include:
+
+- **Stateful RNG**: Internal state changes after each generation, ensuring reproducible sequences.
+- **Device consistency**: Same seed/algorithm yields identical integer outputs across CPU/GPU/TPU (float results may have minor numerical differences).
+- **Distribution support**: Methods for normal, uniform, truncated normal, and binomial distributions.
+- **Distributed training**: Works with `tf.distribute` strategies, providing different random streams per replica while maintaining determinism.
+- **Checkpointing**: Can be saved/restored via `tf.train.Checkpoint`.
+- **Global generator**: Accessible via `tf.random.get_global_generator()`.
+
+Common usage:
+```python
+g = tf.random.Generator.from_seed(123)
+values = g.normal(shape=(2, 3))
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  copy_from:
+    dtype: ["Generator"]
+    range: [null]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  state:
+    dtype: ["STATE_TYPE"]
+    range: [null]
+    structure: ["vector", "variable"]
+    shape: ["algorithm-specific"]
+    default: "null"
+  alg:
+    dtype: ["int", "string"]
+    range: ["philox", "threefry", "PHILOX", "THREEFRY"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "state"
+    Parameter 2: "alg"
+    Constraint: "The length of state must be appropriate for the chosen algorithm."
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.Generator in a complex way */
+import tensorflow as tf

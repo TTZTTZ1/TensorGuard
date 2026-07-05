@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `torch.overrides.get_testing_overrides` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.overrides` module provides utilities for implementing and managing the `__torch_function__` protocol, which allows custom tensor-like types to override PyTorch operations.
+
+**Key Functions:**
+
+1. **`get_ignored_functions()`** – Returns a set of public PyTorch functions that cannot be overridden via `__torch_function__` (typically because they don't operate on tensors).
+
+2. **`get_overridable_functions()`** – Returns a dictionary mapping namespaces to lists of functions that can be overridden.
+
+3. **`resolve_name(f)`** – Returns a human-readable string name for a given function.
+
+4. **`get_testing_overrides()`** – Returns dummy lambda functions (returning `-1`) for all overridable functions, useful for testing `__torch_function__` coverage.
+
+5. **`handle_torch_function(public_api, relevant_args, *args, **kwargs)`** – Core function to check for and invoke `__torch_function__` overrides. Should be called when a custom implementation detects a tensor-like argument.
+
+6. **`has_torch_function(relevant_args)`** – Checks if any argument in an iterable has a `__torch_function__` implementation. Used to guard calls to `handle_torch_function`.
+
+7. **`is_tensor_like(inp)`** – Returns `True` if the input has a `__torch_function__` attribute (i.e., is a tensor-like type).
+
+8. **`is_tensor_method_or_property(func)`** – Determines whether a function is a method or property of `torch.Tensor`.
+
+9. **`wrap_torch_function(dispatcher)`** – Decorator to make a custom function dispatchable via `__torch_function__`. The `dispatcher` must return an iterable of tensor-like arguments.
+
+**Usage Flow:**
+- Use `has_torch_function()` to check if override handling is needed.
+- If true, call `handle_torch_function()` with the original function, relevant tensor-like arguments, and all arguments.
+- For testing, `get_testing_overrides()` helps verify that a custom type correctly intercepts all overridable operations.
+
+**Note:** Direct use of `wrap_torch_function` may impact performance; it's generally preferable to rely on PyTorch's built-in dispatch mechanism.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  (No parameters)
+
+constraints:
+  1:
+    Parameter 1: (No parameters)
+    Parameter 2: (No parameters)
+    Constraint: "True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.overrides.get_testing_overrides in a complex way */
+import torch

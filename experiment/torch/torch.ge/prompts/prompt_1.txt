@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.ge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.ge` performs element-wise **greater than or equal to** comparison between two tensors or between a tensor and a scalar. It returns a boolean tensor where each element indicates whether the condition holds. The inputs must be broadcastable to a common shape.
+
+**Key points:**
+- Compares `input ≥ other` element-wise.
+- `other` can be a tensor or a number.
+- Returns a boolean tensor of the broadcasted shape.
+- Supports an optional output tensor via the `out` argument.
+
+**Example:**
+```python
+>>> torch.ge(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+tensor([[True, True], [False, True]])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["bool"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "not isinstance(other, torch.Tensor) or all(a == b or a == 1 or b == 1 for a, b in zip(reversed(input.shape), reversed(other.shape)))"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or out.shape == (input.shape if not isinstance(other, torch.Tensor) else torch.broadcast_shapes(input.shape, other.shape))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ge in a complex way */
+import torch

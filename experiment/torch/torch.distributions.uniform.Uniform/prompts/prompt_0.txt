@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.uniform.Uniform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Univariate:**
+- Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric
+- Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate:**
+- Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- Wishart, LKJCholesky (for correlation matrices)
+
+**Specialized:**
+- MixtureSameFamily, TransformedDistribution, Independent
+- Relaxed distributions (for differentiable discrete sampling)
+
+### **3. Key Functionality**
+
+**Gradient Estimation:**
+- **Score Function**: Uses `sample()` + `log_prob()` (REINFORCE)
+- **Pathwise Derivative**: Uses `rsample()` (reparameterization trick)
+
+**Transforms & Constraints:**
+- `Transform` objects for bijective mappings between spaces
+- `Constraint` objects for parameter validation
+- Registry system (`biject_to`, `transform_to`) for constraint handling
+
+**KL Divergence:**
+- Pre-registered KL computations between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+### **4. Practical Usage Examples**
+
+**REINFORCE (Policy Gradient):**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Reparameterization (VAEs):**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **5. Design Features**
+- Batch-aware: All distributions support batched parameters
+- Validation: Optional argument validation with `validate_args`
+- Exponential family: Special handling for distributions in exponential family form
+- Transformed distributions: Compose base distributions with transforms
+
+The module is designed to be compatible with automatic differentiation, making it suitable for variational inference, reinforcement learning, and other probabilistic machine learning applications where gradient-based optimization is required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  low:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  high:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: low
+    Parameter 2: high
+    Constraint: "low < high"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.uniform.Uniform in a complex way */
+import torch

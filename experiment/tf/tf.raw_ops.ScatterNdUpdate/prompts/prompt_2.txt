@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ScatterNdUpdate` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ScatterNdUpdate` performs sparse updates to a mutable tensor (typically a variable) using specified indices. It updates individual elements or slices based on the shape of the indices tensor.
+
+**Key points:**
+- **Purpose:** Updates values in `ref` at positions given by `indices` with values from `updates`.
+- **Inputs:**
+  - `ref`: A mutable tensor (usually a Variable) of rank `P`.
+  - `indices`: Integer tensor of rank `Q` with shape `[d_0, ..., d_{Q-2}, K]`, where `K <= P`. The innermost dimension `K` indexes into elements (`K = P`) or slices (`K < P`) of `ref`.
+  - `updates`: Tensor of rank `Q-1+P-K` containing values to assign.
+- **Behavior:** The operation scatters `updates` into `ref` according to `indices`. If `indices` contains duplicates, the result is non-deterministic.
+- **Optional:** `use_locking` controls thread safety during updates (default: `True`).
+- **Returns:** The updated mutable tensor, same type as `ref`.
+
+**Example:** Updating a rank-1 tensor at positions `[4, 3, 1, 7]` with new values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ref:
+    dtype: [No mention]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  updates:
+    dtype: [No mention]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: [No mention]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: updates
+    Parameter 2: ref
+    Constraint: "updates.dtype == ref.dtype"
+  2:
+    Parameter 1: indices
+    Parameter 2: ref
+    Constraint: "indices.shape[-1] > 0 and indices.shape[-1] <= len(ref.shape)"
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape[:-1] + ref.shape[indices.shape[-1]:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ScatterNdUpdate in a complex way */
+import tensorflow as tf

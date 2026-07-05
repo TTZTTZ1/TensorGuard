@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorToeplitz` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorToeplitz` is a TensorFlow class that represents a batch of Toeplitz matrices as a linear operator without explicitly constructing the full matrix. A Toeplitz matrix has constant diagonals and is defined by its first column and first row.
+
+**Key Features:**
+- **Efficiency:** Avoids materializing the full matrix, enabling efficient operations like matrix multiplication (`matmul`) and solving linear systems (`solve`) for large or structured matrices.
+- **Batch Support:** Handles batches of matrices, where the first `b` dimensions index different Toeplitz matrices.
+- **Matrix Properties:** Allows hints (e.g., `is_self_adjoint`, `is_positive_definite`) to optimize computations.
+- **Common Operations:** Supports operations typical of linear operators, including determinant calculation, inversion, adjoint, and Cholesky decomposition (when applicable).
+
+**Initialization:**
+- Requires two tensors: `col` (first column) and `row` (first row), both of shape `[B1,...,Bb, N]`.
+- The first element of `col` and `row` must be the same.
+
+**Example:**
+```python
+col = [1., 2., 3.]
+row = [1., 4., -9.]
+operator = LinearOperatorToeplitz(col, row)
+# Represents the 3x3 Toeplitz matrix:
+# [[1., 4., -9.],
+#  [2., 1., 4.],
+#  [3., 2., 1.]]
+```
+
+**Use Cases:**
+- Ideal for problems involving structured matrices where memory efficiency is critical.
+- Useful in signal processing, time-series analysis, and other domains where Toeplitz matrices naturally occur.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  col:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  row:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "LinearOperatorToeplitz"
+constraints:
+  1:
+    Parameter 1: col
+    Parameter 2: row
+    Constraint: "col.shape == row.shape"
+  2:
+    Parameter 1: col
+    Parameter 2: row
+    Constraint: "col[..., 0] == row[..., 0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorToeplitz in a complex way */
+import tensorflow as tf

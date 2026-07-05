@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.metrics.configure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Metrics API provides a framework for publishing telemetry metrics to aid in monitoring and debugging. It allows users to define and emit metrics as timeseries data, uniquely identified by a `(metric_group, metric_name)` tuple.
+
+### Key Features:
+- **Metric Publishing**: Use `put_metric()` to log custom metrics, or apply the `@prof` decorator to automatically track function success, failure, and duration.
+- **Configurable Handlers**: Metrics can be routed to different outputs (e.g., console, custom destinations) by configuring `MetricHandler` instances per metric group.
+- **Built-in Handlers**: Includes `ConsoleMetricHandler` (prints to console) and `NullMetricHandler` (discards metrics).
+- **Default Behavior**: By default, all metrics are sent to `/dev/null` unless explicitly configured.
+
+### Basic Usage:
+1. **Configure a handler** for desired metric groups.
+2. **Publish metrics** manually or via the `@prof` decorator.
+3. **Custom handlers** can be implemented by extending `MetricHandler`.
+
+### Example:
+```python
+import torch.distributed.elastic.metrics as metrics
+
+# Configure console output for a specific group
+metrics.configure(metrics.ConsoleMetricHandler(), group="my_app")
+
+# Manually publish a metric
+metrics.put_metric("latency", 150, "my_app")
+
+# Automatically profile a function
+@metrics.prof(group="my_app")
+def compute():
+    # ... function logic
+    pass
+```
+
+This API is designed for both internal PyTorch Elastic use and user applications, enabling structured telemetry collection.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  handler:
+    dtype: ["MetricHandler"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: handler
+    Parameter 2: None
+    Constraint: "handler is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.metrics.configure in a complex way */
+import torch

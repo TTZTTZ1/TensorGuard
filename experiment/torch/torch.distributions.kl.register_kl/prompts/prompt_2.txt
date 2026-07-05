@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `torch.distributions.kl.register_kl` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key features and usage:
+
+## **Core Concepts**
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Sampling**: Generate random samples via `sample()` and `rsample()` (reparameterized)
+- **Probability computations**: Calculate probabilities using `log_prob()` and `cdf()`
+- **Gradient estimation**: Supports both score function (REINFORCE) and pathwise derivative (reparameterization) methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+- Batch and event shape handling for vectorized operations
+
+### **2. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Pareto (via `TransformedDistribution`)
+- **Specialized**: MixtureSameFamily, LKJCholesky, RelaxedBernoulli (Gumbel-Softmax)
+
+### **3. Gradient Estimation Methods**
+- **Score Function/REINFORCE**: Uses `log_prob()` for policy gradients
+  ```python
+  loss = -m.log_prob(action) * reward
+  ```
+- **Pathwise Derivative/Reparameterization**: Uses `rsample()` for low-variance gradients
+  ```python
+  action = m.rsample()  # Differentiable through parameters
+  ```
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Parameter validation (positive, simplex, interval, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for unconstrained optimization
+
+### **5. KL Divergence**
+- Pre-implemented KL divergences between distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Variational Inference**: Use reparameterized distributions in VAEs
+2. **Reinforcement Learning**: Policy gradients with categorical/continuous actions
+3. **Bayesian Modeling**: Priors and posteriors in probabilistic models
+4. **Statistical Modeling**: Flexible distributional assumptions
+
+## **Example Usage**
+```python
+# Create a normal distribution
+dist = Normal(loc=torch.tensor([0.0]), scale=torch.tensor([1.0]))
+
+# Sample and compute log probability
+sample = dist.rsample()  # Differentiable sample
+log_prob = dist.log_prob(sample)
+
+# KL divergence between distributions
+kl = kl_divergence(dist1, dist2)
+```
+
+The package enables construction of stochastic computation graphs with automatic differentiation support, making it essential for modern probabilistic machine learning in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  type_p:
+    dtype: ["type"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  type_q:
+    dtype: ["type"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: type_p
+    Parameter 2: null
+    Constraint: "issubclass(type_p, torch.distributions.Distribution)"
+  2:
+    Parameter 1: type_q
+    Parameter 2: null
+    Constraint: "issubclass(type_q, torch.distributions.Distribution)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.kl.register_kl in a complex way */
+import torch

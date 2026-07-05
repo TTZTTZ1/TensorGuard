@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.sum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.sum` computes the sum of tensor elements, with two main usage patterns:
+
+1. **Global sum** – Sum all elements in the input tensor:
+   ```python
+   torch.sum(input, dtype=None)
+   ```
+
+2. **Sum over specified dimensions** – Reduce along given dimension(s):
+   ```python
+   torch.sum(input, dim, keepdim=False, dtype=None)
+   ```
+   - `dim`: int or tuple of dimensions to reduce (if `None`, reduces all dimensions)
+   - `keepdim`: if `True`, keeps reduced dimensions with size 1
+   - `dtype`: optionally cast input before summing to prevent overflow
+
+**Key behavior:**
+- Without `dim`, returns a scalar (or single-element tensor) containing the total sum
+- With `dim`, reduces specified dimensions, returning a tensor with those dimensions removed (unless `keepdim=True`)
+- Supports reducing multiple dimensions simultaneously by passing a tuple to `dim`
+- The `dtype` argument helps control numerical precision and avoid overflow
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+  keepdim:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim is None or (isinstance(dim, int) and (-input.ndim <= dim < input.ndim)) or (isinstance(dim, tuple) and all(-input.ndim <= d < input.ndim for d in dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sum in a complex way */
+import torch

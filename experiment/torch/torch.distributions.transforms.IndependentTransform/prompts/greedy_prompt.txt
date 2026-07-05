@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.IndependentTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Univariate:**
+- Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric
+- Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate:**
+- Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- Wishart, LKJCholesky (for correlation matrices)
+
+**Specialized:**
+- MixtureSameFamily, TransformedDistribution, Independent
+- Relaxed distributions (for continuous relaxations of discrete variables)
+
+### **3. Gradient Estimation Methods**
+
+**Score Function (REINFORCE):**
+```python
+# For non-reparameterizable distributions
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization):**
+```python
+# For distributions with .has_rsample == True
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for unconstrained optimization
+
+### **5. Key Features**
+- **Batch support**: All distributions support batched parameters
+- **Validation**: Optional argument validation
+- **KL Divergence**: Pre-implemented KL divergences between many distribution pairs
+- **Exponential Family**: Special support for exponential family distributions
+- **Device & dtype aware**: Works seamlessly with PyTorch tensors
+
+## **Common Use Cases**
+1. **Variational Inference**: Using reparameterized distributions
+2. **Reinforcement Learning**: Policy gradient methods
+3. **Probabilistic Modeling**: Building complex hierarchical models
+4. **Bayesian Methods**: Prior and posterior distributions
+5. **Data Generation**: Sampling from complex distributions
+
+## **Design Philosophy**
+- Follows TensorFlow Distributions design patterns
+- Enables gradient-based optimization through stochastic nodes
+- Provides both flexible and efficient implementations
+- Maintains mathematical correctness with proper validation
+
+The package is essential for probabilistic programming in PyTorch, bridging deep learning with statistical modeling through differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_transform:
+    dtype: ["Transform"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  reinterpreted_batch_ndims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: reinterpreted_batch_ndims
+    Parameter 2: reinterpreted_batch_ndims
+    Constraint: "reinterpreted_batch_ndims >= 0"
+  2:
+    Parameter 1: cache_size
+    Parameter 2: cache_size
+    Constraint: "cache_size == 0 or cache_size == 1"
+  3:
+    Parameter 1: base_transform
+    Parameter 2: base_transform
+    Constraint: "isinstance(base_transform, Transform)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.IndependentTransform in a complex way */
+import torch

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseReduceMax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseReduceMax` computes the maximum value across specified dimensions of a sparse tensor, returning a dense tensor. It is the sparse equivalent of `tf.reduce_max`.
+
+**Key Parameters:**
+- `input_indices`: 2-D int64 matrix of non-empty value indices.
+- `input_values`: 1-D tensor of non-empty values (supports numeric types).
+- `input_shape`: 1-D int64 tensor defining the sparse tensor shape.
+- `reduction_axes`: 1-D int32 vector specifying dimensions to reduce.
+- `keep_dims`: If `True`, retains reduced dimensions with size 1.
+
+**Behavior:**
+- Reduces the sparse tensor along `reduction_axes`.
+- If `reduction_axes` is empty, reduces all dimensions to a single scalar.
+- Supports negative axis indexing.
+- Output is a dense tensor with the same dtype as `input_values`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[2]"]
+    default: null
+  input_values:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[1]"]
+    default: null
+  input_shape:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[1]"]
+    default: null
+  reduction_axes:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[1]"]
+    default: null
+  keep_dims:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input_indices
+    Parameter 2: input_values
+    Constraint: "input_indices.shape[0] == input_values.shape[0]"
+  2:
+    Parameter 1: input_indices
+    Parameter 2: input_shape
+    Constraint: "input_indices.shape[1] == input_shape.shape[0]"
+  3:
+    Parameter 1: reduction_axes
+    Parameter 2: input_shape
+    Constraint: "all(ax >= -input_shape.shape[0] and ax < input_shape.shape[0] for ax in reduction_axes)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseReduceMax in a complex way */
+import tensorflow as tf

@@ -1,0 +1,36 @@
+# tf.raw_ops.TensorArrayCloseV3
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayCloseV3](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayCloseV3)
+
+---
+
+Delete the TensorArray from its resource container.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.TensorArrayCloseV3`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayCloseV3)
+
+```
+tf.raw_ops.TensorArrayCloseV3(
+    handle, name=None
+)
+```
+
+This enables the user to close and release the resource in the middle
+of a step/run.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `handle` | A `Tensor` of type `resource`. The handle to a TensorArray (output of TensorArray or TensorArrayGrad). |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| The created Operation. | |

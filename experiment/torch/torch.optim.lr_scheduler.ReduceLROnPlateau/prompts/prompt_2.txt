@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.ReduceLROnPlateau` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**ReduceLROnPlateau** is a PyTorch learning rate scheduler that reduces the learning rate when a monitored metric (e.g., validation loss) stops improving.  
+
+**Key parameters:**  
+- `mode`: `'min'` (reduce when metric stops decreasing) or `'max'` (when metric stops increasing).  
+- `factor`: Multiplier for reducing LR (e.g., 0.1 → new LR = old LR × 0.1).  
+- `patience`: Number of epochs with no improvement before reducing LR.  
+- `threshold` / `threshold_mode`: Define what counts as "improvement" (relative or absolute change).  
+- `cooldown`: Epochs to wait after an LR reduction before resuming monitoring.  
+- `min_lr`: Lower bound for the learning rate.  
+
+**Usage example:**  
+```python
+scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10)
+for epoch in range(epochs):
+    train(...)
+    val_loss = validate(...)
+    scheduler.step(val_loss)  # Call after validation
+```
+
+**Main idea:**  
+Automatically lowers the learning rate when training progress plateaus, helping models converge better.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["str"]
+    range: [["min", "max"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "min"
+  factor:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.1"
+  patience:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "10"
+  threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0001"
+  threshold_mode:
+    dtype: ["str"]
+    range: [["rel", "abs"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "rel"
+  cooldown:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  min_lr:
+    dtype: ["float", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: [[1], null]
+    default: "0"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-08"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.ReduceLROnPlateau in a complex way */
+import torch

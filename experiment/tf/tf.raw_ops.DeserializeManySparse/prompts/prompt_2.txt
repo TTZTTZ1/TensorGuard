@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DeserializeManySparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DeserializeManySparse` reconstructs multiple sparse tensors from their serialized form and concatenates them into a single sparse tensor along a new batch dimension.
+
+**Key Points:**
+- **Input:** A string matrix `serialized_sparse` of shape `[N, 3]`, where each row contains the serialized data (indices, values, shape) of one sparse tensor from a minibatch of size `N`.
+- **Output:** A single sparse tensor represented as a tuple `(sparse_indices, sparse_values, sparse_shape)`.
+- **Concatenation:** The input sparse tensors are stacked along a new first dimension (batch dimension), so the output rank is one higher than the input ranks.
+- **Shape Handling:** The output shape's first dimension is `N` (batch size), while other dimensions take the maximum size from the corresponding dimensions of the input tensors.
+- **Prerequisite:** Input sparse tensors must have matching ranks and lexicographically ordered indices (use `SparseReorder` if not).
+- **Use Case:** Efficiently deserialize a batch of sparse tensors that were previously serialized (e.g., via `SerializeSparse`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized_sparse:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: [[None, 3]]
+    default: null
+  dtype:
+    dtype: ["tf.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: serialized_sparse
+    Parameter 2: serialized_sparse
+    Constraint: "len(serialized_sparse.shape) == 2"
+  2:
+    Parameter 1: serialized_sparse
+    Parameter 2: serialized_sparse
+    Constraint: "serialized_sparse.shape[1] == 3"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DeserializeManySparse in a complex way */
+import tensorflow as tf

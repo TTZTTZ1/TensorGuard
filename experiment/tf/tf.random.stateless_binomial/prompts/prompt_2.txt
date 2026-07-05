@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.random.stateless_binomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.stateless_binomial` generates deterministic pseudorandom numbers from a binomial distribution, using a given seed for reproducibility. It requires specifying the output shape, a two-element seed, counts (number of trials), and success probabilities. The function ensures consistent results across runs on the same hardware but may vary between TensorFlow versions or different hardware types.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tensor", "list"]
+    shape: [1]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  counts:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  probs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  output_dtype:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.int32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1.
+    Parameter 1: counts
+    Parameter 2: probs
+    Constraint: all(c == p or c == 1 or p == 1 for c, p in zip(tf.shape(counts).numpy(), tf.shape(probs).numpy()))
+  2.
+    Parameter 1: counts
+    Parameter 2: shape
+    Constraint: all(c == s or c == 1 or s == 1 for c, s in zip(tf.shape(counts).numpy()[-min(tf.rank(counts), tf.size(shape)):], tf.reshape(shape, [-1]).numpy()[-min(tf.rank(counts), tf.size(shape)):]))
+  3.
+    Parameter 1: probs
+    Parameter 2: shape
+    Constraint: all(p == s or p == 1 or s == 1 for p, s in zip(tf.shape(probs).numpy()[-min(tf.rank(probs), tf.size(shape)):], tf.reshape(shape, [-1]).numpy()[-min(tf.rank(probs), tf.size(shape)):]))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.stateless_binomial in a complex way */
+import tensorflow as tf

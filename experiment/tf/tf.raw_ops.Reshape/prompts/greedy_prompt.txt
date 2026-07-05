@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Reshape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Reshape` reshapes a given tensor into a new shape while preserving its data. The `shape` argument must be a 1-D tensor, and at most one dimension can be set to `-1`, which is automatically computed to keep the total number of elements consistent. The operation supports flattening, dimension inference, and scalar conversion.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  shape:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "shape"
+    Parameter 2: "shape"
+    Constraint: "tf.rank(shape) == 1"
+  2:
+    Parameter 1: "shape"
+    Parameter 2: "shape"
+    Constraint: "tf.reduce_sum(tf.cast(tf.equal(shape, -1), tf.int32)) <= 1"
+  3:
+    Parameter 1: "tensor"
+    Parameter 2: "shape"
+    Constraint: "tf.size(tensor) == tf.reduce_prod(shape) or (tf.reduce_sum(tf.cast(tf.equal(shape, -1), tf.int32)) == 1 and tf.size(tensor) % tf.reduce_prod(tf.boolean_mask(shape, tf.not_equal(shape, -1))) == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Reshape in a complex way */
+import tensorflow as tf

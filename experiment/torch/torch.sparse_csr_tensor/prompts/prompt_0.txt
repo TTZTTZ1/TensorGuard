@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.sparse_csr_tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.sparse_csr_tensor` creates a sparse tensor in CSR (Compressed Sparse Row) format, which is efficient for matrix operations. It requires three main components:
+
+- **`crow_indices`**: Compressed row indices, indicating where each row starts in `values` and `col_indices`.
+- **`col_indices`**: Column indices for each non-zero element.
+- **`values`**: The non-zero values of the tensor.
+
+Optional parameters like `size`, `dtype`, `device`, and `requires_grad` allow customization of the tensor's shape, data type, hardware placement, and gradient tracking. If `size` is not provided, it is inferred from the indices.
+
+**Example**:
+```python
+crow_indices = torch.tensor([0, 2, 4])
+col_indices = torch.tensor([0, 1, 0, 1])
+values = torch.tensor([1, 2, 3, 4])
+csr_tensor = torch.sparse_csr_tensor(crow_indices, col_indices, values, size=(2, 2))
+```
+This creates a 2x2 sparse CSR tensor with the specified non-zero values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  crow_indices:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "tensor"]
+    shape: ["any"]
+    default: null
+  col_indices:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "tensor"]
+    shape: ["any"]
+    default: null
+  values:
+    dtype: ["any"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  size:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list", "tuple", "torch.Size"]
+    shape: ["1D"]
+    default: null
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  pin_memory:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  requires_grad:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  check_invariants:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "as returned by torch.sparse.check_sparse_tensor_invariants.is_enabled()"
+constraints:
+  1:
+    Parameter 1: device
+    Parameter 2: values
+    Constraint: "not (device is None) or (values.device == crow_indices.device == col_indices.device)"
+  2:
+    Parameter 1: pin_memory
+    Parameter 2: device
+    Constraint: "not pin_memory or ((device is None and values.device.type == 'cpu') or (device is not None and device.type == 'cpu'))"
+  3:
+    Parameter 1: col_indices
+    Parameter 2: values
+    Constraint: "col_indices.shape[-1] == values.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sparse_csr_tensor in a complex way */
+import torch

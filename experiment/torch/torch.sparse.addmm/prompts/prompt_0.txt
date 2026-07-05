@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.sparse.addmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.sparse.addmm` performs the same operation as `torch.addmm` (matrix multiplication followed by addition) but with specialized support for sparse matrices in backward propagation. It computes:
+
+\[
+\text{output} = \beta \cdot \text{mat} + \alpha \cdot (\text{mat1} @ \text{mat2})
+\]
+
+**Key features:**
+- Supports sparse COO and CSR formats for `mat1`.
+- Enables gradient computation with respect to sparse COO `mat1` and both inputs when applicable.
+- Does **not** support gradient computation for CSR matrices in backward passes.
+- Requires `mat1` as a COO tensor to have `sparse_dim = 2`.
+
+**Parameters:**
+- `mat`: dense matrix added to the result.
+- `mat1`: sparse matrix (multiplied with `mat2`).
+- `mat2`: dense matrix.
+- `beta`, `alpha`: scalars scaling `mat` and the product `mat1 @ mat2`, respectively.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mat:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  mat1:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  mat2:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  beta:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1."
+  alpha:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1."
+constraints:
+  1:
+    Parameter 1: mat1
+    Parameter 2: mat1
+    Constraint: "mat1.layout != torch.sparse_coo or mat1.sparse_dim == 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sparse.addmm in a complex way */
+import torch

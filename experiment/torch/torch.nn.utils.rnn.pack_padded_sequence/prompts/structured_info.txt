@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["T x B x *", "B x T x *"]
+    default: null
+  lengths:
+    dtype: ["torch.Tensor", "list[int]"]
+    range: null
+    structure: ["tensor", "list"]
+    shape: ["B"]
+    default: null
+  batch_first:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  enforce_sorted:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: lengths
+    Constraint: "len(lengths) == (input.size(1) if batch_first else input.size(0))"
+  2:
+    Parameter 1: lengths
+    Parameter 2: enforce_sorted
+    Constraint: "not enforce_sorted or all(lengths[i] >= lengths[i+1] for i in range(len(lengths)-1))"

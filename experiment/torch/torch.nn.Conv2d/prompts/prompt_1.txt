@@ -1,0 +1,115 @@
+
+# You are a Python code generation assistant for the `torch.nn.Conv2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.Conv2d` is a PyTorch module for 2D convolution, applying a learnable filter over an input image or feature map. It transforms an input of shape `(N, C_in, H, W)` to an output of shape `(N, C_out, H_out, W_out)` using cross-correlation.
+
+**Key parameters:**
+- `in_channels` / `out_channels`: Number of input/output channels.
+- `kernel_size`: Size of the convolution filter (int or tuple).
+- `stride`: Step size for the filter (default: 1).
+- `padding`: Added pixels around input (int, tuple, or `'same'`/`'valid'`).
+- `dilation`: Spacing between kernel elements (default: 1).
+- `groups`: Controls input-output connections (1 = dense, `in_channels` = depthwise).
+- `bias`: Whether to add a learnable bias term.
+- `padding_mode`: Type of padding (`'zeros'`, `'reflect'`, etc.).
+
+**Output size formula:**
+\[
+H_{out} = \left\lfloor \frac{H_{in} + 2 \times \text{padding}[0] - \text{dilation}[0] \times (\text{kernel_size}[0] - 1) - 1}{\text{stride}[0]} + 1 \right\rfloor
+\]
+(Same for width.)
+
+**Notes:**
+- Supports complex data types and various backends (CUDA, ROCm).
+- Weight initialization follows a uniform distribution based on input channels and kernel size.
+- `padding='same'` preserves input dimensions when stride is 1.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple", "string"]
+    range: ["No mention", "No mention", ["valid", "same"]]
+    structure: ["scalar", "tuple", "string"]
+    shape: [1, 2, 1]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  padding_mode:
+    dtype: ["string"]
+    range: [["zeros", "reflect", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  device:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "stride"
+    Constraint: "padding != 'same' or stride == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Conv2d in a complex way */
+import torch

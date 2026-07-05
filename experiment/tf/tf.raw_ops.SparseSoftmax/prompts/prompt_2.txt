@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseSoftmax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseSoftmax` function applies the softmax operation to a batched N-D sparse tensor, processing only the non-zero elements. It operates on sparse tensors with logical shape `[..., B, C]`, where the innermost dimensions `B` and `C` represent batch and class dimensions, respectively.
+
+**Key Points:**
+- **Inputs:** Requires three components of a sparse tensor: `sp_indices` (indices of non-zero values), `sp_values` (non-zero values), and `sp_shape` (overall tensor shape).
+- **Functionality:** Equivalent to applying `tf.nn.softmax` to each `[B, C]` submatrix, but only non-zero values participate in the computation. Implicit zeros remain zero, and the result is renormalized accordingly.
+- **Output:** Returns a sparse tensor with the same non-zero indices and shape as the input, containing the softmax-transformed values.
+- **Use Case:** Efficiently computes softmax over sparse data, avoiding operations on zero elements.
+
+This operation is useful when working with high-dimensional sparse data, such as in natural language processing or recommendation systems, where explicit handling of sparsity improves computational efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sp_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  sp_values:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  sp_shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "sp_indices"
+    Parameter 2: "sp_values"
+    Constraint: "sp_indices.shape[0] == sp_values.shape[0]"
+  2:
+    Parameter 1: "sp_indices"
+    Parameter 2: "sp_shape"
+    Constraint: "sp_indices.shape[1] == sp_shape.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseSoftmax in a complex way */
+import tensorflow as tf

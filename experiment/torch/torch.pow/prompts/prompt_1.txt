@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.pow` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.pow` computes element-wise exponentiation. It supports two primary modes:
+
+1. **Tensor raised to a power**:  
+   - `input` (tensor) is raised to `exponent` (scalar or tensor).  
+   - If `exponent` is a tensor, shapes must be broadcastable.
+
+2. **Scalar base raised to tensor exponents**:  
+   - A scalar `self` (float) is raised to each element in the `exponent` tensor.
+
+**Key behavior**:  
+- Output tensor shape matches the input tensor or exponent tensor, depending on the mode.  
+- An optional `out` tensor can be provided to store the result.
+
+**Examples**:  
+- `torch.pow(a, 2)` squares each element of tensor `a`.  
+- `torch.pow(a, exp)` raises elements of `a` to corresponding powers in `exp`.  
+- `torch.pow(2, exp)` computes powers of 2 for each element in `exp`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  self:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  exponent:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "tensor"]
+    shape: No mention
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: exponent
+    Constraint: not isinstance(exponent, torch.Tensor) or (hasattr(input, 'shape') and hasattr(exponent, 'shape') and all(a == b or a == 1 or b == 1 for a, b in zip(input.shape[::-1], exponent.shape[::-1])))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.pow in a complex way */
+import torch

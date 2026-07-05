@@ -1,0 +1,68 @@
+params:
+  indices:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  depth:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  on_value:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "1"
+  off_value:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+  axis:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "-1"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "on_value"
+    Parameter 2: "off_value"
+    Constraint: "on_value.dtype == off_value.dtype"
+  2:
+    Parameter 1: "on_value"
+    Parameter 2: "dtype"
+    Constraint: "dtype is None or on_value.dtype == dtype"
+  3:
+    Parameter 1: "off_value"
+    Parameter 2: "dtype"
+    Constraint: "dtype is None or off_value.dtype == dtype"
+  4:
+    Parameter 1: "dtype"
+    Parameter 2: "on_value"
+    Constraint: "dtype not in [tf.string, tf.bool] or on_value is not None"
+  5:
+    Parameter 1: "dtype"
+    Parameter 2: "off_value"
+    Constraint: "dtype not in [tf.string, tf.bool] or off_value is not None"
+  6:
+    Parameter 1: "indices"
+    Parameter 2: "axis"
+    Constraint: "not isinstance(indices, tf.RaggedTensor) or axis > 0"

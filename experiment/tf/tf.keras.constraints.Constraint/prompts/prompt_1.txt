@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `tf.keras.constraints.Constraint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.constraints.Constraint` class is a base class for implementing weight constraints in Keras layers. It acts as a stateless function that projects weight parameters (e.g., via normalization or clipping) to enforce specific conditions during training.
+
+### Key Features:
+- **Purpose**: Apply constraints to layer weights (e.g., kernel or bias) using `kernel_constraint` or `bias_constraint` arguments in Keras layers.
+- **Core Method**: Subclasses must override `__call__(w)` to define the projection logic on the weight tensor `w`.
+- **Example**: A `NonNegative` constraint ensures weights are non-negative by zeroing out negative values.
+- **Serialization**: Supports `get_config()` and `from_config()` for saving and loading constraint configurations.
+
+### Basic Usage:
+1. **Define a custom constraint** by subclassing `Constraint` and implementing `__call__(w)`.
+2. **Apply to a layer**: Pass the constraint instance to a layer’s `kernel_constraint` or `bias_constraint`.
+
+### Example:
+```python
+class NonNegative(keras.constraints.Constraint):
+    def __call__(self, w):
+        return w * ops.cast(ops.greater_equal(w, 0.), dtype=w.dtype)
+
+# Apply to a Dense layer
+keras.layers.Dense(4, kernel_constraint=NonNegative())
+```
+
+This mechanism helps control weight values (e.g., bounding norms or enforcing non-negativity) to improve model stability and performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  w:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  config:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.constraints.Constraint in a complex way */
+import tensorflow as tf

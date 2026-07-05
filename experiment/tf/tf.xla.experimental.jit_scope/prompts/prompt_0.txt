@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.xla.experimental.jit_scope` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.xla.experimental.jit_scope` is a context manager that controls whether TensorFlow operations within its scope are compiled using XLA JIT (Just-In-Time) compilation. It provides fine-grained control over compilation behavior.
+
+**Key Features:**
+- **Enable/Disable Compilation:** Use `compile_ops=True` (default) to enable JIT compilation, or `compile_ops=False` to disable it within the scope.
+- **Conditional Compilation:** `compile_ops` can also be a callable that decides per operation based on its `node_def`.
+- **Separate Gradient Compilation:** Setting `separate_compiled_gradients=True` compiles each gradient subgraph independently, which can improve performance for some models.
+
+**Usage Example:**
+```python
+with tf.xla.experimental.jit_scope():  # Enables compilation
+    x = tf.matmul(a, b)  # Compiled
+
+with tf.xla.experimental.jit_scope(compile_ops=False):  # Disables compilation
+    y = tf.matmul(c, d)  # Not compiled
+```
+
+**Important Notes:**
+- This is an experimental feature; compilation is a best-effort hint.
+- Operations outside the scope may still be compiled together with those inside if `compile_ops=True`.
+- To strictly isolate compilation, nest a `jit_scope(compile_ops=True)` inside a `jit_scope(compile_ops=False)`.
+- Not compatible with eager execution (raises `RuntimeError` if enabled).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  compile_ops:
+    dtype: ["bool", "callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  separate_compiled_gradients:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.xla.experimental.jit_scope in a complex way */
+import tensorflow as tf

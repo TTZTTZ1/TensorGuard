@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.mul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.mul` performs element-wise multiplication between two tensors or a tensor and a scalar. It supports broadcasting, type promotion, and handles integer, float, and complex data types.
+
+**Parameters:**
+- `input` (Tensor): The first tensor.
+- `other` (Tensor or Number): The second tensor or a scalar value to multiply with `input`.
+
+**Keyword argument:**
+- `out` (Tensor, optional): An optional output tensor to store the result.
+
+**Example usage:**
+```python
+# Multiply tensor by scalar
+torch.mul(a, 100)
+
+# Element-wise multiplication with broadcasting
+torch.mul(b, c)  # b shape: (4,1), c shape: (1,4)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int", "float", "complex"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  other:
+    dtype: ["int", "float", "complex"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "null"
+  out:
+    dtype: ["int", "float", "complex"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: all((input.shape[-i] if i <= input.ndim else 1) == (other.shape[-i] if i <= other.ndim else 1) or (input.shape[-i] if i <= input.ndim else 1) == 1 or (other.shape[-i] if i <= other.ndim else 1) == 1 for i in range(1, max(input.ndim, other.ndim)+1))
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: out is None or out.shape == torch.broadcast_shapes(input.shape, other.shape)
+  3:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: out is None or torch.can_cast(torch.result_type(input.dtype, other.dtype), out.dtype)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.mul in a complex way */
+import torch

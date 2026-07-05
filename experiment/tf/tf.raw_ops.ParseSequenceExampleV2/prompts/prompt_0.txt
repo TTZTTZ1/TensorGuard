@@ -1,0 +1,217 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ParseSequenceExampleV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ParseSequenceExampleV2` parses serialized `tf.io.SequenceExample` protos into structured TensorFlow tensors. It handles both context features (static per-example data) and feature lists (sequential data) across sparse, dense, and ragged tensor types.
+
+**Key functionality:**
+- **Input:** A vector of serialized `SequenceExample` protos (as strings).
+- **Output:** Extracted features organized as:
+  - **Context features:** Sparse, dense, or ragged tensors.
+  - **Feature lists:** Sparse, dense, or ragged tensors (with sequence lengths for dense lists).
+- **Parameters:** Keys, data types, shapes, and defaults for each feature type.
+- **Use case:** Decoding sequence data (e.g., time-series, videos, text sequences) stored in `tf.train.SequenceExample` format.
+
+**Typical workflow:**
+1. Define keys and expected types for context/sequence features.
+2. Provide serialized protos and optional defaults.
+3. Receive typed tensors ready for downstream model input.
+
+This op is a lower-level, flexible parser for sequence data in TensorFlow pipelines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar", "vector"]
+    shape: ["scalar", "vector"]
+    default: null
+  debug_name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar", "vector"]
+    shape: ["scalar", "vector"]
+    default: null
+  context_sparse_keys:
+    dtype: ["string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  context_dense_keys:
+    dtype: ["string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  context_ragged_keys:
+    dtype: ["string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  feature_list_sparse_keys:
+    dtype: ["string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  feature_list_dense_keys:
+    dtype: ["string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  feature_list_ragged_keys:
+    dtype: ["string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  feature_list_dense_missing_assumed_empty:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  context_dense_defaults:
+    dtype: ["float32", "int64", "string"]
+    range: No mention
+    structure: ["list"]
+    shape: ["list"]
+    default: null
+  Ncontext_sparse:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  context_sparse_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  context_ragged_value_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  context_ragged_split_types:
+    dtype: ["tf.int32", "tf.int64"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  context_dense_shapes:
+    dtype: ["list"]
+    range: No mention
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  Nfeature_list_sparse:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  Nfeature_list_dense:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  feature_list_dense_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  feature_list_sparse_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  feature_list_ragged_value_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  feature_list_ragged_split_types:
+    dtype: ["tf.int32", "tf.int64"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  feature_list_dense_shapes:
+    dtype: ["list"]
+    range: No mention
+    structure: ["list"]
+    shape: ["list"]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: context_sparse_types
+    Parameter 2: Ncontext_sparse
+    Constraint: len(context_sparse_types) == Ncontext_sparse
+  2:
+    Parameter 1: context_ragged_value_types
+    Parameter 2: context_ragged_keys
+    Constraint: context_ragged_keys.shape[0] == len(context_ragged_value_types)
+  3:
+    Parameter 1: context_ragged_split_types
+    Parameter 2: context_ragged_keys
+    Constraint: context_ragged_keys.shape[0] == len(context_ragged_split_types)
+  4:
+    Parameter 1: context_ragged_value_types
+    Parameter 2: context_ragged_split_types
+    Constraint: len(context_ragged_value_types) == len(context_ragged_split_types)
+  5:
+    Parameter 1: context_dense_shapes
+    Parameter 2: context_dense_defaults
+    Constraint: len(context_dense_shapes) == len(context_dense_defaults)
+  6:
+    Parameter 1: feature_list_dense_missing_assumed_empty
+    Parameter 2: feature_list_dense_keys
+    Constraint: feature_list_dense_missing_assumed_empty.shape[0] == feature_list_dense_keys.shape[0]
+  7:
+    Parameter 1: feature_list_dense_types
+    Parameter 2: Nfeature_list_dense
+    Constraint: len(feature_list_dense_types) == Nfeature_list_dense
+  8:
+    Parameter 1: feature_list_dense_shapes
+    Parameter 2: Nfeature_list_dense
+    Constraint: len(feature_list_dense_shapes) == Nfeature_list_dense
+  9:
+    Parameter 1: feature_list_sparse_types
+    Parameter 2: Nfeature_list_sparse
+    Constraint: len(feature_list_sparse_types) == Nfeature_list_sparse
+  10:
+    Parameter 1: feature_list_ragged_value_types
+    Parameter 2: feature_list_ragged_keys
+    Constraint: feature_list_ragged_keys.shape[0] == len(feature_list_ragged_value_types)
+  11:
+    Parameter 1: feature_list_ragged_split_types
+    Parameter 2: feature_list_ragged_keys
+    Constraint: feature_list_ragged_keys.shape[0] == len(feature_list_ragged_split_types)
+  12:
+    Parameter 1: feature_list_ragged_value_types
+    Parameter 2: feature_list_ragged_split_types
+    Constraint: len(feature_list_ragged_value_types) == len(feature_list_ragged_split_types)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ParseSequenceExampleV2 in a complex way */
+import tensorflow as tf

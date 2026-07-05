@@ -1,0 +1,46 @@
+params:
+  inputs:
+    dtype: ["list", "tuple"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  shape:
+    dtype: ["int"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: "None"
+  tensor_dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "isinstance(inputs, (list, tuple))"
+  2:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "all(tensor.shape == inputs[0].shape for tensor in inputs) and len(inputs) > 0"
+  3:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "all(tensor.dtype == inputs[0].dtype for tensor in inputs) and len(inputs) > 0"
+  4:
+    Parameter 1: inputs
+    Parameter 2: shape
+    Constraint: "shape is None or all(tensor.shape == shape for tensor in inputs)"
+  5:
+    Parameter 1: inputs
+    Parameter 2: tensor_dtype
+    Constraint: "tensor_dtype is None or all(tensor.dtype == tensor_dtype for tensor in inputs)"

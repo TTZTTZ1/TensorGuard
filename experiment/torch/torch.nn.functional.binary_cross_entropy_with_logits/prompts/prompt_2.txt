@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.binary_cross_entropy_with_logits` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`binary_cross_entropy_with_logits` computes the binary cross-entropy loss directly from unnormalized logits, combining a sigmoid activation and binary cross-entropy in a single, numerically stable operation.
+
+**Key parameters:**
+- `input`: Raw logits (any shape)
+- `target`: Same shape as input, values between 0 and 1
+- `reduction`: `'none'`, `'mean'` (default), or `'sum'`
+- `pos_weight`: Optional tensor to weight positive examples, useful for class imbalance
+
+**Example:**
+```python
+loss = F.binary_cross_entropy_with_logits(input, target)
+```
+This is equivalent to applying sigmoid then binary cross-entropy, but more numerically stable.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  target:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["any"]
+    default: "None"
+  size_average:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  reduce:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  pos_weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: target
+    Constraint: "input.shape == target.shape"
+  2:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight is None or torch.broadcast_shapes(weight.shape, input.shape) is not None"
+  3:
+    Parameter 1: pos_weight
+    Parameter 2: target
+    Constraint: "pos_weight is None or torch.broadcast_shapes(pos_weight.shape, target.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.binary_cross_entropy_with_logits in a complex way */
+import torch

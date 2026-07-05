@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.cholesky_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cholesky_solve` solves a linear system \(AX = B\) where \(A\) is a Hermitian/symmetric positive-definite matrix, using its precomputed Cholesky decomposition \(L\) (where \(A = LL^H\)). It supports real and complex data types, batched inputs, and can handle both lower- and upper-triangular Cholesky factors via the `upper` flag.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, k)"]
+    default: null
+  L:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: ["(*, n, k)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "B"
+    Parameter 2: "L"
+    Constraint: "B.shape[:-2] == L.shape[:-2]"
+  2:
+    Parameter 1: "B"
+    Parameter 2: "L"
+    Constraint: "B.shape[-2] == L.shape[-2]"
+  3:
+    Parameter 1: "out"
+    Parameter 2: "B"
+    Constraint: "out is None or out.shape == B.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cholesky_solve in a complex way */
+import torch

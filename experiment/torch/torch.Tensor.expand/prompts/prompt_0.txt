@@ -1,0 +1,38 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.expand` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.expand` creates a new view of a tensor by expanding singleton dimensions to larger sizes without allocating additional memory. It supports using `-1` to keep a dimension unchanged and can add new dimensions at the front. However, because expanded tensors may share memory, in-place operations can lead to unexpected results, so cloning is recommended before modifications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sizes:
+    dtype: ["torch.Size", "int"]
+    range: "No mention"
+    structure: ["tuple", "torch.Size"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: all(s == -1 or s >= 1 for s in sizes)
+  2:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: len(sizes) >= self.dim()
+  3:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: all(sizes[i] == -1 or (self.size(i - (len(sizes) - self.dim())) == 1) or (sizes[i] == self.size(i - (len(sizes) - self.dim()))) for i in range(len(sizes) - self.dim(), len(sizes)))
+  4:
+    Parameter 1: sizes
+    Parameter 2: self
+    Constraint: all(sizes[i] != -1 for i in range(0, len(sizes) - self.dim()))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.expand in a complex way */
+import torch

@@ -1,0 +1,34 @@
+params:
+  primals_constructor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  tangents:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  primals_jvp:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "structure of tensors"]
+    shape: No mention
+    default: No mention
+  unconnected_gradients:
+    dtype: No mention
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "none"
+constraints:
+  1:
+    Parameter 1: primals_constructor
+    Parameter 2: tangents
+    Constraint: "tf.nest.is_nested(primals_constructor) == tf.nest.is_nested(tangents) and all(tf.size(t) == tf.size(p) for t, p in zip(tf.nest.flatten(tangents), tf.nest.flatten(primals_constructor)))"
+  2:
+    Parameter 1: primals_constructor
+    Parameter 2: primals_constructor
+    Constraint: "len(set(id(t) for t in tf.nest.flatten(primals_constructor))) == len(tf.nest.flatten(primals_constructor))"

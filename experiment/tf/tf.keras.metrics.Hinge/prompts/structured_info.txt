@@ -1,0 +1,40 @@
+params:
+  name:
+    dtype: ["string"]
+    range: [["any string"]]
+    structure: ["scalar"]
+    shape: []
+    default: "hinge"
+  dtype:
+    dtype: ["string", "tf.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  y_true:
+    dtype: ["int", "float"]
+    range: [[-1, 0, 1]]
+    structure: ["tensor", "array"]
+    shape: ["any shape"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: ["same as y_true"]
+    default: null
+  sample_weight:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "scalar", "array"]
+    shape: ["broadcastable with y_true"]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: y_true.shape == y_pred.shape
+  2:
+    Parameter 1: sample_weight
+    Parameter 2: y_true
+    Constraint: sample_weight is None or sample_weight.shape is compatible with y_true.shape

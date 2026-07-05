@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseDenseCwiseMul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseDenseCwiseMul` performs element-wise multiplication between a sparse tensor and a dense tensor. It multiplies only the non-zero values of the sparse tensor with corresponding elements from the dense tensor, broadcasting the dense tensor to match the sparse structure. The result is a sparse tensor where implicitly zero elements remain zero (and do not occupy storage), even if the dense tensor contains special values like infinity. Note that broadcasting is only supported from the dense side to the sparse side, not vice versa.
+
+**Arguments:**
+- `sp_indices`: 2-D int64 tensor with indices of non-zero sparse values.
+- `sp_values`: 1-D tensor of non-zero sparse values.
+- `sp_shape`: 1-D int64 tensor defining the shape of the sparse tensor.
+- `dense`: Dense tensor operand of the same data type as `sp_values`.
+- `name` (optional): Operation name.
+
+**Returns:** A tensor with the same type as `sp_values`, representing the sparse result.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sp_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N, R]"]
+    default: null
+  sp_values:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  sp_shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[R]"]
+    default: null
+  dense:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["R-D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: sp_values
+    Parameter 2: dense
+    Constraint: "sp_values.dtype == dense.dtype"
+  2:
+    Parameter 1: sp_indices
+    Parameter 2: sp_values
+    Constraint: "sp_indices.shape[0] == sp_values.shape[0]"
+  3:
+    Parameter 1: sp_indices
+    Parameter 2: sp_shape
+    Constraint: "sp_indices.shape[1] == sp_shape.shape[0]"
+  4:
+    Parameter 1: dense
+    Parameter 2: sp_shape
+    Constraint: "len(dense.shape) == sp_shape.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseDenseCwiseMul in a complex way */
+import tensorflow as tf

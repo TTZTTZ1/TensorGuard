@@ -1,0 +1,80 @@
+params:
+  in_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple", "string"]
+    range: ["No mention", "No mention", ["valid", "same"]]
+    structure: ["scalar", "tuple", "string"]
+    shape: [1, 2, 1]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  padding_mode:
+    dtype: ["string"]
+    range: [["zeros", "reflect", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  device:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "stride"
+    Constraint: "padding != 'same' or stride == 1"

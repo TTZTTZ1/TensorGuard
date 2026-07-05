@@ -1,0 +1,34 @@
+params:
+  kernel_size:
+    dtype: ["int", "tuple[int, int]"]
+    range: [null]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: null
+  output_size:
+    dtype: ["int", "tuple[int, int]"]
+    range: [null]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: null
+  output_ratio:
+    dtype: ["float", "tuple[float, float]"]
+    range: ["(0,1)"]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: null
+  return_indices:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: output_size
+    Parameter 2: output_ratio
+    Constraint: "(output_size is not None) != (output_ratio is not None)"
+  2:
+    Parameter 1: output_ratio
+    Parameter 2: output_ratio
+    Constraint: "(isinstance(output_ratio, (int, float)) and 0 < output_ratio < 1) or (isinstance(output_ratio, tuple) and len(output_ratio) == 2 and all(0 < r < 1 for r in output_ratio))"

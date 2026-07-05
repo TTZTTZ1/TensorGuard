@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.global_unstructured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.prune.global_unstructured` globally prunes multiple parameters across a model by applying a specified unstructured pruning method. It modifies modules in place by adding binary masks and storing original parameters, using aggregated weights to decide which parameters to prune globally. Key arguments include the parameters to prune, the pruning method, optional importance scores, and the pruning amount (as a fraction or absolute number). This function is specifically designed for unstructured pruning and raises a `TypeError` if used with structured pruning methods.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  parameters:
+    dtype: ["Iterable"]
+    range: ["No mention"]
+    structure: ["Iterable"]
+    shape: ["No mention"]
+    default: "null"
+  pruning_method:
+    dtype: ["function"]
+    range: ["No mention"]
+    structure: ["function"]
+    shape: ["No mention"]
+    default: "null"
+  importance_scores:
+    dtype: ["dict"]
+    range: ["No mention"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "None"
+  kwargs:
+    dtype: ["dict"]
+    range: ["No mention"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "pruning_method"
+    Parameter 2: "null"
+    Constraint: "hasattr(pruning_method, 'PRUNING_TYPE') and pruning_method.PRUNING_TYPE == 'unstructured'"
+  2:
+    Parameter 1: "importance_scores"
+    Parameter 2: "parameters"
+    Constraint: "importance_scores is None or all(key in list(parameters) and importance_scores[key].shape == getattr(key[0], key[1]).shape for key in importance_scores)"
+  3:
+    Parameter 1: "kwargs"
+    Parameter 2: "null"
+    Constraint: "'amount' not in kwargs or (isinstance(kwargs.get('amount'), (int, float)) and (not isinstance(kwargs.get('amount'), float) or 0.0 <= kwargs.get('amount') <= 1.0))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.global_unstructured in a complex way */
+import torch

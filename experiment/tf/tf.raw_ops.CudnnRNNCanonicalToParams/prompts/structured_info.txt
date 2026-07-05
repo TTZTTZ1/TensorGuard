@@ -1,0 +1,82 @@
+params:
+  num_layers:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  num_units:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  input_size:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  weights:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  biases:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  rnn_mode:
+    dtype: ["string"]
+    range: ["rnn_relu", "rnn_tanh", "lstm", "gru"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "lstm"
+  input_mode:
+    dtype: ["string"]
+    range: ["linear_input", "skip_input", "auto_select"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "linear_input"
+  direction:
+    dtype: ["string"]
+    range: ["unidirectional", "bidirectional"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "unidirectional"
+  dropout:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "weights"
+    Parameter 2: "biases"
+    Constraint: "len(biases) == len(weights)"
+  2:
+    Parameter 1: "input_mode"
+    Parameter 2: "input_size"
+    Constraint: "input_mode != 'skip_input' or input_size == num_units"

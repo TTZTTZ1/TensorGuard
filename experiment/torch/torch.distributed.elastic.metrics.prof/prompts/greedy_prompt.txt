@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.metrics.prof` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Metrics API provides a system for publishing telemetry metrics, primarily used for monitoring and debugging distributed training jobs. Key features include:
+
+- **Metric Identification**: Metrics are uniquely identified by a tuple of `(metric_group, metric_name)`, where `metric_group` can represent modules, stages, or job properties.
+- **Publishing Metrics**:  
+  - Use `put_metric(metric_name, value, group)` to log custom metrics.  
+  - The `@prof` decorator automatically publishes success/failure counts and duration for decorated functions.
+- **Handlers**: Metrics are emitted via configurable handlers (e.g., `ConsoleMetricHandler`, `NullMetricHandler`). Custom handlers can be implemented by extending `MetricHandler`.
+- **Configuration**:  
+  - Handlers are assigned to metric groups via `configure(handler, group)`.  
+  - By default, metrics are sent to a null sink; explicit configuration is required for output.
+
+**Example Usage**:
+```python
+import torch.distributed.elastic.metrics as metrics
+
+# Configure console output for a specific group
+metrics.configure(metrics.ConsoleMetricHandler(), group="my_module")
+
+# Manually publish a metric
+metrics.put_metric("latency_ms", 150, "my_module")
+
+# Automatically profile a function
+@metrics.prof(group="my_module")
+def my_function():
+    ...
+```
+
+This API enables flexible metric collection and emission, aiding in operational visibility and performance analysis.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["callable", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "torchelastic"
+constraints:
+  1:
+    Parameter 1: fn
+    Parameter 2: group
+    Constraint: "fn is None or callable(fn)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.metrics.prof in a complex way */
+import torch

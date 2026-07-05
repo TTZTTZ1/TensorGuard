@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  out:
+    dtype: ["tuple", "None"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "0 <= dim < len(input.shape)"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "input"
+    Constraint: "out is None or (isinstance(out, tuple) and len(out) == 2 and all(isinstance(t, torch.Tensor) for t in out) and out[0].shape == input.shape and out[1].shape == input.shape)"

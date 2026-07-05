@@ -1,0 +1,174 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CudnnRNNBackpropV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.CudnnRNNBackpropV3` is a TensorFlow operation that performs the backward propagation (backprop) step for a cuDNN-based RNN (Recurrent Neural Network) version 3. It computes gradients for the input data, hidden states, cell states (for LSTM), and model parameters based on the forward pass outputs and their corresponding gradients.
+
+### Key Features:
+- **Supports multiple RNN types**: LSTM (default), GRU, and RNN with tanh or ReLU activations.
+- **Handles variable-length sequences**: Accepts a `sequence_lengths` tensor to specify the length of each sequence in the batch.
+- **Flexible input/output formats**: Supports both time-major and batch-major layouts via the `time_major` parameter.
+- **Bidirectional RNNs**: Can process sequences in both forward and backward directions.
+- **Dropout**: Optional dropout with configurable seeds for reproducibility.
+
+### Inputs:
+- **Forward pass tensors**: `input`, `input_h`, `input_c` (for LSTM), `params`, `output`, `output_h`, `output_c`.
+- **Gradients from the loss**: `output_backprop`, `output_h_backprop`, `output_c_backprop`.
+- **Auxiliary data**: `sequence_lengths`, `reserve_space` (from the forward pass), `host_reserved`.
+
+### Outputs:
+Returns four tensors representing gradients:
+- `input_backprop`: Gradient with respect to the input.
+- `input_h_backprop`: Gradient with respect to the initial hidden state.
+- `input_c_backprop`: Gradient with respect to the initial cell state (LSTM only).
+- `params_backprop`: Gradient with respect to the RNN parameters.
+
+### Typical Use Case:
+Used internally during the training of RNN models built with cuDNN to compute gradients efficiently on GPU hardware. It is a low-level operation typically called by higher-level TensorFlow RNN APIs rather than directly by users.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  input_h:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  input_c:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  params:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  sequence_lengths:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  output:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  output_h:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  output_c:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  output_backprop:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  output_h_backprop:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  output_c_backprop:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  reserve_space:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  host_reserved:
+    dtype: ["int8"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  rnn_mode:
+    dtype: ["string"]
+    range: ["rnn_relu", "rnn_tanh", "lstm", "gru"]
+    structure: ["scalar"]
+    shape: []
+    default: "lstm"
+  input_mode:
+    dtype: ["string"]
+    range: ["linear_input", "skip_input", "auto_select"]
+    structure: ["scalar"]
+    shape: []
+    default: "linear_input"
+  direction:
+    dtype: ["string"]
+    range: ["unidirectional", "bidirectional"]
+    structure: ["scalar"]
+    shape: []
+    default: "unidirectional"
+  dropout:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  num_proj:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  time_major:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: input_mode
+    Parameter 2: input
+    Constraint: "input_mode in ['skip_input', 'auto_select'] only when input.shape[-1] == num_units"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CudnnRNNBackpropV3 in a complex way */
+import tensorflow as tf

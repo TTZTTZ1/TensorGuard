@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.distributions.bernoulli.Bernoulli` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet, Wishart
+**Transformed**: LogNormal, HalfNormal, HalfCauchy, Weibull, Pareto, etc.
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` parameters
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**: 
+  - `sample()` + `log_prob()` for REINFORCE
+  - `rsample()` for reparameterization trick (where available)
+- **Exponential Family**: Specialized class for distributions in exponential family form
+
+### **4. Advanced Functionality**
+- **TransformedDistribution**: Apply sequences of transforms to base distributions
+- **Independent**: Reinterpret batch dimensions as event dimensions
+- **MixtureSameFamily**: Mixture distributions with same component type
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Constraints**: Define valid parameter ranges with constraint objects
+- **Transforms**: Bijective transformations between constrained and unconstrained spaces
+
+### **5. Practical Usage Examples**
+
+**REINFORCE (Policy Gradient):**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Reparameterization (VAEs):**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+```
+
+### **6. Registry System**
+- `transform_to()`: Maps constraints to transforms (for optimization)
+- `biject_to()`: Maps constraints to bijective transforms (for HMC)
+- Extensible via custom constraints and transforms
+
+## **Design Philosophy**
+- Follows TensorFlow Distributions design patterns
+- Enables both reinforcement learning and variational inference use cases
+- Provides automatic gradient computation through stochastic nodes
+- Maintains mathematical correctness with proper constraint validation
+
+The package is essential for probabilistic modeling, Bayesian inference, reinforcement learning, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: None
+    Constraint: "probs is None or (torch.all(probs >= 0) and torch.all(probs <= 1))"
+  2:
+    Parameter 1: logits
+    Parameter 2: None
+    Constraint: "logits is None or torch.all(torch.isfinite(logits))"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "((probs is None) and (logits is not None)) or ((probs is not None) and (logits is None))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.bernoulli.Bernoulli in a complex way */
+import torch

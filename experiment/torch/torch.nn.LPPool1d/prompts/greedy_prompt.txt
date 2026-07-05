@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.nn.LPPool1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`LPPool1d` performs 1D power-average pooling, computing the p-th root of the sum of p-th powers over a sliding window.  
+
+**Key points:**  
+- **Formula:** \( f(X) = \sqrt[p]{\sum_{x \in X} x^p} \)  
+- **Special cases:**  
+  - \( p = \infty \) → Max pooling  
+  - \( p = 1 \) → Sum pooling (proportional to average pooling)  
+- **Parameters:**  
+  - `norm_type` (float): The exponent \( p \)  
+  - `kernel_size`: Window size  
+  - `stride` (default = `kernel_size`): Step size  
+  - `ceil_mode`: Use ceil (True) or floor (False) for output shape  
+- **Handles gradient:** If sum to power \( p \) is zero, gradient is set to zero.  
+- **Input shape:** `(N, C, L_in)` or `(C, L_in)`  
+- **Output shape:** `(N, C, L_out)` or `(C, L_out)`, where  
+  \( L_{out} = \left\lfloor \frac{L_{in} - \text{kernel\_size}}{\text{stride}} + 1 \right\rfloor \) (adjusts with `ceil_mode`).  
+
+**Example:**  
+```python
+m = nn.LPPool1d(2, 3, stride=2)  # p=2, window=3, stride=2
+output = m(input)  # input shape: (20, 16, 50)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  norm_type:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "kernel_size"
+  ceil_mode:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.LPPool1d in a complex way */
+import torch

@@ -1,0 +1,56 @@
+params:
+  include_top:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "True"
+  weights:
+    dtype: "No mention"
+    range: ["None", "\"imagenet\"", "string path"]
+    structure: "No mention"
+    shape: "No mention"
+    default: "\"imagenet\""
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 input channels, width and height >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: "No mention"
+    range: ["None", "\"avg\"", "\"max\""]
+    structure: "No mention"
+    shape: "No mention"
+    default: "None"
+  classes:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable"]
+    range: ["str", "callable", "None", "with condition for pretrained weights"]
+    structure: "No mention"
+    shape: "No mention"
+    default: "\"softmax\""
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top or input_shape is None"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes == 1000 or (include_top and weights is None)"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"

@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.jit.freeze` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.jit.freeze` converts a PyTorch ScriptModule into a frozen, optimized version by inlining submodules, parameters, and attributes as constants in the TorchScript IR graph. This process removes mutable parameters and module hierarchy, applying general optimizations to improve inference speed.
+
+**Key Features:**
+- **Inlines constants:** Parameters and attributes become fixed values in the computation graph.
+- **Preserves specified attributes:** Use `preserved_attrs` to keep specific attributes mutable (e.g., version counters).
+- **Requires eval mode:** The input module must be in evaluation mode.
+- **Optimizes numerics:** Optional passes for further performance gains (may affect numerical precision).
+
+**Use Cases:**
+- Deploying trained models for faster inference.
+- Reducing overhead by eliminating parameter management.
+
+**Limitations:**
+- Frozen modules lose the ability to use `to()` for device/dtype changes.
+- Only supports ScriptModules in eval mode.
+
+**Example:**
+```python
+frozen_module = torch.jit.freeze(scripted_module, preserved_attrs=["custom_attr"])
+```
+This creates a static, optimized graph while retaining `custom_attr` as mutable.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mod:
+    dtype: ["torch.jit.ScriptModule"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  preserved_attrs:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  optimize_numerics:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.jit.freeze in a complex way */
+import torch

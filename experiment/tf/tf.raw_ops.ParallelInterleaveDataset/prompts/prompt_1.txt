@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ParallelInterleaveDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ParallelInterleaveDataset` operation creates a dataset that applies a function `f` to the outputs of an input dataset, interleaving results from multiple parallel streams. It is designed to improve performance when reading from variable-latency data sources (like HDFS or GCS) by allowing training to proceed as long as some data is available, even if some streams are blocked.
+
+### Key Features:
+- **Parallel Processing**: Uses multiple datasets (up to `cycle_length`) created by applying `f` to the input dataset.
+- **Non-Deterministic Option**: If `sloppy=True`, elements are returned as they become available, which can improve performance but sacrifices determinism.
+- **Buffering**: Supports buffering of output elements and prefetching of input elements to reduce blocking.
+- **Deprecated**: This op has been superseded by `ParallelInterleaveDatasetV2`; new code should use the updated version or the higher-level `tf.data.experimental.parallel_interleave` API.
+
+### Parameters:
+- **`input_dataset`**: Produces arguments for `f`.
+- **`f`**: A function that maps input elements to a new dataset.
+- **`cycle_length`**: Number of parallel datasets to interleave.
+- **`block_length`**: Number of consecutive elements to take from each dataset before switching.
+- **`sloppy`**: Controls whether order is deterministic.
+- **Buffer/prefetch parameters**: Tune performance by managing internal queues.
+
+### Returns:
+- A `variant` tensor representing the interleaved dataset.
+
+**Note**: This is a low-level operation; consider using higher-level TensorFlow APIs for dataset transformations unless specific customization is needed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_dataset:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  other_arguments:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  cycle_length:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  block_length:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  sloppy:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  buffer_output_elements:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  prefetch_input_elements:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  f:
+    dtype: ["function"]
+    range: "No mention"
+    structure: ["function"]
+    shape: "No mention"
+    default: null
+  output_types:
+    dtype: ["tf.DType"]
+    range: "length >=1"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  output_shapes:
+    dtype: ["tf.TensorShape", "list of ints"]
+    range: "length >=1"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  metadata:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: ""
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1. 
+    Parameter 1: output_types
+    Parameter 2: output_shapes
+    Constraint: "len(output_types) == len(output_shapes)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ParallelInterleaveDataset in a complex way */
+import tensorflow as tf

@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `torch.ByteStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: `torch.Storage` in PyTorch**
+
+`torch.Storage` refers to the underlying data container for tensors. It is a low-level API that manages raw, contiguous memory. The modern and recommended class is `torch.UntypedStorage`.
+
+### **Key Concepts:**
+
+1. **`torch.UntypedStorage`**:
+   - A contiguous, one-dimensional array of **bytes** that holds the actual tensor data.
+   - Accessed via `tensor.untyped_storage()`.
+   - Multiple tensors (e.g., views) can share the same storage.
+   - Provides methods like `clone()`, `fill_()`, `data_ptr()` (unique identifier), `device`, `is_cuda`, `pin_memory()`, and `share_memory_()`.
+
+2. **Tensor-Storage Relationship**:
+   - A tensor’s structure is defined by:
+     - **Storage**: Raw data bytes.
+     - **dtype**: Data type interpretation.
+     - **Shape**: Dimensions.
+     - **Stride**: Memory layout steps.
+     - **Offset**: Starting point in storage.
+   - Tensors with `requires_grad=True` have separate storages for data and gradients.
+
+3. **Shared Storage**:
+   - Views (e.g., from `.view()` or slicing) share storage with the original tensor.
+   - Serialization preserves shared storage relationships.
+
+4. **Special Cases** (no typical storage):
+   - Tensors on `"meta"` device (no data).
+   - FakeTensors (compiler tool).
+   - Certain tensor subclasses.
+
+5. **Legacy `TypedStorage` (Deprecated)**:
+   - Older typed classes like `torch.FloatStorage` are aliases for `torch.TypedStorage`.
+   - `TypedStorage` wraps an `UntypedStorage` and adds dtype interpretation.
+   - **Avoid using**; `UntypedStorage` is the future-proof API.
+
+### **Important Warnings:**
+- Direct storage manipulation (e.g., `set_()`) is **not recommended**—use high-level tensor methods like `clone()` and `fill_()` instead.
+- Storage APIs are low-level; most applications should operate at the tensor level.
+
+### **Common Use Cases:**
+- Inspecting memory sharing between tensors.
+- Low-level memory management (e.g., memory-mapped files via `from_file()`).
+- Advanced multiprocessing with `share_memory_()`.
+
+In short: `torch.UntypedStorage` is the core byte-level container for tensor data, but most users should interact with tensors directly unless performing specialized memory operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "list", "tuple", "torch.Tensor"]
+    shape: [1, 2, 3, 4]
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.uint8"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.uint8"
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "cpu"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: 
+    Constraint: "dtype == torch.uint8"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ByteStorage in a complex way */
+import torch

@@ -1,0 +1,40 @@
+params:
+  input:
+    dtype: [No mention]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  diagonal:
+    dtype: ["same as input"]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  k:
+    dtype: ["int32"]
+    range: ["any integer"]
+    structure: ["scalar", "tuple"]
+    shape: ["[]", "[2]"]
+    default: null
+  align:
+    dtype: ["string"]
+    range: ["LEFT_RIGHT", "RIGHT_LEFT", "LEFT_LEFT", "RIGHT_RIGHT"]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "RIGHT_LEFT"
+  name:
+    dtype: ["string"]
+    range: ["any string"]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: diagonal
+    Parameter 2: input
+    Constraint: diagonal.dtype == input.dtype
+  2:
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: k[0] <= k[1] if isinstance(k, (list, tuple)) and len(k) == 2

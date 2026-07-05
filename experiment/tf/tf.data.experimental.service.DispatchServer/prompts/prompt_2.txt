@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.service.DispatchServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.data.experimental.service.DispatchServer` is an in-process server that coordinates a cluster of worker servers for distributed TensorFlow data processing. It manages dataset distribution and task assignment to registered workers.
+
+**Key Features:**
+- **Coordination:** Registers and manages `WorkerServer` instances
+- **Dataset Distribution:** Enables distributed dataset processing via `tf.data.experimental.service.distribute()`
+- **Fault Tolerance:** Supports fault-tolerant mode with persistent work directory
+- **Flexible Deployment:** Can run as dedicated process or in-process
+
+**Basic Usage:**
+```python
+dispatcher = tf.data.experimental.service.DispatchServer()
+dataset = dataset.apply(tf.data.experimental.service.distribute(
+    processing_mode="parallel_epochs", 
+    service=dispatcher.target))
+```
+
+**Core Methods:**
+- `start()`: Starts the server
+- `stop()`: Gracefully stops the server  
+- `join()`: Blocks until server shutdown (for dedicated processes)
+- `target`: Property returning connection string (e.g., "grpc://localhost:5050")
+
+**Configuration:** Uses `DispatcherConfig` for port, work directory, and fault-tolerant mode settings. The server automatically stops when all references are deleted, but can be manually controlled for dedicated deployments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  config:
+    dtype: ["DispatcherConfig", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  start:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.service.DispatchServer in a complex way */
+import tensorflow as tf

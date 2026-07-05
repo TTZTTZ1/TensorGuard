@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.GatherNd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.GatherNd` extracts slices or elements from a `params` tensor based on an `indices` tensor, where the last dimension of `indices` specifies slices into the first N dimensions of `params`. The output shape is `indices.shape[:-1] + params.shape[indices.shape[-1]:]`.  
+
+**Key behavior:**  
+- `indices` is K-dimensional, with the last dimension determining how many leading dimensions of `params` to index.  
+- On CPU, out-of-bounds indices raise an error; on GPU, they output 0.  
+- Useful for advanced indexing beyond `tf.gather`, as it can index multiple dimensions at once.  
+
+**Example:**  
+For `params` shape `[2, 2]` and `indices = [[0, 0], [1, 1]]`, output is `['a', 'd']` (selecting single elements).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  indices:
+    dtype: ["int16", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: params
+    Constraint: "indices.shape[-1] <= params.rank"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.GatherNd in a complex way */
+import tensorflow as tf

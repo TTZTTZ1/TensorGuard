@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceSparseApplyCenteredRMSProp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceSparseApplyCenteredRMSProp` is a TensorFlow operation that performs a sparse update of a variable using the **centered RMSProp optimization algorithm**. It is designed for scenarios where gradient updates are applied only to specific indices, making it efficient for sparse tensors.
+
+### Key Features:
+- **Centered RMSProp**: Unlike standard RMSProp, it uses an estimate of the variance (centered second moment) for normalization, which can improve training stability but requires slightly more computation and memory.
+- **Sparse Updates**: Only the entries of `var`, `mg`, `ms`, and `mom` corresponding to the provided `indices` are updated. If the gradient for an index is zero, no update occurs for that iteration.
+- **Resource Tensors**: Operates directly on resource handles (e.g., variables), avoiding unnecessary copies.
+
+### Parameters:
+- **Core Tensors**: `var` (variable to update), `mg` (mean gradient), `ms` (mean square), `mom` (momentum).
+- **Hyperparameters**: `lr` (learning rate), `rho` (decay rate), `momentum`, `epsilon` (stabilizing constant).
+- **Sparse Inputs**: `grad` (gradient values) and `indices` (positions to update).
+- **Optional**: `use_locking` (for thread safety) and `name` (operation identifier).
+
+### Update Rules:
+1. Update mean square:  
+   \( \text{ms} \leftarrow \rho \cdot \text{ms} + (1 - \rho) \cdot \text{grad}^2 \)
+2. Update mean gradient:  
+   \( \text{mg} \leftarrow \rho \cdot \text{mg} + (1 - \rho) \cdot \text{grad} \)
+3. Compute adjustment:  
+   \( \text{Delta} = \text{lr} \cdot \text{grad} / \sqrt{\text{ms} + \epsilon - \text{mg}^2} \)
+4. Update momentum and variable:  
+   \( \text{mom} \leftarrow \text{momentum} \cdot \text{mom} + \text{Delta} \)  
+   \( \text{var} \leftarrow \text{var} - \text{mom} \)
+
+### Use Case:
+Ideal for training models with sparse gradients (e.g., embeddings in recommendation systems or NLP), where efficiency is gained by updating only a subset of parameters per step.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  mg:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  ms:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  mom:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  rho:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceSparseApplyCenteredRMSProp in a complex way */
+import tensorflow as tf

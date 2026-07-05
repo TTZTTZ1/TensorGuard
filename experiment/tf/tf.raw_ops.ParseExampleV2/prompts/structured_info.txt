@@ -1,0 +1,102 @@
+params:
+  serialized:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "vector"]
+    default: "null"
+  names:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: "null"
+  sparse_keys:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: "null"
+  dense_keys:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: "null"
+  ragged_keys:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: "null"
+  dense_defaults:
+    dtype: ["float32", "int64", "string"]
+    range: ["No mention"]
+    structure: ["list of tensors"]
+    shape: ["No mention"]
+    default: "null"
+  num_sparse:
+    dtype: ["int"]
+    range: ["[0, inf)"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  sparse_types:
+    dtype: ["float32", "int64", "string"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  ragged_value_types:
+    dtype: ["float32", "int64", "string"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  ragged_split_types:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  dense_shapes:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list of shapes"]
+    shape: ["No mention"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "names"
+    Parameter 2: "serialized"
+    Constraint: "tf.shape(names) == tf.shape(serialized) if tf.size(names) > 0"
+  2:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_keys"
+    Constraint: "len(dense_defaults) == len(dense_keys)"
+  3:
+    Parameter 1: "sparse_types"
+    Parameter 2: "num_sparse"
+    Constraint: "len(sparse_types) == num_sparse"
+  4:
+    Parameter 1: "ragged_value_types"
+    Parameter 2: "sparse_keys"
+    Constraint: "len(ragged_value_types) == tf.size(sparse_keys)"
+  5:
+    Parameter 1: "ragged_split_types"
+    Parameter 2: "sparse_keys"
+    Constraint: "len(ragged_split_types) == tf.size(sparse_keys)"
+  6:
+    Parameter 1: "dense_shapes"
+    Parameter 2: "dense_keys"
+    Constraint: "len(dense_shapes) == len(dense_keys)"
+  7:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_shapes"
+    Constraint: "all(tf.shape(dense_defaults[j]) == dense_shapes[j] for j in range(len(dense_keys)) if dense_defaults[j] is not None and tf.size(dense_defaults[j]) > 0 and dense_shapes[j] is fully defined)"

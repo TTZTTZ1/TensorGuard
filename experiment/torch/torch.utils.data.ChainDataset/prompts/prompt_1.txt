@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.ChainDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for loading and processing data in PyTorch. Its core component is the `DataLoader` class, which creates an iterable over a dataset with support for:
+
+**Key Features:**
+- **Dataset Types:** Supports both map-style (indexable with `__getitem__` and `__len__`) and iterable-style (streaming with `__iter__`) datasets.
+- **Batching:** Automatic batching with customizable collation via `collate_fn`, or manual batching when disabled.
+- **Sampling:** Customizable data loading order through samplers (e.g., random, sequential, weighted).
+- **Multi-process Loading:** Speeds up data loading using multiple worker processes (`num_workers > 0`).
+- **Memory Pinning:** Faster GPU data transfer by pinning memory (`pin_memory=True`).
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+```
+
+**Important Notes:**
+- For iterable datasets with multi-process loading, implement sharding to avoid duplicate data.
+- Custom `collate_fn` can handle padding or special batching logic.
+- On Windows/macOS, wrap main script code in `if __name__ == '__main__':` for multi-process compatibility.
+- Use `pin_memory=True` for faster GPU transfers, but implement `pin_memory()` method for custom batch types.
+
+The module also includes utility classes like `TensorDataset`, `ConcatDataset`, `Subset`, and various samplers (`RandomSampler`, `WeightedRandomSampler`, etc.) for flexible data handling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  datasets:
+    dtype: ["Iterable[IterableDataset]"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.ChainDataset in a complex way */
+import torch

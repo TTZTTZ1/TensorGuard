@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `torch.distributed.send` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Components**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional build)
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any operations
+- **DeviceMesh**: Higher-level abstraction for managing process groups in N-dimensional device topologies
+
+## **Key Features**
+- **Collective Operations**: `broadcast`, `all_reduce`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, `barrier`
+- **Point-to-Point**: `send`/`recv` (synchronous) and `isend`/`irecv` (asynchronous)
+- **Process Groups**: Create subgroups with `new_group()` for fine-grained communication
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+
+## **Best Practices**
+- Use **NCCL** for CUDA GPU training
+- Use **Gloo** for CPU training  
+- Use **XCCL** for XPU GPU training
+- Always call `destroy_process_group()` for cleanup
+- Set `async_op=True` for asynchronous operations to overlap computation/communication
+
+## **Debugging Tools**
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for logging (`OFF`, `INFO`, `DETAIL`)
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `breakpoint()`: Debug single rank while others wait
+- HTTP debug server for runtime diagnostics
+
+## **Common Patterns**
+```python
+# Initialization
+dist.init_process_group(backend="nccl", init_method="env://")
+
+# Collective operation
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# Asynchronous operation
+work = dist.all_reduce(tensor, async_op=True)
+work.wait()
+
+# DeviceMesh for multi-dimensional parallelism
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+The package enables scalable distributed training with support for various network interconnects and hardware configurations, while providing debugging utilities for troubleshooting complex multi-process applications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["ProcessGroup", "None"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  group_dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is not None and group_dst is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.send in a complex way */
+import torch

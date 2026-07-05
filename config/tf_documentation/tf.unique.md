@@ -1,0 +1,71 @@
+# tf.unique
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/unique](https://tensorflow.google.cn/api_docs/python/tf/unique)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/ops/array_ops.py#L1609-L1651) |
+
+Finds unique elements in a 1-D tensor.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.unique`](https://tensorflow.google.cn/api_docs/python/tf/unique)
+
+```
+tf.unique(
+    x,
+    out_idx=tf.dtypes.int32,
+    name=None
+)
+
+tf.dtypes.int32
+```
+
+### Used in the notebooks
+
+| Used in the tutorials |
+| --- |
+| * [MoViNet for streaming action recognition](https://tensorflow.google.cn/hub/tutorials/movinet) * [Client-efficient large-model federated learning via `federated\_select` and sparse aggregation](https://tensorflow.google.cn/federated/tutorials/sparse_federated_learning) |
+
+This operation returns a tensor `y` containing all of the unique elements of `x`
+sorted in the same order that they occur in `x`; `x` does not need to be sorted.
+This operation also returns a tensor `idx` the same size as `x` that contains
+the index of each value of `x` in the unique output `y`. In other words:
+
+`y[idx[i]] = x[i] for i in [0, 1,...,rank(x) - 1]`
+
+#### Examples:
+
+```
+# tensor 'x' is [1, 1, 2, 4, 4, 4, 7, 8, 8]
+y, idx = unique(x)
+y ==> [1, 2, 4, 7, 8]
+idx ==> [0, 0, 1, 2, 2, 2, 3, 4, 4]
+```
+
+```
+# tensor 'x' is [4, 5, 1, 2, 3, 3, 4, 5]
+y, idx = unique(x)
+y ==> [4, 5, 1, 2, 3]
+idx ==> [0, 1, 2, 3, 4, 4, 0, 1]
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `x` | A `Tensor`. 1-D. |
+| `out_idx` | An optional [`tf.DType`](https://tensorflow.google.cn/api_docs/python/tf/dtypes/DType) from: `tf.int32, tf.int64`. Defaults to [`tf.int32`](https://tensorflow.google.cn/api_docs/python/tf#int32). |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A tuple of `Tensor` objects (y, idx). | |
+| `y` | A `Tensor`. Has the same type as `x`. |
+| `idx` | A `Tensor` of type `out_idx`. |

@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.fft.fftn` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.fftn` computes the **N-dimensional discrete Fourier transform** of a tensor. It transforms all specified dimensions into the frequency domain, returning both positive and negative frequencies (full complex output).  
+
+**Key parameters:**  
+- `input`: Input tensor (real or complex).  
+- `s`: Optional size to pad/trim dimensions before transforming.  
+- `dim`: Dimensions to transform (default: all dimensions).  
+- `norm`: Normalization mode (`"backward"` (default), `"forward"`, or `"ortho"`).  
+
+**Notes:**  
+- For real inputs, the output satisfies Hermitian symmetry (redundant frequencies).  
+- Use `rfftn` for real inputs to get compact output (positive frequencies only).  
+- Supports half-precision on CUDA (SM53+) with power-of-2 lengths.  
+
+**Example:**  
+```python
+x = torch.rand(10, 10, dtype=torch.complex64)
+fftn_result = torch.fft.fftn(x)  # Transform all dimensions
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  s:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+  norm:
+    dtype: ["string"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "backward"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "s"
+    Parameter 2: "dim"
+    Constraint: "(s is None or dim is None) or (len(s) == len(dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.fftn in a complex way */
+import torch

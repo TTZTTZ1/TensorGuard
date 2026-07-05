@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.dynamic_partition` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.dynamic_partition` splits a tensor `data` into `num_partitions` sub-tensors based on the indices provided in `partitions`. Each element of `data` is assigned to one of the output tensors according to the corresponding index in `partitions`. The shape of `partitions` must match the initial dimensions of `data`. The output tensors are ordered by partition index, and their first dimension corresponds to the count of elements assigned to that partition.
+
+**Key points:**
+- **Purpose:** Partition a tensor into multiple sub-tensors using dynamic indices.
+- **Inputs:** 
+  - `data`: The tensor to be partitioned.
+  - `partitions`: An int32 tensor of indices (0 to `num_partitions-1`) with a shape that is a prefix of `data.shape`.
+  - `num_partitions`: The number of output partitions.
+- **Output:** A list of `num_partitions` tensors, each containing slices of `data` assigned to that partition index.
+- **Common use:** Useful for dynamically grouping data, often paired with `tf.dynamic_stitch` to reassemble partitions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  partitions:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_partitions:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: partitions
+    Parameter 2: num_partitions
+    Constraint: "tf.reduce_all(tf.logical_and(partitions >= 0, partitions < num_partitions))"
+  2:
+    Parameter 1: partitions
+    Parameter 2: data
+    Constraint: "data.shape[:len(partitions.shape)] == partitions.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.dynamic_partition in a complex way */
+import tensorflow as tf

@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.quantization.quantized_concat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.quantization.quantized_concat` concatenates multiple quantized tensors along a specified dimension. It requires the input tensors to have matching ranks, types, and sizes in all dimensions except the concatenation axis. The function also takes the minimum and maximum scalar values (`input_mins`, `input_maxes`) for each input tensor to preserve quantization ranges. It returns the concatenated tensor along with its new global minimum and maximum values (`output_min`, `output_max`). This operation is essential for combining quantized data in models that use quantization-aware training or inference.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concat_dim:
+    dtype: ["int32"]
+    range: ["[0, rank(values))"]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  input_mins:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  input_maxes:
+    dtype: ["float32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["string"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: concat_dim
+    Parameter 2: values
+    Constraint: "concat_dim >= 0 and concat_dim < len(values[0].shape)"
+  2:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "len(values) >= 2"
+  3:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "all(len(v.shape) == len(values[0].shape) for v in values)"
+  4:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "all(v.dtype == values[0].dtype for v in values)"
+  5:
+    Parameter 1: values
+    Parameter 2: concat_dim
+    Constraint: "all(values[i].shape[d] == values[0].shape[d] for i in range(1, len(values)) for d in range(len(values[0].shape)) if d != concat_dim)"
+  6:
+    Parameter 1: input_mins
+    Parameter 2: values
+    Constraint: "len(input_mins) == len(values)"
+  7:
+    Parameter 1: input_maxes
+    Parameter 2: values
+    Constraint: "len(input_maxes) == len(values)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.quantized_concat in a complex way */
+import tensorflow as tf

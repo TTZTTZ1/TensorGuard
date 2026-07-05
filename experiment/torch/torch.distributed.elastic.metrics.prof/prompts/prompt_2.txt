@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.metrics.prof` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Metrics API provides a framework for publishing telemetry metrics, primarily for monitoring and debugging. It allows users to define and emit custom metrics, which are identified by a `(metric_group, metric_name)` tuple.
+
+**Key Features:**
+- **Metric Publishing**: Use `put_metric()` to log custom metrics, such as latency or counts.
+- **Built-in Profiling**: The `@prof` decorator automatically publishes success, failure, and duration metrics for functions.
+- **Configurable Handlers**: Metrics can be routed to different outputs (e.g., console, null, or custom handlers) based on their group.
+- **Custom Handlers**: Users can implement the `MetricHandler` interface to send metrics to custom destinations.
+
+**Basic Usage:**
+1. Configure a handler (e.g., `ConsoleMetricHandler`) for desired metric groups.
+2. Publish metrics with `put_metric()` or use the `@prof` decorator for automatic function profiling.
+
+**Example:**
+```python
+import torch.distributed.elastic.metrics as metrics
+
+metrics.configure(metrics.ConsoleMetricHandler(), group="my_app")
+
+@metrics.prof
+def my_function():
+    # Automatically logs duration.ms, success, failure
+    pass
+
+metrics.put_metric("custom_metric", 42, "my_app")
+```
+
+This API is designed for both internal PyTorch Elastic use and user applications, enabling structured telemetry collection.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["callable", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "torchelastic"
+constraints:
+  1:
+    Parameter 1: fn
+    Parameter 2: group
+    Constraint: "fn is None or callable(fn)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.metrics.prof in a complex way */
+import torch

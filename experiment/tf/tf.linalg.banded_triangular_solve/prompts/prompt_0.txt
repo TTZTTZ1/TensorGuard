@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.linalg.banded_triangular_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.banded_triangular_solve` solves triangular linear systems using a banded matrix representation. It takes a compact banded matrix `bands` of shape `[..., K, M]` (where `K` is the number of bands) and a right-hand side `rhs`, and returns the solution efficiently. The function supports both lower and upper triangular forms, optional adjoint solving, and automatic broadcasting of batch dimensions. Storage follows 'LEFT_RIGHT' alignment (as in cuSPARSE), where superdiagonals are right-padded and subdiagonals are left-padded.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  bands:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., K, M]"]
+    default: null
+  rhs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M]", "[..., M, N]"]
+    default: null
+  lower:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  adjoint:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: bands
+    Parameter 2: rhs
+    Constraint: "bands.dtype == rhs.dtype"
+  2:
+    Parameter 1: bands
+    Parameter 2: rhs
+    Constraint: "(len(rhs.shape) == len(bands.shape) and bands.shape[-1] == rhs.shape[-2]) or (len(rhs.shape) == len(bands.shape) - 1 and bands.shape[-1] == rhs.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.banded_triangular_solve in a complex way */
+import tensorflow as tf

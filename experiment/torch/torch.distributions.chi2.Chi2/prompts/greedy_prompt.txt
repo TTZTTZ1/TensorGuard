@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.distributions.chi2.Chi2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Uniform, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Transformed**: LogNormal, HalfNormal, Gumbel, Weibull, etc. (via `TransformedDistribution`)
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` parameters
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**:
+  - `sample()`: Regular sampling (no gradients through samples)
+  - `rsample()`: Reparameterized sampling (gradients flow through samples)
+- **ExponentialFamily**: Special class for distributions in exponential family form
+
+### **4. Advanced Functionality**
+- **Mixture Models**: `MixtureSameFamily` for mixture distributions
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Transforms**: Library of bijective transforms for constrained optimization
+- **Constraints**: Domain constraints for distribution parameters
+- **Constraint Registry**: `transform_to()` and `biject_to()` for constrained optimization
+
+## **Common Usage Patterns**
+
+### **REINFORCE (Score Function)**
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Constrained Parameter Optimization**
+```python
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions package design
+- Separates batch and event shapes for flexible broadcasting
+- Provides both exact and approximate gradient estimators
+- Supports variational inference and reinforcement learning use cases
+
+The package is essential for probabilistic modeling, variational autoencoders, policy gradient methods, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  df:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool", "null"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "df"
+    Parameter 2: null
+    Constraint: "df > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.chi2.Chi2 in a complex way */
+import torch

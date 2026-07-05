@@ -1,0 +1,59 @@
+# tf.raw_ops.LogUniformCandidateSampler
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/LogUniformCandidateSampler](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/LogUniformCandidateSampler)
+
+---
+
+Generates labels for candidate sampling with a log-uniform distribution.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.LogUniformCandidateSampler`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/LogUniformCandidateSampler)
+
+```
+tf.raw_ops.LogUniformCandidateSampler(
+    true_classes,
+    num_true,
+    num_sampled,
+    unique,
+    range_max,
+    seed=0,
+    seed2=0,
+    name=None
+)
+```
+
+See explanations of candidate sampling and the data formats at
+go/candidate-sampling.
+
+For each batch, this op picks a single set of sampled candidate labels.
+
+The advantages of sampling candidates per-batch are simplicity and the
+possibility of efficient dense matrix multiplication. The disadvantage is that
+the sampled candidates must be chosen independently of the context and of the
+true labels.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `true_classes` | A `Tensor` of type `int64`. A batch\_size \* num\_true matrix, in which each row contains the IDs of the num\_true target\_classes in the corresponding original label. |
+| `num_true` | An `int` that is `>= 1`. Number of true labels per context. |
+| `num_sampled` | An `int` that is `>= 1`. Number of candidates to randomly sample. |
+| `unique` | A `bool`. If unique is true, we sample with rejection, so that all sampled candidates in a batch are unique. This requires some approximation to estimate the post-rejection sampling probabilities. |
+| `range_max` | An `int` that is `>= 1`. The sampler will sample integers from the interval [0, range\_max). |
+| `seed` | An optional `int`. Defaults to `0`. If either seed or seed2 are set to be non-zero, the random number generator is seeded by the given seed. Otherwise, it is seeded by a random seed. |
+| `seed2` | An optional `int`. Defaults to `0`. An second seed to avoid seed collision. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A tuple of `Tensor` objects (sampled\_candidates, true\_expected\_count, sampled\_expected\_count). | |
+| `sampled_candidates` | A `Tensor` of type `int64`. |
+| `true_expected_count` | A `Tensor` of type `float32`. |
+| `sampled_expected_count` | A `Tensor` of type `float32`. |

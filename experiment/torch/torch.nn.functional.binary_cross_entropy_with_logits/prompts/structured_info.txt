@@ -1,0 +1,56 @@
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  target:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["any"]
+    default: "None"
+  size_average:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  reduce:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  pos_weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: target
+    Constraint: "input.shape == target.shape"
+  2:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight is None or torch.broadcast_shapes(weight.shape, input.shape) is not None"
+  3:
+    Parameter 1: pos_weight
+    Parameter 2: target
+    Constraint: "pos_weight is None or torch.broadcast_shapes(pos_weight.shape, target.shape) is not None"

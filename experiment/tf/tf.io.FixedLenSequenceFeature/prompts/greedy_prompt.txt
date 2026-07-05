@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.io.FixedLenSequenceFeature` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.FixedLenSequenceFeature` is a configuration class used to parse variable-length sequence features from TensorFlow's `Example` or `SequenceExample` data formats. It defines how to convert such features into dense tensors with padding when needed.
+
+**Key Functionality:**
+- **Purpose**: Parses variable-length input features into tensors with a fixed shape for all but the first (sequence) dimension.
+- **Output Tensor Shape**:
+  - Single example: `[None] + shape` (first dimension is variable sequence length).
+  - Batch of examples: `[batch_size, None] + shape` (padded to the max sequence length in the batch).
+- **Parameters**:
+  - `shape`: Shape for dimensions beyond the variable-length sequence.
+  - `dtype`: Data type of the feature.
+  - `allow_missing`: If `True`, allows the feature to be missing in `SequenceExample` (default `False`).
+  - `default_value`: Padding value for batching (defaults to `""` for string, `0` otherwise).
+
+**Use Cases**:
+- Parsing sequences like time-series data, sentences, or variable-length lists from TFRecord files.
+- Ensuring consistent tensor shapes in batches via padding.
+
+**Note**: Primarily used with parsing functions like `tf.io.parse_single_example` or `tf.io.parse_example`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["any"]
+    default: "null"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  allow_missing:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  default_value:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "default_value"
+    Constraint: "default_value is None or (tf.as_dtype(dtype).name == 'string' and isinstance(default_value, str)) or (tf.as_dtype(dtype).name != 'string' and isinstance(default_value, (int, float)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.FixedLenSequenceFeature in a complex way */
+import tensorflow as tf

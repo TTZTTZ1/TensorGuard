@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DynamicStitch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DynamicStitch` interleaves values from multiple tensors into a single merged tensor based on provided indices. It builds the output such that `merged[indices[m][i, ...]] = data[m][i, ...]`. The operation requires that each `data[i].shape` starts with the corresponding `indices[i].shape`, and the output shape is `[max(indices) + 1] + constant`, where `constant` is the trailing shape dimensions common across all `data` tensors.
+
+Values are merged sequentially: if the same index appears in multiple positions, the later occurrence (in order of `indices`) overwrites the earlier one. This function is commonly used to reconstruct tensors after operations like `dynamic_partition`.
+
+**Example**:  
+Given scalar, vector, and matrix indices with corresponding data tensors, the output is a merged tensor ordered by the indices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["list"]
+    shape: ["at least 1"]
+    default: null
+  data:
+    dtype: ["any"]
+    range: [null]
+    structure: ["list"]
+    shape: ["same length as indices"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "len(indices) == len(data)"
+  2:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "all(data[i].shape[:len(indices[i].shape)] == indices[i].shape for i in range(len(indices)))"
+  3:
+    Parameter 1: data
+    Parameter 2: data
+    Constraint: "all(data[i].shape[len(indices[i].shape):] == data[0].shape[len(indices[0].shape):] for i in range(1, len(data)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DynamicStitch in a complex way */
+import tensorflow as tf

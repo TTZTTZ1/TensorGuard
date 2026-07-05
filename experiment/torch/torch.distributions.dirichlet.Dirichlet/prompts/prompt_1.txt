@@ -1,0 +1,107 @@
+
+# You are a Python code generation assistant for the `torch.distributions.dirichlet.Dirichlet` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Sampling**: Generate random samples via `sample()` or `rsample()` (reparameterized)
+- **Gradient estimation**: Supports both score function estimator (REINFORCE) and pathwise derivative estimator (reparameterization trick)
+
+## Main Components
+
+### 1. **Distribution Base Class**
+Abstract base class with common methods:
+- `sample()` / `rsample()`: Generate samples
+- `log_prob()`: Compute log probability
+- `entropy()`: Distribution entropy
+- `cdf()` / `icdf()`: Cumulative/inverse CDF
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### 2. **Available Distributions**
+Includes both continuous and discrete distributions:
+- **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, MultivariateNormal, etc.
+- **Discrete**: Bernoulli, Categorical, Binomial, Poisson, Geometric, etc.
+- **Transformed**: LogNormal, HalfNormal, Gumbel, etc. (via `TransformedDistribution`)
+
+### 3. **Key Functionalities**
+
+#### **Gradient Estimation Methods**
+```python
+# Score function estimator (REINFORCE)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward  # REINFORCE loss
+
+# Pathwise derivative (reparameterization)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+```
+
+#### **Distribution Operations**
+- **KL Divergence**: `kl_divergence(p, q)` for many distribution pairs
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, etc.)
+- **Constraints**: Domain constraints for distribution parameters
+- **Mixtures**: `MixtureSameFamily` for mixture distributions
+
+### 4. **Practical Usage**
+```python
+# Create and sample from distributions
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))  # 100 samples
+
+# Compute probabilities
+log_probs = normal.log_prob(samples)
+
+# Transform distributions
+base = Normal(0, 1)
+transformed = TransformedDistribution(base, [ExpTransform()])
+
+# Constrained parameters via transforms
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained_param)
+```
+
+### 5. **Advanced Features**
+- **ExponentialFamily**: Specialized class for exponential family distributions
+- **Independent**: Reinterpret batch dims as event dims
+- **LowRankMultivariateNormal**: Efficient multivariate normal with low-rank covariance
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+## Design Principles
+1. **Batch-aware**: All distributions support batched parameters
+2. **Gradient-friendly**: Designed for use in stochastic computation graphs
+3. **Extensible**: Easy to add new distributions and transforms
+4. **Numerically stable**: Careful implementation of log-probabilities and sampling
+
+This module is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions within PyTorch's autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2: concentration
+    Constraint: "torch.all(concentration > 0.0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.dirichlet.Dirichlet in a complex way */
+import torch

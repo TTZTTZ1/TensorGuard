@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `torch.aminmax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.aminmax` computes both the minimum and maximum values of a tensor. It can operate over the entire tensor or along a specified dimension, with options to retain reduced dimensions and handle NaN propagation. The function returns a tuple `(min, max)`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  keepdim:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "dim"
+    Constraint: "all(input.size(i) > 0 for i in (range(input.ndim) if dim is None else [dim]))"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "input"
+    Constraint: "out is None or (isinstance(out, tuple) and len(out) == 2 and out[0].shape == (torch.Size([]) if dim is None else (torch.Size([input.shape[i] for i in range(input.ndim) if i != (dim if dim >= 0 else input.ndim + dim)]) if not keepdim else torch.Size([input.shape[i] if i != (dim if dim >= 0 else input.ndim + dim) else 1 for i in range(input.ndim)]))) and out[0].dtype == input.dtype and out[1].shape == out[0].shape and out[1].dtype == input.dtype)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.aminmax in a complex way */
+import torch

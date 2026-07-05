@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.experimental.tensorrt.ConversionParams` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.tensorrt.ConversionParams` is a configuration class used to define parameters for converting TensorFlow models to TensorRT (TF-TRT) format. It controls key aspects of the conversion process to optimize inference performance on NVIDIA GPUs.
+
+**Key Parameters:**
+- **`max_workspace_size_bytes`**: Maximum GPU memory available for TensorRT engine execution.
+- **`precision_mode`**: Sets the computation precision (e.g., FP32, FP16, INT8) for optimization.
+- **`minimum_segment_size`**: Minimum number of nodes required to form a TRT-accelerated subgraph.
+- **`maximum_cached_engines`**: Limits cached TensorRT engines for dynamic input shapes.
+- **`use_calibration`**: Enables INT8 calibration when precision mode is INT8.
+- **`allow_build_at_runtime`**: Permits on-the-fly TensorRT engine building if no compatible prebuilt engine exists.
+
+**Purpose:**  
+It allows fine-tuning the trade-off between inference speed, memory usage, and model accuracy during TensorRT integration, supporting both static and dynamic engine building with optional INT8 quantization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  max_workspace_size_bytes:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "DEFAULT_TRT_MAX_WORKSPACE_SIZE_BYTES"
+  precision_mode:
+    dtype: ["string"]
+    range: [["FP32", "FP16", "INT8"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "FP32"
+  minimum_segment_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "3"
+  maximum_cached_engines:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  use_calibration:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  allow_build_at_runtime:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter1: "precision_mode"
+    Parameter2: "use_calibration"
+    Constraint: "not use_calibration or precision_mode == 'INT8'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.tensorrt.ConversionParams in a complex way */
+import tensorflow as tf

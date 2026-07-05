@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.fft.fftn` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.fftn` computes the **N-dimensional discrete Fourier transform** of a complex or real input tensor.
+
+**Key Features:**
+- Transforms specified dimensions (`dim`) or all dimensions by default.
+- Optional zero-padding/trimming via `s` to adjust signal size per dimension.
+- Normalization modes: `"backward"` (none), `"forward"` (scale by 1/n), or `"ortho"` (scale by 1/√n).
+- For real inputs, output includes both positive and negative frequencies (Hermitian symmetric).
+- Supports half-precision on CUDA (SM53+) with power-of-2 lengths.
+
+**Example:**
+```python
+x = torch.rand(10, 10, dtype=torch.complex64)
+result = torch.fft.fftn(x, s=(12, 12), dim=(0, 1), norm="ortho")
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  s:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+  norm:
+    dtype: ["string"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "backward"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "s"
+    Parameter 2: "dim"
+    Constraint: "(s is None or dim is None) or (len(s) == len(dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.fftn in a complex way */
+import torch

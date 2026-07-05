@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.matmul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.matmul` performs matrix multiplication between two tensors, with behavior that adapts to their dimensions:
+
+- **1D × 1D** → Dot product (scalar)
+- **2D × 2D** → Standard matrix multiplication
+- **1D × 2D** or **2D × 1D** → Vector-matrix or matrix-vector product (with automatic dimension handling)
+- **Higher-dimensional tensors** → Batched matrix multiplication, where the last two dimensions are multiplied and preceding dimensions are broadcast as needed
+
+It supports sparse tensors for 2D cases (with beta-stage limitations) and includes optimizations for specific hardware (TensorFloat32, ROCm float16). The function does not support an `out` parameter for 1D dot products.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 1 or other.ndim != 1 or input.shape[0] == other.shape[0]"
+  2:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 2 or other.ndim != 2 or input.shape[1] == other.shape[0]"
+  3:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 1 or other.ndim != 2 or input.shape[0] == other.shape[0]"
+  4:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 2 or other.ndim != 1 or input.shape[1] == other.shape[0]"
+  5:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "(input.ndim <= 2 and other.ndim <= 2) or (__import__('torch'); a = input if input.ndim >= 2 else input.unsqueeze(0); b = other if other.ndim >= 2 else other.unsqueeze(-1); torch.broadcast_shapes(a.shape[:-2], b.shape[:-2]) is not None and a.shape[-1] == b.shape[-2])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.matmul in a complex way */
+import torch

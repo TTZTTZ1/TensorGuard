@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adadelta` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Adadelta Optimizer (PyTorch)**  
+
+**Purpose:**  
+Implements the Adadelta adaptive learning rate algorithm, which automatically adjusts learning rates per parameter without requiring a manually set global learning rate. It is robust to noisy gradients and sparse data.
+
+**Key Features:**  
+- **Adaptive per‑parameter learning rates** based on historical gradient magnitudes.  
+- **No manual learning rate scheduling** required (default `lr=1.0` is often sufficient).  
+- **Memory efficient**—stores only a rolling average of squared gradients and updates.  
+- Supports **weight decay (L2 penalty)**, gradient maximization, and CUDA‑graph capture.
+
+**Core Algorithm (simplified):**  
+1. Compute gradient \( g_t \).  
+2. Update running average of squared gradients:  
+   \( v_t = \rho v_{t-1} + (1 - \rho) g_t^2 \).  
+3. Compute parameter update:  
+   \( \Delta x_t = \frac{\sqrt{u_{t-1} + \epsilon}}{\sqrt{v_t + \epsilon}} g_t \).  
+4. Update running average of squared updates:  
+   \( u_t = \rho u_{t-1} + (1 - \rho) \Delta x_t^2 \).  
+5. Apply update:  
+   \( \theta_t = \theta_{t-1} - \gamma \Delta x_t \).  
+
+**Main Parameters:**  
+- `params`: Model parameters to optimize.  
+- `lr` (float/Tensor): Scaling factor for updates (default: 1.0).  
+- `rho` (float): Decay factor for gradient/update averages (default: 0.9).  
+- `eps` (float): Numerical stability term (default: 1e‑6).  
+- `weight_decay` (float): L2 penalty coefficient (default: 0).  
+- `foreach` (bool): Use fused CUDA implementation if possible (default: None → auto).  
+- `maximize`: Maximize objective instead of minimizing.  
+- `differentiable`: Allow autograd through optimizer step (impairs performance).  
+
+**Common Methods:**  
+- `step(closure)`: Performs a single optimization step.  
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` to save memory).  
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state.  
+- `add_param_group()`: Add new parameter groups dynamically.  
+
+**Use Case:**  
+Suitable for problems where tuning the learning rate is difficult, or when training deep networks with varying gradient scales. Often used in NLP and reinforcement learning.  
+
+**Reference:**  
+[ADADELTA: An Adaptive Learning Rate Method](https://arxiv.org/abs/1212.5701) (Zeiler, 2012).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "1.0"
+  rho:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.9"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-06"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  foreach:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  capturable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adadelta in a complex way */
+import torch

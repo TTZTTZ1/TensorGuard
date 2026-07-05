@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseSegmentMean` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseSegmentMean` computes the mean along specified segments of a tensor using sparse indexing. It operates similarly to `SegmentMean`, but allows selecting a subset of rows from the first dimension of `data` via the `indices` argument.
+
+**Key Parameters:**
+- `data`: Input tensor (float or bfloat types).
+- `indices`: 1-D tensor specifying which rows of `data` to use.
+- `segment_ids`: 1-D tensor defining segment groupings (should be sorted, can repeat).
+- `sparse_gradient` (optional): Controls gradient computation efficiency.
+
+**Functionality:**  
+For each segment, it averages the rows of `data` corresponding to the indices where `segment_ids` matches that segment ID. This is useful for processing only relevant portions of data, such as in embedding lookups or sparse operations.
+
+**Output:** A tensor with the same dtype as `data`, containing the mean for each segment.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  sparse_gradient:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: segment_ids
+    Constraint: "len(indices.shape) == len(segment_ids.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseSegmentMean in a complex way */
+import tensorflow as tf

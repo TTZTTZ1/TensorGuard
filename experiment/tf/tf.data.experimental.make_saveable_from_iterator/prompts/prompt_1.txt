@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.make_saveable_from_iterator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.make_saveable_from_iterator` is a deprecated utility for making a TensorFlow Dataset iterator checkpointable with the legacy `tf.compat.v1.Saver` API in TF1. It creates a `SaveableObject` from an iterator so its state can be saved and restored during training.
+
+**Key Points:**
+*   **Purpose:** Enables saving/restoring iterator state (e.g., position in a dataset) within a training checkpoint.
+*   **Status:** Deprecated. In TF2, use `tf.train.Checkpoint` instead.
+*   **Process:** The created `SaveableObject` must be added to the `tf.GraphKeys.SAVEABLE_OBJECTS` collection for `Saver` to recognize it.
+*   **Important Notes:**
+    *   Restoring discards the current iterator state and **reverts to the saved state**, including the original dataset graph at checkpoint time.
+    *   Not all iterators support checkpointing; using an unsupported one raises an error.
+    *   The `external_state_policy` argument controls how external state dependencies in the input pipeline are handled (`'ignore'`, `'warn'`, or `'fail'`).
+
+**Use Case:** Primarily for TF1 workflows requiring persistent iterator state across training sessions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  iterator:
+    dtype: ["iterator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  external_state_policy:
+    dtype: ["string"]
+    range: [["ignore", "warn", "fail"]]
+    structure: ["scalar"]
+    shape: null
+    default: "fail"
+constraints:
+  1.
+    Parameter 1: external_state_policy
+    Parameter 2: "none"
+    Constraint: "external_state_policy in ['ignore', 'warn', 'fail']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.make_saveable_from_iterator in a complex way */
+import tensorflow as tf

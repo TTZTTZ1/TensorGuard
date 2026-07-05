@@ -1,0 +1,131 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.load` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides utilities for building and loading PyTorch C++ and CUDA extensions. It supports both ahead-of-time compilation via `setuptools` and just-in-time (JIT) compilation.
+
+**Key Components:**
+
+1. **Extension Classes:**
+   - `CppExtension`: Creates a `setuptools.Extension` for C++ code.
+   - `CUDAExtension`: For CUDA/C++ extensions, automatically handles CUDA paths and libraries.
+   - `SyclExtension`: For SYCL/C++ extensions (e.g., Intel GPU support).
+
+2. **Build Extension:**
+   - `BuildExtension`: A custom `setuptools.build_ext` subclass that manages compiler flags and mixed C++/CUDA/SYCL compilation. It uses Ninja by default for faster builds.
+
+3. **JIT Loading Functions:**
+   - `load()`: Compiles and loads an extension from source files.
+   - `load_inline()`: Compiles and loads an extension from string sources, automatically generating bindings if needed.
+
+4. **Helper Functions:**
+   - `include_paths()`: Returns necessary include paths.
+   - `verify_ninja_availability()` / `is_ninja_available()`: Check for Ninja build system.
+   - `get_compiler_abi_compatibility_and_version()`: Checks compiler compatibility with PyTorch.
+
+**Common Use Cases:**
+- **Ahead-of-time:** Use `CppExtension`/`CUDAExtension` with `setup.py` and `BuildExtension` for distributing extensions.
+- **Just-in-time:** Use `load()` or `load_inline()` for rapid prototyping and development.
+
+**Important Notes:**
+- Extensions can mix C++, CUDA (`.cu`), and SYCL (`.sycl`) sources.
+- Ninja is recommended for faster builds (default in `BuildExtension`).
+- For CUDA, compute capabilities can be specified via `TORCH_CUDA_ARCH_LIST`.
+- The `py_limited_api=True` flag is not supported when using PyTorch's Python bindings.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  sources:
+    dtype: ["str", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  extra_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_cuda_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_sycl_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_ldflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_include_paths:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  build_directory:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  verbose:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  with_cuda:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  with_sycl:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_python_module:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  is_standalone:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: with_cuda
+    Parameter 2: sources
+    Constraint: "with_cuda is None or (isinstance(with_cuda, bool) and (with_cuda == any('.cu' in str(source) or '.cuh' in str(source) for source in (sources if isinstance(sources, list) else [sources]))))"
+  2:
+    Parameter 1: with_sycl
+    Parameter 2: sources
+    Constraint: "with_sycl is None or (isinstance(with_sycl, bool) and (with_sycl == any('.sycl' in str(source) for source in (sources if isinstance(sources, list) else [sources]))))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.load in a complex way */
+import torch

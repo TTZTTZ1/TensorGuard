@@ -1,0 +1,32 @@
+params:
+  owning_module:
+    dtype: ["torch.nn.Module", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tracer_cls:
+    dtype: ["type", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tracer_extras:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: owning_module
+    Parameter 2: tracer_cls
+    Constraint: "owning_module is None or isinstance(owning_module, torch.nn.Module)"
+  2:
+    Parameter 1: tracer_cls
+    Parameter 2: tracer_extras
+    Constraint: "tracer_cls is None or (isinstance(tracer_cls, type) and issubclass(tracer_cls, torch.fx.Tracer))"
+  3:
+    Parameter 1: tracer_extras
+    Parameter 2: owning_module
+    Constraint: "tracer_extras is None or isinstance(tracer_extras, dict)"

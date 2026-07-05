@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  cond:
+    dtype: ["function"]
+    range: null
+    structure: ["function"]
+    shape: null
+    default: null
+  body:
+    dtype: ["function"]
+    range: null
+    structure: ["function"]
+    shape: null
+    default: null
+  output_shapes:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  parallel_iterations:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "10"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "cond"
+    Parameter 2: "input"
+    Constraint: "callable(cond) and isinstance(cond(input), tf.Tensor)"
+  2:
+    Parameter 1: "body"
+    Parameter 2: "input"
+    Constraint: "callable(body) and all(isinstance(t, tf.Tensor) for t in body(input)) and len(body(input)) == len(input)"

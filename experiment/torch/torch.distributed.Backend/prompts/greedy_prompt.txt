@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.distributed.Backend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It supports synchronous distributed training and is essential for scaling deep learning models.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training and as a fallback for GPU
+- **NCCL**: Optimized for CUDA GPU training (default for CUDA)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires building from source
+
+### Initialization Methods
+1. **Environment Variables** (default): Uses `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared File System**: Uses a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication groups via `init_process_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+- **Collective Operations**: 
+  - Point-to-point: `send()`, `recv()`, `isend()`, `irecv()`
+  - Collective: `all_reduce()`, `broadcast()`, `all_gather()`, `scatter()`, etc.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+
+### Key Functions
+- `init_process_group()`: Initialize distributed processing
+- `new_group()`: Create sub-groups for fine-grained communication
+- `all_reduce()`: Synchronize tensors across all processes
+- `barrier()`: Synchronize all processes
+
+### Best Practices
+- Use NCCL backend for CUDA GPU training
+- Use Gloo for CPU training or as GPU fallback
+- Always call `destroy_process_group()` for cleanup
+- Set `async_op=True` for asynchronous operations to overlap computation/communication
+
+### Debugging Tools
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `breakpoint()`: Debug single rank while others wait
+
+The package enables efficient distributed training by allowing each process to maintain its own optimizer and Python interpreter, reducing communication overhead compared to other parallelism approaches.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  func:
+    dtype: ["function"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  extended_api:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  devices:
+    dtype: ["string", "list"]
+    range: [null]
+    structure: ["scalar", "list"]
+    shape: [1, -1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "devices"
+    Parameter 2: ""
+    Constraint: "devices is None or isinstance(devices, str) or (isinstance(devices, list) and all(isinstance(d, str) for d in devices))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.Backend in a complex way */
+import torch

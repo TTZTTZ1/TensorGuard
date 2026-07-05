@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.include_paths` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides tools for building and loading PyTorch C++ extensions, supporting CPU, CUDA, and SYCL code. It includes:
+
+- **Extension Classes**:  
+  - `CppExtension`: Creates a `setuptools.Extension` for C++ code.  
+  - `CUDAExtension`: For CUDA/C++ mixed compilation, automatically handles CUDA paths and libraries. Supports compute capability specification via `TORCH_CUDA_ARCH_LIST` and relocatable device code (RDC) linking.  
+  - `SyclExtension`: For SYCL/C++ extensions, with architecture control via `TORCH_XPU_ARCH_LIST`.
+
+- **Build System**:  
+  - `BuildExtension`: A custom `setuptools` build extension that manages compiler flags (e.g., C++17) and mixed C++/CUDA/SYCL compilation. Uses Ninja by default for faster builds.
+
+- **Just-in-Time (JIT) Loading**:  
+  - `load()`: Compiles and loads an extension from source files at runtime.  
+  - `load_inline()`: Compiles and loads from string sources, auto-generating bindings if needed.
+
+- **Key Features**:  
+  - Mixed compilation: Detects `.cu`/`.cuh` (CUDA) or `.sycl` (SYCL) files and uses appropriate compilers.  
+  - Environment controls: `TORCH_EXTENSIONS_DIR` for build paths, `TORCH_CUDA_ARCH_LIST`/`TORCH_XPU_ARCH_LIST` for GPU targets.  
+  - Warning: `py_limited_api=True` is incompatible with PyTorch’s Python API (libtorch_python).
+
+- **Utilities**:  
+  - `include_paths()`: Returns necessary include paths.  
+  - `verify_ninja_availability()` / `is_ninja_available()`: Check for Ninja build system.  
+  - `get_compiler_abi_compatibility_and_version()`: Validates compiler compatibility.
+
+**Usage**: Typically used in `setup.py` with `setuptools` (for pre-built extensions) or called directly for JIT compilation. Simplifies building PyTorch extensions with minimal configuration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  device_type:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: 'cpu'
+  torch_include_dirs:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: True
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.include_paths in a complex way */
+import torch

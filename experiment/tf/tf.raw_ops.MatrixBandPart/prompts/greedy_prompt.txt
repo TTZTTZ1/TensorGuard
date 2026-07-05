@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MatrixBandPart` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.MatrixBandPart` function extracts a central band from each innermost matrix of a tensor, zeroing out elements outside the specified band. It operates on tensors of rank `k` with shape `[..., M, N]`, where the last two dimensions represent matrices.
+
+**Key parameters:**
+- `input`: A rank-`k` tensor.
+- `num_lower`: Number of subdiagonals to keep (negative keeps entire lower triangle).
+- `num_upper`: Number of superdiagonals to keep (negative keeps entire upper triangle).
+
+**Functionality:**
+For each innermost matrix, the output retains elements where the row and column indices satisfy:
+- `(m - n) ≤ num_lower` (if `num_lower ≥ 0`)
+- `(n - m) ≤ num_upper` (if `num_upper ≥ 0`)
+
+**Common use cases:**
+- `num_lower=0, num_upper=-1`: Upper triangular matrix
+- `num_lower=-1, num_upper=0`: Lower triangular matrix
+- `num_lower=0, num_upper=0`: Diagonal matrix
+
+This operation is useful for matrix manipulations in linear algebra computations, particularly for working with banded matrices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "int32", "int64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_lower:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_upper:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "num_lower"
+    Parameter 2: "num_upper"
+    Constraint: "num_lower.dtype == num_upper.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MatrixBandPart in a complex way */
+import tensorflow as tf

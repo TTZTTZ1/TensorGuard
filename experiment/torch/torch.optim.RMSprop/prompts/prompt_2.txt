@@ -1,0 +1,131 @@
+
+# You are a Python code generation assistant for the `torch.optim.RMSprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RMSprop** is a gradient-based optimization algorithm that adapts the learning rate for each parameter by using a moving average of squared gradients. It is particularly effective for non-stationary objectives and recurrent neural networks.
+
+### **Key Features**
+- **Adaptive Learning Rate**: Scales the gradient by the square root of an exponentially decaying average of squared gradients.
+- **Optional Momentum**: Can incorporate momentum to accelerate convergence.
+- **Centered Variant**: Optionally normalizes gradients by an estimate of their variance (centered RMSprop).
+- **Weight Decay**: Supports L2 penalty (weight decay) applied before gradient scaling.
+
+### **Core Algorithm Steps**
+1. Compute gradient \( g_t \).
+2. Apply weight decay if \( \lambda \neq 0 \).
+3. Update squared gradient moving average:  
+   \( v_t = \alpha v_{t-1} + (1 - \alpha) g_t^2 \).
+4. If `centered=True`, adjust \( v_t \) using a moving average of gradients.
+5. If `momentum > 0`, update buffer \( b_t \) and apply momentum.
+6. Update parameters:  
+   \( \theta_t = \theta_{t-1} - \gamma \, b_t \) (with momentum) or  
+   \( \theta_t = \theta_{t-1} - \gamma \, g_t / (\sqrt{\tilde{v_t}} + \epsilon) \) (without momentum).
+
+### **Parameters**
+- `params`: Parameters to optimize (iterable or dicts defining groups).
+- `lr` (default: 1e-2): Learning rate.
+- `alpha` (default: 0.99): Smoothing constant for squared gradient average.
+- `eps` (default: 1e-8): Added to denominator for numerical stability.
+- `weight_decay` (default: 0): L2 penalty coefficient.
+- `momentum` (default: 0): Momentum factor.
+- `centered` (default: False): If `True`, uses centered RMSprop.
+- `capturable` (default: False): Enables safe capture in CUDA graphs/torch.compile.
+- `foreach` (default: None): Uses faster foreach implementation on CUDA if possible.
+- `maximize` (default: False): Maximizes the objective instead of minimizing.
+- `differentiable` (default: False): Allows autograd through the optimizer step.
+
+### **Common Methods**
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` to save memory).
+- `state_dict()` / `load_state_dict()`: Saves/loads optimizer state.
+- `add_param_group()`: Adds a new parameter group dynamically.
+
+### **Usage Example**
+```python
+optimizer = torch.optim.RMSprop(model.parameters(), lr=0.01, alpha=0.99, momentum=0.9)
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+### **Notes**
+- Effective learning rate: \( \gamma / (\sqrt{v} + \epsilon) \).
+- The implementation computes \( \sqrt{v} \) before adding `eps` (differs from TensorFlow).
+- Suitable for problems with noisy or sparse gradients (e.g., NLP, reinforcement learning).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "0.01"
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.99"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  momentum:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  centered:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.RMSprop in a complex way */
+import torch

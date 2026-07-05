@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.distributions.dirichlet.Dirichlet` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Uniform, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Wishart, LKJCholesky
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` parameters
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**: 
+  - `sample()` + `log_prob()` for score function estimator
+  - `rsample()` for pathwise derivative estimator (reparameterization trick)
+- **Validation**: Optional argument validation via `validate_args`
+
+### **4. Transforms System**
+- Transform distributions via invertible mappings (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- Used in `TransformedDistribution` to create new distributions
+- Support for Jacobian calculations via `log_abs_det_jacobian()`
+
+### **5. Constraints System**
+- Defines valid parameter domains for distributions
+- Registry system (`biject_to`, `transform_to`) maps constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients using `Categorical` + `log_prob()`
+2. **Variational Inference**: Reparameterization with `Normal.rsample()`
+3. **Probabilistic Modeling**: Building complex distributions via transforms and mixtures
+4. **Bayesian Methods**: Prior/posterior distributions with gradient-based optimization
+
+## **Example Patterns**
+```python
+# REINFORCE (score function estimator)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (pathwise estimator)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+```
+
+The package follows TensorFlow Distributions design and provides a flexible, differentiable framework for probabilistic modeling in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2: concentration
+    Constraint: "torch.all(concentration > 0.0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.dirichlet.Dirichlet in a complex way */
+import torch

@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.optim.Rprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Rprop optimizer** in PyTorch implements the resilient backpropagation algorithm, which adapts step sizes individually for each parameter based on gradient sign changes.  
+
+### **Key Features:**
+- **Adaptive step sizes**:  
+  - If the gradient sign remains the same (`g_prev * g_current > 0`), the step size is increased (multiplied by `etaplus`, up to `step_sizes[1]`).  
+  - If the gradient sign changes (`g_prev * g_current < 0`), the step size is decreased (multiplied by `etaminus`, down to `step_sizes[0]`) and the current gradient is zeroed.  
+  - Otherwise, the step size remains unchanged.  
+- **Parameter update**:  
+  Parameters are updated using:  
+  `θ_t = θ_{t-1} - η_t * sign(g_t)`  
+  where `sign(g_t)` is the sign of the gradient.  
+
+### **Parameters:**
+- `params` – Parameters to optimize.  
+- `lr` (default: 0.01) – Initial learning rate (step size).  
+- `etas` (default: (0.5, 1.2)) – Multiplicative factors for decreasing (`etaminus`) and increasing (`etaplus`) step sizes.  
+- `step_sizes` (default: (1e-6, 50)) – Minimum and maximum allowed step sizes.  
+- `capturable` (default: False) – Enables safe capture in CUDA graphs or `torch.compile`.  
+- `foreach` (default: None) – Uses a faster foreach implementation on CUDA if possible (higher memory usage).  
+- `maximize` (default: False) – Maximizes the objective instead of minimizing.  
+- `differentiable` (default: False) – Allows autograd through the optimizer step (may impair performance).  
+
+### **Common Methods:**
+- `step(closure)` – Performs a single optimization step.  
+- `zero_grad(set_to_none=True)` – Resets gradients (set to `None` to save memory).  
+- `state_dict()` / `load_state_dict()` – Saves and loads optimizer state.  
+- `add_param_group()` – Adds a new parameter group.  
+
+### **Use Case:**
+Rprop is suitable for full-batch optimization where stochastic gradients are not used, as it relies on gradient sign consistency across steps. It is not commonly used with mini-batch training due to its sensitivity to gradient noise.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.01"
+  etas
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.5, 1.2)"
+  step_sizes
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(1e-06, 50)"
+  capturable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Rprop in a complex way */
+import torch

@@ -1,0 +1,107 @@
+
+# You are a Python code generation assistant for the `torch.hamming_window` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.hamming_window` function generates a 1‑D Hamming window tensor of a specified length. The window values are computed using the formula:
+
+\[
+w[n] = \alpha - \beta \cos\left( \frac{2\pi n}{N-1} \right)
+\]
+
+where \( N \) is the full window size (adjusted when `periodic=True`).
+
+**Key parameters:**
+- `window_length` (int): Size of the returned window.
+- `periodic` (bool, optional): If `True`, the window is prepared for periodic use (e.g., in `torch.stft`), effectively using \( N = \text{window\_length} + 1 \) and dropping the last duplicate value.
+- `alpha` (float, optional): Coefficient \( \alpha \) (default is 0.54 for the standard Hamming window).
+- `beta` (float, optional): Coefficient \( \beta \) (default is 0.46 for the standard Hamming window).
+
+**Additional keyword arguments** control the tensor properties (`dtype`, `layout`, `device`, `pin_memory`, `requires_grad`).
+
+**Returns:** A 1‑D tensor of shape `(window_length,)` containing the window values.
+
+**Notes:**
+- If `window_length = 1`, the window is `[1]`.
+- `torch.hamming_window(L, periodic=True)` is equivalent to `torch.hamming_window(L+1, periodic=False)[:-1]`.
+- This is a generalized version of `torch.hann_window`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  window_length:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  periodic:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  beta:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  layout:
+    dtype: ["torch.layout"]
+    range: [["torch.strided"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  pin_memory:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  requires_grad:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: periodic
+    Parameter 2: alpha
+    Constraint: "periodic is not None or alpha is None"
+  2:
+    Parameter 1: alpha
+    Parameter 2: beta
+    Constraint: "alpha is not None or beta is None"
+  3:
+    Parameter 1: layout
+    Parameter 2: None
+    Constraint: "layout is None or layout == torch.strided"
+  4:
+    Parameter 1: pin_memory
+    Parameter 2: device
+    Constraint: "not (pin_memory and device is not None and device.type != 'cpu')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hamming_window in a complex way */
+import torch

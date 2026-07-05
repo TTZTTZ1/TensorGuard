@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.CppExtension` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides utilities for building and loading PyTorch C++ extensions, supporting C++, CUDA, and SYCL code integration with Python.
+
+**Key Functions and Classes:**
+
+1. **`CppExtension` / `CUDAExtension` / `SyclExtension`**  
+   Convenience wrappers to create `setuptools.Extension` objects for building C++, CUDA/C++, and SYCL/C++ extensions, respectively. They handle necessary include paths, libraries, and compiler flags.
+
+2. **`BuildExtension`**  
+   A custom `setuptools` build extension that manages compiler flags (e.g., C++17 standard) and supports mixed C++/CUDA/SYCL compilation. It uses Ninja by default for faster builds.
+
+3. **`load()`**  
+   Compiles and loads a C++ extension just-in-time (JIT) from source files. It automatically detects CUDA/SYCL sources and uses the appropriate compiler (nvcc for CUDA, SYCL compiler for SYCL). The build directory defaults to a temporary location but can be customized.
+
+4. **`load_inline()`**  
+   Similar to `load()`, but accepts source code as strings instead of files. It automatically generates necessary includes and pybind11 bindings if function names are provided.
+
+**Common Use Cases:**
+- **Building with `setup.py`**: Use `CppExtension`/`CUDAExtension`/`SyclExtension` with `BuildExtension` in a `setup()` call to create installable extensions.
+- **JIT Compilation**: Use `load()` or `load_inline()` for rapid prototyping and testing without a full installation.
+
+**Important Notes:**
+- **CUDA/SYCL Support**: Mixed compilation is automatic when `.cu`/`.cuh` (CUDA) or `.sycl` (SYCL) files are included.
+- **Compute Architectures**: For CUDA, use `TORCH_CUDA_ARCH_LIST` to specify target GPU architectures. For SYCL, use `TORCH_XPU_ARCH_LIST`.
+- **Ninja**: Recommended for faster builds; availability can be checked with `is_ninja_available()`.
+- **Python Limited API**: Avoid `py_limited_api=True` if using PyTorch's Python bindings.
+
+**Example Workflow:**
+1. **JIT Loading** (quick testing):
+   ```python
+   module = load(name='my_ext', sources=['ext.cpp', 'kernel.cu'])
+   ```
+2. **Setup.py Build** (production):
+   ```python
+   setup(..., ext_modules=[CUDAExtension(...)], cmdclass={'build_ext': BuildExtension})
+   ```
+
+This module enables seamless integration of high-performance C++/CUDA/SYCL code into PyTorch, with both ahead-of-time and just-in-time compilation options.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  sources:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  *args:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  **kwargs:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: name
+    Parameter 2: null
+    Constraint: "name must be a string specifying the extension name"
+  2:
+    Parameter 1: sources
+    Parameter 2: null
+    Constraint: "sources must be a list of strings containing paths to C++ source files"
+  3:
+    Parameter 1: py_limited_api
+    Parameter 2: null
+    Constraint: "py_limited_api=True requires avoiding libtorch_python APIs and using only libtorch APIs"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.CppExtension in a complex way */
+import torch

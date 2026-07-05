@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.data.IteratorSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.IteratorSpec` is a **type specification class** for `tf.data.Iterator` objects, used primarily to define input signatures for TensorFlow functions (e.g., in `tf.function`). It ensures that iterators passed to a function have the expected structure and data types.
+
+### **Key Purpose**
+- Define the expected **element structure** of a `tf.data.Iterator` when used as an argument in a TensorFlow graph (e.g., within a `@tf.function`-decorated function).
+
+### **Core Attributes**
+- **`element_spec`**: A (possibly nested) structure of `tf.TypeSpec` objects describing the type/shape/dtype of elements produced by the iterator.
+
+### **Main Usage Example**
+```python
+@tf.function(input_signature=[tf.data.IteratorSpec(
+    tf.TensorSpec(shape=(), dtype=tf.int32))])
+def process(iterator):
+    x = iterator.get_next()
+    return x * x
+```
+This ensures the function accepts only iterators yielding scalar int32 tensors.
+
+### **Inheritance & Methods**
+- Inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+- Provides standard `TypeSpec` methods for compatibility checking (`is_compatible_with`), subtype testing (`is_subtype_of`), and serialization (`experimental_as_proto`).
+- Includes a `from_value` static method to create an `IteratorSpec` from an existing iterator.
+
+### **Summary**
+`IteratorSpec` enables **type-safe integration** of `tf.data.Iterator` objects into TensorFlow’s graph execution, allowing structured validation and optimization of data pipeline inputs in decorated functions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_spec:
+    dtype: ["int32", "int64", "float32", "float64", "string", "bool", "other tensor dtypes"]
+    range: []
+    structure: ["TypeSpec", "nested structure of TypeSpec objects"]
+    shape: ["any valid tensor shape"]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.IteratorSpec in a complex way */
+import tensorflow as tf

@@ -1,0 +1,44 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "2*(input.size(dim)-1)"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  norm:
+    dtype: ["string"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'backward'"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+  2:
+    Parameter 1: n
+    Parameter 2: null
+    Constraint: "n is None or n > 0"
+  3:
+    Parameter 1: norm
+    Parameter 2: null
+    Constraint: "norm in ['forward', 'backward', 'ortho']"

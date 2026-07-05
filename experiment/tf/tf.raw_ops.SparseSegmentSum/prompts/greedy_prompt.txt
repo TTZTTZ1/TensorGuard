@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseSegmentSum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseSegmentSum` computes the sum along segments of a tensor, using sparse indexing to select specific rows from the first dimension of `data`. It requires three inputs:  
+- **`data`**: The input tensor.  
+- **`indices`**: A 1‑D tensor specifying which rows of `data` to use.  
+- **`segment_ids`**: A 1‑D tensor assigning each selected row to a segment (values should be sorted and can repeat).  
+
+The operation sums rows of `data` according to their segment assignment, but only includes rows listed in `indices`. This is useful when you need to perform segmented reductions on a subset of the data.  
+
+**Example**:  
+```python
+c = tf.constant([[1,2,3,4], [-1,-2,-3,-4], [5,6,7,8]])
+# Select rows 0 and 1, both in segment 0:
+tf.sparse_segment_sum(c, indices=[0, 1], segment_ids=[0, 0])
+# Result: [[0, 0, 0, 0]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  sparse_gradient:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "indices.shape == segment_ids.shape"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "data"
+    Constraint: "all(0 <= indices[i] < data.shape[0] for i in range(indices.shape[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseSegmentSum in a complex way */
+import tensorflow as tf

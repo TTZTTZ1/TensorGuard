@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.sparse_categorical_crossentropy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.sparse_categorical_crossentropy` is a loss function used for multi-class classification tasks where the ground truth labels are integers (sparse). It calculates the cross-entropy between the true class labels and predicted probability distributions.
+
+**Key Parameters:**
+- `y_true`: Integer ground truth labels.
+- `y_pred`: Predicted values (probabilities if `from_logits=False`, logits if `True`).
+- `from_logits`: Indicates whether `y_pred` are logits (default `False`).
+- `ignore_class`: Optional class ID to ignore in loss computation (e.g., for void/background classes in segmentation).
+- `axis`: Axis along which to compute entropy (default `-1`).
+
+**Usage Example:**
+```python
+loss = keras.losses.sparse_categorical_crossentropy([1, 2], [[0.05,0.95,0], [0.1,0.8,0.1]])
+# Returns loss for each sample: [0.0513, 2.303]
+```
+
+**Note:** This function is aliased under both `keras.metrics` and `keras.losses`, but it is primarily used as a loss function rather than a metric.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y_true:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size]"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_classes]"]
+    default: null
+  from_logits:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  ignore_class:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: "tf.shape(y_true)[0] == tf.shape(y_pred)[0]"
+  2:
+    Parameter 1: axis
+    Parameter 2: y_pred
+    Constraint: "-tf.rank(y_pred) <= axis < tf.rank(y_pred)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.sparse_categorical_crossentropy in a complex way */
+import tensorflow as tf

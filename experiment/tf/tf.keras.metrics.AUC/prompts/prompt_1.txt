@@ -1,0 +1,121 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.AUC` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.AUC` class approximates the Area Under the Curve (AUC) for ROC or Precision-Recall curves, evaluating binary classifier performance across all operational thresholds. It discretizes predictions into buckets to compute AUC via Riemann summation.
+
+**Key Parameters:**
+- `num_thresholds`: Number of thresholds for discretization (default 200).
+- `curve`: Type of curve—'ROC' (default) or 'PR' (Precision-Recall).
+- `summation_method`: Riemann sum method ('interpolation', 'minoring', or 'majoring').
+- `thresholds`: Optional custom threshold list (overrides `num_thresholds`).
+- `multi_label`: If True, computes AUC per label and averages; if False, flattens multilabel data.
+- `from_logits`: Indicates whether predictions are logits (True) or probabilities (False).
+
+**Usage Example:**
+```python
+metric = tf.keras.metrics.AUC(num_thresholds=3)
+metric.update_state([0, 0, 1, 1], [0, 0.5, 0.3, 0.9])
+print(metric.result())  # Output: 0.75
+```
+
+**Integration with `compile()`:**
+```python
+model.compile(optimizer='sgd',
+              loss=tf.keras.losses.BinaryCrossentropy(),
+              metrics=[tf.keras.metrics.AUC()])
+```
+
+**Key Methods:**
+- `update_state()`: Accumulates prediction statistics.
+- `result()`: Computes and returns the current AUC value.
+- `reset_state()`: Clears accumulated metric state.
+
+The metric supports sample weighting and provides configurable approximation methods for AUC calculation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_thresholds:
+    dtype: ["int"]
+    range: [">1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "200"
+  curve:
+    dtype: ["string"]
+    range: ["ROC", "PR"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'ROC'"
+  summation_method:
+    dtype: ["string"]
+    range: ["interpolation", "minoring", "majoring"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'interpolation'"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dtype:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  thresholds:
+    dtype: ["float"]
+    range: "[0, 1]"
+    structure: ["list", "tensor"]
+    shape: ["any"]
+    default: "null"
+  multi_label:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  num_labels:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  label_weights:
+    dtype: ["float"]
+    range: ">=0"
+    structure: ["list", "array", "tensor"]
+    shape: ["any"]
+    default: "null"
+  from_logits:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1.
+    Parameter 1: num_thresholds
+    Parameter 2: thresholds
+    Constraint: "(thresholds is None and num_thresholds > 1) or (thresholds is not None and all(0 <= t <= 1 for t in thresholds))"
+  2.
+    Parameter 1: curve
+    Parameter 2: summation_method
+    Constraint: "curve in ['ROC', 'PR'] and summation_method in ['interpolation', 'minoring', 'majoring']"
+  3.
+    Parameter 1: multi_label
+    Parameter 2: label_weights
+    Constraint: "label_weights is None or all(w >= 0 for w in label_weights)"
+  4.
+    Parameter 1: from_logits
+    Parameter 2: multi_label
+    Constraint: "from_logits in [True, False] and multi_label in [True, False]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.AUC in a complex way */
+import tensorflow as tf

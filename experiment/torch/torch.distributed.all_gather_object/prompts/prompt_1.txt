@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_gather_object` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables synchronous distributed training through communication primitives and process groups.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training, supports Ethernet/InfiniBand
+- **NCCL**: Recommended for CUDA GPU training, optimized for multi-GPU/multi-node
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional backend requiring source build
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication between processes
+- **DeviceMesh**: Higher-level abstraction for managing process groups across device topologies
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`/`recv` and asynchronous variants
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `new_group()`: Create sub-groups for fine-grained communication
+- `all_reduce()`: Collective reduction operation
+- `DistributedDataParallel`: Wrapper for synchronous distributed training
+
+### Synchronization Modes
+- **Synchronous** (default): Block until operation completes
+- **Asynchronous**: Return `Work` object for non-blocking execution
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout detection
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `breakpoint()`: Interactive debugging for single rank
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU
+- Ensure proper GPU device assignment with `torch.cuda.set_device()`
+- Call `destroy_process_group()` for cleanup
+- Use `async_op=True` for overlapping communication/computation
+
+The package supports various network interconnects and provides performance optimizations like Copy Engine Collectives for offloading communication to GPU DMA engines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  object_list:
+    dtype: ["object"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  obj:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar", "list", "tuple", "dict", "other"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: object_list
+    Parameter 2: group
+    Constraint: "len(object_list) == (group.size() if group is not None else torch.distributed.get_world_size())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_gather_object in a complex way */
+import torch

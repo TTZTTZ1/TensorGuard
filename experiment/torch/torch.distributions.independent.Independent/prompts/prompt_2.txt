@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.distributions.independent.Independent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## Core Purpose
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## Main Components
+
+### 1. **Distribution Base Class**
+- Abstract base class for all probability distributions
+- Key methods: `sample()`, `log_prob()`, `rsample()` (reparameterized sampling)
+- Properties: `mean`, `variance`, `entropy`, `support`
+
+### 2. **Available Distributions**
+Includes both univariate and multivariate distributions:
+- **Basic**: Bernoulli, Beta, Binomial, Categorical, Normal, Uniform, Poisson
+- **Continuous**: Exponential, Gamma, Dirichlet, MultivariateNormal, StudentT
+- **Specialized**: LKJCholesky, Wishart, VonMises, MixtureSameFamily
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull
+
+### 3. **Key Features**
+
+**Gradient Estimation:**
+- **Score Function**: Uses `sample()` + `log_prob()` for REINFORCE
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick
+
+**Parameterization:**
+- Multiple parameterizations (e.g., `probs` vs `logits` for Bernoulli)
+- Batch and event shape support for vectorized operations
+
+**Mathematical Operations:**
+- KL divergence computation via `kl_divergence()`
+- Distribution transformations via `TransformedDistribution`
+- Independent distributions via `Independent` wrapper
+
+### 4. **Transforms System**
+- Bijective transformations for constrained parameter spaces
+- Common transforms: `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`
+- Used with `biject_to()` and `transform_to()` for constrained optimization
+
+### 5. **Constraints Framework**
+- Defines valid parameter/value ranges for distributions
+- Automatic constraint validation
+- Registry system linking constraints to transforms
+
+## Typical Usage Patterns
+
+**REINFORCE (Policy Gradient):**
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Reparameterization (VAEs):**
+```python
+m = Normal(loc, scale)
+z = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+**Distribution Construction:**
+```python
+# Multiple parameterizations
+dist1 = Bernoulli(probs=torch.tensor([0.3]))
+dist2 = Bernoulli(logits=torch.tensor([-0.8473]))
+
+# Transformed distribution
+base = Normal(0, 1)
+transforms = [ExpTransform()]
+log_normal = TransformedDistribution(base, transforms)
+```
+
+The package is designed to be modular, extensible, and compatible with PyTorch's autograd system, making it suitable for both traditional probabilistic modeling and modern deep learning applications like reinforcement learning and variational inference.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_distribution:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  reinterpreted_batch_ndims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: reinterpreted_batch_ndims
+    Parameter 2: 
+    Constraint: reinterpreted_batch_ndims >= 0
+  2:
+    Parameter 1: base_distribution
+    Parameter 2: reinterpreted_batch_ndims
+    Constraint: reinterpreted_batch_ndims <= len(base_distribution.batch_shape)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.independent.Independent in a complex way */
+import torch

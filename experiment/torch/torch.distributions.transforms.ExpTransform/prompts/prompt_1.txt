@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ExpTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. It enables the construction of stochastic computation graphs and supports gradient estimation through two primary methods: the score function estimator (REINFORCE) and the pathwise derivative estimator (reparameterization trick).
+
+### Key Features:
+- **Parameterizable Distributions**: Includes a wide range of distributions (e.g., Normal, Bernoulli, Categorical, Gamma, etc.) that can be parameterized by tensors.
+- **Gradient Estimation**:
+  - **Score Function**: Uses `sample()` and `log_prob()` for REINFORCE-style gradients, common in reinforcement learning.
+  - **Pathwise Derivative**: Uses `rsample()` for reparameterizable distributions, common in variational autoencoders.
+- **Abstract Base Classes**: 
+  - `Distribution`: Base class with methods like `sample()`, `log_prob()`, `entropy()`, etc.
+  - `ExponentialFamily`: For distributions belonging to an exponential family.
+- **Transformed Distributions**: Allows creating new distributions by applying a sequence of transforms to a base distribution.
+- **KL Divergence**: Computes KL divergence between distributions, with registered implementations for many pairs.
+- **Constraints and Transforms**: Handles parameter constraints (e.g., simplex, positive) and provides transformations to unconstrained spaces for optimization.
+
+### Common Use Cases:
+1. **Reinforcement Learning**: Policy gradients using REINFORCE.
+2. **Variational Inference**: Reparameterization trick for low-variance gradients.
+3. **Probabilistic Modeling**: Building complex models via composition and transformations.
+
+### Example Usage:
+```python
+# REINFORCE example
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# Reparameterization example
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+This module is essential for probabilistic deep learning, enabling gradient-based optimization of stochastic models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ExpTransform in a complex way */
+import torch

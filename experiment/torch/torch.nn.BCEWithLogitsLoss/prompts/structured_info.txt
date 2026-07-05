@@ -1,0 +1,44 @@
+params:
+  weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: []
+    default: "None"
+  size_average:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["string"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "mean"
+  pos_weight:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "size_average"
+    Parameter 2: "reduce"
+    Constraint: "size_average is not None or reduce is not None"
+  2:
+    Parameter 1: "weight"
+    Parameter 2: "input"
+    Constraint: "weight is None or weight.shape == input.shape[:1] or weight.shape == input.shape"
+  3:
+    Parameter 1: "pos_weight"
+    Parameter 2: "target"
+    Constraint: "pos_weight is None or pos_weight.shape == target.shape[1:] or pos_weight.shape == target.shape"

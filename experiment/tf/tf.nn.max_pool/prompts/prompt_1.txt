@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `tf.nn.max_pool` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.max_pool` performs max pooling on an input tensor, extracting the maximum value within sliding windows defined by `ksize`. It reduces spatial dimensions, aiding computation efficiency and overfitting prevention.  
+
+**Key parameters:**  
+- `input`: Rank N+2 tensor with batch, spatial, and channel dimensions.  
+- `ksize`: Window size per dimension (int or list).  
+- `strides`: Step size for sliding the window (int or list).  
+- `padding`: `"SAME"` (adds padding) or `"VALID"` (discards incomplete windows); can also be explicit padding.  
+- `data_format`: Specifies channel position (e.g., `"NHWC"` or `"NCHW"`).  
+
+**Behavior:**  
+- Overlapping windows occur if `strides` < `ksize`.  
+- `"SAME"` padding may preserve spatial size; `"VALID"` reduces it.  
+- Output tensor shape depends on `ksize`, `strides`, and `padding`.  
+
+**Example:**  
+```python
+pooled = tf.nn.max_pool(input, ksize=2, strides=2, padding="SAME")
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  ksize:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar", "list"]
+    shape: No mention
+    default: null
+  strides:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar", "list"]
+    shape: No mention
+    default: null
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar", "list"]
+    shape: No mention
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", "NCHW_VECT_C"]
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: padding
+    Parameter 2: input
+    Constraint: not (isinstance(padding, list) and len(input.shape) == 5)
+  2:
+    Parameter 1: padding
+    Parameter 2: data_format
+    Constraint: not (isinstance(padding, list) and data_format == 'NCHW_VECT_C')
+  3:
+    Parameter 1: ksize
+    Parameter 2: input
+    Constraint: if isinstance(ksize, list): len(ksize) in [1, len(input.shape) - 2, len(input.shape)]
+  4:
+    Parameter 1: strides
+    Parameter 2: input
+    Constraint: if isinstance(strides, list): len(strides) in [1, len(input.shape) - 2, len(input.shape)]
+  5:
+    Parameter 1: data_format
+    Parameter 2: input
+    Constraint: data_format is None or (data_format in {'NWC', 'NCW', 'NHWC', 'NCHW', 'NDHWC', 'NCDHW', 'NCHW_VECT_C'} and ((len(input.shape) - 2 == 1 and data_format in {'NWC', 'NCW'}) or (len(input.shape) - 2 == 2 and data_format in {'NHWC', 'NCHW', 'NCHW_VECT_C'}) or (len(input.shape) - 2 == 3 and data_format in {'NDHWC', 'NCDHW'})))
+  6:
+    Parameter 1: padding
+    Parameter 2: ksize
+    Constraint: not (isinstance(padding, list) and any(padding[i][0] + padding[i][1] > (ksize if isinstance(ksize, int) else (ksize[i] if i < len(ksize) else ksize[0])) for i in range(1, len(padding) - 1)))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.max_pool in a complex way */
+import tensorflow as tf

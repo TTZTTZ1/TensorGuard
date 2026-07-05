@@ -1,0 +1,36 @@
+params:
+  obj:
+    dtype: ["Any"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  object_gather_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list", "None"]
+    shape: ["group_size"]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [[0, "world_size-1"]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group:
+    dtype: ["ProcessGroup"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  group_dst:
+    dtype: ["int"]
+    range: [[0, "group_size-1"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "(dst is None and group_dst is None) or (dst is not None and group_dst is None) or (dst is None and group_dst is not None)"

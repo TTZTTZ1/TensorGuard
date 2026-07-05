@@ -1,0 +1,64 @@
+params:
+  blank:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  reduction:
+    dtype: ["string"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  zero_infinity:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  log_probs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(T, N, C)", "(T, C)"]
+    default: "null"
+  targets:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(N, S)", "(sum(target_lengths))"]
+    default: "null"
+  input_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple", "tensor"]
+    shape: ["(N)", "()"]
+    default: "null"
+  target_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple", "tensor"]
+    shape: ["(N)", "()"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input_lengths"
+    Parameter 2: "log_probs"
+    Constraint: "torch.all(input_lengths <= log_probs.size(0))"
+  2:
+    Parameter 1: "target_lengths"
+    Parameter 2: "input_lengths"
+    Constraint: "torch.all(target_lengths <= input_lengths)"
+  3:
+    Parameter 1: "targets"
+    Parameter 2: "blank"
+    Constraint: "torch.all(targets != blank)"
+  4:
+    Parameter 1: "target_lengths"
+    Parameter 2: "targets"
+    Constraint: "if targets.dim() == 2: torch.all(target_lengths <= targets.size(1))"
+  5:
+    Parameter 1: "target_lengths"
+    Parameter 2: "targets"
+    Constraint: "if targets.dim() == 1: torch.sum(target_lengths) == targets.size(0)"

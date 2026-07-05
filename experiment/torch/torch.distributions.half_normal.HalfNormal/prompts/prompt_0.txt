@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.half_normal.HalfNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## Core Purpose
+Enables construction of stochastic computation graphs with gradient estimators for optimization, supporting both score function (REINFORCE) and pathwise derivative (reparameterization) methods.
+
+## Key Components
+
+### 1. **Distribution Base Class**
+- Abstract base class for all probability distributions
+- Core methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### 2. **Available Distributions** (Partial List)
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Continuous**: ContinuousBernoulli, Gumbel, LogNormal, Pareto, StudentT, VonMises, Weibull
+- **Transformed**: HalfCauchy, HalfNormal, InverseGamma, Kumaraswamy
+- **Specialized**: LKJCholesky, MixtureSameFamily, RelaxedBernoulli, Wishart
+
+### 3. **Gradient Estimation Methods**
+
+#### **Score Function (REINFORCE)**
+```python
+# For non-reparameterizable distributions
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+#### **Pathwise Derivative (Reparameterization)**
+```python
+# For reparameterizable distributions (has_rsample == True)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### 4. **Key Features**
+
+#### **Parameterization**
+- Multiple parameterizations (e.g., `probs` vs `logits` for Bernoulli)
+- Batch and event shape support
+- Validation via `arg_constraints`
+
+#### **Transforms System**
+- Bijective transformations between constrained/unconstrained spaces
+- Used in `TransformedDistribution` for complex distributions
+- Registry system (`biject_to`, `transform_to`) for constraint handling
+
+#### **KL Divergence**
+- Automatic computation between registered distribution pairs
+- Extensible via `register_kl()` decorator
+
+#### **Constraints Framework**
+- Defines valid parameter/value spaces
+- Used for automatic transformation to unconstrained space
+
+### 5. **Common Use Cases**
+- **Reinforcement Learning**: Policy gradients with categorical actions
+- **Variational Inference**: Reparameterization trick for VAEs
+- **Probabilistic Modeling**: Building complex hierarchical models
+- **Bayesian Methods**: Prior/posterior distributions
+
+### 6. **Practical Notes**
+- Use `rsample()` when gradients through samples are needed
+- `log_prob()` is essential for likelihood-based methods
+- Transformed distributions combine base distributions with transform sequences
+- The package follows TensorFlow Distributions design patterns
+
+The module provides a flexible, differentiable foundation for probabilistic programming in PyTorch, with extensive support for both discrete and continuous distributions across various domains.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.half_normal.HalfNormal in a complex way */
+import torch

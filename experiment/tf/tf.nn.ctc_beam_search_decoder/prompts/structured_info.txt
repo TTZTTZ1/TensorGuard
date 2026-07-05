@@ -1,0 +1,42 @@
+params:
+  inputs:
+    dtype: ["float"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["[max_time, batch_size, num_classes]"]
+    default: null
+  sequence_length:
+    dtype: ["int32"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["[batch_size]"]
+    default: null
+  beam_width:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "100"
+  top_paths:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: "beam_width"
+    Parameter 2: ""
+    Constraint: "beam_width >= 0"
+  2:
+    Parameter 1: "top_paths"
+    Parameter 2: ""
+    Constraint: "top_paths >= 0"
+  3:
+    Parameter 1: "top_paths"
+    Parameter 2: "beam_width"
+    Constraint: "top_paths <= beam_width"
+  4:
+    Parameter 1: "inputs"
+    Parameter 2: "sequence_length"
+    Constraint: "inputs.shape[1] == sequence_length.shape[0]"

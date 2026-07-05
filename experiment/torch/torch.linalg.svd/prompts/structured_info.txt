@@ -1,0 +1,30 @@
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(..., m, n)"]
+    default: null
+  full_matrices:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  driver:
+    dtype: ["str", "None"]
+    range: [["None", "gesvd", "gesvdj", "gesvda"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  out:
+    dtype: ["tuple", "None"]
+    range: null
+    structure: ["tuple"]
+    shape: ["tuple"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: driver
+    Constraint: "driver is None or A.device.type == 'cuda'"

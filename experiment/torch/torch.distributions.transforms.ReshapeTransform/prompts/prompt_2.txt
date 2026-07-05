@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ReshapeTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+## Key Components
+- **Distributions**: Base classes like `Distribution` and `ExponentialFamily`, with concrete implementations (Bernoulli, Normal, Gamma, etc.)
+- **Transforms**: Bijective transformations for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain restrictions for distribution parameters (Interval, GreaterThan, Simplex, etc.)
+- **KL Divergence**: Pre-registered KL calculations between distribution pairs
+
+## Core Functionality
+1. **Sampling**: `sample()` for regular sampling, `rsample()` for reparameterized sampling (differentiable)
+2. **Probability Calculations**: `log_prob()`, `cdf()`, `icdf()`
+3. **Statistics**: `mean`, `variance`, `entropy()`, `mode`
+4. **Batch/Event Shapes**: Support for batched parameters and multivariate distributions
+
+## Gradient Estimation Methods
+### Score Function (REINFORCE)
+Uses `log_prob()` for policy gradient methods:
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+```
+
+### Pathwise Derivative (Reparameterization)
+Uses `rsample()` for differentiable sampling:
+```python
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+```
+
+## Common Use Cases
+- Reinforcement learning (policy gradients)
+- Variational inference (reparameterization trick)
+- Probabilistic modeling
+- Bayesian methods
+
+The package follows a design similar to TensorFlow Distributions and provides tools for both discrete and continuous distributions with support for automatic differentiation through stochastic operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  out_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "in_shape"
+    Parameter 2: "out_shape"
+    Constraint: "torch.Size(in_shape).numel() == torch.Size(out_shape).numel()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ReshapeTransform in a complex way */
+import torch

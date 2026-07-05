@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.AdditiveAttention` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.AdditiveAttention` is an attention mechanism that computes a weighted sum of values based on a non-linear combination of queries and keys. It follows Bahdanau-style attention.
+
+**Key Features:**
+- **Inputs:** A list containing:
+  1. `query` (shape: `(batch_size, Tq, dim)`).
+  2. `value` (shape: `(batch_size, Tv, dim)`).
+  3. Optional `key` (if not provided, `value` is used as the key).
+- **Scoring:** Attention scores are computed as `sum(tanh(query + key))` across the last dimension, producing shape `(batch_size, Tq, Tv)`.
+- **Output:** Returns a context vector (shape: `(batch_size, Tq, dim)`) by taking a softmax-weighted combination of the values. Optionally, it can also return the attention scores.
+
+**Parameters:**
+- `use_scale`: If `True`, learns a scaling factor for scores.
+- `dropout`: Dropout rate applied to attention scores.
+
+**Additional Options:**
+- Supports masking for both queries and values.
+- Can return attention scores via `return_attention_scores=True`.
+- Includes a `use_causal_mask` option for preventing attention to future positions (useful in decoder layers).
+
+This layer is commonly used in sequence-to-sequence tasks, such as neural machine translation, to allow dynamic alignment between sequences.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  use_scale:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  dropout:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0"
+  inputs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  mask:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  return_attention_scores:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  training:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  use_causal_mask:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter1: "query"
+    Parameter2: "key"
+    Constraint: "query.shape[-1] == key.shape[-1]"
+  2:
+    Parameter1: "key"
+    Parameter2: "value"
+    Constraint: "key is None or key.shape == value.shape"
+  3:
+    Parameter1: "query_mask"
+    Parameter2: "query"
+    Constraint: "query_mask.shape[1] == query.shape[1]"
+  4:
+    Parameter1: "value_mask"
+    Parameter2: "value"
+    Constraint: "value_mask.shape[1] == value.shape[1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.AdditiveAttention in a complex way */
+import tensorflow as tf

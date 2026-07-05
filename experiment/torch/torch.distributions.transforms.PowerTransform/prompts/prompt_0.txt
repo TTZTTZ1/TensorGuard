@@ -1,0 +1,120 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.PowerTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise summary of its key aspects:
+
+---
+
+### **Core Purpose**
+- **Parameterizable Distributions**: Offers a wide range of probability distributions (e.g., Normal, Bernoulli, Categorical, Gamma, etc.) with methods for sampling, log-probability calculation, and statistical properties (mean, variance, entropy).
+- **Gradient Estimation**: Supports two primary methods for backpropagation through random variables:
+  1. **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients (common in reinforcement learning).
+  2. **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (common in variational autoencoders).
+
+---
+
+### **Key Components**
+1. **Distribution Base Class**:  
+   - Abstract base class for all distributions.  
+   - Key methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`.  
+   - Properties: `mean`, `variance`, `support`, `batch_shape`, `event_shape`.
+
+2. **ExponentialFamily**:  
+   - Base class for distributions in exponential family form (e.g., Normal, Beta, Gamma).  
+   - Enables efficient entropy and KL divergence calculations.
+
+3. **TransformedDistribution**:  
+   - Applies a sequence of transforms to a base distribution (e.g., LogNormal as `exp(Normal)`).  
+   - Used to create complex distributions via invertible transformations.
+
+4. **Independent**:  
+   - Reinterprets batch dimensions as event dimensions (useful for changing distribution shapes).
+
+5. **MixtureSameFamily**:  
+   - Models mixture distributions with components from the same family.
+
+6. **KL Divergence**:  
+   - Computes Kullback-Leibler divergence between distributions via `kl_divergence()`.  
+   - Pre-registered for many distribution pairs (e.g., Normal–Normal, Beta–Gamma).
+
+7. **Transforms**:  
+   - Bijective or non-bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`, `AffineTransform`).  
+   - Enable mapping between constrained and unconstrained spaces for optimization.
+
+8. **Constraints**:  
+   - Define valid parameter domains (e.g., `positive`, `simplex`, `interval`).  
+   - Used for argument validation and transformation via `biject_to()`/`transform_to()` registries.
+
+---
+
+### **Common Use Cases**
+- **Stochastic Gradient Estimation**:  
+  ```python
+  # REINFORCE example
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  loss.backward()
+  ```
+- **Reparameterized Sampling**:  
+  ```python
+  # Pathwise derivative example
+  m = Normal(loc, scale)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  loss.backward()
+  ```
+- **Distribution Construction**:  
+  ```python
+  # Create and sample from distributions
+  normal = Normal(loc=0.0, scale=1.0)
+  sample = normal.sample([10])  # 10 samples
+  log_prob = normal.log_prob(sample)
+  ```
+- **Constrained Parameterization**:  
+  ```python
+  # Transform constrained parameters for optimization
+  unconstrained = torch.tensor(...)
+  scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+  ```
+
+---
+
+### **Key Features**
+- **Broad Distribution Support**: Includes continuous, discrete, multivariate, and specialized distributions (e.g., Dirichlet, Wishart, Von Mises).
+- **Batch and Event Shapes**: Supports batched parameters and multi-dimensional events.
+- **Numerical Stability**: Provides log-space methods (`log_prob`, `log_cdf`) for precision.
+- **Extensibility**: Users can register custom constraints, transforms, and KL divergences.
+
+---
+
+### **Practical Notes**
+- Use `rsample()` when gradients through samples are needed (requires `has_rsample=True`).
+- For constrained parameters (e.g., variances > 0), use `transform_to()` or `biject_to()` to map to unconstrained spaces.
+- KL divergences are automatically computed for registered distribution pairs; implement `register_kl()` for custom pairs.
+
+This package is essential for probabilistic modeling, Bayesian inference, reinforcement learning, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  exponent:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.PowerTransform in a complex way */
+import torch

@@ -1,0 +1,84 @@
+params:
+  weights:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor", "list of Tensor"]
+    shape: [[num_classes, dim]]
+    default: null
+  biases:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [[num_classes]]
+    default: null
+  labels:
+    dtype: ["int64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [[batch_size, num_true]]
+    default: null
+  inputs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [[batch_size, dim]]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  num_classes:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "1"
+  sampled_values:
+    dtype: ["tuple"]
+    range: null
+    structure: ["None", "tuple"]
+    shape: null
+    default: "None"
+  remove_accidental_hits:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  seed:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [[]]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "sampled_softmax_loss"
+constraints:
+  1:
+    Parameter 1: weights
+    Parameter 2: inputs
+    Constraint: "weights.shape[1] == inputs.shape[1]"
+  2:
+    Parameter 1: biases
+    Parameter 2: weights
+    Constraint: "biases.shape[0] == weights.shape[0]"
+  3:
+    Parameter 1: labels
+    Parameter 2: num_true
+    Constraint: "labels.shape[1] == num_true"
+  4:
+    Parameter 1: num_sampled
+    Parameter 2: num_classes
+    Constraint: "num_sampled < num_classes"

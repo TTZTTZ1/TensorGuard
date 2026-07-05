@@ -1,0 +1,42 @@
+
+# You are a Python code generation assistant for the `tf.reshape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.reshape` reconfigures the dimensions of a tensor without altering its data or element order, making it a fast, in-place operation. It requires the new shape to have the same total number of elements as the original tensor. A special value `-1` can be used in the shape argument to automatically infer the size of that dimension, ensuring the total element count stays constant. This function is commonly used to flatten tensors or adjust their dimensions for compatibility with other operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  shape:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "shape"
+    Parameter 2: "shape"
+    Constraint: "tf.reduce_sum(tf.cast(shape == -1, tf.int32)) <= 1"
+  2:
+    Parameter 1: "tensor"
+    Parameter 2: "shape"
+    Constraint: "(tf.reduce_any(shape == -1) == False and tf.size(tensor) == tf.reduce_prod(shape)) or (tf.reduce_any(shape == -1) == True and tf.mod(tf.size(tensor), tf.reduce_prod(tf.boolean_mask(shape, shape != -1))) == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.reshape in a complex way */
+import tensorflow as tf

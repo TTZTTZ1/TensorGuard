@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.fx.Graph` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch models, enabling programmatic modification of `nn.Module` instances. It works by:
+
+1. **Symbolic Tracing**: Executes the module with proxy values to capture operations as a graph.
+2. **Intermediate Representation (IR)**: Represents the traced code as a `Graph` of `Node`s (placeholders, calls, outputs).
+3. **Code Generation**: Converts the graph back into executable Python code within a `GraphModule`.
+
+### Key Use Cases:
+- **Graph Transformations**: Modify or replace operations in the graph (e.g., op substitution, fusion).
+- **Analysis**: Inspect model structure, compute properties (e.g., shape propagation).
+- **Code Generation**: Programmatically create models from configurations.
+
+### Core Components:
+- **`symbolic_trace()`**: Traces a module/function to create a `GraphModule`.
+- **`Graph`**: Data structure holding the traced operations as nodes.
+- **`GraphModule`**: A runnable `nn.Module` with generated `forward()` code from a `Graph`.
+- **`Tracer`**: Customizable class underlying tracing; can be subclassed to control behavior.
+- **`Proxy`**: Wraps nodes during tracing to record operations.
+
+### Writing Transformations:
+Transformations typically:
+1. Acquire a `Graph` via tracing.
+2. Modify the graph (e.g., node replacement, insertion/deletion).
+3. Return a new `GraphModule` (call `recompile()` if modifying in-place).
+
+### Approaches:
+- **Direct Graph Manipulation**: Iterate over nodes and modify attributes/connections.
+- **Proxy/Retracing**: Use `Proxy` objects to record new operations into the graph.
+- **Interpreter Pattern**: Execute the graph node-by-node (e.g., for analysis or transformation via `Interpreter`/`Transformer`).
+- **Pattern Rewriting**: Use `replace_pattern()` for find/replace of subgraphs.
+
+### Limitations:
+- **Dynamic Control Flow**: Cannot trace conditionals/loops dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Built-ins (e.g., `len`, `math.sqrt`) require `torch.fx.wrap()` to be traced.
+- **Leaf Modules**: By default, standard `torch.nn` modules are not traced through (customize via `Tracer.is_leaf_module`).
+
+### Debugging:
+- Compare outputs with `torch.allclose()`.
+- Inspect generated code via `print(gm.code)` or `gm.graph.print_tabular()`.
+- Use `pdb` or `to_folder()` to export and examine code.
+
+### API Highlights:
+- **`Node`**: Represents an operation (opcodes: placeholder, call_function, call_module, get_attr, output).
+- **`replace_pattern()`**: Automates subgraph replacement.
+- **`Interpreter`/`Transformer`**: Base classes for graph execution/transformation.
+
+torch.fx is designed for composable, Python-based model transformations, enabling both analysis and optimization of PyTorch programs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  owning_module:
+    dtype: ["torch.nn.Module", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tracer_cls:
+    dtype: ["type", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tracer_extras:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: owning_module
+    Parameter 2: tracer_cls
+    Constraint: "owning_module is None or isinstance(owning_module, torch.nn.Module)"
+  2:
+    Parameter 1: tracer_cls
+    Parameter 2: tracer_extras
+    Constraint: "tracer_cls is None or (isinstance(tracer_cls, type) and issubclass(tracer_cls, torch.fx.Tracer))"
+  3:
+    Parameter 1: tracer_extras
+    Parameter 2: owning_module
+    Constraint: "tracer_extras is None or isinstance(tracer_extras, dict)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Graph in a complex way */
+import torch

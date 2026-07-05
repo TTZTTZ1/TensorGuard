@@ -1,0 +1,38 @@
+params:
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  batch_sizes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  sorted_indices:
+    dtype: ["int64", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: null
+  unsorted_indices:
+    dtype: ["int64", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: sorted_indices
+    Parameter 2: data
+    Constraint: "sorted_indices is None or (sorted_indices.dtype == torch.int64 and sorted_indices.device == data.device)"
+  2:
+    Parameter 1: unsorted_indices
+    Parameter 2: data
+    Constraint: "unsorted_indices is None or (unsorted_indices.dtype == torch.int64 and unsorted_indices.device == data.device)"
+  3:
+    Parameter 1: batch_sizes
+    Parameter 2: data
+    Constraint: "batch_sizes.dtype == torch.int64 and batch_sizes.device.type == 'cpu'"

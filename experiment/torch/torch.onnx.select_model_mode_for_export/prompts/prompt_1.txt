@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.onnx.select_model_mode_for_export` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.onnx` module enables exporting PyTorch models to the ONNX format for deployment across various runtimes. Here’s a concise overview:
+
+### **Key Features**
+- **ONNX Export**: Converts a `torch.nn.Module` into an ONNX graph, which can be run by ONNX‑compatible runtimes like ONNX Runtime.
+- **Two Exporters**:
+  - **TorchScript‑based (legacy)**: Uses TorchScript tracing (set `dynamo=False`).
+  - **torch.export‑based (default from PyTorch 2.9)**: Uses `torch.export.ExportedProgram` for a more modern, functional graph with better support for dynamic shapes and control flow (set `dynamo=True`).
+
+### **Basic Usage**
+```python
+import torch
+
+model = ...  # Your torch.nn.Module
+example_input = torch.randn(...)
+
+torch.onnx.export(
+    model,
+    (example_input,),
+    "model.onnx",
+    input_names=["input"],
+    output_names=["output"],
+    dynamo=True  # Use the modern exporter
+)
+```
+
+### **Important Parameters**
+- **`dynamo`**: Whether to use the new `torch.export`‑based exporter (default `True`).
+- **`dynamic_shapes`**: Specify dynamic input dimensions (e.g., variable batch size) when `dynamo=True`.
+- **`dynamic_axes`**: Legacy way to specify dynamic axes (used when `dynamo=False` or `fallback=True`).
+- **`external_data`**: Save large model weights externally to avoid the 2GB ONNX file limit.
+- **`verify`**: Validate the exported model with ONNX Runtime.
+- **`fallback`**: Automatically fall back to the TorchScript exporter if the dynamo exporter fails.
+
+### **Handling Dynamic Shapes**
+For models that accept inputs of varying sizes (e.g., LLMs), provide `dynamic_shapes`:
+```python
+dynamic_shapes = {
+    "input": {0: "batch", 2: "height", 3: "width"}
+}
+```
+
+### **Output**
+When `dynamo=True`, the function returns an `ONNXProgram` object containing the ONNX model and the underlying `ExportedProgram`. This allows flexible serialization (e.g., saving with external weights).
+
+### **Deprecated Features**
+Several parameters are deprecated in recent versions (PyTorch ≥2.6):
+- `training`, `operator_export_type`, `do_constant_folding`, `export_modules_as_functions`, `autograd_inlining`
+- Instead, set the model’s training mode before export.
+
+### **Utilities**
+- `torch.onnx.is_in_onnx_export()`: Check if code is executing during an ONNX export (useful for avoiding export‑only branches).
+
+### **Custom Operators**
+Custom operator support is available via `custom_translation_table` (for `dynamo=True`) or the deprecated `register_custom_op_symbolic` (for TorchScript exporter).
+
+### **Recommendation**
+Use the default `dynamo=True` exporter for new projects—it better handles dynamic shapes, control flow, and produces a more optimized graph. For existing workflows relying on TorchScript, explicitly set `dynamo=False`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  model:
+    dtype: ["torch.nn.Module", "torch.export.ExportedProgram", "torch.jit.ScriptModule", "torch.jit.ScriptFunction"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["TrainingMode"]
+    range: [["TrainingMode.EVAL", "TrainingMode.TRAIN"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.onnx.select_model_mode_for_export in a complex way */
+import torch

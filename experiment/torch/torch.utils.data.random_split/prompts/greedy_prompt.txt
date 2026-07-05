@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.random_split` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and batching in PyTorch. Its core component is the `DataLoader` class, which creates an iterable over a dataset with support for:
+
+**Key Features:**
+- **Dataset Types:** Supports both map-style (index-based) and iterable-style (stream-based) datasets.
+- **Custom Sampling:** Allows control over data loading order via samplers (e.g., random, sequential, weighted).
+- **Automatic Batching:** Collates individual samples into batches with customizable batch size and handling of incomplete batches.
+- **Multi-process Loading:** Uses multiple worker processes to parallelize data loading, improving performance.
+- **Memory Pinning:** Enables faster data transfer to GPUs by using pinned memory.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+for batch in loader:
+    # Training loop
+```
+
+**Important Considerations:**
+- Map-style datasets require `__getitem__` and `__len__` methods; iterable-style datasets implement `__iter__`.
+- Custom `collate_fn` can be defined for specialized batching logic (e.g., padding sequences).
+- Multi-process loading requires careful handling of randomness and dataset replication to avoid duplicate data.
+- Windows/macOS users must guard main script code with `if __name__ == '__main__':` when using multiple workers.
+
+The module also includes utility classes like `TensorDataset`, `ConcatDataset`, `Subset`, and various samplers for flexible dataset manipulation and sampling strategies.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  lengths:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  generator:
+    dtype: ["Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "torch.Generator()"
+constraints:
+  1:
+    Parameter 1: lengths
+    Parameter 2: dataset
+    Constraint: "isinstance(lengths, (list, tuple)) and all(isinstance(l, (int, float)) for l in lengths) and all(l > 0 for l in lengths) and ((all(isinstance(l, int) for l in lengths) and sum(lengths) == len(dataset)) or (all(isinstance(l, float) for l in lengths) and abs(sum(lengths) - 1) < 1e-9))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.random_split in a complex way */
+import torch

@@ -1,0 +1,28 @@
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["torch.LongTensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: index
+    Constraint: tensor.shape[dim] == index.shape[0]
+  2:
+    Parameter 1: tensor
+    Parameter 2: self
+    Constraint: tensor.ndim == self.ndim and all(tensor.shape[i] == self.shape[i] for i in range(tensor.ndim) if i != dim)

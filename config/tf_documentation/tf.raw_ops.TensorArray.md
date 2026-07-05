@@ -1,0 +1,42 @@
+# tf.raw_ops.TensorArray
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArray](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArray)
+
+---
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.TensorArray`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArray)
+
+```
+tf.raw_ops.TensorArray(
+    size,
+    dtype,
+    dynamic_size=False,
+    clear_after_read=True,
+    tensor_array_name='',
+    element_shape=None,
+    name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `size` | A `Tensor` of type `int32`. |
+| `dtype` | A [`tf.DType`](https://tensorflow.google.cn/api_docs/python/tf/dtypes/DType). |
+| `dynamic_size` | An optional `bool`. Defaults to `False`. |
+| `clear_after_read` | An optional `bool`. Defaults to `True`. |
+| `tensor_array_name` | An optional `string`. Defaults to `""`. |
+| `element_shape` | An optional [`tf.TensorShape`](https://tensorflow.google.cn/api_docs/python/tf/TensorShape) or list of `ints`. Defaults to `None`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type mutable `string`. | |

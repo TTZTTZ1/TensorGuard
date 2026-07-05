@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.gather_nd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.gather_nd` gathers slices from a tensor (`params`) based on a multi-dimensional index tensor (`indices`). It generalizes `tf.gather` by allowing indexing into the first `N` dimensions of `params`, where `N` is the depth of each index vector (the last dimension of `indices`).
+
+**Key behaviors:**
+- **Scalar gathering:** When each index vector fully indexes `params`, the output replaces each index with the corresponding scalar value.
+- **Slice gathering:** When index vectors are shallower than `params`'s rank, each output location contains a slice (e.g., rows from a matrix).
+- **Batched mode:** Use `batch_dims` when both `params` and `indices` share leading batch dimensions, allowing batch-wise gathering without repeating batch indices.
+
+**Shape relationship (without batches):**
+- `output_shape = indices.shape[:-1] + params.shape[indices.shape[-1]:]`
+
+**Note:** Out-of-bound indices return an error on CPU and store 0 on GPU.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  batch_dims:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "tensor"]
+    shape: No mention
+    default: "0"
+  name:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: params
+    Constraint: "indices.shape[-1] <= params.shape.rank"
+  2:
+    Parameter 1: params
+    Parameter 2: indices
+    Constraint: "params.shape[:batch_dims] == indices.shape[:batch_dims]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.gather_nd in a complex way */
+import tensorflow as tf

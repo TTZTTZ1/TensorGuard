@@ -1,0 +1,41 @@
+
+# You are a Python code generation assistant for the `torch.futures.collect_all` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.futures` module provides a `Future` class for managing asynchronous execution, primarily used with PyTorch's Distributed RPC Framework. A `Future` encapsulates a result that may not yet be available, allowing non-blocking operations.
+
+**Key Functionality:**
+- **Completion & Results:** Use `set_result()` to mark a `Future` as completed with a value, or `set_exception()` to indicate an error. Check completion with `done()`.
+- **Blocking Retrieval:** Call `wait()` to block until the result is ready (with GPU synchronization if needed). Use `value()` only after `wait()` or inside a callback.
+- **Callbacks:** Attach callbacks via `add_done_callback()` (fire-and-forget) or `then()` (returns a new `Future` for chaining). Callbacks execute upon completion.
+- **GPU Support (beta):** When results contain GPU tensors, `wait()` and `then()` handle necessary stream synchronization automatically if streams aren’t changed.
+
+**Utility Functions:**
+- `collect_all(futures)`: Returns a single `Future` that completes when all input futures finish, yielding a list of the original futures.
+- `wait_all(futures)`: Blocks until all futures complete, returning a list of their results; exits early on any error.
+
+**Example Usage:**
+```python
+fut = torch.futures.Future()
+fut.then(lambda x: print(x.wait()))  # Chained callback
+fut.set_result(42)  # Triggers callback and completes future
+```
+
+**Note:** Error handling in callbacks is crucial—exceptions may need manual propagation to dependent futures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  futures:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.futures.collect_all in a complex way */
+import torch

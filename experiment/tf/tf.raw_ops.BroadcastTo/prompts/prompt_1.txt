@@ -1,0 +1,38 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BroadcastTo` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.BroadcastTo` broadcasts an input tensor to a specified shape, following TensorFlow's broadcasting rules: dimensions must be equal or one of them must be 1. The operation expands the tensor's dimensions as needed (padding with ones on the left) to match the target shape, but unlike implicit broadcasting in arithmetic operations, it explicitly materializes the full tensor in memory.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  shape:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: shape
+    Constraint: "all(a == 1 or b == 1 or a == b for a, b in zip(tf.shape(input), tf.concat([tf.ones(tf.maximum(0, tf.size(shape) - tf.rank(input)), dtype=tf.int32), tf.shape(input)], axis=0)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BroadcastTo in a complex way */
+import tensorflow as tf

@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.to` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.Tensor.to()` method converts a tensor’s data type (dtype), device (e.g., CPU/GPU), or both. It returns a new tensor with the specified properties unless the tensor already matches them, in which case the original tensor is returned (unless `copy=True`).
+
+**Key behaviors:**
+- If the target dtype is an integer type and the original tensor requires gradients (`requires_grad=True`), the returned tensor will have `requires_grad=False`.
+- Converting floating-point values to integer types truncates the fractional part (C++ conversion rules apply).
+- The `non_blocking` option can be used for asynchronous transfers (e.g., CPU → GPU).
+- The `copy` flag forces creation of a new tensor even if no conversion is needed.
+
+**Common usage patterns:**
+1. **Convert dtype only:**  
+   `tensor.to(dtype)`
+2. **Convert device and optionally dtype:**  
+   `tensor.to(device, dtype)`
+3. **Match another tensor’s properties:**  
+   `tensor.to(other_tensor)`
+
+**Example:**
+```python
+x = torch.randn(2, 2)                     # float32, CPU
+x.to(torch.float64)                       # Change dtype
+x.to('cuda:0', dtype=torch.float64)       # Change device and dtype
+x.to(other_tensor)                        # Match other tensor's dtype/device
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  non_blocking:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  copy:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  memory_format:
+    dtype: ["torch.memory_format"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "torch.preserve_format"
+  device:
+    dtype: ["torch.device", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  other:
+    dtype: ["torch.Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "other"
+    Constraint: "dtype is None or other is None"
+  2:
+    Parameter 1: "device"
+    Parameter 2: "other"
+    Constraint: "device is None or other is None"
+  3:
+    Parameter 1: "memory_format"
+    Parameter 2: "other"
+    Constraint: "memory_format is torch.preserve_format or other is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.to in a complex way */
+import torch

@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.nn.MultiLabelSoftMarginLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: `torch.nn.MultiLabelSoftMarginLoss`**
+
+**Purpose:**  
+A loss function for multi-label classification problems, where each sample can belong to multiple classes simultaneously. It optimizes a one-versus-all binary classification loss using max-entropy (logistic loss).
+
+**Key Formula:**  
+For each class \( i \) in a sample:
+
+\[
+\text{loss}(x, y) = -\frac{1}{C} \sum_i \left[ y[i] \cdot \log(\sigma(x[i])) + (1 - y[i]) \cdot \log(1 - \sigma(x[i])) \right]
+\]
+where \( \sigma(x[i]) = \frac{1}{1 + \exp(-x[i])} \) (sigmoid), \( C \) is the number of classes, and \( y[i] \in \{0, 1\} \).
+
+**Parameters:**
+- `weight` (Tensor, optional): Per-class rescaling weight (size \( C \)).
+- `reduction` (str): Specifies output reduction: `'none'`, `'mean'`, or `'sum'` (default: `'mean'`).  
+  (Note: `size_average` and `reduce` are deprecated.)
+
+**Input/Output Shapes:**
+- **Input:** \((N, C)\), where \( N \) = batch size, \( C \) = number of classes.
+- **Target:** \((N, C)\), with binary labels (0 or 1) of same shape as input.
+- **Output:** Scalar if reduction is `'mean'` or `'sum'`; otherwise \((N)\) if `'none'`.
+
+**Usage:**  
+Suitable for tasks where multiple independent binary classifications are performed per sample (e.g., tagging). The loss applies sigmoid activation internally, so input logits do not require prior normalization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weight:
+    dtype: ["Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["C"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "size_average"
+    Parameter 2: "reduction"
+    Constraint: "size_average is not None"
+  2:
+    Parameter 1: "reduce"
+    Parameter 2: "reduction"
+    Constraint: "reduce is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MultiLabelSoftMarginLoss in a complex way */
+import torch

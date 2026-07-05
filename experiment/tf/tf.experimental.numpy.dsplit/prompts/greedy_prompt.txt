@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.experimental.numpy.dsplit` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.numpy.dsplit` is a TensorFlow implementation of NumPy's `dsplit` function, which splits an array into multiple sub-arrays **along the third axis (depth)**.  
+
+**Usage:**  
+```python
+tf.experimental.numpy.dsplit(ary, indices_or_sections)
+```
+
+**Functionality:**  
+- **Input:**  
+  - `ary`: The input array (must have at least 3 dimensions).  
+  - `indices_or_sections`: An integer specifying the number of equal sections, or a sequence of integers indicating where to split along the third axis.  
+
+- **Behavior:**  
+  - Divides the array into sections along the depth (axis=2).  
+  - If `indices_or_sections` is an integer `N`, the array is split into `N` equal parts.  
+  - If it is a sequence of split points, the array is split at those indices along the third axis.  
+
+- **Note:**  
+  - Equivalent to `tf.split(ary, indices_or_sections, axis=2)` for 3D or higher-dimensional arrays.  
+  - For 2D arrays, use `hsplit`; for 1D arrays, use `split`.  
+
+**Reference:**  
+See the [NumPy documentation](https://numpy.org/doc/stable/reference/generated/numpy.dsplit.html) for detailed examples.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ary:
+    dtype: ["int", "float", "complex"]
+    range: null
+    structure: ["array", "tensor"]
+    shape: ["any shape with ndim >= 3"]
+    default: null
+  indices_or_sections:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: ["scalar", "1D"]
+    default: null
+constraints:
+  1:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, int) and indices_or_sections > 0 and ary.shape[2] % indices_or_sections == 0"
+  2:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, (list, tuple)) and all(isinstance(i, int) for i in indices_or_sections) and all(0 <= i <= ary.shape[2] for i in indices_or_sections) and list(indices_or_sections) == sorted(indices_or_sections)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.numpy.dsplit in a complex way */
+import tensorflow as tf

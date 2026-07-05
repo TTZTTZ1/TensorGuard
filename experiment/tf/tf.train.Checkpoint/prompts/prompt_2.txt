@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.train.Checkpoint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.Checkpoint` is a TensorFlow class for saving and restoring the state of trackable objects (like `tf.Variable`, `tf.keras.Model`, or `tf.keras.optimizers.Optimizer`) to disk. It uses object-based checkpointing, which saves a dependency graph between Python objects, making it more robust to code changes compared to name-based checkpoints.
+
+**Key Features:**
+- **Object-Based Checkpointing:** Tracks dependencies between objects (e.g., layers, variables) rather than relying on variable names.
+- **Automatic Dependency Management:** Objects like `tf.keras.Model` automatically track their variables and sub-layers.
+- **Multi-Worker Support:** Checkpoints from distributed training are merged without copying all variables to one worker.
+- **Save Counter:** Automatically numbers checkpoints when using `save()`.
+
+**Core Methods:**
+- **`save(file_prefix)`:** Saves a checkpoint, increments `save_counter`, and returns the file path.
+- **`restore(save_path)`:** Restores checkpointed values, matching objects based on the dependency graph.
+- **`write(file_prefix)`:** Low-level save without numbering or metadata updates (use with `read()`).
+- **`read(save_path)`:** Restores checkpoints created by `write()` (no `save_counter` expected).
+
+**Common Usage:**
+```python
+model = tf.keras.Model(...)
+optimizer = tf.keras.optimizers.Adam()
+checkpoint = tf.train.Checkpoint(model=model, optimizer=optimizer)
+
+# Save
+save_path = checkpoint.save('/tmp/ckpt')
+
+# Restore
+checkpoint.restore(save_path).assert_consumed()  # Optional validation
+```
+
+**Differences from Keras:**
+- `tf.train.Checkpoint` numbers files (e.g., `ckpt-1`, `ckpt-2`), while `model.save_weights()` uses a fixed filename.
+- `Checkpoint` can manage arbitrary trackable objects, not just models.
+
+**Best Practices:**
+- Use `assert_consumed()` or `expect_partial()` after `restore()` to verify loading.
+- For SavedModel checkpoints, use `expect_partial()` to suppress warnings about unused keys.
+- Use `tf.train.CheckpointManager` for advanced checkpoint management (e.g., garbage collection).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  root:
+    dtype: ["object"]
+    range: [null, "trackable_object", "WeakRef"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  kwargs:
+    dtype: ["dict"]
+    range: ["trackable_object", "list", "dict", "tuple"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "root"
+    Parameter 2: "None"
+    Constraint: "root is None or (hasattr(root, '__tf_trackable__') or (isinstance(root, weakref.ref) and hasattr(root(), '__tf_trackable__')))"
+  2:
+    Parameter 1: "kwargs"
+    Parameter 2: "None"
+    Constraint: "all(is_trackable_or_nested(v) for v in kwargs.values())"
+  3:
+    Parameter 1: "root"
+    Parameter 2: "kwargs"
+    Constraint: "root is None or all(not hasattr(root, key) or getattr(root, key) is kwargs[key] for key in kwargs)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.Checkpoint in a complex way */
+import tensorflow as tf

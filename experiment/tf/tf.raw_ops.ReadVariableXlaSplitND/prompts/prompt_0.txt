@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ReadVariableXlaSplitND` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ReadVariableXlaSplitND` is a low-level TensorFlow operation that splits a resource variable tensor across all its dimensions. It divides the input tensor into multiple smaller tensors based on specified split counts per dimension, optionally applies padding to make dimensions divisible, and returns the slices in row-major order. This op is primarily used in TPU contexts and can be generated via the TPU bridge.
+
+**Key Parameters:**
+- `resource`: The resource variable tensor to split.
+- `num_splits`: List of integers defining how many splits to apply per dimension.
+- `paddings`: Optional list of padding values per dimension to ensure divisibility.
+- `N`: Number of output tensors (must be ≥ 1).
+- `T`: Data type of the input and output tensors.
+
+**Example:**  
+Splitting a 3×3 tensor with `num_splits=[2,2]` and `paddings=[1,1]` produces four padded 2×2 output tensors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  resource:
+    dtype: ["resource"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  T:
+    dtype: ["tf.DType"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  N:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  num_splits:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  paddings:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "N"
+    Parameter 2: "N"
+    Constraint: "N >= 1"
+  2:
+    Parameter 1: "resource"
+    Parameter 2: "num_splits"
+    Constraint: "tf.rank(resource) == len(num_splits)"
+  3:
+    Parameter 1: "num_splits"
+    Parameter 2: "paddings"
+    Constraint: "not paddings or len(paddings) == len(num_splits)"
+  4:
+    Parameter 1: "resource"
+    Parameter 2: "num_splits"
+    Constraint: "all((tf.shape(resource)[i] + (paddings[i] if i < len(paddings) else 0)) % num_splits[i] == 0 for i in range(len(num_splits)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ReadVariableXlaSplitND in a complex way */
+import tensorflow as tf

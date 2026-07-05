@@ -1,0 +1,130 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Adam` class implements the Adam optimization algorithm, which is widely used for training deep learning models due to its adaptive learning rate and momentum handling.
+
+**Key Features:**
+- **Adaptive Learning Rates:** Uses separate momentum (first moment) and variance (second moment) estimates for each parameter.
+- **Bias Correction:** Applies correction terms to counteract initialization bias in early iterations.
+- **Weight Decay Options:** Supports both standard L2 penalty and decoupled weight decay (AdamW variant via `decoupled_weight_decay=True`).
+- **AMSGrad Variant:** Optional `amsgrad` flag for a modified algorithm that ensures non-increasing variance estimates.
+- **Multiple Implementations:** Offers for-loop, foreach (faster on CUDA), and fused (fastest) implementations for performance optimization.
+
+**Main Parameters:**
+- `params`: Model parameters to optimize
+- `lr`: Learning rate (default: 1e-3)
+- `betas`: Coefficients for computing momentum and variance running averages (default: (0.9, 0.999))
+- `eps`: Term added to denominator for numerical stability (default: 1e-8)
+- `weight_decay`: L2 penalty coefficient (default: 0)
+- `maximize`: If True, maximizes the objective instead of minimizing
+
+**Usage Example:**
+```python
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))
+```
+
+**Important Methods:**
+- `step()`: Performs a single optimization step
+- `zero_grad()`: Resets gradients (preferably with `set_to_none=True` for memory efficiency)
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state
+- `add_param_group()`: Add new parameter groups during training
+
+**Performance Notes:**
+- The `foreach` implementation is typically faster on CUDA devices but uses more memory
+- The `fused` implementation offers the best performance but is newer
+- When unspecified (`foreach=None`, `fused=None`), PyTorch defaults to `foreach` on CUDA
+
+The algorithm is particularly effective for problems with noisy or sparse gradients and requires minimal tuning compared to other optimizers like SGD.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "0.001"
+  betas:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  amsgrad:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  fused:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+
+constraints:
+  1:
+    Parameter 1: "lr"
+    Parameter 2: "fused"
+    Constraint: "not isinstance(lr, torch.Tensor) or fused"
+  2:
+    Parameter 1: "lr"
+    Parameter 2: "capturable"
+    Constraint: "not isinstance(lr, torch.Tensor) or capturable"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adam in a complex way */
+import torch

@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  block_shape:
+    dtype: ["int32", "int64"]
+    range: [">= 1"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  paddings:
+    dtype: ["int32", "int64"]
+    range: [">= 0"]
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "block_shape"
+    Parameter 2: "paddings"
+    Constraint: "paddings.shape[0] == len(block_shape)"
+  2:
+    Parameter 1: "block_shape"
+    Parameter 2: "paddings"
+    Constraint: "all(block_shape[i] % (input.shape[i+1] + paddings[i][0] + paddings[i][1]) == 0 for i in range(len(block_shape)))"

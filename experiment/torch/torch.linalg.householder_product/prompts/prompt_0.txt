@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `torch.linalg.householder_product` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.householder_product` computes the first \( n \) columns of a product of Householder matrices from input matrix `A` and reflection coefficients `tau`. It is commonly used to reconstruct the orthogonal/unitary matrix \( Q \) from the compact QR factorization obtained via `torch.geqrf`.
+
+**Key Points:**
+- **Inputs:** `A` of shape `(*, m, n)` with \( m \ge n \), and `tau` of shape `(*, k)` with \( k \le n \).
+- **Output:** A tensor of the same shape as `A`, representing the product \( H_1H_2 \dots H_k \).
+- **Typical Use:** Combine with `torch.geqrf` to obtain the \( Q \) matrix from QR decomposition.
+- **Supports:** Float, double, cfloat, and cdouble dtypes, as well as batched inputs.
+- **Gradient Warning:** Gradients may be NaN if \( \tau_i = 1 / \|a_i\|^2 \) for any \( i \).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  tau:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, k)"]
+    default: null
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as A"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "A.shape[-2] >= A.shape[-1]"
+  2:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[:-2] == tau.shape[:-1]"
+  3:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[-1] >= tau.shape[-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.householder_product in a complex way */
+import torch

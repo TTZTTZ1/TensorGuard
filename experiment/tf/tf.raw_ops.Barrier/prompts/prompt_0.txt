@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Barrier` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Barrier` creates a persistent key-value map for coordinating data across multiple steps of a TensorFlow graph. Each key is a string, and each value is a tuple of tensors with specified types and shapes.
+
+**Key Features:**
+- **Persists across graph executions**: Maintains state between different runs.
+- **Two element states**: 
+  - *Complete*: All tensors in the value tuple are defined and can be retrieved using `BarrierTakeMany`.
+  - *Incomplete*: Some tensors are undefined and can be updated using `BarrierInsertMany`.
+- **Configurable**: Allows setting data types, shapes, capacity, and sharing across sessions.
+
+**Main Parameters:**
+- `component_types`: List of data types for each tensor in the value tuple.
+- `shapes`: Shapes for each component (optional, defaults to scalar).
+- `capacity`: Maximum number of elements the barrier can hold.
+- `shared_name`: Enables sharing the barrier across multiple sessions.
+
+**Use Case**: Useful for synchronizing and managing partial data in multi-step workflows, such as feeding data between producer and consumer operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  component_types:
+    dtype: ["list of tf.DTypes"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["length >=1"]
+    default: "null"
+  shapes:
+    dtype: ["list of shapes"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  capacity:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  container:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '""'
+  shared_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '""'
+  name:
+    dtype: ["string", "null"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "shapes"
+    Parameter 2: "component_types"
+    Constraint: "len(shapes) == len(component_types)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Barrier in a complex way */
+import tensorflow as tf

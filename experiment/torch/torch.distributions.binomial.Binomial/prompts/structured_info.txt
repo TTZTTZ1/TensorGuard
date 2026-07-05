@@ -1,0 +1,38 @@
+params:
+  total_count:
+    dtype: ["int", "Tensor"]
+    range: [">=0"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "1"
+  probs:
+    dtype: ["Tensor"]
+    range: ["[0,1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  logits:
+    dtype: ["Tensor"]
+    range: ["Real"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: probs
+    Constraint: "torch.broadcast_shapes(torch.as_tensor(total_count).shape, torch.as_tensor(probs).shape) is not None"
+  2:
+    Parameter 1: total_count
+    Parameter 2: logits
+    Constraint: "torch.broadcast_shapes(torch.as_tensor(total_count).shape, torch.as_tensor(logits).shape) is not None"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"

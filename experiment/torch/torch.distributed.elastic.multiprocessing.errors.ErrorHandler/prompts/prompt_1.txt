@@ -1,0 +1,42 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.errors.ErrorHandler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The documentation describes PyTorch TorchElastic's error propagation mechanism for distributed training jobs. Key points:
+
+**Error Categories:**
+- User Errors (input validation issues)
+- Worker Failures (failures in user-provided training scripts)
+- Platform Errors (agent failures)
+- Infra Errors (external failures like host crashes)
+
+**Core Mechanism:**
+- Uses `@record` decorator on main functions to capture uncaught exceptions
+- Writes errors to a file specified by `TORCHELASTIC_ERROR_FILE` environment variable
+- Parent agent process aggregates error files and propagates the **first** error (by timestamp)
+
+**Key Components:**
+1. **`@record` decorator** - Top-level decorator that enables error recording and propagation
+2. **`ChildFailedError`** - Special exception to propagate child process errors without parent traceback wrapping
+3. **`ErrorHandler`** - Base class for writing structured error information to JSON files
+4. **`ProcessFailure`** - Data structure representing failed process results
+
+**Workflow:**
+- Agent launches worker processes with error file paths
+- Workers write exceptions to their designated error files
+- Agent monitors workers, reads error files on failure, and propagates the earliest error
+- Supports both function and binary entrypoints for error propagation
+
+This system ensures that worker process failures in distributed PyTorch jobs are properly captured and reported to the scheduler for debugging and retry policies.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.errors.ErrorHandler in a complex way */
+import torch

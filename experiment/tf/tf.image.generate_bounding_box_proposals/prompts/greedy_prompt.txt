@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.image.generate_bounding_box_proposals` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.image.generate_bounding_box_proposals` function generates region of interest (ROI) proposals for object detection by processing anchor boxes. It takes predicted bounding box adjustments (`bbox_deltas`) and objectness scores (`scores`) relative to a set of predefined anchors, then applies transformations and filtering to produce the top candidate regions.
+
+**Key steps:**
+1. **Decode proposals:** Applies the predicted deltas to adjust the anchor boxes.
+2. **Filter by size:** Removes proposals smaller than `min_size`.
+3. **Pre-NMS selection:** Keeps only the top `pre_nms_topn` scoring proposals.
+4. **Non-Maximum Suppression (NMS):** Applies NMS with threshold `nms_threshold` to reduce redundancy.
+5. **Post-NMS selection:** Returns the top `post_nms_topn` proposals and their scores.
+
+**Inputs:**  
+- `scores`: Objectness scores per anchor.  
+- `bbox_deltas`: Predicted adjustments (dy, dx, dh, dw) for each anchor.  
+- `image_info`: Image dimensions and scale.  
+- `anchors`: Predefined anchor boxes in [y1, x1, y2, x2] format.  
+
+**Outputs:**  
+- `rois`: Final proposed bounding boxes.  
+- `roi_probabilities`: Corresponding scores for each ROI.  
+
+This function is commonly used in two-stage object detectors (like Faster R-CNN) to generate candidate regions for further classification.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scores:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  bbox_deltas:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  image_info:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  anchors:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  nms_threshold:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [0]
+    default: "0.7"
+  pre_nms_topn:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [0]
+    default: "6000"
+  min_size:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [0]
+    default: "16"
+  post_nms_topn:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "300"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.generate_bounding_box_proposals in a complex way */
+import tensorflow as tf

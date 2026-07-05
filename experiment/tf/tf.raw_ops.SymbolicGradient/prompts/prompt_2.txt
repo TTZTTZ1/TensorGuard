@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SymbolicGradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SymbolicGradient` is a low-level TensorFlow operation that computes the gradient of a given function `f` through backpropagation. It takes a list of input tensors (including both the original inputs to `f` and the gradients of its outputs) and returns the gradients of `f`'s inputs.
+
+**Key Points:**
+- **Purpose:** Automatically computes the gradient function `g` for a user-defined function `f`.
+- **Function `f`:** Must be a numerical function taking `N` inputs and producing `M` outputs, decorated with `@Defun`.
+- **Inputs:** A list of `N + M` tensors — the first `N` are the inputs to `f`, and the last `M` are the gradients of `f`'s outputs.
+- **Outputs:** Returns `N` tensors representing the gradients of `f`'s inputs.
+- **Use Case:** Primarily for internal gradient computation in TensorFlow's autodiff system, not typically used directly in standard training loops.
+
+This op enables symbolic differentiation by applying the chain rule to the computational graph defined by `f`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["list"]
+    shape: No mention
+    default: null
+  Tout:
+    dtype: ["tf.DType"]
+    range: No mention
+    structure: ["list"]
+    shape: No mention
+    default: null
+  f:
+    dtype: ["function"]
+    range: No mention
+    structure: ["function"]
+    shape: No mention
+    default: null
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: Tout
+    Parameter 2: Tout
+    Constraint: len(Tout) >= 1
+  2:
+    Parameter 1: Tout
+    Parameter 2: input
+    Constraint: len(Tout) == len(input)
+  3:
+    Parameter 1: input
+    Parameter 2: f
+    Constraint: len(input) == len(f.input_types) + len(f.output_types)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SymbolicGradient in a complex way */
+import tensorflow as tf

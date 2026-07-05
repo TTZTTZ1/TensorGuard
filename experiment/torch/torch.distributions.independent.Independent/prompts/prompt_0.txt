@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `torch.distributions.independent.Independent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+## Key Features
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## Core Components
+
+### 1. **Distribution Base Class**
+Abstract base class with essential methods:
+- `sample()` / `rsample()`: Generate samples
+- `log_prob()`: Compute log probability
+- `entropy()`: Distribution entropy
+- `mean`, `variance`, `mode`: Distribution properties
+- `support`: Valid value constraints
+
+### 2. **Available Distributions**
+Includes common distributions:
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Continuous**: LogNormal, Gumbel, StudentT, Weibull
+- **Specialized**: LKJCholesky (correlation matrices), MixtureSameFamily, Wishart
+
+### 3. **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.) for reparameterization
+- **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for constrained optimization
+
+### 4. **KL Divergence**
+- `kl_divergence()`: Compute KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+## Common Usage Patterns
+
+### REINFORCE (Policy Gradient)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+## Design Principles
+- Follows TensorFlow Distributions design
+- Enables stochastic gradient estimators
+- Supports both discrete and continuous distributions
+- Provides automatic broadcasting and batch handling
+- Includes validation via `arg_constraints`
+
+The package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_distribution:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  reinterpreted_batch_ndims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: reinterpreted_batch_ndims
+    Parameter 2: 
+    Constraint: reinterpreted_batch_ndims >= 0
+  2:
+    Parameter 1: base_distribution
+    Parameter 2: reinterpreted_batch_ndims
+    Constraint: reinterpreted_batch_ndims <= len(base_distribution.batch_shape)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.independent.Independent in a complex way */
+import torch

@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.tensor_scatter_nd_add` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.tensor_scatter_nd_add` adds sparse `updates` to an existing tensor at specified `indices`. It creates a new tensor by applying element-wise addition to the input tensor based on the provided index positions.
+
+**Key points:**
+- **Purpose:** Perform in-place-like addition on a tensor at scattered locations.
+- **Indices:** Integer tensor where the last dimension determines indexing depth (up to the rank of the input tensor).
+- **Updates:** Must have shape `indices.shape[:-1] + tensor.shape[indices.shape[-1]:]`.
+- **Behavior:** Out-of-bounds indices cause an error on CPU but are ignored on GPU.
+- **Use cases:** Useful for selectively updating tensor elements or slices without modifying the entire tensor.
+
+**Example:**
+```python
+indices = [[4], [3], [1], [7]]
+updates = [9, 10, 11, 12]
+tensor = tf.ones([8], dtype=tf.int32)
+result = tf.tensor_scatter_nd_add(tensor, indices, updates)
+# Adds updates at positions 4, 3, 1, 7 in the tensor
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: tensor
+    Constraint: "indices.shape[-1] <= tensor.shape.rank"
+  2:
+    Parameter 1: updates
+    Parameter 2: tensor
+    Constraint: "updates.dtype == tensor.dtype"
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape[:-1] + tensor.shape[indices.shape[-1]:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.tensor_scatter_nd_add in a complex way */
+import tensorflow as tf

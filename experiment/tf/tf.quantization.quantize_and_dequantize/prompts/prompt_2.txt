@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.quantization.quantize_and_dequantize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.quantization.quantize_and_dequantize` function performs a quantization and dequantization operation on an input tensor, simulating the effects of reduced precision (e.g., 8-bit) while returning a float tensor. It allows specifying the quantization range, bitwidth, rounding mode, and whether to apply per-axis quantization. **Note:** This function is deprecated; use `quantize_and_dequantize_v2` instead.
+
+**Key parameters:**
+- `input`: Tensor to process.
+- `input_min`/`input_max`: Range for quantization (used if `range_given=True`).
+- `signed_input`: Whether quantization is signed.
+- `num_bits`: Bitwidth for quantization (default 8).
+- `range_given`: Use provided min/max or compute from input.
+- `round_mode`: Rounding method (`'HALF_TO_EVEN'` or `'HALF_UP'`).
+- `axis`: Enables per-slice quantization along the specified dimension.
+- `narrow_range`: Adjusts quantized range symmetry (e.g., -127 to 127 for 8-bit signed).
+
+**Returns:** A tensor of the same type as `input`, with each element quantized and then dequantized.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input_min:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: null
+  input_max:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: null
+  signed_input:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  num_bits:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "8"
+  range_given:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  round_mode:
+    dtype: ["string"]
+    range: ["HALF_TO_EVEN", "HALF_UP"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'HALF_TO_EVEN'"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  narrow_range:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  axis:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "axis"
+    Parameter 2: "input_min"
+    Constraint: "axis is not None implies input_min.ndim == 1"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "input_max"
+    Constraint: "axis is not None implies input_max.ndim == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.quantize_and_dequantize in a complex way */
+import tensorflow as tf

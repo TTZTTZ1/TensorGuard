@@ -1,0 +1,87 @@
+# tf.raw_ops.CudnnRNNCanonicalToParamsV2
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/CudnnRNNCanonicalToParamsV2](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/CudnnRNNCanonicalToParamsV2)
+
+---
+
+Converts CudnnRNN params from canonical form to usable form. It supports the projection in LSTM.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.CudnnRNNCanonicalToParamsV2`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/CudnnRNNCanonicalToParamsV2)
+
+```
+tf.raw_ops.CudnnRNNCanonicalToParamsV2(
+    num_layers,
+    num_units,
+    input_size,
+    weights,
+    biases,
+    rnn_mode='lstm',
+    input_mode='linear_input',
+    direction='unidirectional',
+    dropout=0,
+    seed=0,
+    seed2=0,
+    num_proj=0,
+    name=None
+)
+```
+
+Writes a set of weights into the opaque params buffer so they can be used in
+upcoming training or inferences.
+
+Note that the params buffer may not be compatible across different GPUs. So any
+save and restoration should be converted to and from the canonical weights and
+biases.
+
+num\_layers: Specifies the number of layers in the RNN model.
+num\_units: Specifies the size of the hidden state.
+input\_size: Specifies the size of the input state.
+weights: the canonical form of weights that can be used for saving
+and restoration. They are more likely to be compatible across different
+generations.
+biases: the canonical form of biases that can be used for saving
+and restoration. They are more likely to be compatible across different
+generations.
+num\_params\_weights: number of weight parameter matrix for all layers.
+num\_params\_biases: number of bias parameter vector for all layers.
+rnn\_mode: Indicates the type of the RNN model.
+input\_mode: Indicate whether there is a linear projection between the input and
+The actual computation before the first layer. 'skip\_input' is only allowed
+when input\_size == num\_units; 'auto\_select' implies 'skip\_input' when
+input\_size == num\_units; otherwise, it implies 'linear\_input'.
+direction: Indicates whether a bidirectional model will be used.
+dir = (direction == bidirectional) ? 2 : 1
+dropout: dropout probability. When set to 0., dropout is disabled.
+seed: the 1st part of a seed to initialize dropout.
+seed2: the 2nd part of a seed to initialize dropout.
+num\_proj: The output dimensionality for the projection matrices. If None or 0,
+no projection is performed.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `num_layers` | A `Tensor` of type `int32`. |
+| `num_units` | A `Tensor` of type `int32`. |
+| `input_size` | A `Tensor` of type `int32`. |
+| `weights` | A list of at least 1 `Tensor` objects with the same type in: `bfloat16`, `half`, `float32`, `float64`. |
+| `biases` | A list of at least 1 `Tensor` objects with the same type as `weights`. |
+| `rnn_mode` | An optional `string` from: `"rnn_relu", "rnn_tanh", "lstm", "gru"`. Defaults to `"lstm"`. |
+| `input_mode` | An optional `string` from: `"linear_input", "skip_input", "auto_select"`. Defaults to `"linear_input"`. |
+| `direction` | An optional `string` from: `"unidirectional", "bidirectional"`. Defaults to `"unidirectional"`. |
+| `dropout` | An optional `float`. Defaults to `0`. |
+| `seed` | An optional `int`. Defaults to `0`. |
+| `seed2` | An optional `int`. Defaults to `0`. |
+| `num_proj` | An optional `int`. Defaults to `0`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `weights`. | |

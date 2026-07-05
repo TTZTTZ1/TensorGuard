@@ -1,0 +1,34 @@
+params:
+  axis:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  value:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_split:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: value
+    Constraint: "axis >= -tf.rank(value) and axis < tf.rank(value)"
+  2:
+    Parameter 1: num_split
+    Parameter 2: value
+    Constraint: "value.shape[axis] % num_split == 0"

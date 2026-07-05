@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FakeQuantWithMinMaxArgs` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FakeQuantWithMinMaxArgs` performs a simulated quantization on a float32 input tensor, mapping its values into a specified range `[min, max]` and outputting a float32 tensor of the same shape. It adjusts the input values into a quantized integer representation based on the given bitwidth (`num_bits`, between 2 and 16) and then de-quantizes them back to floats within `[min, max]`. This is useful for emulating quantization effects during training without actually converting to integer types.
+
+**Key parameters:**
+- `inputs`: Float32 tensor to quantize.
+- `min`, `max`: Clamping range (default -6 and 6).
+- `num_bits`: Bitwidth for quantization (default 8).
+- `narrow_range`: If `True`, quantization range is `[1, 2^num_bits - 1]`; otherwise `[0, 2^num_bits - 1]`.
+
+**Note:** The function internally adjusts `min` and `max` if zero is not included in the original range, and it requires `min < max`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-6"
+  max:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "6"
+  num_bits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: num_bits
+    Parameter 2: num_bits
+    Constraint: "num_bits >= 2 and num_bits <= 16"
+  2:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min < max"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FakeQuantWithMinMaxArgs in a complex way */
+import tensorflow as tf

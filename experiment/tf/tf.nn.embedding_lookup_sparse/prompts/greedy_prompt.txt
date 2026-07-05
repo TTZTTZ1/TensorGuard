@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.nn.embedding_lookup_sparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.embedding_lookup_sparse` performs sparse embedding lookups by gathering rows from an embedding tensor (`params`) based on indices in a sparse or ragged tensor (`sp_ids`), optionally weighting them (`sp_weights`), and combining the results per row using a specified reduction method (`combiner`). It is commonly used for processing variable-length feature inputs in models like recommendation systems.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    params:
+        dtype: No mention
+        range: No mention
+        structure: ["tensor", "list"]
+        shape: ["any"]
+        default: null
+    sp_ids:
+        dtype: ["int64"]
+        range: No mention
+        structure: ["SparseTensor", "RaggedTensor"]
+        shape: ["rank 2"]
+        default: null
+    sp_weights:
+        dtype: ["float", "double"]
+        range: No mention
+        structure: ["SparseTensor", "RaggedTensor", "None"]
+        shape: ["rank 2"]
+        default: None
+    combiner:
+        dtype: ["string"]
+        range: ["mean", "sqrtn", "sum"]
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: "mean"
+    max_norm:
+        dtype: No mention
+        range: No mention
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: None
+    name:
+        dtype: ["string"]
+        range: No mention
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: None
+    allow_fast_lookup:
+        dtype: ["boolean"]
+        range: ["True", "False"]
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: No mention
+constraints:
+    1:
+        Parameter 1: sp_weights
+        Parameter 2: sp_ids
+        Constraint: (sp_weights is None) or (isinstance(sp_weights, type(sp_ids)) and sp_weights.shape == sp_ids.shape)
+    2:
+        Parameter 1: sp_ids
+        Parameter 2: params
+        Constraint: tf.reduce_all(tf.logical_and(sp_ids.values >= 0, sp_ids.values < tf.shape(params)[0]))
+    3:
+        Parameter 1: combiner
+        Parameter 2: combiner
+        Constraint: combiner in {"mean", "sqrtn", "sum"}
+    4:
+        Parameter 1: params
+        Parameter 2: params
+        Constraint: not isinstance(params, list) or all(p.shape[1:] == params[0].shape[1:] for p in params)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.embedding_lookup_sparse in a complex way */
+import tensorflow as tf

@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorTridiag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorTridiag` is a TensorFlow class that represents a batch of square tridiagonal matrices without explicitly storing the full dense matrix. It provides efficient linear algebra operations (like matrix multiplication and solving linear systems) optimized for tridiagonal structure.
+
+**Key Features:**
+- **Efficient Operations:** Performs `matmul` and `solve` in O(N) time per system, leveraging the tridiagonal form.
+- **Batch Support:** Handles batches of matrices with broadcasting.
+- **Multiple Formats:** Accepts input in three formats: `'sequence'` (list of three diagonals), `'compact'` (3×N tensor), or `'matrix'` (full N×N tensor).
+- **Matrix Properties:** Allows hints (e.g., `is_self_adjoint`, `is_positive_definite`) to enable optimizations.
+
+**Common Use Cases:**
+- Solving linear systems with tridiagonal matrices.
+- Performing matrix-vector products efficiently.
+- Use in algorithms where tridiagonal structure arises (e.g., differential equations, certain kernels).
+
+**Example:**
+```python
+superdiag = [3., 4., 5.]
+diag = [1., -1., 2.]
+subdiag = [6., 7., 8.]
+operator = tf.linalg.LinearOperatorTridiag([superdiag, diag, subdiag], diagonals_format='sequence')
+operator.to_dense()  # Returns the full 3x3 matrix
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonals:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor", "list of tensors"]
+    shape: ["dynamic"]
+    default: null
+  diagonals_format:
+    dtype: ["string"]
+    range: ["matrix", "sequence", "compact"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "compact"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  is_square:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "LinearOperatorTridiag"
+constraints:
+  1:
+    Parameter 1: "diagonals"
+    Parameter 2: "is_self_adjoint"
+    Constraint: "not (tf.dtypes.as_dtype(diagonals.dtype).is_floating and not tf.dtypes.as_dtype(diagonals.dtype).is_complex and is_self_adjoint != True)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorTridiag in a complex way */
+import tensorflow as tf

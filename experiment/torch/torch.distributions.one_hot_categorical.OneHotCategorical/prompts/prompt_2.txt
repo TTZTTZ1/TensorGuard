@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.distributions.one_hot_categorical.OneHotCategorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive suite of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key aspects include:
+
+**Core Components:**
+- **Distribution**: Abstract base class for all probability distributions, with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, and properties like `mean`, `variance`, `support`.
+- **ExponentialFamily**: Subclass for distributions belonging to exponential families, facilitating entropy and KL divergence calculations.
+
+**Key Distributions:**
+- Univariate: `Bernoulli`, `Beta`, `Binomial`, `Categorical`, `Cauchy`, `Exponential`, `Gamma`, `Geometric`, `Laplace`, `Normal`, `Poisson`, `Uniform`, etc.
+- Multivariate: `Dirichlet`, `MultivariateNormal`, `LowRankMultivariateNormal`, `Wishart`, etc.
+- Transformed: `LogNormal`, `HalfNormal`, `HalfCauchy`, `Gumbel`, `Weibull`, etc., built via `TransformedDistribution`.
+- Specialized: `MixtureSameFamily`, `LKJCholesky`, `RelaxedBernoulli` (Gumbel-Softmax), `VonMises`, etc.
+
+**Gradient Estimation Techniques:**
+1. **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients (e.g., reinforcement learning).
+2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling (e.g., variational autoencoders).
+
+**Additional Functionality:**
+- **KL Divergence**: `kl_divergence()` computes KL divergence between distributions, with extensible registration via `register_kl()`.
+- **Transforms**: Classes like `AffineTransform`, `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform` enable bijective mappings for reparameterization.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive_definite`) with registry utilities (`biject_to`, `transform_to`) to convert between constrained and unconstrained spaces for optimization.
+
+**Usage Example:**
+```python
+# Create a normal distribution
+m = Normal(loc=0.0, scale=1.0)
+samples = m.sample((5,))          # Random sampling
+log_prob = m.log_prob(samples)    # Log-likelihood
+entropy = m.entropy()             # Distribution entropy
+
+# Reparameterized sampling (differentiable)
+params = policy_network(state)
+dist = Normal(*params)
+action = dist.rsample()           # Differentiable sample
+```
+
+This module is essential for probabilistic modeling, Bayesian inference, variational methods, and reinforcement learning, integrating seamlessly with PyTorch's autograd for end-to-end differentiable stochastic computations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.one_hot_categorical.OneHotCategorical in a complex way */
+import torch

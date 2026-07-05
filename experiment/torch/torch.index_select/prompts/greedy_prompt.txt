@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.index_select` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.index_select` extracts a new tensor from an input tensor by selecting elements along a specified dimension using a 1‑D index tensor. The output tensor retains the same number of dimensions as the input, with the selected dimension’s size matching the length of the index tensor, while other dimensions remain unchanged. The operation does not share storage with the original tensor.
+
+**Parameters:**
+- `input`: Source tensor.
+- `dim`: Dimension along which to index.
+- `index`: 1‑D tensor of indices (int/long dtype).
+
+**Keyword argument:**
+- `out`: Optional output tensor (reshaped if needed).
+
+**Example:**
+```python
+x = torch.randn(3, 4)
+indices = torch.tensor([0, 2])
+torch.index_select(x, 0, indices)  # Select rows 0 and 2
+torch.index_select(x, 1, indices)  # Select columns 0 and 2
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["torch.IntTensor", "torch.LongTensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  out:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= 0 and dim < input.ndim"
+  2:
+    Parameter 1: index
+    Parameter 2: input
+    Constraint: "index.max() < input.size(dim) and index.min() >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.index_select in a complex way */
+import torch

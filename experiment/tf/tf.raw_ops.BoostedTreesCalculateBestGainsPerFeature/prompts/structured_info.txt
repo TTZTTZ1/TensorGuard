@@ -1,0 +1,58 @@
+params:
+  node_id_range:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [2]
+    default: No mention
+  stats_summary_list:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["list"]
+    shape: No mention
+    default: No mention
+  l1:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: No mention
+  l2:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: No mention
+  tree_complexity:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: No mention
+  min_node_weight:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: No mention
+  max_splits:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: stats_summary_list
+    Parameter 2: max_splits
+    Constraint: all(tensor.shape[0] == max_splits for tensor in stats_summary_list)
+  2:
+    Parameter 1: node_id_range
+    Parameter 2: max_splits
+    Constraint: node_id_range[0] >= 0 and node_id_range[0] < node_id_range[1] and node_id_range[1] <= max_splits

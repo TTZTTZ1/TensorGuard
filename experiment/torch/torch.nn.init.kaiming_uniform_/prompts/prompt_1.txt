@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.kaiming_uniform_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions for initializing neural network parameters. All functions operate in `torch.no_grad()` mode and do not affect autograd.
+
+**Key Functions:**
+
+1. **Basic Initializations:**
+   - `uniform_`, `normal_`, `constant_`, `ones_`, `zeros_`, `eye_`, `dirac_`
+
+2. **Advanced Initializations:**
+   - `xavier_uniform_`, `xavier_normal_` (Glorot initialization)
+   - `kaiming_uniform_`, `kaiming_normal_` (He initialization)
+   - `orthogonal_`, `sparse_`, `trunc_normal_`
+
+3. **Utility:**
+   - `calculate_gain()`: Returns recommended gain values for different nonlinearities.
+
+**Common Parameters:**
+- `tensor`: The tensor to initialize (modified in-place)
+- Distribution-specific parameters (e.g., `mean`, `std`, `a`, `b`)
+- `generator`: Optional torch Generator for sampling
+- `gain`: Scaling factor (for Xavier/Kaiming methods)
+- `mode`: `'fan_in'` or `'fan_out'` (for Kaiming initialization)
+- `nonlinearity`: Activation function name (e.g., `'relu'`, `'leaky_relu'`)
+
+**Usage Pattern:**
+```python
+w = torch.empty(3, 5)
+nn.init.xavier_uniform_(w, gain=nn.init.calculate_gain('relu'))
+```
+
+**Important Notes:**
+- All functions modify tensors in-place
+- For Linear layers, ensure correct `fan_in`/`fan_out` calculation (weights are typically transposed)
+- Special warnings exist for SELU initialization (use `'linear'` instead of `'selu'`)
+
+These initializations help maintain stable gradient flow and accelerate convergence during neural network training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  a:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  mode:
+    dtype: ["string"]
+    range: [["fan_in", "fan_out"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'fan_in'"
+  nonlinearity:
+    dtype: ["string"]
+    range: [["linear", "conv1d", "conv2d", "conv3d", "conv_transpose1d", "conv_transpose2d", "conv_transpose3d", "sigmoid", "tanh", "relu", "leaky_relu", "selu"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'leaky_relu'"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "nonlinearity"
+    Parameter 2: "a"
+    Constraint: "nonlinearity == 'leaky_relu' or a == 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.kaiming_uniform_ in a complex way */
+import torch

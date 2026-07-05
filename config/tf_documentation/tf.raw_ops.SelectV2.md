@@ -1,0 +1,33 @@
+# tf.raw_ops.SelectV2
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/SelectV2](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/SelectV2)
+
+---
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.SelectV2`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/SelectV2)
+
+```
+tf.raw_ops.SelectV2(
+    condition, t, e, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `condition` | A `Tensor` of type `bool`. |
+| `t` | A `Tensor`. |
+| `e` | A `Tensor`. Must have the same type as `t`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `t`. | |

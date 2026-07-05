@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrizations.orthogonal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.utils.parametrizations.orthogonal` function applies an orthogonal or unitary parametrization to a matrix (or batch of matrices) within a PyTorch module, ensuring the weight matrix has orthonormal columns or rows.
+
+**Key features:**
+- Enforces orthogonality: \( Q^H Q = I \) for \( m \geq n \) (orthonormal columns) or \( Q Q^H = I \) for \( m < n \) (orthonormal rows).
+- Supports real and complex matrices.
+- Offers three parametrization methods:
+  - `"matrix_exp"`/`"cayley"`: Uses matrix exponential or Cayley transform on skew-symmetric matrices (faster convergence but slower for thin/wide matrices).
+  - `"householder"`: Uses product of Householder reflectors.
+- Optional dynamic trivialization (`use_trivialization=True`) improves convergence with extra memory.
+- Automatically orthogonalizes initial weights via QR decomposition if needed.
+
+**Usage:**
+```python
+orthogonal(module, name='weight', orthogonal_map=None, use_trivialization=True)
+```
+Applies the parametrization to the specified weight tensor in the module, returning the modified module with orthogonal constraints.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "weight"
+  orthogonal_map:
+    dtype: ["string"]
+    range: [["matrix_exp", "cayley", "householder"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  use_trivialization:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "orthogonal_map"
+    Parameter 2: "orthogonal_map"
+    Constraint: "orthogonal_map in ['matrix_exp', 'cayley', 'householder']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrizations.orthogonal in a complex way */
+import torch

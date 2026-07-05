@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.jit.freeze` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.jit.freeze` converts a PyTorch `ScriptModule` into a frozen version by inlining submodules, parameters, and attributes as constants in the TorchScript IR graph. This process applies generic optimizations to speed up inference.
+
+**Key Features:**
+- Removes module hierarchy and parameters (converted to constants).
+- Preserves the `forward` method and any attributes specified in `preserved_attrs`.
+- Automatically preserves attributes modified within preserved methods.
+- Requires the input module to be in eval mode.
+- Use `optimize_for_inference` after freezing for further hardware-specific optimizations.
+
+**Parameters:**
+- `mod`: The `ScriptModule` to freeze.
+- `preserved_attrs` (optional): List of attribute names (including submodule attributes) to keep mutable.
+- `optimize_numerics`: If `True`, runs additional optimizations that may affect numerical precision.
+
+**Returns:** A frozen `ScriptModule`.
+
+**Example Usage:**
+```python
+scripted = torch.jit.script(MyModule().eval())
+frozen = torch.jit.freeze(scripted, preserved_attrs=["custom_attr"])
+```
+
+**Notes:**
+- After freezing, operations like `.to(device)` no longer work; use `map_location` in `torch.jit.load` for device remapping.
+- Check `dump_alias_db` on the frozen graph to debug attribute preservation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mod:
+    dtype: ["torch.jit.ScriptModule"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  preserved_attrs:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  optimize_numerics:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.jit.freeze in a complex way */
+import torch

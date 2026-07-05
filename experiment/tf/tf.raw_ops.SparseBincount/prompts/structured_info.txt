@@ -1,0 +1,60 @@
+params:
+  indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  values:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  dense_shape:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  size:
+    dtype: ["int32", "int64"]
+    range: ["[0, inf)"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  weights:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  binary_output:
+    dtype: ["bool"]
+    range: ["False", "True"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "size"
+    Parameter 2: "values"
+    Constraint: "size.dtype == values.dtype"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "indices.shape[0] == values.shape[0]"
+  3:
+    Parameter 1: "indices"
+    Parameter 2: "dense_shape"
+    Constraint: "indices.shape[1] == dense_shape.shape[0]"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "dense_shape"
+    Constraint: "tf.equal(tf.size(weights), 0) or tf.reduce_all(tf.equal(tf.shape(weights), dense_shape))"

@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `torch.distributions.categorical.Categorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Wishart, LKJCholesky
+
+### **3. Gradient Estimation Methods**
+- **Score Function/REINFORCE**: Uses `sample()` + `log_prob()` (no differentiability through samples)
+- **Pathwise Derivative**: Uses `rsample()` (reparameterization trick, differentiable samples)
+
+### **4. Transforms System**
+- Transform distributions via invertible mappings (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- Used in `TransformedDistribution` to create new distributions
+- Support for bijective and non-bijective transformations
+
+### **5. Constraints System**
+- Define valid parameter domains for distributions
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Variational Inference**: Using reparameterized distributions (Normal, etc.)
+2. **Reinforcement Learning**: Policy gradients with categorical distributions
+3. **Probabilistic Modeling**: Building complex distributions via transformations
+4. **Bayesian Methods**: Prior/posterior distributions in hierarchical models
+
+## **Key Design Features**
+- Follows TensorFlow Distributions design patterns
+- Batch-aware: All distributions support batched parameters
+- GPU-compatible and integrated with PyTorch's autograd system
+- Extensive support for exponential family distributions
+
+The module provides a unified interface for probabilistic modeling while maintaining computational efficiency and differentiability for gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "None"
+    Constraint: "probs is None or ( (probs >= 0).all() and (probs.sum(dim=-1) == 1).all() )"
+  2:
+    Parameter 1: "logits"
+    Parameter 2: "None"
+    Constraint: "logits is None or isinstance(logits, torch.Tensor)"
+  3:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.categorical.Categorical in a complex way */
+import torch

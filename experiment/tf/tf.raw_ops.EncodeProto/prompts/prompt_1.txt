@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.EncodeProto` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.EncodeProto` serializes protobuf messages from input tensors, mapping TensorFlow data to specified protocol buffer fields. It requires:
+
+- **`sizes`**: A tensor indicating repeat counts for each field.
+- **`values`**: A list of tensors with data matching the field schema.
+- **`field_names`**: Names of the proto fields to populate.
+- **`message_type`**: The protobuf message type name.
+- **`descriptor_source`**: Source for the protocol descriptor (default is local linked definitions).
+
+Key points:
+- Input tensors must share a common batch shape.
+- Supports special type mappings (e.g., submessages as `DT_STRING`, unsigned integers via twos-complement).
+- Returns a string tensor containing the serialized protobuf messages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sizes:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape", "len(field_names)"]
+    default: null
+  values:
+    dtype: "No mention"
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  field_names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  message_type:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  descriptor_source:
+    dtype: ["string"]
+    range: ["", "local://", "file", "bytes://"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "local://"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: field_names
+    Constraint: len(values) == len(field_names)
+  2:
+    Parameter 1: values
+    Parameter 2: sizes
+    Constraint: all(v.shape[:-1] == values[0].shape[:-1] for v in values) and sizes.shape == (values[0].shape[:-1] + (len(field_names),))
+  3:
+    Parameter 1: values
+    Parameter 2: sizes
+    Constraint: all(all(values[f].shape[-1] >= sizes[b, f] for b in range(sizes.shape[0])) for f in range(len(field_names)))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.EncodeProto in a complex way */
+import tensorflow as tf

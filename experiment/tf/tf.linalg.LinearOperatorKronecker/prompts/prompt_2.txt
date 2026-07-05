@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorKronecker` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorKronecker` is a TensorFlow class that represents the **Kronecker product** of one or more linear operators. It efficiently composes multiple operators into a single composite operator without explicitly forming the full dense matrix, enabling scalable linear algebra operations.
+
+### **Key Features:**
+- **Kronecker Product Composition**: Combines operators `[op1, op2, ..., opJ]` into `op1 ⊗ op2 ⊗ ... ⊗ opJ`.
+- **Shape Handling**: If each operator has shape `batch_shape_j + [M_j, N_j]`, the composite shape is `broadcast_batch_shape + [∏ M_j, ∏ N_j]`.
+- **Performance**: Operations on the composite operator sum the costs of individual operators.
+- **Matrix Property Hints**: Supports flags like `is_square`, `is_non_singular`, etc., to declare mathematical properties.
+
+### **Common Use Cases:**
+1. **Construct Large Structured Operators**: Combine smaller operators to form large block-structured matrices efficiently.
+2. **Batch Operations**: Apply Kronecker products across batch dimensions (e.g., in stochastic or multi-instance settings).
+3. **Implicit Representations**: Avoid dense storage for Kronecker products, using only the factors.
+
+### **Example:**
+```python
+import tensorflow as tf
+
+# Create two 2x2 operators
+op1 = tf.linalg.LinearOperatorFullMatrix([[1., 2.], [3., 4.]])
+op2 = tf.linalg.LinearOperatorFullMatrix([[1., 0.], [2., 1.]])
+
+# Kronecker product → 4x4 operator
+kron_op = tf.linalg.LinearOperatorKronecker([op1, op2])
+print(kron_op.to_dense())  # 4x4 dense matrix
+```
+
+### **Key Methods:**
+- `matmul(x)`, `solve(rhs)`, `determinant()`, `log_abs_determinant()`: Perform core linear algebra operations.
+- `adjoint()`, `inverse()`, `cholesky()`: Operator transformations (if properties allow).
+- `to_dense()`: Explicit dense representation (use cautiously for large operators).
+
+### **Notes:**
+- All operators must have the same `dtype`.
+- The Kronecker product is associative, so grouping doesn’t affect results.
+- Use property hints (e.g., `is_self_adjoint=True`) to enable optimizations.
+
+This class is ideal for leveraging Kronecker structure in large-scale linear systems, common in signal processing, quantum mechanics, and multidimensional problems.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operators:
+    dtype: [null]
+    range: [null]
+    structure: ["iterable"]
+    shape: [null]
+    default: null
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_square:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "len(operators) > 0"
+  2:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "all(op.dtype == operators[0].dtype for op in operators)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorKronecker in a complex way */
+import tensorflow as tf

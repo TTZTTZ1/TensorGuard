@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.experimental.Optional` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.Optional` represents a value that may or may not be present, allowing operations to return a result without raising exceptions. It is commonly used in TensorFlow data pipelines, such as with `tf.data.Iterator.get_next_as_optional()`, to handle cases like the end of a sequence.
+
+**Key Features:**
+- Can wrap values convertible to `tf.Tensor` or `tf.CompositeTensor`.
+- Provides methods to check for a value (`has_value()`) and retrieve it (`get_value()`).
+- Supports creating an `Optional` with a value (`from_value()`) or without (`empty()`).
+
+**Main Methods:**
+- `empty(element_spec)`: Creates an empty `Optional` with a specified structure.
+- `from_value(value)`: Wraps a given value in an `Optional`.
+- `has_value(name=None)`: Returns a boolean tensor indicating if a value exists.
+- `get_value(name=None)`: Returns the wrapped value; raises an error if empty.
+
+**Example:**
+```python
+optional = tf.experimental.Optional.from_value(42)
+print(optional.has_value())  # True
+print(optional.get_value())  # 42
+```
+
+**Attribute:**
+- `element_spec`: Describes the type and shape of the optional's value.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_spec:
+    dtype: ["TypeSpec"]
+    range: null
+    structure: ["nested"]
+    shape: null
+    default: null
+  value:
+    dtype: ["int", "float", "string", "bool", "complex"]
+    range: null
+    structure: ["scalar", "composite"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: value
+    Parameter 2: value
+    Constraint: "isinstance(value, (tf.Tensor, tf.CompositeTensor))"
+  2:
+    Parameter 1: element_spec
+    Parameter 2: element_spec
+    Constraint: "all(isinstance(s, tf.TypeSpec) for s in tf.nest.flatten(element_spec))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.Optional in a complex way */
+import tensorflow as tf

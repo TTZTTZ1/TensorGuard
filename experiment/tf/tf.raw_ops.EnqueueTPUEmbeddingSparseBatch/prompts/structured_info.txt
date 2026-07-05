@@ -1,0 +1,56 @@
+params:
+  sample_indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  embedding_indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  aggregation_weights:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  mode_override:
+    dtype: ["string"]
+    range: ["unspecified", "inference", "training", "backward_pass_only"]
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "No mention"
+  device_ordinal:
+    dtype: ["int"]
+    range: ["-1 or >=0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  combiners:
+    dtype: ["string"]
+    range: ["mean", "sum", "sqrtn"]
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "embedding_indices"
+    Parameter 2: "sample_indices"
+    Constraint: "len(embedding_indices) == len(sample_indices)"
+  2:
+    Parameter 1: "aggregation_weights"
+    Parameter 2: "sample_indices"
+    Constraint: "len(aggregation_weights) == len(sample_indices)"
+  3:
+    Parameter 1: "sample_indices"
+    Parameter 2: "sample_indices"
+    Constraint: "len(sample_indices) >= 1"

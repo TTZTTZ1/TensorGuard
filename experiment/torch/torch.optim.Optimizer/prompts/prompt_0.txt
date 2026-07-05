@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.optim.Optimizer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim` package provides a comprehensive set of optimization algorithms for training neural networks in PyTorch. Here’s a concise overview of its usage and functionality:
+
+### **Core Usage**
+1. **Constructing an Optimizer**  
+   - Pass an iterable of model parameters (or named parameters) to the optimizer, along with algorithm-specific hyperparameters like learning rate and weight decay.  
+   - Example:  
+     ```python
+     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+     ```
+
+2. **Per-Parameter Options**  
+   - Define multiple parameter groups with distinct settings (e.g., different learning rates per layer) using a list of dictionaries.  
+   - Example:  
+     ```python
+     optim.SGD([
+         {'params': model.base.parameters(), 'lr': 1e-2},
+         {'params': model.classifier.parameters()}
+     ], lr=1e-3)
+     ```
+
+3. **Taking an Optimization Step**  
+   - Call `optimizer.step()` after computing gradients via `loss.backward()`.  
+   - For algorithms like LBFGS, pass a closure function that recomputes the loss.  
+   - Always clear gradients with `optimizer.zero_grad()` before each step.
+
+### **Key Features**
+- **Algorithms**: Includes SGD, Adam, AdamW, RMSprop, Adagrad, LBFGS, and more.  
+- **Implementation Variants**:  
+  - **for-loop**: Basic, sequential updates.  
+  - **foreach (multi-tensor)**: Faster, default for most optimizers.  
+  - **fused**: Highest performance (e.g., for Adam/AdamW on CUDA).  
+- **Learning Rate Scheduling**:  
+  - Use `torch.optim.lr_scheduler` to adjust LR based on epochs or metrics (e.g., `ReduceLROnPlateau`).  
+  - Apply `scheduler.step()` **after** `optimizer.step()`.  
+- **State Management**:  
+  - Save/load optimizer state via `state_dict()` and `load_state_dict()`.  
+  - Support for custom hooks to handle model architecture changes (e.g., parameter name matching).  
+- **Weight Averaging (SWA/EMA)**:  
+  - `AveragedModel` computes running averages of weights (Stochastic Weight Averaging or Exponential Moving Average).  
+  - `update_bn()` updates batch normalization statistics post-training.  
+
+### **Important Notes**
+- Parameters must be provided in a **deterministic order** (e.g., list, not set).  
+- For LR schedulers, call `scheduler.step()` **after** the optimizer update to avoid skipping the first LR value.  
+- Custom averaging strategies (SWA/EMA) can be defined via `avg_fn` or `multi_avg_fn`.  
+
+### **Example Training Loop**
+```python
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+scheduler = ExponentialLR(optimizer, gamma=0.9)
+
+for epoch in range(epochs):
+    for data, target in dataloader:
+        optimizer.zero_grad()
+        output = model(data)
+        loss = loss_fn(output, target)
+        loss.backward()
+        optimizer.step()
+    scheduler.step()
+```
+
+In summary, `torch.optim` offers a flexible and performant interface for gradient-based optimization, with support for advanced techniques like per-parameter tuning, learning rate scheduling, and weight averaging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["torch.Tensor", "dict"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  defaults:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Optimizer in a complex way */
+import torch

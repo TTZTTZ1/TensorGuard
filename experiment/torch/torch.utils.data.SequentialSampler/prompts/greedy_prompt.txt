@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.SequentialSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading in PyTorch, centered around the `DataLoader` class. Here’s a concise overview:
+
+### Core Components
+- **`DataLoader`**: An iterable over a dataset that supports:
+  - **Map‑style datasets** (with `__getitem__` and `__len__`) and **iterable‑style datasets** (with `__iter__`).
+  - **Custom data‑loading order** via samplers.
+  - **Automatic batching** (with customizable collation).
+  - **Single‑ or multi‑process loading** (`num_workers` > 0).
+  - **Memory pinning** for faster GPU transfers (`pin_memory=True`).
+
+### Key Concepts
+1. **Dataset Types**:
+   - **Map‑style**: Indexable (e.g., `dataset[idx]`).
+   - **Iterable‑style**: Stream‑based (e.g., from a database or real‑time logs).
+
+2. **Samplers**:
+   - Control the order of indices for map‑style datasets (e.g., `RandomSampler`, `SequentialSampler`).
+   - Can be customized via the `sampler` or `batch_sampler` arguments.
+
+3. **Batching**:
+   - Enabled by default (`batch_size > 1`).
+   - The `collate_fn` merges a list of samples into a batch (default behavior stacks tensors).
+   - Can be disabled for manual batching by setting `batch_size=None`.
+
+4. **Multi‑process Loading**:
+   - Set `num_workers > 0` to parallelize data loading.
+   - Requires careful handling of randomness and dataset replication (especially for iterable‑style datasets).
+   - Platform‑specific behaviors (e.g., `fork()` on Unix, `spawn()` on Windows).
+
+5. **Memory Pinning**:
+   - `pin_memory=True` copies tensors to pinned (page‑locked) memory, accelerating GPU transfers.
+
+### Important Notes
+- **Custom collation**: Use a custom `collate_fn` for padding, custom data structures, etc.
+- **Worker initialization**: `worker_init_fn` can configure each worker process individually.
+- **Randomness**: In multi‑process loading, each worker’s seed is derived from the base seed plus its worker ID.
+- **Platform compatibility**: On Windows/macOS, wrap main script code in `if __name__ == '__main__':` and define functions at the top level.
+
+### Utility Classes
+- **`Dataset`**: Abstract base class for map‑style datasets.
+- **`IterableDataset`**: Base for stream‑like datasets.
+- **`TensorDataset`, `ConcatDataset`, `Subset`, etc.**: Convenience classes for common operations.
+- **`Sampler` and its subclasses**: Define sampling strategies.
+
+### Example Usage
+```python
+from torch.utils.data import DataLoader, TensorDataset
+
+dataset = TensorDataset(data, labels)
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in loader:
+    # Training loop
+    pass
+```
+
+In short, `torch.utils.data` provides a flexible, high‑performance pipeline for feeding data to PyTorch models, with built‑in support for batching, shuffling, parallelism, and GPU acceleration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data_source:
+    dtype: ["Sized"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.SequentialSampler in a complex way */
+import torch

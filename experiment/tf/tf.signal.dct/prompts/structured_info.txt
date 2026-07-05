@@ -1,0 +1,58 @@
+params:
+  input:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., samples]"]
+    default: null
+  type:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "2"
+  n:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  norm:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: type
+    Parameter 2: type
+    Constraint: "type in [1, 2, 3, 4]"
+  2:
+    Parameter 1: axis
+    Parameter 2: axis
+    Constraint: "axis == -1"
+  3:
+    Parameter 1: n
+    Parameter 2: n
+    Constraint: "n is None or n > 0"
+  4:
+    Parameter 1: norm
+    Parameter 2: norm
+    Constraint: "norm is None or norm == 'ortho'"
+  5:
+    Parameter 1: type
+    Parameter 2: norm
+    Constraint: "not (type == 1 and norm == 'ortho')"

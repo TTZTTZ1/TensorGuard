@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.DoubleStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors add metadata like shape, stride, and data type to interpret that storage.
+
+**Key Points:**
+
+*   **Purpose:** It's the fundamental data storage for tensors. A tensor's data is accessed via `tensor.untyped_storage()`.
+*   **Sharing:** Multiple tensors (e.g., views created by `.view()` or slicing) can share the same underlying `UntypedStorage`.
+*   **Identification:** Each storage has a unique identifier accessible via `.data_ptr()`.
+*   **Independence:** The storage is somewhat independent; tensors with different dtypes or shapes can point to the same storage.
+*   **Manipulation:** It has methods for in-place (`fill_()`) and out-of-place (`clone()`) operations, device transfer (`cuda()`, `cpu()`), and memory mapping (`from_file()`, `share_memory_()`).
+*   **Warning:** Directly manipulating a tensor's storage is a low-level, risky operation and is generally discouraged. Standard tensor methods should be preferred.
+*   **Special Cases:** Tensors on the `"meta"` device or `FakeTensor`s do not have typical storage.
+*   **Legacy:** The older `torch.TypedStorage` and type-specific classes (e.g., `torch.FloatStorage`) are deprecated. `torch.UntypedStorage` is the modern, untyped API.
+
+**In short:** `torch.UntypedStorage` is the raw byte bucket for tensor data. Most users should interact with tensors directly, but the storage API is available for advanced, low-level memory management.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "list", "torch.Tensor"]
+    range: null
+    structure: ["variable"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "None", "int", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1.
+    Parameter 1: dtype
+    Parameter 2: None
+    Constraint: "dtype is None or dtype == torch.float64"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.DoubleStorage in a complex way */
+import torch

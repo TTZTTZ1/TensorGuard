@@ -1,0 +1,33 @@
+# tf.raw_ops.Relu6
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/Relu6](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/Relu6)
+
+---
+
+Computes rectified linear 6: `min(max(features, 0), 6)`.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.Relu6`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/Relu6)
+
+```
+tf.raw_ops.Relu6(
+    features, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `features` | A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `features`. | |

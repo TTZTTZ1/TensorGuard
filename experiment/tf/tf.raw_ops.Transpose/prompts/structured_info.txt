@@ -1,0 +1,28 @@
+params:
+  x:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  perm:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: perm
+    Constraint: "tf.shape(perm)[0] == tf.rank(x)"
+  2:
+    Parameter 1: perm
+    Parameter 2: x
+    Constraint: "tf.reduce_all(tf.math.equal(tf.sort(perm), tf.range(tf.rank(x))))"

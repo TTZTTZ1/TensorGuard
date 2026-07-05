@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MatrixDiagV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.MatrixDiagV2` function constructs a batched diagonal matrix (or band of diagonals) from given diagonal values. It allows specifying diagonal offsets (`k`), output matrix dimensions (`num_rows`, `num_cols`), and a padding value for non-diagonal positions.
+
+**Key functionality:**
+- Takes a `diagonal` tensor of rank `r` and outputs a tensor of rank `r+1` (for a single diagonal) or `r` (for a diagonal band).
+- The `k` parameter defines which diagonals to fill:  
+  - `k = 0` → main diagonal  
+  - `k > 0` → superdiagonals  
+  - `k < 0` → subdiagonals  
+  - A range `[k[0], k[1]]` fills a band of diagonals.
+- If `num_rows` or `num_cols` are omitted, the function infers them to make the innermost matrix square.
+- All positions outside the specified diagonal(s) are set to `padding_value` (default 0).
+
+**Use case:**  
+Useful for creating batched diagonal matrices or banded matrices (like tridiagonal matrices) in tensor operations, commonly needed in linear algebra computations or when initializing specific matrix structures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonal:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["rank >= 1"]
+    default: null
+  k:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar or pair"]
+    default: null
+  num_rows:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  num_cols:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  padding_value:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: "k[0] <= k[1]"
+  2.
+    Parameter 1: padding_value
+    Parameter 2: diagonal
+    Constraint: "padding_value.dtype == diagonal.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MatrixDiagV2 in a complex way */
+import tensorflow as tf

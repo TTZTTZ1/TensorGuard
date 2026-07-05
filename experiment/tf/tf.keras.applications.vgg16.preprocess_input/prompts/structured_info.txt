@@ -1,0 +1,26 @@
+params:
+  x:
+    dtype: ["float"]
+    range: [0, 255]
+    structure: ["array"]
+    shape: [3, 4]
+    default: null
+  data_format:
+    dtype: ["string", "None"]
+    range: [["channels_first", "channels_last"]]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: null
+    Constraint: "tf.reduce_all(x >= 0) and tf.reduce_all(x <= 255)"
+  2:
+    Parameter 1: "x"
+    Parameter 2: null
+    Constraint: "(len(x.shape) == 3 and x.shape[2] == 3) or (len(x.shape) == 4 and x.shape[3] == 3)"
+  3:
+    Parameter 1: "data_format"
+    Parameter 2: null
+    Constraint: "data_format is None or data_format in ['channels_first', 'channels_last']"

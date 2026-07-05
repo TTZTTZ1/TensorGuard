@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.random.log_uniform_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.log_uniform_candidate_sampler` is a function for candidate sampling, primarily used in training with large output spaces (like word embeddings). It samples classes from a log-uniform (Zipfian) distribution, which approximates the frequency distribution of many real-world datasets (e.g., words sorted by frequency).
+
+**Key Features:**
+- Samples `num_sampled` candidate classes from the range `[0, range_max)`.
+- The sampling distribution is approximately:  
+  `P(class) ∝ (log(class + 2) - log(class + 1)) / log(range_max + 1)`.
+- Returns three tensors:
+  1. **`sampled_candidates`**: The sampled class indices (may overlap with true classes).
+  2. **`true_expected_count`**: Expected frequency of each true class under the sampling distribution.
+  3. **`sampled_expected_count`**: Expected frequency of each sampled class.
+
+**Parameters:**
+- `true_classes`: Target classes (shape `[batch_size, num_true]`).
+- `num_true`: Number of target classes per example.
+- `num_sampled`: Number of classes to sample.
+- `unique`: If `True`, samples without replacement.
+- `range_max`: Number of possible classes.
+- `seed`/`name`: Optional seed and operation name.
+
+**Note:** This function only provides the sampling components. Implementing specific algorithms (e.g., NCE, Sampled Logistic) requires additional steps, such as handling overlaps between sampled and true classes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  unique:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  range_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: true_classes
+    Parameter 2: range_max
+    Constraint: tf.math.reduce_all(true_classes < range_max)
+  2:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: tf.shape(true_classes)[1] == num_true
+  3:
+    Parameter 1: num_sampled
+    Parameter 2: range_max
+    Constraint: (not unique) or (num_sampled <= range_max)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.log_uniform_candidate_sampler in a complex way */
+import tensorflow as tf

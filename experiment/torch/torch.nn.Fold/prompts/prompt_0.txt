@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `torch.nn.Fold` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`Fold` reconstructs a multi-dimensional tensor from sliding local blocks (e.g., image patches) by summing overlapping values. It is commonly used as the inverse operation of `Unfold`, though overlapping regions are summed rather than simply copied back.
+
+**Key Parameters:**
+- `output_size`: Spatial dimensions of the output tensor.
+- `kernel_size`: Size of each sliding block.
+- `stride`, `padding`, `dilation`: Control block extraction and overlap.
+
+**Key Notes:**
+- Input shape: `(N, C × ∏(kernel_size), L)` or `(C × ∏(kernel_size), L)`, where `L` is the total number of blocks.
+- Output shape: `(N, C, *output_size)` or `(C, *output_size)`.
+- For 2D data, this operation is often called `col2im`.
+- `Fold` and `Unfold` are not exact inverses if blocks overlap; instead:  
+  `fold(unfold(input)) == divisor * input`, where `divisor` is a shape/dtype-dependent tensor.
+
+**Example:**
+```python
+fold = nn.Fold(output_size=(4, 5), kernel_size=(2, 2))
+input = torch.randn(1, 12, 12)  # 12 = 3 channels × (2×2) kernel, 12 blocks
+output = fold(input)  # Shape: (1, 3, 4, 5)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  output_size:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: "No mention"
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: "No mention"
+    default: null
+  dilation:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: "No mention"
+    default: "1"
+  padding:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: "No mention"
+    default: "0"
+  stride:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: "No mention"
+    default: "1"
+constraints:
+  1:
+    Parameter 1: "output_size"
+    Parameter 2: "kernel_size"
+    Constraint: "not (isinstance(output_size, tuple) and isinstance(kernel_size, tuple)) or (len(kernel_size) == 1 or len(kernel_size) == len(output_size))"
+  2:
+    Parameter 1: "output_size"
+    Parameter 2: "dilation"
+    Constraint: "not (isinstance(output_size, tuple) and isinstance(dilation, tuple)) or (len(dilation) == 1 or len(dilation) == len(output_size))"
+  3:
+    Parameter 1: "output_size"
+    Parameter 2: "padding"
+    Constraint: "not (isinstance(output_size, tuple) and isinstance(padding, tuple)) or (len(padding) == 1 or len(padding) == len(output_size))"
+  4:
+    Parameter 1: "output_size"
+    Parameter 2: "stride"
+    Constraint: "not (isinstance(output_size, tuple) and isinstance(stride, tuple)) or (len(stride) == 1 or len(stride) == len(output_size))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Fold in a complex way */
+import torch

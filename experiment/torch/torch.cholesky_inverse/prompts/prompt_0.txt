@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.cholesky_inverse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cholesky_inverse` computes the inverse of a symmetric (real) or Hermitian (complex) positive-definite matrix using its Cholesky decomposition.  
+
+**Key points:**  
+- **Input:** The Cholesky factor `L` (lower or upper triangular) such that \( A = LL^H \) (or \( A = LL^T \) for real matrices).  
+- **Parameter `upper`:** Set `True` if `L` is upper triangular; default is `False` (lower triangular).  
+- **Supports:** Float, double, cfloat, cdouble dtypes and batched inputs.  
+- **Use case:** Efficiently compute \( A^{-1} \) when the Cholesky decomposition is already available, avoiding recomputation of the decomposition.  
+
+**Example:**  
+```python
+L = torch.linalg.cholesky(A)          # Get Cholesky factor
+inv_A = torch.cholesky_inverse(L)     # Compute inverse from L
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  L:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "L"
+    Parameter 2: "L"
+    Constraint: "L.shape[-1] == L.shape[-2]"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "L"
+    Constraint: "out is None or out.shape == L.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cholesky_inverse in a complex way */
+import torch

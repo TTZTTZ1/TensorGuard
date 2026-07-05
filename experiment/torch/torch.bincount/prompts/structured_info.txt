@@ -1,0 +1,32 @@
+params:
+  input:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-d"]
+    default: null
+  weights:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-d"]
+    default: "None"
+  minlength:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: None
+    Constraint: "input.numel() == 0 or torch.all(input >= 0)"
+  2:
+    Parameter 1: weights
+    Parameter 2: input
+    Constraint: "weights is None or weights.shape == input.shape"
+  3:
+    Parameter 1: minlength
+    Parameter 2: None
+    Constraint: "minlength >= 0"

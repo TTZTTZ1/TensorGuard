@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transformed_distribution.TransformedDistribution` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive suite of parameterizable probability distributions and utilities for stochastic computation in PyTorch. Here's a concise summary:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports two main gradient estimation methods:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` + `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class `Distribution` with common methods:
+  - `sample()`, `rsample()`: Generate samples
+  - `log_prob()`: Compute log probability
+  - `entropy()`, `mean`, `variance`: Statistical properties
+  - `cdf()`, `icdf()`: Cumulative distribution functions
+  - `expand()`: Batch dimension manipulation
+
+### **2. Available Distributions**
+**Univariate Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Gumbel, etc.
+
+**Univariate Discrete**: Bernoulli, Binomial, Poisson, Geometric, Categorical, etc.
+
+**Multivariate**: MultivariateNormal, Dirichlet, Multinomial, LowRankMultivariateNormal, etc.
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Wishart, LKJCholesky, etc.
+
+### **3. Key Features**
+- **Parameterization**: Most distributions offer multiple parameterizations (e.g., `probs` vs `logits`)
+- **Batch/Event Shapes**: Clear separation for vectorized operations
+- **Validation**: Argument validation with constraints system
+- **Exponential Family**: Specialized class for distributions with exponential family form
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.) for reparameterization
+- **Constraints**: Define valid parameter ranges (positive, simplex, interval, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for constrained optimization
+
+### **5. KL Divergence**
+- Automatic computation between registered distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients with categorical distributions
+2. **Variational Inference**: Reparameterization with Normal distributions
+3. **Probabilistic Modeling**: Building complex distributions via transforms
+4. **Bayesian Methods**: Prior/posterior distributions with constraints
+
+## **Example Patterns**
+```python
+# REINFORCE (score function)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (pathwise)
+m = Normal(loc, scale)
+action = m.rsample()  # Differentiable
+loss = -reward
+```
+
+The module follows TensorFlow Distributions design, providing a flexible, GPU-accelerated foundation for probabilistic programming in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_distribution:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  transforms:
+    dtype: ["list of Transform"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transformed_distribution.TransformedDistribution in a complex way */
+import torch

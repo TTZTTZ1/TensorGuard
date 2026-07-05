@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.QuantizedInstanceNorm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.QuantizedInstanceNorm` function performs quantized instance normalization on a 4D input tensor, normalizing each instance independently. It takes quantized input `x` with its associated min (`x_min`) and max (`x_max`) values and outputs a normalized quantized tensor `y` along with its new output range (`y_min`, `y_max`).
+
+**Key parameters:**
+- `x`: 4D quantized input tensor (e.g., qint8, quint8).
+- `x_min`, `x_max`: Float values representing the quantization range of the input.
+- `output_range_given`: If True, uses `given_y_min` and `given_y_max` as the output range; otherwise, computes it automatically.
+- `variance_epsilon`: Small constant to prevent division by zero.
+- `min_separation`: Ensures a minimum difference between `y_max` and `y_min`.
+
+**Returns:** A tuple `(y, y_min, y_max)` where `y` is the normalized quantized tensor, and `y_min`/`y_max` define its quantization range.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  x_min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  x_max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  output_range_given:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  given_y_min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  given_y_max:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  variance_epsilon:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1e-05"
+  min_separation:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0.001"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: x_max
+    Parameter 2: x_min
+    Constraint: "x_max > x_min"
+  2:
+    Parameter 1: given_y_max
+    Parameter 2: given_y_min
+    Constraint: "output_range_given == False or (given_y_max - given_y_min >= min_separation)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.QuantizedInstanceNorm in a complex way */
+import tensorflow as tf

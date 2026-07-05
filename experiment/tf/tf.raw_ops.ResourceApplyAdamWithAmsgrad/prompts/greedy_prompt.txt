@@ -1,0 +1,147 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyAdamWithAmsgrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceApplyAdamWithAmsgrad` is a low-level TensorFlow operation that updates a variable using the **Adam optimizer with AMSGrad**. AMSGrad modifies the standard Adam algorithm by using the maximum of past squared gradients (`vhat`) to ensure a non-increasing step size, which can improve convergence stability.
+
+### Key Functionality:
+- **Updates** the variable `var` based on the provided gradient `grad`.
+- **Maintains** moving averages of the gradient (`m`) and squared gradient (`v`), along with the maximum historical squared gradient (`vhat`).
+- **Applies** bias correction using `beta1_power` and `beta2_power` (typically `beta1^t` and `beta2^t`).
+
+### Arguments:
+- **Resource handles** (`var`, `m`, `v`, `vhat`): Pointers to the variable and its optimizer states.
+- **Scalar parameters** (`beta1_power`, `beta2_power`, `lr`, `beta1`, `beta2`, `epsilon`): Control learning rate, momentum, and numerical stability.
+- **Gradient** (`grad`): The gradient used for the update.
+- **Locking option** (`use_locking`): Enables thread-safe updates if `True`.
+
+### Mathematical Update Steps:
+1. Compute bias-corrected learning rate:  
+   `lr_t = lr * sqrt(1 - beta2^t) / (1 - beta1^t)`
+2. Update first moment (momentum):  
+   `m_t = beta1 * m + (1 - beta1) * grad`
+3. Update second moment (uncentered variance):  
+   `v_t = beta2 * v + (1 - beta2) * grad^2`
+4. Track maximum historical second moment:  
+   `vhat_t = max(vhat, v_t)`
+5. Apply parameter update:  
+   `var = var - lr_t * m_t / (sqrt(vhat_t) + epsilon)`
+
+### Returns:
+- An **Operation** that performs the update when executed.
+
+### Use Case:
+Primarily for **custom optimizer implementations** or advanced scenarios where direct control over resource variables and optimizer states is needed. Most users should prefer the high-level `tf.keras.optimizers.Adam` with `amsgrad=True`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  m:
+    dtype: ["resource"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  v:
+    dtype: ["resource"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  vhat:
+    dtype: ["resource"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  beta1_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  beta2_power:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  lr:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  beta1:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  beta2:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  epsilon:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  grad:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: "beta2_power"
+    Parameter 2: "beta1_power"
+    Constraint: "beta2_power.dtype == beta1_power.dtype"
+  2:
+    Parameter 1: "lr"
+    Parameter 2: "beta1_power"
+    Constraint: "lr.dtype == beta1_power.dtype"
+  3:
+    Parameter 1: "beta1"
+    Parameter 2: "beta1_power"
+    Constraint: "beta1.dtype == beta1_power.dtype"
+  4:
+    Parameter 1: "beta2"
+    Parameter 2: "beta1_power"
+    Constraint: "beta2.dtype == beta1_power.dtype"
+  5:
+    Parameter 1: "epsilon"
+    Parameter 2: "beta1_power"
+    Constraint: "epsilon.dtype == beta1_power.dtype"
+  6:
+    Parameter 1: "grad"
+    Parameter 2: "beta1_power"
+    Constraint: "grad.dtype == beta1_power.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyAdamWithAmsgrad in a complex way */
+import tensorflow as tf

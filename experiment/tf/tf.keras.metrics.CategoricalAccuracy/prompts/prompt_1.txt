@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.CategoricalAccuracy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`tf.keras.metrics.CategoricalAccuracy`** is a metric for evaluating classification models with **one-hot encoded labels**. It computes the frequency (accuracy) with which the predicted class matches the true class.
+
+**Key Features:**
+- **Input Format:** Expects `y_true` as one-hot vectors and `y_pred` as probability vectors or logits (since argmax works for both).
+- **Calculation:** Tracks correct predictions via internal variables (`total` and `count`), returning accuracy as `total / count`.
+- **Sample Weighting:** Supports optional `sample_weight` to adjust importance of individual samples.
+- **Usage:** Commonly integrated via `model.compile(metrics=[CategoricalAccuracy()])`.
+
+**Example:**
+```python
+m = CategoricalAccuracy()
+m.update_state([[0, 0, 1], [0, 1, 0]], 
+               [[0.1, 0.9, 0.8], [0.05, 0.95, 0]])
+print(m.result())  # Output: 0.5 (50% accuracy)
+```
+
+**Inheritance:** Extends `MeanMetricWrapper`, leveraging a mean-based reduction for easy averaging across batches.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "categorical_accuracy"
+  dtype:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  y_true:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y_pred:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  sample_weight:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "tf.shape(y_true) == tf.shape(y_pred)"
+  2:
+    Parameter 1: "sample_weight"
+    Parameter 2: "y_true"
+    Constraint: "sample_weight is None or tf.shape(sample_weight)[0] == tf.shape(y_true)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.CategoricalAccuracy in a complex way */
+import tensorflow as tf

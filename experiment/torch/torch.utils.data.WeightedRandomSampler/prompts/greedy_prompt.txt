@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.WeightedRandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading in PyTorch, centered around the `DataLoader` class. Here’s a concise overview of its key components and functionality:
+
+### Core Components
+- **`DataLoader`**: The main class that creates an iterable over a dataset, supporting batching, shuffling, multi-process loading, and memory pinning.
+- **`Dataset`**: An abstract class for map-style datasets (with `__getitem__` and `__len__`).
+- **`IterableDataset`**: For stream-style datasets (with `__iter__`), suitable for sequential or online data.
+
+### Key Features
+1. **Dataset Types**:
+   - **Map-style**: Indexable datasets (e.g., images on disk).
+   - **Iterable-style**: Sequential data streams (e.g., database queries, real-time logs).
+
+2. **Data Loading Control**:
+   - **Samplers** (e.g., `RandomSampler`, `SequentialSampler`): Define the order of data indices for map-style datasets.
+   - **Automatic batching**: Enabled via `batch_size`, with optional `drop_last` to handle incomplete batches.
+   - **Custom collation**: Use `collate_fn` to customize how samples are combined into batches (e.g., padding sequences).
+
+3. **Loading Modes**:
+   - **Single-process** (default): Simple but may block computation.
+   - **Multi-process**: Set `num_workers > 0` for parallel data loading, improving performance but requiring careful handling of dataset replication and randomness.
+
+4. **Memory Pinning**:
+   - Set `pin_memory=True` to speed up data transfer to GPU by using pinned (page-locked) memory.
+
+5. **Utilities**:
+   - **`TensorDataset`**: Wraps tensors for simple use cases.
+   - **`random_split`**: Splits a dataset into non-overlapping subsets.
+   - **`get_worker_info`**: Provides worker-specific information in multi-process loading.
+
+### Important Notes
+- For **multi-process loading on Windows**, wrap main script code in `if __name__ == '__main__':` and define functions at the top level.
+- **IterableDatasets** require explicit sharding in multi-process mode to avoid duplicate data.
+- **Custom types** need a `pin_memory()` method to benefit from memory pinning.
+
+### Example Usage
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self):
+        return 100
+    def __getitem__(self, idx):
+        return data[idx], label[idx]
+
+dataset = CustomDataset()
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in loader:
+    # Training loop
+    pass
+```
+
+This module is designed for flexibility, allowing customization of data loading pipelines while maintaining efficiency for both small and large-scale applications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weights:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+  num_samples:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  replacement:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: weights
+    Parameter 2: num_samples
+    Constraint: "replacement or (len(weights) >= num_samples)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.WeightedRandomSampler in a complex way */
+import torch

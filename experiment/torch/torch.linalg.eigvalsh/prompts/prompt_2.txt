@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.linalg.eigvalsh` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.eigvalsh` computes the eigenvalues of a complex Hermitian or real symmetric matrix. It returns only the eigenvalues (not eigenvectors) in ascending order, and supports batched inputs.  
+
+**Key points:**  
+- Input matrix `A` must be Hermitian (complex) or symmetric (real), though only the specified triangular part (default lower) is used.  
+- Output eigenvalues are always real-valued, even for complex inputs.  
+- Parameters:  
+  - `UPLO`: `'L'` (default) uses the lower triangle; `'U'` uses the upper triangle.  
+  - `out`: Optional output tensor.  
+- Works with float, double, cfloat, and cdouble dtypes.  
+- On CUDA, synchronizes device with CPU.  
+
+**Example:**  
+```python
+A = torch.randn(3, 3, dtype=torch.complex128)
+A = A + A.T.conj()  # Make Hermitian
+eigenvalues = torch.linalg.eigvalsh(A)  # Ascending real eigenvalues
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  UPLO:
+    dtype: ["string"]
+    range: [["L", "U"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "L"
+  out:
+    dtype: ["float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["(*, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: null
+    Constraint: "A.shape[-1] == A.shape[-2]"
+  2:
+    Parameter 1: UPLO
+    Parameter 2: null
+    Constraint: "UPLO in ['L', 'U']"
+  3:
+    Parameter 1: out
+    Parameter 2: A
+    Constraint: "out is None or (out.dtype in [torch.float32, torch.float64] and out.shape == A.shape[:-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.eigvalsh in a complex way */
+import torch

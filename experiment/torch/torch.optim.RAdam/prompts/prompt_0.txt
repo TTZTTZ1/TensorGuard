@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `torch.optim.RAdam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RAdam Optimizer**  
+RAdam (Rectified Adam) is an adaptive learning rate optimizer designed to stabilize training by reducing the variance of adaptive learning rates early in training. It combines the benefits of Adam with a dynamic warm-up mechanism.
+
+---
+
+### **Key Features**
+1. **Adaptive Variance Rectification**  
+   - Uses a rectification term (`r_t`) to adjust the adaptive learning rate, preventing large updates when the variance of the second moment is unreliable (early training steps).
+   - Applies the rectified update only when `ρ_t > 5`; otherwise, falls back to a simple momentum update.
+
+2. **Weight Decay Options**  
+   - **Default (`decoupled_weight_decay=False`)**: Applies L2 penalty to gradients (Adam-style).
+   - **Decoupled (`decoupled_weight_decay=True`)**: Applies weight decay directly to parameters (AdamW-style), avoiding interference with momentum/variance accumulation.
+
+3. **Performance & Memory**  
+   - Supports `foreach` implementation for faster computation on CUDA (uses more memory).
+   - Options for CUDA graph capture (`capturable`), gradient differentiation (`differentiable`), and maximization (`maximize`).
+
+---
+
+### **Algorithm Summary**
+- **Inputs**: Learning rate (`lr`), betas (`β1, β2`), parameters (`θ`), weight decay (`λ`), epsilon (`ε`).
+- **Initialization**: Tracks first (`m`) and second (`v`) moment estimates, and computes `ρ∞ = 2/(1-β2) - 1`.
+- **Update Steps**:
+  1. Compute gradient `g_t`.
+  2. Apply weight decay (coupled or decoupled).
+  3. Update moments:  
+     `m_t = β1·m_{t-1} + (1-β1)·g_t`  
+     `v_t = β2·v_{t-1} + (1-β2)·g_t²`
+  4. Compute bias-corrected moment `m̂_t = m_t / (1-β1^t)`.
+  5. Calculate variance rectification term `ρ_t` and adaptive learning rate `l_t`.
+  6. If `ρ_t > 5`, apply rectified update:  
+     `θ_t = θ_t - γ·m̂_t·r_t·l_t`  
+     Otherwise: `θ_t = θ_t - γ·m̂_t`.
+
+---
+
+### **Usage Example**
+```python
+import torch
+optimizer = torch.optim.RAdam(
+    model.parameters(),
+    lr=0.001,
+    betas=(0.9, 0.999),
+    weight_decay=0.01,
+    decoupled_weight_decay=True  # AdamW-style weight decay
+)
+```
+
+---
+
+### **References**
+- Paper: [*On the variance of the adaptive learning rate and beyond*](https://arxiv.org/abs/1908.03265)
+- Decoupled weight decay: [*Decoupled Weight Decay Regularization*](https://arxiv.org/abs/1711.05101)
+- Author’s implementation: [LiyuanLucasLiu/RAdam](https://github.com/LiyuanLucasLiu/RAdam)
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.001"
+  betas:
+    dtype: ["float"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach:
+    dtype: ["bool", "null"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.RAdam in a complex way */
+import torch

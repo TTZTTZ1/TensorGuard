@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.configure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timer system provides a mechanism to detect and handle stuck workers in distributed training by setting time limits on code blocks. Here's a concise summary:
+
+## Core Concept
+Expiration timers allow you to set deadlines for specific code sections. If a worker exceeds the deadline, it gets terminated and the agent can retry it, preventing training from hanging due to stuck workers.
+
+## Basic Usage Pattern
+1. **Setup**: Start a timer server and configure a timer client
+2. **Application**: Wrap potentially problematic code blocks with `expires(after=seconds)`
+3. **Enforcement**: The server monitors timers and kills workers that exceed their deadlines
+
+## Key Components
+
+### Client-Server Architecture
+- **TimerServer**: Monitors active timers and expires them (kills workers)
+- **TimerClient**: Worker-side interface to acquire/release timers
+- **TimerRequest**: Message object for client-server communication
+
+### Provided Implementations
+1. **LocalTimerServer/Client**: Uses `multiprocessing.Queue` for IPC
+2. **FileTimerServer/Client**: Uses named pipes (FIFO files) for IPC
+
+## Main API
+- `configure(timer_client)`: Must be called before using timers
+- `expires(after, scope=None, client=None)`: Context manager for setting deadlines
+- Custom implementations can be created by extending `TimerServer` and `TimerClient` base classes
+
+## Typical Workflow
+```python
+# Server setup
+server = LocalTimerServer(message_queue, max_interval=0.01)
+server.start()
+
+# Worker configuration
+timer.configure(LocalTimerClient(message_queue))
+
+# Usage in training code
+with expires(after=60):  # 60-second timeout
+    # Potentially blocking operation
+    torch.distributed.all_reduce(...)
+```
+
+## Design Notes
+- Timers are process-local (each host runs its own server)
+- Workers are identified by PID
+- The system provides fault tolerance by allowing agent retries
+- Debug logging is available for expired timer analysis
+
+This system is particularly useful for distributed training scenarios where network issues, hardware problems, or software bugs might cause workers to hang indefinitely.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    timer_client:
+        dtype: ["object"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.configure in a complex way */
+import torch

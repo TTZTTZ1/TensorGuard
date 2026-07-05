@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.io.parse_sequence_example` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.parse_sequence_example` parses serialized `SequenceExample` protos into structured data. It separates features into **context features** (per-example, time-independent) and **sequence features** (time-varying, within `FeatureList`). The function returns three dictionaries: context features, sequence features, and sequence lengths for dense features.
+
+**Key points:**
+- **Input:** A batch of serialized `SequenceExample` protos.
+- **Context features:** Can be `FixedLenFeature`, `VarLenFeature`, or `RaggedFeature`, mapping to tensors or sparse/ragged tensors.
+- **Sequence features:** Can be `FixedLenSequenceFeature`, `VarLenFeature`, or `RaggedFeature`, producing outputs with a variable time dimension.
+- **Outputs:** Three dictionaries for context, sequence, and sequence lengths.
+- **Padding:** Shorter sequences are padded with default values (e.g., 0 for numeric types).
+- **Requirements:** At least one of `context_features` or `sequence_features` must be provided and non-empty.
+
+This function is essential for handling sequential data with both per-sequence and per-timestep attributes in TensorFlow.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  context_features:
+    dtype: ["FixedLenFeature", "VarLenFeature", "RaggedFeature"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: "None"
+  sequence_features:
+    dtype: ["FixedLenSequenceFeature", "VarLenFeature", "RaggedFeature"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: "None"
+  example_names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "context_features"
+    Parameter 2: "sequence_features"
+    Constraint: "context_features is not None or sequence_features is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.parse_sequence_example in a complex way */
+import tensorflow as tf

@@ -1,0 +1,62 @@
+params:
+  sparse_indices:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  sparse_values:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  sparse_shape:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  container:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: '""'
+  shared_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: '""'
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "sparse_indices"
+    Parameter 2: "sparse_indices"
+    Constraint: "sparse_indices.shape.ndims == 2"
+  2:
+    Parameter 1: "sparse_values"
+    Parameter 2: "sparse_values"
+    Constraint: "sparse_values.shape.ndims == 1"
+  3:
+    Parameter 1: "sparse_shape"
+    Parameter 2: "sparse_shape"
+    Constraint: "sparse_shape.shape.ndims == 1"
+  4:
+    Parameter 1: "sparse_indices"
+    Parameter 2: "sparse_shape"
+    Constraint: "sparse_indices.shape[1] == sparse_shape.shape[0]"
+  5:
+    Parameter 1: "sparse_shape"
+    Parameter 2: "sparse_shape"
+    Constraint: "sparse_shape[0] > 1"
+  6:
+    Parameter 1: "sparse_indices"
+    Parameter 2: "sparse_shape"
+    Constraint: "sorted(sparse_indices[:, 0]) == list(sparse_indices[:, 0]) and all(0 <= sparse_indices[:, 0] < sparse_shape[0])"

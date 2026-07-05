@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `tf.keras.callbacks.ModelCheckpoint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.callbacks.ModelCheckpoint` callback saves a Keras model or its weights during training at specified intervals. It is primarily used with `model.fit()` to preserve training progress, allowing the model to be resumed or evaluated later.
+
+**Key Features:**
+- **Flexible Saving:** Can save the entire model or just the weights.
+- **Conditional Saving:** Optionally saves only the "best" model based on a monitored metric (e.g., validation loss or accuracy).
+- **Customizable Frequency:** Saves at the end of each epoch or after a fixed number of batches.
+- **File Naming:** Supports dynamic naming with placeholders like `{epoch}` and metric values.
+
+**Main Parameters:**
+- `filepath`: Path to save the model (supports formatting like `{epoch:02d}-{val_loss:.2f}.keras`).
+- `monitor`: Metric to track (e.g., `'val_loss'`, `'val_accuracy'`).
+- `save_best_only`: If `True`, only saves when the monitored metric improves.
+- `mode`: `'min'` or `'max'` to define improvement direction (e.g., minimize loss, maximize accuracy).
+- `save_weights_only`: If `True`, saves only weights; otherwise saves the full model.
+- `save_freq`: `'epoch'` or an integer (number of batches).
+- `initial_value_threshold`: Sets a starting benchmark for `save_best_only`.
+
+**Typical Use Case:**  
+It is commonly employed to checkpoint models during long training runs, preventing data loss and enabling selection of the best-performing model based on validation metrics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filepath:
+    dtype: ["string", "PathLike"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  monitor:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "val_loss"
+  verbose:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  save_best_only:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  save_weights_only:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  mode:
+    dtype: ["string"]
+    range: [["auto", "min", "max"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "auto"
+  save_freq:
+    dtype: ["string", "int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "epoch"
+  initial_value_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: filepath
+    Parameter 2: save_weights_only
+    Constraint: "(save_weights_only and filepath.endswith('.weights.h5')) or (not save_weights_only and filepath.endswith('.keras'))"
+  2:
+    Parameter 1: initial_value_threshold
+    Parameter 2: save_best_only
+    Constraint: "initial_value_threshold is None or save_best_only == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.callbacks.ModelCheckpoint in a complex way */
+import tensorflow as tf

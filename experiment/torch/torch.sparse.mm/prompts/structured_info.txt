@@ -1,0 +1,32 @@
+params:
+  mat1:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: [2]
+    default: null
+  mat2:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: [2]
+    default: null
+  reduce:
+    dtype: ["string"]
+    range: [["sum", "mean", "amax", "amin"]]
+    structure: ["scalar"]
+    shape: null
+    default: "sum"
+constraints:
+  1:
+    Parameter 1: mat1
+    Parameter 2: mat2
+    Constraint: "mat1.shape[1] == mat2.shape[0]"
+  2:
+    Parameter 1: mat1
+    Parameter 2: 
+    Constraint: "not (mat1.layout == torch.sparse_coo) or (mat1.sparse_dim() == 2)"
+  3:
+    Parameter 1: mat1
+    Parameter 2: reduce
+    Constraint: "reduce in ['mean', 'amax', 'amin'] implies (mat1.layout == torch.sparse_csr and mat1.device.type == 'cpu')"

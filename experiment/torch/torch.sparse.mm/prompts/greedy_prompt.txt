@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `torch.sparse.mm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.sparse.mm` performs matrix multiplication between a sparse matrix (`mat1`) and a sparse or dense matrix (`mat2`). It supports both COO and CSR sparse formats, with COO allowing gradient computation for both inputs. An optional `reduce` parameter (CSR‑only, CPU‑only) can apply operations like `"sum"`, `"mean"`, `"amax"`, or `"amin"` during multiplication. The output is sparse if both inputs are sparse, and dense if `mat2` is dense.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mat1:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: [2]
+    default: null
+  mat2:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: [2]
+    default: null
+  reduce:
+    dtype: ["string"]
+    range: [["sum", "mean", "amax", "amin"]]
+    structure: ["scalar"]
+    shape: null
+    default: "sum"
+constraints:
+  1:
+    Parameter 1: mat1
+    Parameter 2: mat2
+    Constraint: "mat1.shape[1] == mat2.shape[0]"
+  2:
+    Parameter 1: mat1
+    Parameter 2: 
+    Constraint: "not (mat1.layout == torch.sparse_coo) or (mat1.sparse_dim() == 2)"
+  3:
+    Parameter 1: mat1
+    Parameter 2: reduce
+    Constraint: "reduce in ['mean', 'amax', 'amin'] implies (mat1.layout == torch.sparse_csr and mat1.device.type == 'cpu')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sparse.mm in a complex way */
+import torch

@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.train.ExponentialMovingAverage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.ExponentialMovingAverage` maintains moving averages of model parameters using exponential decay, which often improves evaluation results compared to using final trained values.  
+
+**Key features:**  
+- **`apply(var_list)`**: Creates and updates shadow variables (moving averages) for the given variables.  
+- **`average(var)`**: Returns the shadow variable holding the moving average for a specific variable.  
+- **Usage**: Typically called after creating model weights and after each training step.  
+- **Decay**: Should be close to 1 (e.g., 0.9999). Can be a fixed value, Tensor, or Variable for fine-grained control.  
+
+**Common workflow:**  
+1. Create EMA object with a decay rate.  
+2. Call `apply` initially to create shadow variables, then after each training step.  
+3. Use `average()` to retrieve moving averages for evaluation or checkpointing.  
+
+**Checkpointing note:**  
+The EMA object itself is not directly checkpointable, but the shadow variables returned by `average()` can be saved and restored via `tf.train.Checkpoint`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar", "tf.Tensor", "tf.Variable"]
+    shape: [[]]
+    default: null
+  num_updates:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+  zero_debias:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "'ExponentialMovingAverage'"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.ExponentialMovingAverage in a complex way */
+import tensorflow as tf

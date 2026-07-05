@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.distributions.kumaraswamy.Kumaraswamy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview:
+
+### **Core Concepts**
+- **Purpose**: Implements parameterizable probability distributions with sampling and gradient estimation capabilities, supporting stochastic computation graphs.
+- **Key Methods**:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for gradient estimation via likelihood ratios (e.g., policy gradients in RL).
+  - **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (e.g., variational autoencoders).
+
+### **Main Components**
+1. **Distribution Base Class**: Abstract base class (`Distribution`) with methods like:
+   - `sample()`, `rsample()`: Generate samples.
+   - `log_prob()`: Compute log probability.
+   - `entropy()`, `mean`, `variance`: Distribution statistics.
+   - `support`, `arg_constraints`: Define valid parameter/value ranges.
+
+2. **Built-in Distributions**: Includes common univariate and multivariate distributions (e.g., `Normal`, `Bernoulli`, `Categorical`, `Dirichlet`, `MultivariateNormal`).
+
+3. **Transformed Distributions**: 
+   - `TransformedDistribution`: Applies a sequence of transforms to a base distribution (e.g., `LogNormal` via exponentiation of `Normal`).
+   - Transforms (e.g., `ExpTransform`, `SigmoidTransform`) enable bijective mappings and log-det Jacobian computations.
+
+4. **KL Divergence**: 
+   - `kl_divergence()`: Computes KL divergence between distributions.
+   - Extensible via `register_kl()` for custom distribution pairs.
+
+5. **Constraints and Transforms**:
+   - `Constraint`: Defines valid parameter domains (e.g., `simplex`, `positive`).
+   - `biject_to()` / `transform_to()`: Global registries mapping constraints to transforms for unconstrained optimization or HMC.
+
+### **Usage Examples**
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  loss.backward()
+  ```
+- **Reparameterization**:
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  loss.backward()
+  ```
+
+### **Key Features**
+- **Gradient Estimation**: Supports both score function and pathwise derivative methods.
+- **Composition**: Distributions can be combined, transformed, or mixed (e.g., `MixtureSameFamily`).
+- **Batch/Event Shapes**: Handles batched parameters and multivariate events.
+- **Extensibility**: Users can define custom distributions, transforms, and constraints.
+
+This module is essential for probabilistic modeling, Bayesian inference, reinforcement learning, and variational methods in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration1:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  concentration0:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "concentration1"
+    Parameter 2: "0.0"
+    Constraint: "concentration1 > 0.0"
+  2:
+    Parameter 1: "concentration0"
+    Parameter 2: "0.0"
+    Constraint: "con
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.kumaraswamy.Kumaraswamy in a complex way */
+import torch

@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.ByteStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary of PyTorch Storage Documentation**
+
+**Core Concept**  
+A PyTorch tensor is built on a **storage**—a contiguous, one-dimensional byte array that holds the actual data. The tensor’s `dtype`, `shape`, `stride`, and `offset` define how this storage is interpreted.
+
+**Untyped Storage (`torch.UntypedStorage`)**  
+- A low‑level, untyped container for raw bytes.  
+- Accessed via `tensor.untyped_storage()`.  
+- Multiple tensors (e.g., views) can share the same underlying storage.  
+- Provides methods for device management (`cpu()`, `cuda()`), copying (`clone()`, `copy_()`), filling (`fill_()`), memory‑mapping (`from_file()`), and shared‑memory operations (`share_memory_()`).  
+- **Warning**: Direct storage manipulation is risky; prefer high‑level tensor operations.
+
+**Special Cases**  
+- Tensors with gradients have separate storages for `data` and `grad`.  
+- Tensors on `"meta"` device or `FakeTensor` have no actual storage.  
+- Tensor subclasses may behave differently.
+
+**Legacy Typed Storage (Deprecated)**  
+- Classes like `torch.FloatStorage` are aliases for `torch.TypedStorage`.  
+- `torch.TypedStorage` wraps an `UntypedStorage` with a specific `dtype`.  
+- **All typed storage classes are deprecated**; use `torch.UntypedStorage` instead.
+
+**Key Takeaways**  
+1. Storage is the raw data buffer behind tensors.  
+2. `UntypedStorage` is the modern, untyped interface for low‑level operations.  
+3. Storage sharing enables memory‑efficient tensor views and serialization.  
+4. Most user code should avoid direct storage manipulation in favor of tensor‑level APIs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "list", "tuple", "torch.Tensor"]
+    shape: [1, 2, 3, 4]
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.uint8"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.uint8"
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "cpu"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: 
+    Constraint: "dtype == torch.uint8"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ByteStorage in a complex way */
+import torch

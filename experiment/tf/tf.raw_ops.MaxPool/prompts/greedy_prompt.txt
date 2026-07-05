@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MaxPool` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.MaxPool` function performs max pooling on a 4-D input tensor, sliding a window across the input to compute the maximum value in each region. It requires specifying the window size (`ksize`), stride (`strides`), and padding type (`padding`). Optional parameters include explicit paddings, data format (default "NHWC"), and an operation name. The function returns a tensor of the same type as the input.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32", "int64", "uint8", "int16", "int8", "uint16", "qint8"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  ksize:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [">=4"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [">=4"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID", "EXPLICIT"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  explicit_paddings:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  data_format:
+    dtype: ["string"]
+    range: [["NHWC", "NCHW", "NCHW_VECT_C"]]
+    structure: ["scalar"]
+    shape: null
+    default: "NHWC"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: ksize
+    Constraint: "input.shape.ndims == len(ksize)"
+  2:
+    Parameter 1: ksize
+    Parameter 2: strides
+    Constraint: "len(ksize) == len(strides)"
+  3:
+    Parameter 1: padding
+    Parameter 2: explicit_paddings
+    Constraint: "padding != 'EXPLICIT' or len(explicit_paddings) > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MaxPool in a complex way */
+import tensorflow as tf

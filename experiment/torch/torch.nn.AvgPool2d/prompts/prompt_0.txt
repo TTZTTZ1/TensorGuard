@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.nn.AvgPool2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`AvgPool2d` performs 2D average pooling over an input tensor with shape `(N, C, H, W)` or `(C, H, W)`. It slides a fixed-size window across the input, computing the average of values within each window to produce a downsampled output.
+
+**Key parameters:**
+- `kernel_size`: Size of the pooling window (int or tuple).
+- `stride`: Step size for sliding the window (defaults to `kernel_size`).
+- `padding`: Zero-padding added to input borders (default 0).
+- `ceil_mode`: If `True`, uses ceiling instead of floor for output size calculation.
+- `count_include_pad`: If `True`, includes padding in average computation.
+- `divisor_override`: Optional custom divisor instead of the pooling region size.
+
+**Output shape:**  
+For input `(N, C, H_in, W_in)`, output `(N, C, H_out, W_out)` is computed as:
+
+\[
+H_{out} = \left\lfloor \frac{H_{in} + 2 \times \text{padding}[0] - \text{kernel\_size}[0]}{\text{stride}[0]} + 1 \right\rfloor
+\]
+
+(same for \(W_{out}\)).
+
+**Example:**
+```python
+m = nn.AvgPool2d(3, stride=2)  # 3×3 window, stride 2
+output = m(input)  # input shape: (20, 16, 50, 32)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "kernel_size"
+  padding:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  ceil_mode:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  count_include_pad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  divisor_override:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "padding"
+    Parameter 2: "kernel_size"
+    Constraint: "all((padding if isinstance(padding, int) else padding[i]) <= (kernel_size if isinstance(kernel_size, int) else kernel_size[i]) // 2 for i in range(2))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.AvgPool2d in a complex way */
+import torch

@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.fx.Tracer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch, enabling programmatic modification of `nn.Module` instances. It works by:
+
+1. **Symbolic Tracing**: Executes the module with proxy values to capture operations into a graph.
+2. **Intermediate Representation (IR)**: Represents the traced code as a `Graph` of `Node`s (placeholders, calls, outputs).
+3. **Code Generation**: Converts the modified graph back into valid Python code within a `GraphModule`.
+
+### Key Use Cases:
+- **Transformations**: Modify models (e.g., op replacement, fusion, quantization) by manipulating the graph.
+- **Analysis**: Inspect or profile model execution via graph interpretation.
+- **Code Generation**: Programmatically create models from configurations.
+
+### Core Components:
+- **`symbolic_trace()`**: Traces a module/function to create a `GraphModule`.
+- **`Graph`**: IR representing the computation as nodes.
+- **`GraphModule`**: A runnable `nn.Module` with generated code from a `Graph`.
+- **`Tracer`**: Customizable tracing frontend.
+- **`Proxy`**: Wraps nodes to record operations during tracing/transforms.
+- **`Interpreter`/`Transformer`**: Patterns for executing or transforming graphs node-by-node.
+
+### Common Patterns:
+- **Direct Graph Manipulation**: Iterate over nodes to edit operations.
+- **Proxy-based Rewriting**: Use `Proxy` to replay operations into a new graph.
+- **Subgraph Rewriting**: Use `replace_pattern()` for find/replace transformations.
+
+### Limitations:
+- **Dynamic Control Flow**: Cannot trace branches/loops dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Requires `wrap()` to trace builtins/external functions.
+- **Tensor Constructors**: May embed constants; use workarounds for dynamic shapes.
+
+### Debugging:
+- Compare outputs with `torch.allclose()`.
+- Inspect generated code via `print(gm.code)` or `gm.graph.print_tabular()`.
+- Use `pdb` to step through execution or `to_folder()` to export code.
+
+FX is designed for composable, module-to-module transformations, supporting both automated and manual graph editing for optimization, analysis, and model generation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  autowrap_modules:
+    dtype: ["tuple"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "(math,)"
+  autowrap_functions:
+    dtype: ["tuple"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "()"
+constraints:
+  1:
+    Parameter 1: autowrap_modules
+    Parameter 2: autowrap_functions
+    Constraint: "all(isinstance(mod, type) for mod in autowrap_modules) and all(callable(func) for func in autowrap_functions)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Tracer in a complex way */
+import torch

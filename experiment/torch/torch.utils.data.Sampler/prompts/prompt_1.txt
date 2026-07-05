@@ -1,0 +1,237 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.Sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading in PyTorch, centered around the `DataLoader` class. Here’s a concise overview of its key features and usage:
+
+---
+
+### **Core Component: `DataLoader`**
+- **Purpose**: Creates an iterable over a dataset, supporting batching, shuffling, and parallel data loading.
+- **Key Arguments**:
+  - `dataset`: The dataset to load from (map-style or iterable-style).
+  - `batch_size`: Number of samples per batch.
+  - `shuffle`: Whether to reshuffle data each epoch (for map-style datasets).
+  - `num_workers`: Number of subprocesses for data loading (0 = main process).
+  - `collate_fn`: Function to merge samples into a batch.
+  - `pin_memory`: Enables faster data transfer to GPU by using pinned memory.
+
+---
+
+### **Dataset Types**
+1. **Map-style Datasets**:
+   - Implement `__getitem__()` and `__len__()`.
+   - Represent a mapping from indices/keys to data samples (e.g., reading images from disk).
+   - Use `Dataset` as the base class.
+
+2. **Iterable-style Datasets**:
+   - Implement `__iter__()`.
+   - Represent a stream of data (e.g., from a database or real-time logs).
+   - Use `IterableDataset` as the base class.
+   - **Note**: In multi-process loading, each worker gets a replica; implement sharding to avoid duplicate data.
+
+---
+
+### **Data Loading Order & Samplers**
+- For **map-style datasets**, samplers (e.g., `RandomSampler`, `SequentialSampler`) define the order of indices.
+- `shuffle=True` automatically creates a random sampler; custom samplers can be provided via the `sampler` argument.
+- `batch_sampler` can be used to yield batches of indices directly.
+- **Iterable-style datasets** control order via their `__iter__()` method; samplers are not applicable.
+
+---
+
+### **Batching**
+- **Automatic batching** (default): Enabled by setting `batch_size`. Samples are collated into batches using `collate_fn`.
+- **Disable batching**: Set `batch_size` and `batch_sampler` to `None`. `collate_fn` then processes individual samples.
+- **Custom `collate_fn`**: Override the default to handle padding, custom data structures, or non-standard batching.
+
+---
+
+### **Single- vs. Multi-process Loading**
+- **Single-process** (`num_workers=0`): Simple, good for debugging or small datasets.
+- **Multi-process** (`num_workers>0`):
+  - Speeds up data loading by using multiple worker processes.
+  - **Warning**: May increase memory usage; avoid passing large Python objects to workers.
+  - Platform-specific behaviors (Unix uses `fork`, Windows/MacOS uses `spawn`).
+  - Use `worker_init_fn` to configure each worker (e.g., for dataset sharding).
+
+---
+
+### **Memory Pinning**
+- Set `pin_memory=True` to accelerate host-to-GPU data transfers.
+- Works automatically with Tensors; for custom batch types, implement a `pin_memory()` method.
+
+---
+
+### **Utilities & Samplers**
+- **Dataset Utilities**: `TensorDataset`, `ConcatDataset`, `Subset`, `random_split`.
+- **Samplers**: `RandomSampler`, `SequentialSampler`, `WeightedRandomSampler`, `BatchSampler`, `DistributedSampler` (for distributed training).
+
+---
+
+### **Key Notes**
+- Use `if __name__ == '__main__':` guard when using multi-process loading on Windows/MacOS.
+- For reproducibility in multi-process loading, seed workers via `worker_init_fn`.
+- `len(dataloader)` is heuristic-based for `IterableDataset`.
+- Avoid returning CUDA tensors directly from workers; use `pin_memory=True` instead.
+
+---
+
+### **Example Usage**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class MyDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = MyDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+    pass
+```
+
+This module is designed for flexibility, allowing customization of data loading pipelines to fit various use cases while maintaining performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  shuffle:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  num_workers:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  collate_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  pin_memory:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  drop_last:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  timeout:
+    dtype: ["numeric"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  worker_init_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  multiprocessing_context:
+    dtype: ["string", "multiprocessing.context.BaseContext"]
+    range: [null]
+    structure: ["scalar", "object"]
+    shape: [null]
+    default: null
+  generator:
+    dtype: ["torch.Generator"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  prefetch_factor:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  persistent_workers:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pin_memory_device:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "''"
+  in_order:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "shuffle"
+    Parameter 2: "sampler"
+    Constraint: "sampler is not None implies shuffle is not specified"
+  2:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "batch_size"
+    Constraint: "batch_sampler is not None implies batch_size is None"
+  3:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "shuffle"
+    Constraint: "batch_sampler is not None implies shuffle is not specified"
+  4:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "sampler"
+    Constraint: "batch_sampler is not None implies sampler is not specified"
+  5:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "drop_last"
+    Constraint: "batch_sampler is not None implies drop_last is not specified"
+  6:
+    Parameter 1: "num_workers"
+    Parameter 2: "prefetch_factor"
+    Constraint: "num_workers == 0 implies prefetch_factor is None"
+  7:
+    Parameter 1: "num_workers"
+    Parameter 2: "in_order"
+    Constraint: "num_workers > 0 for in_order to be applicable"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.Sampler in a complex way */
+import torch

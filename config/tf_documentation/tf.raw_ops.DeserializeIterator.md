@@ -1,0 +1,34 @@
+# tf.raw_ops.DeserializeIterator
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/DeserializeIterator](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/DeserializeIterator)
+
+---
+
+Converts the given variant tensor to an iterator and stores it in the given resource.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.DeserializeIterator`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/DeserializeIterator)
+
+```
+tf.raw_ops.DeserializeIterator(
+    resource_handle, serialized, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `resource_handle` | A `Tensor` of type `resource`. A handle to an iterator resource. |
+| `serialized` | A `Tensor` of type `variant`. A variant tensor storing the state of the iterator contained in the resource. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| The created Operation. | |

@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.quantize_per_channel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.quantize_per_channel` converts a float tensor to a quantized tensor using per‑channel scaling and zero‑point offsets.  
+
+**Parameters:**  
+- `input`: Float tensor to quantize.  
+- `scales`: 1D tensor of scales, length must equal `input.size(axis)`.  
+- `zero_points`: 1D integer tensor of zero points, same length as scales.  
+- `axis`: Channel dimension along which quantization parameters are applied.  
+- `dtype`: Quantized dtype (`torch.quint8`, `torch.qint8`, or `torch.qint32`).  
+
+**Returns:** A quantized tensor with per‑channel affine quantization metadata.  
+
+**Example:**  
+```python
+x = torch.tensor([[-1.0, 0.0], [1.0, 2.0]])
+q = torch.quantize_per_channel(x, torch.tensor([0.1, 0.01]), 
+                               torch.tensor([10, 0]), 0, torch.quint8)
+```
+This applies different scales and zero points to each row (axis=0) of `x`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  scales:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n]"]
+    default: null
+  zero_points:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n]"]
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.quint8", "torch.qint8", "torch.qint32"]]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+constraints:
+  1:
+    Parameter 1: scales
+    Parameter 2: input
+    Constraint: "scales.size(0) == input.size(axis)"
+  2:
+    Parameter 1: zero_points
+    Parameter 2: input
+    Constraint: "zero_points.size(0) == input.size(axis)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.quantize_per_channel in a complex way */
+import torch

@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `tf.debugging.assert_less` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.assert_less` is a TensorFlow debugging operation that asserts the element-wise condition `x < y` holds for two numeric tensors `x` and `y`. If the condition is violated, it raises an `InvalidArgumentError` with an optional custom message and prints a specified number of tensor entries for debugging.
+
+**Key points:**
+- **Purpose:** Validate that every element in `x` is less than the corresponding element in `y` (with broadcasting).
+- **Usage in `tf.function`:** To ensure execution, wrap it inside `tf.control_dependencies`.
+- **Output:** Returns an op that triggers the error if the assertion fails; returns `None` in eager mode.
+- **Parameters:** Accepts tensors `x` and `y` (same dtype, broadcastable), plus optional `message`, `summarize` (number of entries to print), and `name`.
+
+**Example:**
+```python
+with tf.control_dependencies([tf.debugging.assert_less(x, y)]):
+    # Proceed only if x < y holds
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  y:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  message:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  summarize:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "assert_less"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "x.dtype == y.dtype"
+  2:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "tf.broadcast_static_shape(x.shape, y.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.debugging.assert_less in a complex way */
+import tensorflow as tf

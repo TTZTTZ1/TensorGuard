@@ -1,0 +1,64 @@
+params:
+  host_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  port:
+    dtype: ["int"]
+    range: [[0, 65535]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  world_size:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_master:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  timeout:
+    dtype: ["datetime.timedelta"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "datetime.timedelta(seconds=300)"
+  wait_for_workers:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  multi_tenant:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  master_listen_fd:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  use_libuv:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: world_size
+    Parameter 2: wait_for_workers
+    Constraint: "world_size is not None or wait_for_workers == True"
+  2:
+    Parameter 1: master_listen_fd
+    Parameter 2: port
+    Constraint: "master_listen_fd is None or (isinstance(master_listen_fd, int) and master_listen_fd >= 0)"

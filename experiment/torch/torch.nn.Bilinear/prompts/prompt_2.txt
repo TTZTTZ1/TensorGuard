@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.nn.Bilinear` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.Bilinear` module applies a bilinear transformation to two inputs using the formula:
+
+\[
+y = x_1^T A x_2 + b
+\]
+
+where \(x_1\) and \(x_2\) are the two input tensors, \(A\) is a learnable weight matrix, and \(b\) is an optional learnable bias.
+
+**Key Details:**
+- **Parameters:**  
+  - `in1_features`: size of the last dimension of the first input.  
+  - `in2_features`: size of the last dimension of the second input.  
+  - `out_features`: size of the output’s last dimension.  
+  - `bias`: if `True` (default), a bias term is added.
+
+- **Input Shapes:**  
+  - Input1: `(*, in1_features)`  
+  - Input2: `(*, in2_features)`  
+  (All dimensions except the last must match between inputs.)
+
+- **Output Shape:** `(*, out_features)`
+
+- **Learnable Parameters:**  
+  - `weight`: shape `(out_features, in1_features, in2_features)`  
+  - `bias`: shape `(out_features)` (if `bias=True`)
+
+- **Initialization:**  
+  Weights and bias are sampled uniformly from \([- \sqrt{k}, \sqrt{k}]\), where \(k = 1 / \text{in1_features}\).
+
+**Example:**
+```python
+m = nn.Bilinear(20, 30, 40)
+input1 = torch.randn(128, 20)
+input2 = torch.randn(128, 30)
+output = m(input1, input2)  # shape: (128, 40)
+```
+
+This layer is useful for modeling interactions between two feature vectors, commonly applied in tasks like attention mechanisms or multimodal learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in1_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  in2_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  out_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  bias:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  device:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: in1_features
+    Parameter 2: 
+    Constraint: "in1_features >
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Bilinear in a complex way */
+import torch

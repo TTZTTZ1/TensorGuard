@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.ResNet101` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.ResNet101` function instantiates the ResNet101 model, a deep convolutional neural network with 101 layers, based on the architecture introduced in the paper *"Deep Residual Learning for Image Recognition"*.
+
+**Key Features:**
+- Supports pre-trained ImageNet weights for transfer learning.
+- Allows customization via parameters like `include_top`, `pooling`, and `classes`.
+- Requires input preprocessing using `keras.applications.resnet.preprocess_input` (converts RGB to BGR and centers data relative to ImageNet).
+
+**Main Parameters:**
+- `include_top`: Whether to include the final classification layer.
+- `weights`: Load pre-trained ImageNet weights or initialize randomly.
+- `input_shape`: Required if `include_top=False`; minimum dimensions are 32x32 with 3 channels.
+- `pooling`: Applies global pooling when `include_top=False` (`None`, `avg`, or `max`).
+- `classes`: Number of output classes (only if `include_top=True` and no pre-trained weights are used).
+
+**Use Cases:**
+- Image classification (with `include_top=True`).
+- Feature extraction for transfer learning (with `include_top=False`).
+
+**Returns:** A Keras Model instance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["NoneType", "string"]
+    range: [null, "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 ints", "channels=3", "spatial dimensions>=32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["NoneType", "string"]
+    range: [null, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: ["None", "'softmax'", "any string or callable"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "input_shape is None or include_top == False"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "(classes == 1000) or (include_top == True)"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "(classes == 1000) or (weights is None)"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights != 'imagenet' or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.ResNet101 in a complex way */
+import tensorflow as tf

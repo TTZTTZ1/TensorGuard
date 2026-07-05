@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.profiler.ProfilerActivity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.profiler` module provides a comprehensive performance profiling tool for PyTorch models during training and inference. It collects detailed metrics to analyze operator costs, device kernel activity, memory usage, and execution traces.
+
+**Key Features:**
+- **Multi‑device profiling:** Supports CPU, CUDA, XPU, and other accelerators.
+- **Flexible scheduling:** Allows profiling specific iterations using `schedule()` to avoid overhead.
+- **Rich data collection:** Can record operator input shapes, stack traces, FLOPs estimates, and memory allocation/deallocation.
+- **Export and visualization:** Outputs traces in Chrome JSON format for TensorBoard or other tools.
+- **Low‑level control:** The `_KinetoProfile` class offers advanced, experimental profiling options.
+
+**Basic Usage:**
+```python
+with torch.profiler.profile(
+    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+    record_shapes=True,
+    with_stack=True
+) as prof:
+    # Code to profile
+    model(input)
+    
+# Print summarized results
+print(prof.key_averages().table(sort_by="cuda_time_total"))
+```
+
+**Advanced Options:**
+- **Custom schedules:** Use `schedule(wait, warmup, active, repeat)` to profile cycles.
+- **Trace handlers:** Automate trace saving with `tensorboard_trace_handler()`.
+- **Memory profiling:** Track tensor allocations (note: `export_memory_timeline` is deprecated; use CUDA memory APIs instead).
+- **Execution traces:** Integrate graph‑based workload representations via `execution_trace_observer`.
+
+**Utility Functions:**
+- `torch.profiler.itt`: Provides Intel Tracing Technology APIs for low‑level instrumentation.
+
+**Note:** The legacy `torch.autograd.profiler` is deprecated; this module is the recommended replacement. Enabling advanced features like shape/stack recording adds overhead and may affect memory behavior.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  activity:
+    dtype: ["string"]
+    range: [["CPU", "XPU", "MTIA", "CUDA", "HPU", "PrivateUse1"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.ProfilerActivity in a complex way */
+import torch

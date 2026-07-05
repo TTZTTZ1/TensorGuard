@@ -1,0 +1,28 @@
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  tensor_name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  leave_parametrized:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: module
+    Parameter 2: tensor_name
+    Constraint: "hasattr(module, 'parametrizations') and tensor_name in module.parametrizations"
+  2:
+    Parameter 1: leave_parametrized
+    Parameter 2: tensor_name
+    Constraint: "leave_parametrized or isinstance(module.parametrizations[tensor_name].original, torch.Tensor)"

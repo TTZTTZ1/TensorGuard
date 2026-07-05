@@ -1,0 +1,68 @@
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "null"]
+    range: ["None", "imagenet"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["string", "null"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "null"]
+    range: ["None", "softmax"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "input_shape"
+    Parameter 2: "input_shape"
+    Constraint: "input_shape is None or (len(input_shape) == 3 and input_shape[2] == 3 and input_shape[0] >= 75 and input_shape[1] >= 75)"
+  3:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "include_top == True or classes == 1000"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights is None or classes == 1000"
+  5:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+  6:
+    Parameter 1: "include_top"
+    Parameter 2: "pooling"
+    Constraint: "include_top == False or pooling is None"

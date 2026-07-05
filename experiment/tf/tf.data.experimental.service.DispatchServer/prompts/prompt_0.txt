@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.service.DispatchServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.data.experimental.service.DispatchServer` is an in-process server that coordinates a cluster of worker servers for distributed TensorFlow data processing. It manages dataset distribution, allowing workers to register and process data in parallel.
+
+**Key Features:**
+- **Coordination:** Manages worker registration and task assignment.
+- **Fault Tolerance:** Optional mode with `work_dir` and `fault_tolerant_mode` for recovery.
+- **Flexible Start:** Can be started immediately or manually via `start()`.
+- **Graceful Shutdown:** Use `stop()` to terminate, or `join()` to block until shutdown.
+
+**Basic Usage:**
+1. Create a dispatcher (optionally with a `DispatcherConfig`).
+2. Start worker servers pointing to the dispatcher's address.
+3. Apply `tf.data.experimental.service.distribute` to datasets using `dispatcher.target`.
+
+**Example:**
+```python
+dispatcher = tf.data.experimental.service.DispatchServer()
+worker = tf.data.experimental.service.WorkerServer(
+    WorkerConfig(dispatcher_address=dispatcher.target.split("://")[1]))
+dataset = tf.data.Dataset.range(10).apply(
+    tf.data.experimental.service.distribute(
+        processing_mode="parallel_epochs", service=dispatcher.target))
+```
+
+**Primary Methods:**
+- `target`: Returns the server address (e.g., `"grpc://localhost:5050"`).
+- `start()`: Manually starts the server.
+- `stop()`: Stops the server gracefully.
+- `join()`: Blocks until the server shuts down (for dedicated processes).
+
+The server automatically stops when all references are deleted, but explicit control is available via `stop()` and `join()`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  config:
+    dtype: ["DispatcherConfig", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  start:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.service.DispatchServer in a complex way */
+import tensorflow as tf

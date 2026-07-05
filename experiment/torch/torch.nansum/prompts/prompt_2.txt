@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.nansum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nansum` computes the sum of tensor elements while treating NaN values as zero. It can operate over the entire tensor or along specified dimensions.
+
+**Key features:**
+- **NaN handling:** Automatically ignores NaN values (treats them as 0)
+- **Two usage modes:**
+  1. Global sum: `torch.nansum(input)` - sums all elements
+  2. Dimension-wise sum: `torch.nansum(input, dim, keepdim)` - sums along specified dimension(s)
+- **Optional parameters:**
+  - `dim`: Dimension(s) to reduce (if `None`, reduces all dimensions)
+  - `keepdim`: Whether to retain reduced dimensions
+  - `dtype`: Cast input to specified type before operation to prevent overflow
+
+**Examples:**
+- `torch.nansum([1., 2., nan, 4.])` → `7.`
+- With `dim=0` on a 2D tensor: sums columns, treating NaN as 0
+- With `dim=1` on a 2D tensor: sums rows, treating NaN as 0
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int", "tuple", "None"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+  keepdim:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "dim is None or (isinstance(dim, int) and -input.ndim <= dim < input.ndim) or (isinstance(dim, tuple) and all(isinstance(d, int) and -input.ndim <= d < input.ndim for d in dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nansum in a complex way */
+import torch

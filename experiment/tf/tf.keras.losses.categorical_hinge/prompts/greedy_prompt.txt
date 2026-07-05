@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.keras.losses.categorical_hinge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.losses.categorical_hinge` function computes the categorical hinge loss between true labels (`y_true`) and predictions (`y_pred`). It is used for multi-class classification tasks.
+
+**Key Points:**
+- **Formula:** `loss = maximum(neg - pos + 1, 0)`, where `neg = maximum((1 - y_true) * y_pred)` and `pos = sum(y_true * y_pred)`.
+- **Inputs:** 
+  - `y_true`: Ground truth labels, expected as one-hot encoded tensors (values {0, 1}) or as {-1, +1} encoded, with shape `[batch_size, d0, .. dN]`.
+  - `y_pred`: Predicted values with the same shape as `y_true`.
+- **Output:** Loss values with shape `[batch_size, d0, .. dN-1]`.
+
+**Example Usage:**
+```python
+import numpy as np
+import keras
+
+y_true = np.eye(3)[np.random.randint(0, 3, size=(2,))]  # One-hot encoding
+y_pred = np.random.random(size=(2, 3))
+loss = keras.losses.categorical_hinge(y_true, y_pred)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y_true:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: "y_true.shape == y_pred.shape"
+  2:
+    Parameter 1: y_true
+    Parameter 2: y_true
+    Constraint: "tf.reduce_all(tf.logical_or(tf.equal(y_true, -1), tf.equal(y_true, 1))) or tf.reduce_all(tf.logical_or(tf.equal(y_true, 0), tf.equal(y_true, 1)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.losses.categorical_hinge in a complex way */
+import tensorflow as tf

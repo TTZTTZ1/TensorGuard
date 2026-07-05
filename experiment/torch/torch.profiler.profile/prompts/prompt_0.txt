@@ -1,0 +1,147 @@
+
+# You are a Python code generation assistant for the `torch.profiler.profile` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.profiler` module provides tools for profiling PyTorch model performance during training and inference. It enables detailed collection of metrics to analyze operator costs, input shapes, stack traces, device kernel activity, and execution traces.
+
+### Key Components:
+- **`profile` context manager**: Main entry point for profiling, supporting configurable activities (CPU, CUDA, XPU, etc.), schedules, and trace handlers.
+- **`schedule()`**: Creates a profiling schedule to control when profiling is active (e.g., wait, warmup, active phases).
+- **`tensorboard_trace_handler()`**: Outputs traces for visualization in TensorBoard.
+- **`_KinetoProfile`**: Lower-level profiler wrapping autograd events.
+- **`ProfilerAction` & `ProfilerActivity`**: Enums for controlling profiling behavior and device activities.
+
+### Core Features:
+- **Activity Tracking**: Profile operations on CPU, CUDA, and other accelerators.
+- **Advanced Options**: Record input shapes, memory allocation, stack traces, FLOPs estimation, and module hierarchies.
+- **Trace Export**: Export results in Chrome JSON format, memory timelines, and stack traces.
+- **Dynamic Control**: Toggle activity collection during profiling with `toggle_collection_dynamic()`.
+- **Scheduled Profiling**: Profile specific iterations in long-running jobs to reduce overhead.
+- **Execution Trace Integration**: Supports PyTorch Execution Trace Observers for graph-based workload representation.
+
+### Usage Example:
+```python
+with torch.profiler.profile(
+    activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+    schedule=torch.profiler.schedule(wait=1, warmup=1, active=2, repeat=1),
+    on_trace_ready=torch.profiler.tensorboard_trace_handler('./log')
+) as prof:
+    for step in range(total_steps):
+        training_iteration()
+        prof.step()
+```
+
+### Additional Utilities:
+- **Intel ITT APIs**: `itt.mark()`, `itt.range_push()`, and `itt.range_pop()` for manual instrumentation.
+
+The profiler helps identify performance bottlenecks, optimize models, and visualize execution patterns, replacing the legacy `torch.autograd.profiler`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  activities:
+    dtype: ["iterable"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "ProfilerActivity.CPU and (when available) ProfilerActivity.CUDA or (when available) ProfilerActivity.XPU"
+  schedule:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+  on_trace_ready:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+  record_shapes:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  profile_memory:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_stack:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_flops:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_modules:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  experimental_config:
+    dtype: ["_ExperimentalConfig"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  execution_trace_observer:
+    dtype: ["ExecutionTraceObserver"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  acc_events:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  use_cuda:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  custom_trace_id_callback:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: "activities"
+    Parameter 2: null
+    Constraint: "activities must contain only values from torch.profiler.ProfilerActivity (CPU, CUDA, XPU, MTIA, HPU, PrivateUse1)"
+  2:
+    Parameter 1: "schedule"
+    Parameter 2: "on_trace_ready"
+    Constraint: "on_trace_ready is called when schedule returns ProfilerAction.RECORD_AND_SAVE"
+  3:
+    Parameter 1: "record_shapes"
+    Parameter 2: "profile_memory"
+    Constraint: "record_shapes=True may prevent certain optimizations and introduce extra tensor copies"
+  4:
+    Parameter 1: "with_modules"
+    Parameter 2: null
+    Constraint: "with_modules=True only works for TorchScript models, not eager mode models"
+  5:
+    Parameter 1: "use_cuda"
+    Parameter 2: "activities"
+    Constraint: "use_cuda is deprecated since version 1.8.1; use activities instead"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.profile in a complex way */
+import torch

@@ -1,0 +1,56 @@
+params:
+  shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tensor", "array"]
+    shape: ["1-D"]
+    default: "null"
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["[2]"]
+    default: "null"
+  minval:
+    dtype: ["float16", "bfloat16", "float32", "float64", "int32", "int64", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "0"
+  maxval:
+    dtype: ["float16", "bfloat16", "float32", "float64", "int32", "int64", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "None"
+  dtype:
+    dtype: ["string"]
+    range: ["float16", "bfloat16", "float32", "float64", "int32", "int64", "uint32", "uint64"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.float32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  alg:
+    dtype: ["string"]
+    range: ["philox", "threefry", "auto_select"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'auto_select'"
+constraints:
+  1:
+    Parameter 1: "minval"
+    Parameter 2: "maxval"
+    Constraint: "dtype in ['int32', 'int64', 'uint32', 'uint64'] implies (minval is None) == (maxval is None)"
+  2:
+    Parameter 1: "minval"
+    Parameter 2: "dtype"
+    Constraint: "dtype in ['int32', 'int64', 'uint32', 'uint64'] and minval is not None implies tf.rank(minval) == 0"
+  3:
+    Parameter 1: "maxval"
+    Parameter 2: "dtype"
+    Constraint: "dtype in ['int32', 'int64', 'uint32', 'uint64'] and maxval is not None implies tf.rank(maxval) == 0"

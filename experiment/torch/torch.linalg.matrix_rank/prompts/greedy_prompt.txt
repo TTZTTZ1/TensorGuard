@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `torch.linalg.matrix_rank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.matrix_rank` computes the numerical rank of a matrix (or batch of matrices) by counting singular values (or eigenvalues for Hermitian/symmetric matrices) exceeding a threshold. The threshold is determined as `max(atol, σ₁ * rtol)`, where `σ₁` is the largest singular value.
+
+**Key features:**
+- Supports float, double, cfloat, and cdouble dtypes.
+- Handles batched inputs, preserving batch dimensions in the output.
+- For non‑Hermitian matrices (default), uses SVD (`torch.linalg.svdvals`); for Hermitian/symmetric matrices (`hermitian=True`), uses eigenvalue decomposition (`torch.linalg.eigvalsh`).
+- If `rtol` is not provided, it defaults to `max(m, n) * ε` (where `ε` is the dtype’s epsilon), unless `atol > 0` is given, in which case `rtol` becomes 0.
+- Allows `atol` and `rtol` to be scalars or broadcastable tensors.
+- Synchronizes CUDA devices with the CPU.
+
+**Parameters:**
+- `A` (Tensor): Input tensor of shape `(*, m, n)`.
+- `atol` (float or Tensor, optional): Absolute tolerance. Defaults to 0.
+- `rtol` (float or Tensor, optional): Relative tolerance. Defaults as described above.
+- `hermitian` (bool): If `True`, treats `A` as Hermitian (complex) or symmetric (real). Defaults to `False`.
+- `out` (Tensor, optional): Output tensor.
+
+**Note:** The positional argument `tol` (NumPy‑style) is deprecated; use `atol` and `rtol` instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  tol:
+    dtype: ["float", "Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["No mention"]
+    default: "None"
+  atol:
+    dtype: ["float", "Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["No mention"]
+    default: "None"
+  rtol:
+    dtype: ["float", "Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["No mention"]
+    default: "None"
+  hermitian:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "atol"
+    Parameter 2: "A"
+    Constraint: "not isinstance(atol, torch.Tensor) or (len(atol.shape) <= len(torch.linalg.svdvals(A).shape) and all(a == 1 or a == s for a, s in zip(reversed(atol.shape), reversed(torch.linalg.svdvals(A).shape))))"
+  2:
+    Parameter 1: "rtol"
+    Parameter 2: "A"
+    Constraint: "not isinstance(rtol, torch.Tensor) or (len(rtol.shape) <= len(torch.linalg.svdvals(A).shape) and all(a == 1 or a == s for a, s in zip(reversed(rtol.shape), reversed(torch.linalg.svdvals(A).shape))))"
+  3:
+    Parameter 1: "hermitian"
+    Parameter 2: "A"
+    Constraint: "hermitian == False or A.size(-2) == A.size(-1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.matrix_rank in a complex way */
+import torch

@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.SpecificityAtSensitivity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.SpecificityAtSensitivity` is a metric that calculates the **highest specificity** achievable while ensuring the **sensitivity** (recall) meets or exceeds a specified target value.
+
+**Key Features:**
+- **Purpose:** Evaluates classification models by finding the optimal trade-off between specificity (true negative rate) and a minimum sensitivity requirement.
+- **Inputs:** 
+  - `sensitivity`: Target sensitivity value (between 0 and 1).
+  - `num_thresholds`: Number of thresholds to test (default 200).
+  - `class_id`: Optional class index for multi-class problems.
+- **Mechanism:** Internally tracks true/false positives/negatives across thresholds, identifies the threshold meeting the sensitivity target, and returns the corresponding specificity.
+- **Usage:** Can be used directly in `model.compile()` or manually with `update_state()` and `result()`.
+
+**Example:**
+```python
+metric = SpecificityAtSensitivity(sensitivity=0.8)
+metric.update_state([0, 1, 0, 1], [0.1, 0.4, 0.35, 0.8])
+print(metric.result())  # Best specificity at ≥80% sensitivity
+```
+
+This metric is useful for scenarios where maintaining a certain sensitivity level is critical (e.g., medical diagnostics), and you want to maximize specificity under that constraint.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sensitivity:
+    dtype: ["float"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_thresholds:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "200"
+  class_id:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: sensitivity
+    Parameter 2: sensitivity
+    Constraint: "sensitivity >= 0 and sensitivity <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.SpecificityAtSensitivity in a complex way */
+import tensorflow as tf

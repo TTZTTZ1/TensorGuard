@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_rank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- Enables synchronous distributed training with `DistributedDataParallel`
+- Supports multiple processes per node, each with independent Python interpreters
+- Requires explicit launch of separate script copies for each process
+
+## **Backends**
+Four built-in backends with different device support:
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training  
+- **Gloo**: Recommended for CPU training
+- **MPI**: Optional, requires building from source
+
+## **Initialization**
+Three main methods:
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+Key function: `torch.distributed.init_process_group()`
+
+## **Key Features**
+- **Process groups**: Default world group + custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+- **Collective operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-point**: `send`/`recv` (sync) and `isend`/`irecv` (async)
+- **Key-value stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+
+## **Usage Patterns**
+- **Synchronous**: Blocking operations (default)
+- **Asynchronous**: Non-blocking with `async_op=True`, returns `Work` objects
+- **Object collectives**: Support Python objects (with performance limitations)
+
+## **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `torch.distributed.breakpoint()`: Interactive debugging on specific rank
+- HTTP debug server for runtime diagnostics
+
+## **Best Practices**
+- Use NCCL backend for GPU training, Gloo for CPU
+- Call `destroy_process_group()` for cleanup
+- Set `torch.cuda.set_device()` before NCCL operations
+- Ensure consistent tensor shapes across ranks in collectives
+
+The package enables efficient large-scale model training with support for various network interconnects and hardware configurations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_rank in a complex way */
+import torch

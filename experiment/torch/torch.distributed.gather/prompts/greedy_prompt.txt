@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.distributed.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines. It supports synchronous distributed training via `DistributedDataParallel` and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+## Key Features:
+- **Backends**: Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI (CPU/GPU with CUDA support if built with MPI).
+- **Initialization**: Three methods - TCP, shared file-system, and environment variables (`init_process_group()` or `init_device_mesh()`).
+- **Communication**: Point-to-point (send/recv) and collective operations (broadcast, all_reduce, gather, scatter, etc.).
+- **Groups**: Create sub-groups for fine-grained communication via `new_group()`.
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies.
+- **Key-Value Stores**: TCPStore, FileStore, and HashStore for sharing information between processes.
+- **Debugging**: Tools like `monitored_barrier()`, `TORCH_DISTRIBUTED_DEBUG`, and `torch.distributed.breakpoint()` for debugging hangs and synchronization issues.
+- **Launch Utilities**: `torch.distributed.launch` and `torch.multiprocessing.spawn` for launching multi-process training.
+
+## Common Usage:
+1. Initialize process group with `init_process_group()`.
+2. Use collective operations or point-to-point communication.
+3. For GPU training with CUDA, use NCCL backend; for CPU, use Gloo.
+4. Clean up with `destroy_process_group()`.
+
+The package enables efficient distributed training by allowing each process to maintain its own optimizer and Python interpreter, reducing GIL contention and parameter broadcast overhead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  gather_list:
+    dtype: ["list[Tensor]"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  group_dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is None or group_dst is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.gather in a complex way */
+import torch

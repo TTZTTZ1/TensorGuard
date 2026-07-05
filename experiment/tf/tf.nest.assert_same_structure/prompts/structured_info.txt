@@ -1,0 +1,34 @@
+params:
+  nest1:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: null
+  nest2:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: null
+  check_types:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: "No mention"
+    shape: "No mention"
+    default: "True"
+  expand_composites:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: "No mention"
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: nest1
+    Parameter 2: nest2
+    Constraint: "len(tf.nest.flatten(nest1)) == len(tf.nest.flatten(nest2))"
+  2:
+    Parameter 1: check_types
+    Parameter 2: nest1
+    Constraint: "check_types == False or all(type(sub1) == type(sub2) for sub1, sub2 in zip(tf.nest.flatten(nest1, expand_composites=False), tf.nest.flatten(nest2, expand_composites=False)) if tf.nest.is_nested(sub1) and tf.nest.is_nested(sub2))"

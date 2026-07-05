@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.random_split` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading in PyTorch, centered around the `DataLoader` class. Here’s a concise summary of its core functionality:
+
+### **Key Components**
+- **`DataLoader`**: The main class that creates an iterable over a dataset, supporting batching, shuffling, multi‑process loading, and memory pinning.
+- **Dataset Types**:
+  - **Map‑style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk by index).
+  - **Iterable‑style**: Implements `__iter__()` (e.g., streaming from a database or real‑time logs).
+- **Samplers**: Control the order of data loading (e.g., `RandomSampler`, `SequentialSampler`). Custom samplers can be used for advanced indexing strategies.
+- **Batching**: Automatic batching is enabled via `batch_size`. Custom collation logic can be provided with `collate_fn`.
+- **Multi‑process Loading**: Set `num_workers > 0` to parallelize data loading (improves performance but requires careful handling of randomness and memory).
+- **Memory Pinning**: Use `pin_memory=True` to accelerate data transfer to CUDA GPUs.
+
+### **Common Usage**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self):
+        return len(self.data)
+    def __getitem__(self, idx):
+        return self.data[idx]
+
+dataset = CustomDataset(...)
+dataloader = DataLoader(
+    dataset,
+    batch_size=32,
+    shuffle=True,
+    num_workers=4,
+    pin_memory=True
+)
+
+for batch in dataloader:
+    # Training loop
+```
+
+### **Important Notes**
+- For iterable‑style datasets with multi‑process loading, implement sharding (e.g., using `get_worker_info()`) to avoid duplicate data.
+- On Windows/macOS, wrap main script code in `if __name__ == '__main__':` and define custom functions (e.g., `collate_fn`) at the top level.
+- Use `persistent_workers=True` to keep worker processes alive across epochs for efficiency.
+- Custom batch types can enable memory pinning by defining a `pin_memory()` method.
+
+This module is designed for flexibility, allowing customization of data loading pipelines while maintaining high performance for both small‑scale and large‑scale training tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  lengths:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  generator:
+    dtype: ["Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "torch.Generator()"
+constraints:
+  1:
+    Parameter 1: lengths
+    Parameter 2: dataset
+    Constraint: "isinstance(lengths, (list, tuple)) and all(isinstance(l, (int, float)) for l in lengths) and all(l > 0 for l in lengths) and ((all(isinstance(l, int) for l in lengths) and sum(lengths) == len(dataset)) or (all(isinstance(l, float) for l in lengths) and abs(sum(lengths) - 1) < 1e-9))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.random_split in a complex way */
+import torch

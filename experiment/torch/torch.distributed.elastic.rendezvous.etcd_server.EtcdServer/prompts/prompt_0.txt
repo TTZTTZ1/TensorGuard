@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.rendezvous.etcd_server.EtcdServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Distributed Elastic Rendezvous system provides a mechanism for synchronizing and discovering nodes in distributed training jobs. It ensures that all participating nodes agree on the same list of participants and their roles before training begins or resumes.
+
+**Key Functionalities:**
+- **Barrier Synchronization:** Nodes block until a minimum number of participants join, with optional waiting time to allow latecomers.
+- **Exclusivity:** Prevents multiple independent groups from forming for the same job.
+- **Consistency:** All members agree on job membership and assigned ranks (0 to world size).
+- **Fault Tolerance:** Handles node failures during rendezvous, triggering automatic re-rendezvous.
+- **Shared Key-Value Store:** Provides a `torch.distributed.Store` for exchanging initialization information.
+
+**Core Components:**
+- **`RendezvousHandler`:** Main interface for participating in rendezvous.
+- **`DynamicRendezvousHandler`:** Default implementation that works with various backends.
+- **Backends:** 
+  - `C10dRendezvousBackend`: Uses PyTorch's built-in TCPStore or FileStore (no external dependencies).
+  - `EtcdRendezvousBackend`: Uses etcd for distributed coordination.
+- **`RendezvousParameters`:** Configuration holder for constructing handlers.
+
+**Basic Usage:**
+```python
+store = TCPStore("localhost")
+backend = C10dRendezvousBackend(store, "my_run_id")
+rdzv_handler = DynamicRendezvousHandler.from_backend(
+    run_id="my_run_id", store=store, backend=backend, min_nodes=2, max_nodes=4
+)
+```
+
+**Error Handling:** Includes specific exceptions for closed rendezvous, timeouts, connection failures, and state corruption.
+
+**Legacy Support:** The `EtcdRendezvousHandler` is maintained for backward compatibility but is superseded by `DynamicRendezvousHandler` with `EtcdRendezvousBackend`.
+
+The system is designed to be backend-agnostic, allowing users to implement custom backends while providing robust implementations for common use cases.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  etcd_binary_path:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  port:
+    dtype: ["int"]
+    range: [[1, 65535]]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  data_dir:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: port
+    Parameter 2: null
+    Constraint: "1 <= port <= 65535"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.rendezvous.etcd_server.EtcdServer in a complex way */
+import torch

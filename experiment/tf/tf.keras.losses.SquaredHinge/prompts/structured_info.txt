@@ -1,0 +1,34 @@
+params:
+  reduction:
+    dtype: ["string"]
+    range: ["sum", "sum_over_batch_size", null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "sum_over_batch_size"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "squared_hinge"
+  y_true:
+    dtype: ["No mention"]
+    range: [-1, 0, 1]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  y_pred:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "y_true"
+    Parameter 2: "None"
+    Constraint: "tf.reduce_all(tf.logical_or(tf.equal(y_true, -1), tf.logical_or(tf.equal(y_true, 0), tf.equal(y_true, 1))))"
+  2:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "tf.broadcast_static_shape(y_true.shape, y_pred.shape) is not None"

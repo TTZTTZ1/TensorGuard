@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.package.PackageExporter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle both model artifacts (e.g., pickled objects, tensors) and the Python source code they depend on. These packages can be saved, shared, and later loaded in isolated environments—even on different machines or in production via `torch::deploy`.
+
+### **Key Features**
+- **Hermetic Packaging**: Captures all necessary code dependencies, ensuring the package runs independently of the local Python environment.
+- **Dependency Management**: Automatically resolves imports and lets you control how each module is handled:
+  - **`intern`**: Package the module inside the archive.
+  - **`extern`**: Rely on the external environment for the module.
+  - **`mock`**: Replace the module with a stub.
+  - **`deny`**: Raise an error if the module is used.
+- **Resource Inclusion**: Save and load arbitrary data (pickled objects, text, binary) alongside code.
+- **Isolation**: Each `PackageImporter` creates a separate environment, preventing conflicts between packages and the system.
+
+### **Core Workflow**
+1. **Export a Package** (`PackageExporter`):
+   - Use `save_pickle()`, `save_text()`, `save_binary()` to add data.
+   - Use `save_module()` or `save_source_string()` to include source code.
+   - Define dependency patterns (e.g., `exporter.intern("my_model.**")`).
+2. **Import a Package** (`PackageImporter`):
+   - Load modules with `import_module()`.
+   - Load resources with `load_pickle()`, `load_text()`, `load_binary()`.
+
+### **Use Cases**
+- **Model Deployment**: Package a trained model with its custom code for inference elsewhere.
+- **Reproducibility**: Ensure code and dependencies are frozen together.
+- **Code Sharing**: Distribute a complete, runnable PyTorch project as a single `.pt` file.
+
+### **Important Notes**
+- **Security**: Relies on `pickle`, which is insecure. Only load packages from trusted sources.
+- **Isolation**: Packaged modules are mangled (e.g., `<torch_package_0>.foo.bar`) and are not type-compatible with non-packaged versions.
+- **Best Practices**: Avoid mutable global state in modules and prefer clean dependency boundaries.
+
+### **Quick Example**
+```python
+# Export
+with PackageExporter('model.pt') as e:
+    e.save_pickle('model', 'data.pkl', my_model)
+    e.intern('my_code.**')
+
+# Import
+importer = PackageImporter('model.pt')
+loaded_model = importer.load_pickle('model', 'data.pkl')
+```
+
+In summary, `torch.package` provides a robust way to create portable, self-contained PyTorch packages, ideal for deployment and reproducibility.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  f:
+    dtype: ["string", "PathLike", "IO"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  importer:
+    dtype: ["Importer", "Sequence"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "<torch.package.importer._SysImporter object>"
+  debug:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+
+constraints:
+  1.
+    Parameter 1: importer
+    Parameter 2: debug
+    Constraint: "isinstance(importer, (Importer, Sequence)) and isinstance(debug, bool)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.PackageExporter in a complex way */
+import torch

@@ -1,0 +1,50 @@
+params:
+  reflection_axis:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  is_square:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'LinearOperatorHouseholder'"
+constraints:
+  1:
+    Parameter 1: is_self_adjoint
+    Parameter 2: is_self_adjoint
+    Constraint: "is_self_adjoint == True"
+  2:
+    Parameter 1: is_positive_definite
+    Parameter 2: is_positive_definite
+    Constraint: "is_positive_definite == False"
+  3:
+    Parameter 1: is_square
+    Parameter 2: is_square
+    Constraint: "is_square == True"

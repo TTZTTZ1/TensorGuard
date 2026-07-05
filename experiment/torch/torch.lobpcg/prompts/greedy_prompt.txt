@@ -1,0 +1,150 @@
+
+# You are a Python code generation assistant for the `torch.lobpcg` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.lobpcg` computes the `k` largest or smallest eigenvalues and eigenvectors for a symmetric positive definite generalized eigenvalue problem using the LOBPCG algorithm. It supports dense, sparse, and batched matrices.
+
+**Key parameters:**
+- `A`: Input matrix (∗, m, m).
+- `k`: Number of eigenpairs to compute (default: 1 or based on `X`).
+- `B`: Optional matrix for generalized eigenvalue problems (default: identity).
+- `X`: Initial eigenvector approximation (dense tensor).
+- `largest`: If `True`, compute largest eigenvalues; otherwise smallest (default: `True`).
+- `method`: Choose `"ortho"` (robust, default) or `"basic"` (faster but less stable).
+
+**Returns:**
+- `E`: Eigenvalues (∗, k).
+- `X`: Eigenvectors (∗, m, k).
+
+**Important notes:**
+- Backward pass does not support sparse/complex inputs or when `B` is provided.
+- `A` is symmetrized automatically if it requires gradients.
+- Use `tracker` for iteration monitoring and custom stopping.
+- Not applicable if matrix rows < 3 × `k`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: No mention
+    range: No mention
+    structure: [tensor]
+    shape: ["*", "m", "m"]
+    default: null
+  k:
+    dtype: [int]
+    range: No mention
+    structure: [scalar]
+    shape: [scalar]
+    default: if X specified, number of columns in X, else 1
+  B:
+    dtype: No mention
+    range: No mention
+    structure: [tensor]
+    shape: ["*", "m", "m"]
+    default: None (interpreted as identity matrix)
+  X:
+    dtype: No mention
+    range: No mention
+    structure: [tensor]
+    shape: ["*", "m", "n"]
+    default: null
+  n:
+    dtype: [int]
+    range: No mention
+    structure: [scalar]
+    shape: [scalar]
+    default: k if X not specified, else ignored
+  iK:
+    dtype: No mention
+    range: No mention
+    structure: [tensor]
+    shape: ["*", "m", "m"]
+    default: null
+  niter:
+    dtype: [int]
+    range: No mention
+    structure: [scalar]
+    shape: [scalar]
+    default: No mention
+  tol:
+    dtype: [float]
+    range: No mention
+    structure: [scalar]
+    shape: [scalar]
+    default: feps ** 0.5 where feps is smallest non-zero floating-point number of A's data type
+  largest:
+    dtype: [bool]
+    range: [True, False]
+    structure: [scalar]
+    shape: [scalar]
+    default: True
+  method:
+    dtype: [string]
+    range: ["basic", "ortho"]
+    structure: [scalar]
+    shape: [scalar]
+    default: "ortho"
+  tracker:
+    dtype: [callable]
+    range: No mention
+    structure: [callable]
+    shape: No mention
+    default: null
+  ortho_iparams:
+    dtype: [dict]
+    range: No mention
+    structure: [dict]
+    shape: No mention
+    default: null
+  ortho_fparams:
+    dtype: [dict]
+    range: No mention
+    structure: [dict]
+    shape: No mention
+    default: null
+  ortho_bparams:
+    dtype: [dict]
+    range: No mention
+    structure: [dict]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: k
+    Constraint: A.shape[-1] >= 3 * k
+  2:
+    Parameter 1: X
+    Parameter 2: A
+    Constraint: X is None or X.shape[-2] == A.shape[-1]
+  3:
+    Parameter 1: k
+    Parameter 2: X
+    Constraint: X is None or k <= X.shape[-1]
+  4:
+    Parameter 1: k
+    Parameter 2: n
+    Constraint: X is None or (n is None or k <= n)
+  5:
+    Parameter 1: n
+    Parameter 2: A
+    Constraint: X is None or (n is None or n <= A.shape[-1])
+  6:
+    Parameter 1: B
+    Parameter 2: A
+    Constraint: B is None or B.shape == A.shape
+  7:
+    Parameter 1: iK
+    Parameter 2: A
+    Constraint: iK is None or iK.shape == A.shape
+  8:
+    Parameter 1: method
+    Parameter 2: None
+    Constraint: method is None or method in ["basic", "ortho"]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.lobpcg in a complex way */
+import torch

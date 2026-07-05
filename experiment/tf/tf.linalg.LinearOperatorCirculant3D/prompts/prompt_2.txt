@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant3D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant3D` is a TensorFlow class that represents a linear operator behaving like a **nested block circulant matrix** in 3D. It efficiently performs matrix operations using the **3D Fourier transform** without explicitly constructing the full matrix, making it suitable for large-scale problems.
+
+### **Key Features:**
+- **Efficient Operations:** Leverages the 3D FFT for matrix multiplication (`matmul`) and solving linear systems (`solve`), achieving **O(N log N)** complexity.
+- **Spectral Representation:** Defined by a `spectrum` tensor (frequency domain), where operations correspond to Fourier multipliers:  
+  `A u = IDFT3[ spectrum * DFT3[u] ]`.
+- **Batch Support:** Handles batch dimensions, applying the same block circulant structure across multiple instances.
+- **Property Hints:** Allows specifying matrix properties (e.g., `is_self_adjoint`, `is_positive_definite`) for optimization and validation.
+
+### **Common Use Cases:**
+- **Convolution Operations:** Acts as a convolution kernel in 3D (e.g., image/video processing).
+- **Large-Scale Linear Systems:** Solves structured systems efficiently without dense matrix storage.
+- **Spectral Analysis:** Models systems where frequency-domain representation is natural.
+
+### **Example Usage:**
+```python
+import tensorflow as tf
+
+# Define spectrum (e.g., shape [batch, N0, N1, N2])
+spectrum = tf.constant([...], dtype=tf.complex64)
+
+# Create operator
+operator = tf.linalg.LinearOperatorCirculant3D(spectrum)
+
+# Multiply with input tensor
+x = tf.constant([...], dtype=tf.complex64)
+y = operator.matmul(x)  # Efficient FFT-based multiplication
+```
+
+### **Key Methods:**
+- `matmul(x)`: Multiply operator with `x`.
+- `solve(rhs)`: Solve linear systems `A X = rhs`.
+- `determinant()`: Compute determinant via spectrum product.
+- `convolution_kernel()`: Get spatial-domain kernel.
+
+### **Performance:**
+- Ideal for **large 3D data** due to FFT acceleration.
+- Avoids **O(N²)** memory costs of dense matrices.
+
+This operator is particularly useful in **signal processing, PDE solvers, and deep learning** where 3D convolutions or Toeplitz-like structures appear.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N0, N1, N2]"]
+    default: null
+  input_output_dtype:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'LinearOperatorCirculant3D'"
+constraints:
+  1:
+    Parameter 1: spectrum
+    Parameter 2: is_self_adjoint
+    Constraint: "not (spectrum.dtype in ['float16', 'float32', 'float64'] and is_self_adjoint == False)"
+  2:
+    Parameter 1: spectrum
+    Parameter 2: is_positive_definite
+    Constraint: "not (is_positive_definite == True and tf.reduce_any(tf.math.real(spectrum) <= 0))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant3D in a complex way */
+import tensorflow as tf

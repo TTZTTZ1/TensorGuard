@@ -1,0 +1,44 @@
+params:
+  pred_fn_pairs:
+    dtype: ["list", "tuple"]
+    range: "No mention"
+    structure: ["list", "tuple"]
+    shape: ["any"]
+    default: null
+  default:
+    dtype: ["callable"]
+    range: "No mention"
+    structure: ["callable"]
+    shape: "No mention"
+    default: "None"
+  exclusive:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  strict:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'case'"
+constraints:
+  1:
+    Parameter 1: "pred_fn_pairs"
+    Parameter 2: "pred_fn_pairs"
+    Constraint: "isinstance(pred_fn_pairs, (list, tuple))"
+  2:
+    Parameter 1: "pred_fn_pairs"
+    Parameter 2: "pred_fn_pairs"
+    Constraint: "all(isinstance(pair, tuple) and len(pair) == 2 for pair in pred_fn_pairs)"
+  3:
+    Parameter 1: "pred_fn_pairs"
+    Parameter 2: "default"
+    Constraint: "all(callable(pair[1]) for pair in pred_fn_pairs) and (default is None or callable(default))"

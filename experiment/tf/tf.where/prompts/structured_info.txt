@@ -1,0 +1,50 @@
+params:
+  condition:
+    dtype: ["bool", "int", "float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  x:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+  y:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "(x is None and y is None) or (x is not None and y is not None)"
+  2:
+    Parameter 1: "condition"
+    Parameter 2: "x"
+    Constraint: "x is not None implies condition.dtype == tf.bool"
+  3:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "x is not None and y is not None implies x.dtype == y.dtype"
+  4:
+    Parameter 1: "condition"
+    Parameter 2: "x"
+    Constraint: "x is not None implies tf.broadcast_dynamic_shape(condition.shape, x.shape) is not None"
+  5:
+    Parameter 1: "condition"
+    Parameter 2: "y"
+    Constraint: "y is not None implies tf.broadcast_dynamic_shape(condition.shape, y.shape) is not None"
+  6:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "x is not None and y is not None implies tf.broadcast_dynamic_shape(x.shape, y.shape) is not None"

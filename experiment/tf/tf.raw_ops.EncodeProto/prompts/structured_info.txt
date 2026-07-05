@@ -1,0 +1,50 @@
+params:
+  sizes:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape", "len(field_names)"]
+    default: null
+  values:
+    dtype: "No mention"
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  field_names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  message_type:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  descriptor_source:
+    dtype: ["string"]
+    range: ["", "local://", "file", "bytes://"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "local://"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: field_names
+    Constraint: len(values) == len(field_names)
+  2:
+    Parameter 1: values
+    Parameter 2: sizes
+    Constraint: all(v.shape[:-1] == values[0].shape[:-1] for v in values) and sizes.shape == (values[0].shape[:-1] + (len(field_names),))
+  3:
+    Parameter 1: values
+    Parameter 2: sizes
+    Constraint: all(all(values[f].shape[-1] >= sizes[b, f] for b in range(sizes.shape[0])) for f in range(len(field_names)))

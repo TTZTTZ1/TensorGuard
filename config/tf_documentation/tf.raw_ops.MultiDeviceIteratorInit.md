@@ -1,0 +1,35 @@
+# tf.raw_ops.MultiDeviceIteratorInit
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MultiDeviceIteratorInit](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MultiDeviceIteratorInit)
+
+---
+
+Initializes the multi device iterator with the given dataset.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.MultiDeviceIteratorInit`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MultiDeviceIteratorInit)
+
+```
+tf.raw_ops.MultiDeviceIteratorInit(
+    dataset, multi_device_iterator, max_buffer_size, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `dataset` | A `Tensor` of type `variant`. Dataset to be iterated upon. |
+| `multi_device_iterator` | A `Tensor` of type `resource`. A MultiDeviceIteratorResource. |
+| `max_buffer_size` | A `Tensor` of type `int64`. The maximum size of the host side per device buffer to keep. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type `int64`. | |

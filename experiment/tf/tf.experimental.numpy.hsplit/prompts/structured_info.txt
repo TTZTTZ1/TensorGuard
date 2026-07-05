@@ -1,0 +1,26 @@
+params:
+  ary:
+    dtype: ["int", "float", "complex", "bool"]
+    range: null
+    structure: ["array"]
+    shape: ["[m, n, ...]"]  # with m, n, ... as positive integers and ndim >= 2
+    default: null
+  indices_or_sections:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: ["[]", "[k]"]  # scalar or 1-D array with length k
+    default: null
+constraints:
+  1:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, int) or (isinstance(indices_or_sections, (list, tuple)) and all(isinstance(i, int) for i in indices_or_sections))"
+  2:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "(not isinstance(indices_or_sections, int)) or (ary.shape[1] % indices_or_sections == 0)"
+  3:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "not isinstance(indices_or_sections, (list, tuple)) or all(0 <= i < ary.shape[1] for i in indices_or_sections)"

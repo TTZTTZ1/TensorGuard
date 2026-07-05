@@ -1,0 +1,37 @@
+{
+  "id": "PAPER-TF-007",
+  "title": "MaxPool invalid window causes CPU floating point exception",
+  "framework": "TensorFlow",
+  "api": "tf.keras.layers.MaxPool1D",
+  "related_apis": [
+    "tf.keras.layers.MaxPool2D",
+    "tf.keras.layers.MaxPool3D",
+    "tf.keras.layers.MaxPooling1D",
+    "tf.keras.layers.MaxPooling2D",
+    "tf.keras.layers.MaxPooling3D",
+    "tf.nn.max_pool",
+    "tf.nn.max_pool1d",
+    "tf.nn.max_pool2d",
+    "tf.nn.max_pool3d",
+    "tf.nn.pool",
+    "tf.raw_ops.MaxPool",
+    "tf.raw_ops.MaxPool3D"
+  ],
+  "bug_type": "CPU/GPU inconsistency / floating point exception",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例"
+  },
+  "trigger": "Use a MaxPool1D pool size larger than the input length with padding='valid'.",
+  "expected": "TensorFlow should consistently reject invalid pooling dimensions on CPU and GPU.",
+  "observed": "GPU does not crash; CPU terminates with Floating point exception.",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["tensorflow", "cpu-gpu-inconsistency", "sigfpe", "maxpool"]
+}

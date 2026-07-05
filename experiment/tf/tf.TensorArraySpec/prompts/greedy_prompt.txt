@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.TensorArraySpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TensorArraySpec` is a **type specification class** for `tf.TensorArray`, used to define and validate the structure of a `TensorArray` in TensorFlow's type system. It inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+
+### **Key Purpose**
+- Describes the expected properties of a `TensorArray` for type checking, serialization, and compatibility validation in graph-based or distributed TensorFlow operations.
+
+### **Main Parameters**
+| Parameter | Description |
+|-----------|-------------|
+| `element_shape` | Shape of each element in the `TensorArray`. |
+| `dtype` | Data type of elements (default: `tf.float32`). |
+| `dynamic_size` | If `True`, the array can grow beyond its initial size. |
+| `infer_shape` | If `True`, enables shape inference. |
+
+### **Core Functionality**
+1. **Type Compatibility & Subtyping**  
+   - `is_compatible_with()`: Checks if another spec or value matches this spec.
+   - `is_subtype_of()`: Determines if this spec is a subtype of another (implements `TraceType`).
+   - `most_specific_common_supertype()`: Finds the most specific common supertype for multiple specs.
+
+2. **Serialization**  
+   - `experimental_as_proto()` / `experimental_from_proto()`: Converts to/from a protobuf representation for saving/loading.
+
+3. **Utility Methods**  
+   - `from_value()`: Creates a `TensorArraySpec` from an existing `TensorArray`.
+   - `most_specific_compatible_type()`: **Deprecated**; replaced by `most_specific_common_supertype`.
+
+### **Use Case**
+Primarily used internally by TensorFlow to ensure type consistency when passing `TensorArray` objects between ops, especially in `tf.function` decorated functions or distributed computation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_shape:
+    dtype: ["None", "tuple"]
+    range: null
+    structure: ["None", "tuple"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["tf.dtypes.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "tf.dtypes.float32"
+  dynamic_size:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  infer_shape:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TensorArraySpec in a complex way */
+import tensorflow as tf

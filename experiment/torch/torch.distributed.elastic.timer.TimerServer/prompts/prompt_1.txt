@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers provide a mechanism to detect and handle stuck workers in distributed training by setting time limits on critical code blocks.
+
+**Core Concept**: When a worker enters a code block that could potentially hang, it acquires a timer with a specified deadline. If the worker doesn't release the timer before expiration, the timer server will terminate the worker process, allowing the elastic agent to restart it.
+
+**Key Components**:
+- **Timer Client**: Used within worker processes to acquire/release timers
+- **Timer Server**: Monitors timers and terminates workers with expired timers
+- **Context Manager**: `expires(after=seconds)` creates a timed code block
+
+**Basic Usage**:
+1. Start a timer server (e.g., `LocalTimerServer` or `FileTimerServer`)
+2. Configure the timer client in worker processes
+3. Wrap potentially stuck code with `with expires(after=timeout):`
+
+**Provided Implementations**:
+- `LocalTimerServer/Client`: Uses multiprocessing Queue for communication
+- `FileTimerServer/Client`: Uses named pipes (FIFO) for communication
+
+**Customization**: You can implement custom timer servers/clients by extending the `TimerServer` and `TimerClient` abstract base classes.
+
+This system enables robust fault tolerance in distributed PyTorch training by automatically recovering from worker hangs through process termination and restart.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  request_queue:
+    dtype: ["object"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  max_interval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  daemon:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerServer in a complex way */
+import torch

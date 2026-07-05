@@ -1,0 +1,34 @@
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.math.reduce_all(segment_ids < num_segments)"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: data
+    Constraint: "segment_ids.shape == data.shape[:len(segment_ids.shape)]"

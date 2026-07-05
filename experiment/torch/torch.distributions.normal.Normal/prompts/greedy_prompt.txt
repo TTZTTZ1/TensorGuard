@@ -1,0 +1,103 @@
+
+# You are a Python code generation assistant for the `torch.distributions.normal.Normal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Parameterizable probability distributions with sampling functions
+- Supports stochastic gradient estimators (REINFORCE/pathwise derivative)
+- Enables construction of stochastic computation graphs
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` (abstract base class)
+- **Common Distributions**: 
+  - Continuous: `Normal`, `Uniform`, `Exponential`, `Gamma`, `Beta`, etc.
+  - Discrete: `Bernoulli`, `Binomial`, `Categorical`, `Poisson`, etc.
+  - Multivariate: `MultivariateNormal`, `Dirichlet`, etc.
+  - Specialized: `LKJCholesky`, `Wishart`, `VonMises`, etc.
+
+### **2. Core Methods**
+- `sample()` / `rsample()`: Generate samples (rsample is reparameterized)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Compute distribution entropy
+- `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution functions
+
+### **3. Gradient Estimation Techniques**
+- **Score Function (REINFORCE)**: Uses `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick
+
+### **4. Advanced Features**
+- **Transformed Distributions**: Apply transforms to base distributions
+- **Mixture Models**: `MixtureSameFamily` for mixture distributions
+- **Independent Wrapper**: Reinterpret batch dims as event dims
+- **KL Divergence**: Pre-registered KL computations between distributions
+
+### **5. Support System**
+- **Constraints**: Define valid parameter ranges (e.g., `simplex`, `positive`)
+- **Transforms**: Bijective/non-bijective transformations between spaces
+- **Constraint Registry**: `biject_to()` and `transform_to()` for optimization
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions design
+- Separates batch and event shapes
+- Provides both discrete and continuous distributions
+- Supports automatic differentiation through sampling operations
+- Includes extensive constraint system for parameter validation
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: scale > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.normal.Normal in a complex way */
+import torch

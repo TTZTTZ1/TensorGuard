@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  block_shape:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[M]"]
+    default: null
+  crops:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[M, 2]"]
+    default: null
+  name:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: block_shape
+    Parameter 2: None
+    Constraint: "all(value >= 1 for value in block_shape)"
+  2:
+    Parameter 1: crops
+    Parameter 2: None
+    Constraint: "all(value >= 0 for value in crops)"
+  3:
+    Parameter 1: block_shape
+    Parameter 2: crops
+    Constraint: "len(block_shape) == crops.shape[0]"
+  4:
+    Parameter 1: input
+    Parameter 2: block_shape
+    Constraint: "len(input.shape) >= len(block_shape) + 1"
+  5:
+    Parameter 1: crops
+    Parameter 2: block_shape
+    Constraint: "for i in range(len(block_shape)): crops[i, 0] + crops[i, 1] <= block_shape[i] * input.shape[i + 1]"

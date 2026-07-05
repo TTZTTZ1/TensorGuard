@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrize.register_parametrization` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.parametrize.register_parametrization` allows you to apply a parametrization (a transformation) to a module's parameter or buffer, replacing the original tensor with a transformed version while preserving gradient flow. Key features include:
+
+- **Functionality**: When accessing the parametrized tensor (e.g., `module.weight`), it returns `parametrization(module.weight)`, with gradients propagating through the transformation.
+- **Structure**: Adds a `parametrizations` attribute to the module, where the original tensor is stored as `module.parametrizations.weight.original`.
+- **Initialization**: Supports `right_inverse` method to compute the original tensor from a desired parametrized value, enabling initialization via assignment (e.g., `module.weight = X`).
+- **Flexibility**: Multiple parametrizations can be chained on the same tensor.
+- **Safety**: By default (`unsafe=False`), consistency checks are performed; set `unsafe=True` to skip checks (use with caution).
+- **Use Case**: Useful for enforcing constraints (e.g., symmetry, low-rank) on parameters while maintaining differentiability for optimization.
+
+**Example**: Applying a symmetric constraint to a linear layer's weight matrix ensures `m.weight` is always symmetric, with gradients updating the underlying unconstrained tensor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["nn.Module"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  tensor_name:
+    dtype: ["str"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: null
+  parametrization:
+    dtype: ["nn.Module"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  unsafe:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "module"
+    Parameter 2: "tensor_name"
+    Constraint: "tensor_name in list(module._parameters.keys()) + list(module._buffers.keys())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrize.register_parametrization in a complex way */
+import torch

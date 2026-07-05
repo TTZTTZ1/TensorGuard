@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.Dataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for efficient data loading and batching in PyTorch, centered around the `DataLoader` class. Here’s a concise overview of its key components and functionality:
+
+---
+
+### **Core Components**
+
+1. **`DataLoader`**  
+   - Main class for creating an iterable over a dataset.  
+   - Supports both **map-style** (index-based) and **iterable-style** (stream-based) datasets.  
+   - Key features:  
+     - Automatic batching, shuffling, and sampling.  
+     - Single- or multi-process data loading (`num_workers`).  
+     - Memory pinning for faster GPU transfer (`pin_memory`).  
+     - Customizable collation (`collate_fn`).
+
+2. **Dataset Types**  
+   - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk).  
+   - **Iterable-style**: Implements `__iter__()` (e.g., streaming from a database or log files).  
+   - Built-in dataset wrappers: `TensorDataset`, `ConcatDataset`, `ChainDataset`, `Subset`, `StackDataset`.
+
+3. **Samplers**  
+   - Control data loading order (e.g., `SequentialSampler`, `RandomSampler`, `WeightedRandomSampler`).  
+   - `BatchSampler` wraps another sampler to yield batches of indices.  
+   - Custom samplers can be used for advanced batching strategies.
+
+---
+
+### **Key Functionality**
+
+- **Automatic Batching**:  
+  - Enabled via `batch_size`; batches are formed using `collate_fn` (default stacks tensors).  
+  - Disable batching by setting `batch_size=None` and `batch_sampler=None`.
+
+- **Multi-Process Loading**:  
+  - Set `num_workers > 0` to parallelize data loading across subprocesses.  
+  - Requires careful handling of randomness and dataset replication (especially for iterable datasets).  
+  - Platform-specific behaviors: `fork()` on Unix, `spawn()` on Windows/macOS.
+
+- **Memory Pinning**:  
+  - Use `pin_memory=True` to speed up host-to-GPU data transfers.  
+  - Custom types can define a `pin_memory()` method to enable pinning.
+
+- **Custom Collation**:  
+  - `collate_fn` processes lists of samples into batches (default: converts NumPy arrays to tensors).  
+  - Customize for padding, variable-length sequences, or complex data structures.
+
+---
+
+### **Important Notes**
+
+- **IterableDataset with Multi-Processing**:  
+  Each worker gets a replica of the dataset; use `get_worker_info()` or `worker_init_fn` to shard data and avoid duplicates.
+
+- **Randomness in Multi-Processing**:  
+  Workers have deterministic seeds derived from the base RNG. Use `worker_init_fn` to seed other libraries.
+
+- **Platform Compatibility**:  
+  On Windows/macOS, wrap main script code in `if __name__ == '__main__':` and define functions at the top level to avoid pickling issues.
+
+- **Distributed Training**:  
+  Use `DistributedSampler` to partition data across processes. Call `set_epoch()` each epoch for proper shuffling.
+
+---
+
+### **Common Use Cases**
+
+1. **Basic Map-Style Dataset**  
+   ```python
+   loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+   ```
+
+2. **Custom Batching (e.g., Padding Sequences)**  
+   ```python
+   def collate_pad(batch):
+       # Pad sequences to max length in batch
+       ...
+   loader = DataLoader(dataset, batch_size=16, collate_fn=collate_pad)
+   ```
+
+3. **IterableDataset with Sharding**  
+   ```python
+   class ShardedDataset(IterableDataset):
+       def __iter__(self):
+           worker_info = get_worker_info()
+           # Shard data based on worker_id
+           ...
+   ```
+
+---
+
+### **Summary**
+
+`torch.utils.data` provides a flexible and efficient pipeline for loading, batching, and preprocessing data in PyTorch. The `DataLoader` abstracts complexities like parallel loading, shuffling, and memory management, while supporting customization via samplers, collation functions, and dataset types. Proper configuration is essential for performance, especially in distributed or multi-GPU settings.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  (No parameters documented for torch.utils.data.Dataset base class)
+
+constraints:
+  (No parameter constraints for torch.utils.data.Dataset base class)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.Dataset in a complex way */
+import torch

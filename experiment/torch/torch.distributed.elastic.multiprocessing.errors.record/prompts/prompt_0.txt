@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.errors.record` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The documentation describes PyTorch TorchElastic's error propagation mechanism for distributed training jobs. Key points:
+
+**Purpose**: Propagate errors from worker processes to the scheduler for proper job state reporting and retry policies.
+
+**Error Categories**:
+1. **User Error** - Invalid API inputs
+2. **Worker Failure** - Failures in user-provided training scripts
+3. **Platform Error** - Agent failures
+4. **Infra Error** - External failures (e.g., host failures)
+
+**Core Mechanism**:
+- Uses `@record` decorator on main functions to capture uncaught exceptions
+- Writes errors to a file specified by `TORCHELASTIC_ERROR_FILE` environment variable
+- Parent agent aggregates error files and propagates the **first** error (smallest timestamp)
+
+**Key Components**:
+- `record()`: Decorator for error recording at process top level
+- `ChildFailedError`: Exception to propagate child errors without parent traceback wrapping
+- `ErrorHandler`: Base class for structured JSON error logging
+- `ProcessFailure`: Represents failed process results with error metadata
+
+**Usage**: Decorate main entry points with `@record` to enable automatic error propagation from workers to the scheduling layer.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["Callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  error_handler:
+    dtype: ["ErrorHandler", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.errors.record in a complex way */
+import torch

@@ -1,0 +1,42 @@
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: [0, "world_size-1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "SUM"
+  group:
+    dtype: ["ProcessGroup"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  async_op:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+  group_dst:
+    dtype: ["int"]
+    range: [0, "group_size-1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is None or group_dst is None"

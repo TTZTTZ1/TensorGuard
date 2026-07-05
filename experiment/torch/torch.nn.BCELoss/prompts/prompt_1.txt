@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.nn.BCELoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`BCELoss` (Binary Cross Entropy Loss) is a PyTorch loss function used for binary classification tasks. It measures the difference between predicted probabilities and true binary labels (values between 0 and 1).
+
+**Key features:**
+- Computes loss per element:  
+  `loss = -[y * log(x) + (1-y) * log(1-x)]`
+- Supports optional weighting per sample via `weight` parameter
+- Reduction options: `'none'` (element-wise), `'mean'` (default), or `'sum'`
+- Clamps log outputs to ≥ -100 for numerical stability (avoids infinite gradients)
+- Input and target must have the same shape
+
+**Common use cases:** Auto-encoders, binary classification models where outputs are probabilities (e.g., after a Sigmoid activation).
+
+**Example:**
+```python
+loss_fn = nn.BCELoss()
+predictions = torch.sigmoid(model_output)  # Ensure values in [0,1]
+loss = loss_fn(predictions, target_labels)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weight:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["matching batch size"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: ["none", "mean", "sum"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'mean'"
+constraints:
+  1.
+    Parameter 1: "reduce"
+    Parameter 2: "size_average"
+    Constraint: "reduce == False implies size_average is ignored in loss computation"
+  2.
+    Parameter 1: "size_average"
+    Parameter 2: "reduction"
+    Constraint: "size_average is not None implies reduction is overridden"
+  3.
+    Parameter 1: "reduce"
+    Parameter 2: "reduction"
+    Constraint: "reduce is not None implies reduction is overridden"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.BCELoss in a complex way */
+import torch

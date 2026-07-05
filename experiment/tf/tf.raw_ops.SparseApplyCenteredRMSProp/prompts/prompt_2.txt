@@ -1,0 +1,146 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyCenteredRMSProp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseApplyCenteredRMSProp` function implements the **centered RMSProp optimization algorithm** for sparse updates. It adjusts variables using estimates of both the gradient mean and variance, which can improve training stability compared to standard RMSProp.
+
+### Key Features:
+- **Sparse updates**: Only updates variables at specified indices, making it efficient for sparse gradients.
+- **Centered normalization**: Uses variance (centered second moment) instead of just the second moment, offering better performance at slightly higher cost.
+- **Conditional updates**: In sparse mode, the moving averages (`mg`, `ms`, `mom`) are updated only when the gradient is non-zero for the given indices.
+
+### Parameters:
+- **Variable tensors** (`var`, `mg`, `ms`, `mom`): Mutable tensors representing the variable to optimize and its moving averages.
+- **Hyperparameters** (`lr`, `rho`, `momentum`, `epsilon`): Learning rate, decay rate, momentum, and a small constant for numerical stability.
+- **Gradient and indices** (`grad`, `indices`): The gradient and the indices where updates should be applied.
+- **Optional locking** (`use_locking`): Controls thread-safe updates.
+
+### Update Rules:
+1. Update mean square:  
+   \( ms = \rho \cdot ms + (1 - \rho) \cdot grad^2 \)
+2. Update mean gradient:  
+   \( mg = \rho \cdot mg + (1 - \rho) \cdot grad \)
+3. Compute momentum:  
+   \( mom = momentum \cdot mom + \frac{lr \cdot grad}{\sqrt{ms + \epsilon - mg^2}} \)
+4. Update variable:  
+   \( var = var - mom \)
+
+### Returns:
+- A mutable tensor of the same type as `var`, representing the updated variable.
+
+This operation is typically used in training scenarios with sparse gradients, such as embedding layers or large-scale recommendation systems.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  mg:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  ms:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  mom:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  rho:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  momentum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  epsilon:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "var"
+    Parameter 2: "mg"
+    Constraint: "var.dtype == mg.dtype"
+  2:
+    Parameter 1: "var"
+    Parameter 2: "ms"
+    Constraint: "var.dtype == ms.dtype"
+  3:
+    Parameter 1: "var"
+    Parameter 2: "mom"
+    Constraint: "var.dtype == mom.dtype"
+  4:
+    Parameter 1: "var"
+    Parameter 2: "lr"
+    Constraint: "var.dtype == lr.dtype"
+  5:
+    Parameter 1: "var"
+    Parameter 2: "rho"
+    Constraint: "var.dtype == rho.dtype"
+  6:
+    Parameter 1: "var"
+    Parameter 2: "momentum"
+    Constraint: "var.dtype == momentum.dtype"
+  7:
+    Parameter 1: "var"
+    Parameter 2: "epsilon"
+    Constraint: "var.dtype == epsilon.dtype"
+  8:
+    Parameter 1: "var"
+    Parameter 2: "grad"
+    Constraint: "var.dtype == grad.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyCenteredRMSProp in a complex way */
+import tensorflow as tf

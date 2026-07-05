@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorPermutation` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorPermutation` represents a batch of permutation matrices, defined by an integer permutation vector. It efficiently applies row permutations to inputs without materializing the full matrix.
+
+**Key Features:**
+- **Initialization:** Requires a permutation vector `perm` with unique entries `[0,...,N-1]`, similar to `tf.transpose` semantics but applied to rows.
+- **Properties:** Automatically square, non-singular, and self-adjoint. Determinant is ±1, and `log_abs_determinant()` returns 0.
+- **Efficiency:** Supports core linear algebra operations (`matmul`, `solve`, `inverse`, etc.) without constructing the dense matrix.
+- **Batch Support:** Handles batch dimensions seamlessly, where each batch element has its own permutation.
+
+**Common Use Case:**
+```python
+perm = [0, 2, 1]  # Swap last two rows/columns
+operator = LinearOperatorPermutation(perm)
+operator.matmul(x)  # Efficiently permutes rows of x
+```
+
+**Main Methods:**
+- `matmul(x)`: Permutes rows of `x`.
+- `solve(rhs)`: Applies inverse permutation (transpose).
+- `to_dense()`: Explicitly constructs the permutation matrix.
+- `inverse()`: Returns the inverse permutation operator.
+
+This operator is ideal for efficiently applying permutations in linear algebra contexts while leveraging TensorFlow's broadcasting and batch capabilities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  perm:
+    dtype: ["int32", "int64"]
+    range: "unique integers from 0 to N-1"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dtype:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["dtype"]
+    shape: "No mention"
+    default: "tf.dtypes.float32"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  is_square:
+    dtype: ["bool"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["string"]
+    shape: "No mention"
+    default: "'LinearOperatorPermutation'"
+constraints:
+  1:
+    Parameter 1: perm
+    Parameter 2: perm
+    Constraint: "tf.size(tf.unique(perm)) == tf.shape(perm)[-1] and tf.reduce_all(perm >= 0) and tf.reduce_all(perm < tf.shape(perm)[-1])"
+  2:
+    Parameter 1: is_self_adjoint
+    Parameter 2: is_self_adjoint
+    Constraint: "is_self_adjoint == True"
+  3:
+    Parameter 1: is_positive_definite
+    Parameter 2: is_positive_definite
+    Constraint: "is_positive_definite == False"
+  4:
+    Parameter 1: is_square
+    Parameter 2: is_square
+    Constraint: "is_square == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorPermutation in a complex way */
+import tensorflow as tf

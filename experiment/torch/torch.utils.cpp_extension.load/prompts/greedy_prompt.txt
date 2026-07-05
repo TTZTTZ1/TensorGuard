@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.load` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides tools for building and loading PyTorch C++ extensions, supporting CPU, CUDA, and SYCL backends. It includes:
+
+- **Extension classes**: `CppExtension`, `CUDAExtension`, and `SyclExtension` for creating `setuptools.Extension` objects with appropriate compiler flags and dependencies.
+- **Build system**: `BuildExtension` handles mixed C++/CUDA/SYCL compilation and integrates with Ninja for faster builds.
+- **JIT loading**: `load()` and `load_inline()` compile and import extensions at runtime without a separate build step.
+- **Utilities**: Functions to retrieve include paths, check compiler compatibility, and verify Ninja availability.
+
+Key features:
+- Automatic detection of CUDA/SYCL sources and appropriate compiler selection.
+- Support for custom compiler flags per language (`cxx`, `nvcc`, `sycl`).
+- Control over target architectures via environment variables (`TORCH_CUDA_ARCH_LIST`, `TORCH_XPU_ARCH_LIST`).
+- Relocatable device code (RDC) linking for CUDA extensions.
+- Seamless integration with PyTorch's Python API and error handling.
+
+This module simplifies extending PyTorch with custom C++/CUDA/SYCL kernels, enabling both ahead-of-time compilation (via `setup.py`) and just-in-time loading.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  sources:
+    dtype: ["str", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  extra_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_cuda_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_sycl_cflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_ldflags:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  extra_include_paths:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  build_directory:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  verbose:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  with_cuda:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  with_sycl:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_python_module:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  is_standalone:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: with_cuda
+    Parameter 2: sources
+    Constraint: "with_cuda is None or (isinstance(with_cuda, bool) and (with_cuda == any('.cu' in str(source) or '.cuh' in str(source) for source in (sources if isinstance(sources, list) else [sources]))))"
+  2:
+    Parameter 1: with_sycl
+    Parameter 2: sources
+    Constraint: "with_sycl is None or (isinstance(with_sycl, bool) and (with_sycl == any('.sycl' in str(source) for source in (sources if isinstance(sources, list) else [sources]))))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.load in a complex way */
+import torch

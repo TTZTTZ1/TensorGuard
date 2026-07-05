@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.linalg.qr` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.qr` computes the QR decomposition of a matrix (or batch of matrices) into an orthogonal/unitary matrix **Q** and an upper-triangular matrix **R** such that **A = QR**.
+
+**Key features:**
+- Supports real and complex matrices, as well as batched inputs.
+- Offers three modes via the `mode` parameter:
+  - `'reduced'` (default): Returns **Q** (m × k) and **R** (k × n), where k = min(m, n). Always differentiable.
+  - `'complete'`: Returns full **Q** (m × m) and **R** (m × n). Differentiable only when m ≤ n.
+  - `'r'`: Returns only **R** (k × n), with **Q** as an empty tensor. Not differentiable.
+
+**Important notes:**
+- The diagonal of **R** is real but not guaranteed positive, so the decomposition is unique only up to the sign of the diagonal.
+- For correct results, the first k columns of each input matrix must be linearly independent (otherwise, output may be invalid or autograd may fail).
+- Unlike NumPy, `mode='raw'` is not supported, and a tuple `(Q, R)` is always returned (with **Q** empty for `mode='r'`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["reduced", "complete", "r"]]
+    structure: ["scalar"]
+    shape: null
+    default: "reduced"
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: A
+    Constraint: "A.ndim >= 2"
+  2:
+    Parameter 1: mode
+    Parameter 2: mode
+    Constraint: "mode in ['reduced', 'complete', 'r']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.qr in a complex way */
+import torch

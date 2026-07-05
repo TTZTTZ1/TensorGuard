@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.onnx.select_model_mode_for_export` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.onnx` module enables exporting PyTorch models to the ONNX format, allowing them to run on various supported runtimes like ONNX Runtime. The primary function is `torch.onnx.export()`, which converts a model into an ONNX graph.
+
+**Key Features:**
+- **Default Exporter (PyTorch 2.9+):** Uses `torch.export` (set `dynamo=True`) for modern, functional graph capture, eliminating Python control flow and supporting dynamic shapes via `dynamic_shapes`.
+- **Dynamic Shapes:** For models with variable input sizes, specify `dynamic_shapes` (preferred with `dynamo=True`) or `dynamic_axes` (for legacy TorchScript export).
+- **Large Models:** Use `external_data=True` to save weights externally, bypassing ONNX's 2GB file limit.
+- **Output:** Returns an `ONNXProgram` object (when `dynamo=True`), which contains the ONNX model and the exported program, allowing flexible serialization.
+
+**Basic Usage:**
+```python
+torch.onnx.export(
+    model,
+    example_inputs,
+    "model.onnx",
+    input_names=["input"],
+    dynamo=True  # Default in PyTorch 2.9+
+)
+```
+
+**Deprecated Options:** Many legacy parameters (e.g., `training`, `operator_export_type`, `do_constant_folding`) are deprecated; use modern equivalents or set model attributes directly before export.
+
+**Additional APIs:**
+- `torch.onnx.is_in_onnx_export()`: Checks if currently exporting.
+- `ONNXProgram`: Wrapper for exported ONNX models.
+- Deprecated functions for custom operator registration (`register_custom_op_symbolic`) are available but not recommended for new code.
+
+The exporter supports debugging with options like `report`, `verify`, and `dump_exported_program`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  model:
+    dtype: ["torch.nn.Module", "torch.export.ExportedProgram", "torch.jit.ScriptModule", "torch.jit.ScriptFunction"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["TrainingMode"]
+    range: [["TrainingMode.EVAL", "TrainingMode.TRAIN"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.onnx.select_model_mode_for_export in a complex way */
+import torch

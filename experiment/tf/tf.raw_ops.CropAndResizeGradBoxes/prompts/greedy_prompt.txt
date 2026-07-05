@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CropAndResizeGradBoxes` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.CropAndResizeGradBoxes` computes the gradient of the `crop_and_resize` operation with respect to the input bounding boxes. It backpropagates the error from the output (`grads`) through the cropping and resizing process to update the box coordinates.
+
+**Key Parameters:**
+- **grads**: 4D tensor of shape `[num_boxes, crop_height, crop_width, depth]` containing gradients from the subsequent layer.
+- **image**: 4D input image tensor of shape `[batch, image_height, image_width, depth]`.
+- **boxes**: 2D tensor of shape `[num_boxes, 4]` with normalized coordinates `[y1, x1, y2, x2]`.
+- **box_ind**: 1D tensor mapping each box to a batch index in `image`.
+- **method**: Interpolation method (currently only `"bilinear"` is supported).
+
+**Output:** A `float32` tensor with the same shape as `boxes`, representing the gradient with respect to the input box coordinates.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  grads:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_boxes, crop_height, crop_width, depth]"]
+    default: null
+  image:
+    dtype: ["uint8", "uint16", "int8", "int16", "int32", "int64", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch, image_height, image_width, depth]"]
+    default: null
+  boxes:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_boxes, 4]"]
+    default: null
+  box_ind:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_boxes]"]
+    default: null
+  method:
+    dtype: ["string"]
+    range: [["bilinear"]]
+    structure: ["scalar"]
+    shape: null
+    default: "bilinear"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: box_ind
+    Constraint: "boxes.shape[0] == box_ind.shape[0]"
+  2:
+    Parameter 1: box_ind
+    Parameter 2: image
+    Constraint: "all(0 <= box_ind[i] < image.shape[0] for i in range(box_ind.shape[0]))"
+  3:
+    Parameter 1: grads
+    Parameter 2: boxes
+    Constraint: "grads.shape[0] == boxes.shape[0]"
+  4:
+    Parameter 1: image
+    Parameter 2: image
+    Constraint: "image.shape[1] > 0 and image.shape[2] > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CropAndResizeGradBoxes in a complex way */
+import tensorflow as tf

@@ -1,0 +1,54 @@
+params:
+  input:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  mat:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  vec:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  beta:
+    dtype: ["int", "float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1"
+  alpha:
+    dtype: ["int", "float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1"
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "mat"
+    Parameter 2: "vec"
+    Constraint: "len(mat.shape) == 2 and len(vec.shape) == 1 and mat.shape[1] == vec.shape[0]"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "mat"
+    Constraint: "(input.ndim == 0) or (input.ndim == 1 and input.shape[0] == mat.shape[0])"
+  3:
+    Parameter 1: "input"
+    Parameter 2: "beta"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(beta, float)) or (input.dtype not in [torch.float32, torch.float64] and isinstance(beta, int))"
+  4:
+    Parameter 1: "input"
+    Parameter 2: "alpha"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(alpha, float)) or (input.dtype not in [torch.float32, torch.float64] and isinstance(alpha, int))"

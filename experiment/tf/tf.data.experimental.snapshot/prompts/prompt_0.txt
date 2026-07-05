@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.snapshot` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.data.experimental.snapshot` function (deprecated in favor of `tf.data.Dataset.snapshot`) is used to persist a dataset's processed output to disk, enabling reuse across different training runs. It trades storage for computational efficiency by saving preprocessed data.
+
+**Key Features:**
+- **Persists dataset output** to a specified directory (`path`).
+- **Supports compression** (`GZIP`, `SNAPPY`, `AUTO`, or `None`).
+- **Customizable sharding** via `shard_func` to control how data is written to shards.
+- **Customizable reading** via `reader_func` to manage how data is loaded (e.g., with shuffling or parallel reads).
+
+**Typical Use Case:**  
+Save preprocessing results once, then reload them directly in subsequent runs, avoiding redundant CPU processing.
+
+**Example Usage:**
+```python
+dataset = dataset.apply(tf.data.experimental.snapshot(
+    path="/snapshot/dir",
+    shard_func=lambda idx, data: idx % num_shards,
+    reader_func=lambda datasets: datasets.shuffle(num_cores).interleave(lambda x: x)
+))
+```
+
+**Note:** This function returns a dataset transformation to be used with `.apply()`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  path:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  compression:
+    dtype: ["string"]
+    range: [["GZIP", "SNAPPY", "AUTO", null]]
+    structure: ["scalar"]
+    shape: null
+    default: "'AUTO'"
+  reader_func:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  shard_func:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.snapshot in a complex way */
+import tensorflow as tf

@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorHouseholder` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorHouseholder` represents a batch of Householder reflection matrices, defined by a reflection axis vector, without explicitly constructing the full matrix. It efficiently performs linear algebra operations (like `matmul`, `solve`, `determinant`) by leveraging the structure of Householder transformations.
+
+**Key Features:**
+- **Initialization:** Requires a `reflection_axis` vector (shape `[B1,...,Bb, N]`) to define the hyperplane for reflection.
+- **Properties:** Automatically set as square, self-adjoint, and non-positive-definite. It is always non-singular (determinant = -1).
+- **Efficiency:** Supports batch operations and avoids materializing the full `N x N` matrix, saving memory and computation.
+- **Operations:** Provides common linear algebra methods (`matmul`, `solve`, `inverse`, `determinant`, `log_abs_determinant`, etc.) with shape broadcasting.
+
+**Common Use Case:**  
+Useful when applying repeated Householder transformations (e.g., in QR decomposition) while maintaining numerical efficiency and batch support.
+
+**Example:**
+```python
+vec = [1., 2., 3.]
+operator = tf.linalg.LinearOperatorHouseholder(vec)
+x = tf.constant([[1., 2.], [3., 4.], [5., 6.]])  # Shape [3, 2]
+y = operator.matmul(x)  # Applies reflection to x
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  reflection_axis:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  is_square:
+    dtype: ["bool"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'LinearOperatorHouseholder'"
+constraints:
+  1:
+    Parameter 1: is_self_adjoint
+    Parameter 2: is_self_adjoint
+    Constraint: "is_self_adjoint == True"
+  2:
+    Parameter 1: is_positive_definite
+    Parameter 2: is_positive_definite
+    Constraint: "is_positive_definite == False"
+  3:
+    Parameter 1: is_square
+    Parameter 2: is_square
+    Constraint: "is_square == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorHouseholder in a complex way */
+import tensorflow as tf

@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.SimpleElasticAgent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in PyTorch Elastic (torchelastic) that manages distributed worker processes. It handles:
+
+- **Worker Management**: Launches and monitors worker processes, providing them with necessary information to initialize `torch.distributed.init_process_group()`.
+- **Fault Tolerance**: Detects worker failures or unhealthiness, tears down all workers, and restarts them.
+- **Elasticity**: Reacts to membership changes (e.g., scaling) and restarts workers with updated members.
+
+### Key Components:
+- **`ElasticAgent`**: Abstract base class for agent implementations.
+- **`WorkerSpec`**: Blueprint defining worker configuration (role, entrypoint, world size, etc.).
+- **`WorkerGroup`**: A set of `Worker` instances managed by an agent.
+- **`WorkerState`**: Tracks the state of a worker group (e.g., `HEALTHY`, `FAILED`, `STOPPED`).
+
+### Implementations:
+- **`LocalElasticAgent`**: Manages local workers on a single host. Suitable for multi-GPU setups where workers correspond to GPUs on the host.
+
+### Extending the Agent:
+- **`SimpleElasticAgent`**: Recommended base class for custom agents, providing scaffolding with abstract methods like `_start_workers`, `_stop_workers`, and `_monitor_workers`.
+
+### Additional Features:
+- **Watchdog**: Optional named pipe-based timer to monitor agent/worker liveness.
+- **Health Check Server**: Optional TCP/HTTP server for external health monitoring.
+
+### Usage Example:
+Agents are deployed per node and can manage multiple workers per node depending on hardware. They return a `RunResult` indicating success/failure of all workers, with results or failures mapped by global rank.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["WorkerSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  exit_barrier_timeout:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "300"
+constraints:
+  1.
+    Parameter 1: exit_barrier_timeout
+    Parameter 2: 
+    Constraint: "exit_barrier_timeout >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.SimpleElasticAgent in a complex way */
+import torch

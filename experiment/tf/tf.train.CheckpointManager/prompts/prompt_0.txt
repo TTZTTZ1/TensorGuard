@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.train.CheckpointManager` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.CheckpointManager` is a utility for managing TensorFlow training checkpoints. It automates the process of saving, keeping a limited number of recent checkpoints, and optionally preserving older ones at regular time intervals.
+
+**Key Features:**
+- **Automatic Cleanup:** Keeps only the most recent `max_to_keep` checkpoints by default, deleting older ones.
+- **Time-based Preservation:** Can permanently preserve checkpoints every `keep_checkpoint_every_n_hours`.
+- **Step-based Saving:** Supports saving checkpoints every N steps via `checkpoint_interval` and `step_counter`.
+- **State Management:** Tracks its own state in the `directory` to persist management rules across sessions.
+
+**Core Usage:**
+1. **Initialize** with a `tf.train.Checkpoint` object, a save `directory`, and `max_to_keep`.
+2. **Restore** the latest checkpoint via `manager.latest_checkpoint` or `manager.restore_or_initialize()`.
+3. **Save** checkpoints during training by calling `manager.save()`.
+
+**Main Methods:**
+- `save()`: Creates and manages a new checkpoint.
+- `restore_or_initialize()`: Restores from the latest checkpoint or runs a custom `init_fn` if none exists.
+- `sync()`: Waits for any ongoing save/restore operations.
+
+**Use Case:** Essential for implementing fault-tolerant training loops, ensuring you can resume from the latest checkpoint while avoiding disk space exhaustion.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  checkpoint:
+    dtype: ["tf.train.Checkpoint"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  directory:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_to_keep:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  keep_checkpoint_every_n_hours:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  checkpoint_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "ckpt"
+  step_counter:
+    dtype: ["tf.Variable"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  checkpoint_interval:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  init_fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: max_to_keep
+    Parameter 2: max_to_keep
+    Constraint: "max_to_keep is None or (isinstance(max_to_keep, int) and max_to_keep > 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.CheckpointManager in a complex way */
+import tensorflow as tf

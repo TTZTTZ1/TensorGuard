@@ -1,0 +1,45 @@
+
+# You are a Python code generation assistant for the `tf.lookup.experimental.DenseHashTable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.experimental.DenseHashTable` is a mutable hash table in TensorFlow that provides faster lookups, inserts, and removals compared to `MutableHashTable`, at the cost of higher memory usage. It uses open addressing with quadratic reprobing and requires two special keys (`empty_key` and `deleted_key`) that cannot be inserted into the table.
+
+**Key Features:**
+- **Mutable**: Supports dynamic insertion (`insert`/`insert_or_assign`) and removal (`remove`/`erase`) of key-value pairs.
+- **Fast Operations**: Optimized for performance in lookup, insert, and remove operations.
+- **Checkpoint Support**: Can save and restore table contents if `checkpoint=True` (requires a `name`).
+- **Anonymous Mode**: Optional `experimental_is_anonymous` for automatic resource management.
+
+**Usage Example:**
+```python
+table = tf.lookup.experimental.DenseHashTable(
+    key_dtype=tf.string,
+    value_dtype=tf.int64,
+    default_value=-1,
+    empty_key='',
+    deleted_key='$')
+table.insert(keys, values)  # Insert data
+table.remove(keys)          # Remove keys
+result = table.lookup(keys) # Lookup values (missing keys return default_value)
+```
+
+**Important Notes:**
+- `empty_key` and `deleted_key` are reserved and must not be used in regular operations.
+- The default `initial_num_buckets` is large (~1MB); reduce it when creating many tables to save memory.
+- Methods include `size()` (number of elements) and `export()` (all keys/values).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  key_dtype:
+    dtype: ["int", "float", "string", "bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.experimental.DenseHashTable in a complex way */
+import tensorflow as tf

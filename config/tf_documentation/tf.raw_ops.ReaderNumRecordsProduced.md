@@ -1,0 +1,36 @@
+# tf.raw_ops.ReaderNumRecordsProduced
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ReaderNumRecordsProduced](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ReaderNumRecordsProduced)
+
+---
+
+Returns the number of records this Reader has produced.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.ReaderNumRecordsProduced`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ReaderNumRecordsProduced)
+
+```
+tf.raw_ops.ReaderNumRecordsProduced(
+    reader_handle, name=None
+)
+```
+
+This is the same as the number of ReaderRead executions that have
+succeeded.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `reader_handle` | A `Tensor` of type mutable `string`. Handle to a Reader. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type `int64`. | |

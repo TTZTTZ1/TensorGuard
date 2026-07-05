@@ -1,0 +1,50 @@
+# tf.raw_ops.Imag
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/Imag](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/Imag)
+
+---
+
+Returns the imaginary part of a complex number.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.Imag`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/Imag)
+
+```
+tf.raw_ops.Imag(
+    input,
+    Tout=tf.dtypes.float32,
+    name=None
+)
+
+tf.dtypes.float32
+```
+
+Given a tensor `input` of complex numbers, this operation returns a tensor of
+type `float` that is the imaginary part of each element in `input`. All
+elements in `input` must be complex numbers of the form \(a + bj\), where *a*
+is the real part and *b* is the imaginary part returned by this operation.
+
+#### For example:
+
+```
+# tensor 'input' is [-2.25 + 4.75j, 3.25 + 5.75j]
+tf.imag(input) ==> [4.75, 5.75]
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `input` | A `Tensor`. Must be one of the following types: `complex64`, `complex128`. |
+| `Tout` | An optional [`tf.DType`](https://tensorflow.google.cn/api_docs/python/tf/dtypes/DType) from: `tf.float32, tf.float64`. Defaults to [`tf.float32`](https://tensorflow.google.cn/api_docs/python/tf#float32). |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type `Tout`. | |

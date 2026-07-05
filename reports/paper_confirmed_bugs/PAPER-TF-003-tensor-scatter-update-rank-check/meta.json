@@ -1,0 +1,29 @@
+{
+  "id": "PAPER-TF-003",
+  "title": "TensorScatterUpdate malformed indices abort process",
+  "framework": "TensorFlow",
+  "api": "tf.raw_ops.TensorScatterUpdate",
+  "related_apis": [
+    "tf.raw_ops.TensorScatterAdd",
+    "tf.raw_ops.TensorScatterSub",
+    "tf.raw_ops.TensorScatterMin",
+    "tf.raw_ops.TensorScatterMax"
+  ],
+  "bug_type": "Fatal check failure",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例"
+  },
+  "trigger": "Pass rank-3 indices with scalar-like updates to TensorScatterUpdate.",
+  "expected": "TensorFlow should reject malformed scatter index/update shapes with InvalidArgumentError.",
+  "observed": "The process aborts after a CHECK failure: d < dims() (1 vs. 1).",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["tensorflow", "fatal-check", "scatter", "shape-validation"]
+}

@@ -1,0 +1,40 @@
+params:
+  bands:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., K, M]"]
+    default: null
+  rhs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M]", "[..., M, N]"]
+    default: null
+  lower:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  adjoint:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: bands
+    Parameter 2: rhs
+    Constraint: "bands.dtype == rhs.dtype"
+  2:
+    Parameter 1: bands
+    Parameter 2: rhs
+    Constraint: "(len(rhs.shape) == len(bands.shape) and bands.shape[-1] == rhs.shape[-2]) or (len(rhs.shape) == len(bands.shape) - 1 and bands.shape[-1] == rhs.shape[-1])"

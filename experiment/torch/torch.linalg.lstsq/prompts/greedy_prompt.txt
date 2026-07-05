@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.linalg.lstsq` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.lstsq` solves linear least-squares problems of the form \( \min_X \|AX - B\|_F \). It supports batched inputs and returns a named tuple containing the solution, residuals, rank, and singular values.
+
+**Key parameters:**
+- `A`: coefficient matrix of shape `(*, m, n)`
+- `B`: target matrix of shape `(*, m, k)`
+- `rcond`: threshold for determining numerical rank (default based on machine precision)
+- `driver`: backend LAPACK/MAGMA method (default: 'gelsy' for CPU, 'gels' for CUDA)
+
+**Driver selection guidelines:**
+- **CPU**: Use 'gelsy' (default) for general matrices; 'gels' if `A` is full-rank; 'gelsd'/'gelss' for ill-conditioned systems.
+- **CUDA**: Only 'gels' is supported (assumes full-rank `A`).
+
+**Returns:** `(solution, residuals, rank, singular_values)` where residuals and rank/singular values may be empty tensors depending on the driver and input properties.
+
+**Note:** This function is numerically more stable than computing `A.pinv() @ B` directly.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, k)"]
+    default: null
+  rcond:
+    dtype: ["float", "NoneType"]
+    range: null
+    structure: ["scalar", "NoneType"]
+    shape: null
+    default: "None"
+  driver:
+    dtype: ["string", "NoneType"]
+    range: [["gels", "gelsy", "gelsd", "gelss"]]
+    structure: ["string", "NoneType"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "A"
+    Parameter 2: "B"
+    Constraint: "A.shape[:-2] == B.shape[:-2] and A.shape[-2] == B.shape[-2]"
+  2:
+    Parameter 1: "driver"
+    Parameter 2: "A"
+    Constraint: "(A.device.type == 'cuda' and (driver is None or driver == 'gels')) or (A.device.type == 'cpu' and (driver is None or driver in ['gels', 'gelsy', 'gelsd', 'gelss']))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.lstsq in a complex way */
+import torch

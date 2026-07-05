@@ -1,0 +1,34 @@
+# tf.raw_ops.InfeedDequeueTuple
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/InfeedDequeueTuple](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/InfeedDequeueTuple)
+
+---
+
+Fetches multiple values from infeed as an XLA tuple.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.InfeedDequeueTuple`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/InfeedDequeueTuple)
+
+```
+tf.raw_ops.InfeedDequeueTuple(
+    dtypes, shapes, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `dtypes` | A list of `tf.DTypes` that has length `>= 1`. The element types of each element in `outputs`. |
+| `shapes` | A list of shapes (each a [`tf.TensorShape`](https://tensorflow.google.cn/api_docs/python/tf/TensorShape) or list of `ints`). The shapes of each tensor in `outputs`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A list of `Tensor` objects of type `dtypes`. | |

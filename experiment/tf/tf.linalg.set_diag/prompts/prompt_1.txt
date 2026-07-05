@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `tf.linalg.set_diag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.set_diag` replaces specified diagonals of batched matrices with new values.
+
+**Key functionality:**
+- **Input:** A rank-`k+1` tensor representing batched matrices.
+- **Diagonal:** New diagonal values (rank `k` or `k+1` depending on `k`).
+- **Output:** Same shape as input, with specified diagonals overwritten.
+
+**Parameters:**
+- `k`: Diagonal offset(s) – single integer or range `[low, high]`.
+- `align`: Controls padding alignment for shorter diagonals (options: `"RIGHT_LEFT"`, `"LEFT_RIGHT"`, `"LEFT_LEFT"`, `"RIGHT_RIGHT"`).
+
+**Use case:** Efficiently update matrix diagonals in batch operations, commonly used in linear algebra and machine learning tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  diagonal:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "set_diag"
+  k:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "2"]
+    default: "0"
+  align:
+    dtype: ["string"]
+    range: ["RIGHT_LEFT", "LEFT_RIGHT", "LEFT_LEFT", "RIGHT_RIGHT"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "RIGHT_LEFT"
+constraints:
+  1:
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: "not (isinstance(k, (list, tuple)) and len(k) == 2 and k[0] > k[1])"
+  2:
+    Parameter 1: input
+    Parameter 2: diagonal
+    Constraint: "((isinstance(k, int) or (isinstance(k, (list, tuple)) and len(k) == 2 and k[0] == k[1])) and (tf.rank(diagonal) == tf.rank(input) - 1)) or (not (isinstance(k, int) or (isinstance(k, (list, tuple)) and len(k) == 2 and k[0] == k[1])) and (tf.rank(diagonal) == tf.rank(input)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.set_diag in a complex way */
+import tensorflow as tf

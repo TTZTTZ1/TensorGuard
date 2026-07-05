@@ -1,0 +1,30 @@
+params:
+  input:
+    dtype: ["int", "float", "complex"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["int", "float", "complex"]
+    range: No mention
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  rounding_mode:
+    dtype: ["string"]
+    range: ["None", "trunc", "floor"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "all( (input.shape[i] if i < len(input.shape) else 1) == (other.shape[i] if i < len(other.shape) else 1) or (input.shape[i] if i < len(input.shape) else 1) == 1 or (other.shape[i] if i < len(other.shape) else 1) == 1 for i in range(max(len(input.shape), len(other.shape))) )"

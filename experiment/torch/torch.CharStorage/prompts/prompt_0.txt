@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `torch.CharStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary of PyTorch Storage Documentation**
+
+**Core Concept:**  
+A `torch.UntypedStorage` is a low‑level, contiguous, one‑dimensional byte array that serves as the underlying data container for tensors. A tensor’s structure is defined by its storage plus metadata (dtype, shape, stride, offset).
+
+**Key Points:**
+
+1. **Storage‑Tensor Relationship**  
+   - Tensors created normally (e.g., `torch.zeros()`) have a 1‑to‑1 storage‑tensor mapping.  
+   - Views (via `view()`, slicing) share the same storage as the original tensor.  
+   - Serialization preserves shared‑storage relationships.
+
+2. **Accessing Storage**  
+   - Use `tensor.untyped_storage()` to get the underlying `UntypedStorage`.  
+   - Storage can be shared by tensors with different dtypes or shapes.  
+   - Each storage has a unique identifier: `storage.data_ptr()`.
+
+3. **Important Warnings**  
+   - Direct storage manipulation (e.g., `set_()`, `fill_()` on storage) is **discouraged**; prefer high‑level tensor methods (`clone()`, `fill_()`).  
+   - `tensor.data_ptr()` and `storage.data_ptr()` are **not guaranteed** to match.  
+   - Tensors with gradients have separate storages for data and grad (`tensor.grad.untyped_storage()`).
+
+4. **Special Cases**  
+   - Tensors on `"meta"` device or `FakeTensor` have no actual storage.  
+   - Tensor subclasses may behave unusually; most users should not operate at the storage level.
+
+5. **Legacy Typed Storage**  
+   - `torch.TypedStorage` (and aliases like `torch.FloatStorage`) are **deprecated**.  
+   - `torch.UntypedStorage` is the modern, untyped byte‑array class and should be used in all new code.
+
+**Main Storage APIs** (`torch.UntypedStorage`):  
+- **Creation/Conversion:** `from_file()`, `clone()`, `cpu()`, `cuda()`, type‑casting methods (`.float()`, `.int()`, etc.).  
+- **Properties:** `device`, `is_cuda`, `filename` (if memory‑mapped), `element_size()`, `size()`.  
+- **Operations:** `copy_()`, `fill_()`, `pin_memory()`, `share_memory_()`.  
+- **Utility:** `tolist()`, `byteswap()`, `resize_()`.
+
+**Bottom Line:**  
+Storage is an internal data container. Most applications should use tensor‑level operations. Direct storage manipulation is error‑prone and intended only for advanced, low‑level scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["variable"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["UntypedStorage", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  dtype:
+    dtype: ["dtype", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  device:
+    dtype: ["device", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.int8"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.CharStorage in a complex way */
+import torch

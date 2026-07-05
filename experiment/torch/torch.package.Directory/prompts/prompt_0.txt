@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.package.Directory` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle both model artifacts and their associated Python source code. It enables reproducible execution across different machines and environments, including deployment via `torch::deploy`.
+
+**Key Functionality:**
+- **Package Creation (`PackageExporter`):** Saves models (via pickling), source code, and arbitrary resources (text/binary) into a ZIP archive (`.pt` file).
+- **Package Loading (`PackageImporter`):** Loads packages in an isolated environment, ensuring dependencies are resolved from within the package or explicitly declared external modules.
+- **Dependency Management:** Automatically traces and controls dependencies via patterns (`intern`, `extern`, `mock`, `deny`) to avoid implicit external reliance.
+- **Custom Packaging:** Supports custom serialization via `__reduce_package__` and access to packaged resources using `importlib.resources` or the importer instance.
+- **Inspection & Debugging:** Tools to explore package contents (`file_structure()`), analyze dependencies (`dependency_graph_string()`), and patch code (`save_source_string()`).
+
+**Use Cases:**
+- Packaging trained models with their exact code for later inference or transfer learning.
+- Sharing reproducible research artifacts.
+- Deploying models to production without dependency conflicts.
+
+**Important Notes:**
+- **Security:** Relies on `pickle`; only load trusted packages.
+- **Isolation:** Each package loads in its own environment, preventing conflicts but meaning types from packages differ from those in the main Python environment.
+- **Best Practices:** Avoid mutable global state in modules and prefer explicit dependencies.
+
+**Basic Workflow:**
+```python
+# Export
+with PackageExporter('model.pt') as e:
+    e.save_pickle('model', 'data.pkl', my_model)
+
+# Import
+importer = PackageImporter('model.pt')
+loaded_model = importer.load_pickle('model', 'data.pkl')
+```
+
+`torch.package` ensures that PyTorch models and their code can be reliably saved, shared, and executed independently of the original environment.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  is_dir:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  filename:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: name
+    Parameter 2: is_dir
+    Constraint: "True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.Directory in a complex way */
+import torch

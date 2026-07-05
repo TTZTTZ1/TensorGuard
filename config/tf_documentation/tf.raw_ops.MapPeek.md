@@ -1,0 +1,51 @@
+# tf.raw_ops.MapPeek
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MapPeek](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MapPeek)
+
+---
+
+Op peeks at the values at the specified key.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.MapPeek`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MapPeek)
+
+```
+tf.raw_ops.MapPeek(
+    key,
+    indices,
+    dtypes,
+    capacity=0,
+    memory_limit=0,
+    container='',
+    shared_name='',
+    name=None
+)
+```
+
+If the
+
+underlying container does not contain this key
+this op will block until it does.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `key` | A `Tensor` of type `int64`. |
+| `indices` | A `Tensor` of type `int32`. |
+| `dtypes` | A list of `tf.DTypes` that has length `>= 1`. |
+| `capacity` | An optional `int` that is `>= 0`. Defaults to `0`. |
+| `memory_limit` | An optional `int` that is `>= 0`. Defaults to `0`. |
+| `container` | An optional `string`. Defaults to `""`. |
+| `shared_name` | An optional `string`. Defaults to `""`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A list of `Tensor` objects of type `dtypes`. | |

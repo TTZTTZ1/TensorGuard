@@ -1,0 +1,112 @@
+params:
+  directory:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  labels:
+    dtype: ["string", "None", "list[int]", "tuple[int]"]
+    range: ["inferred", "None"]
+    structure: ["scalar", "list", "tuple"]
+    shape: "No mention"
+    default: '"inferred"'
+  label_mode:
+    dtype: ["string", "None"]
+    range: ["int", "categorical", "binary", "None"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: '"int"'
+  class_names:
+    dtype: ["list[string]", "None"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  color_mode:
+    dtype: ["string"]
+    range: ["grayscale", "rgb", "rgba"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: '"rgb"'
+  batch_size:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: '32'
+  image_size:
+    dtype: ["tuple[int, int]"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [2]
+    default: '(256, 256)'
+  shuffle:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: 'True'
+  seed:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  validation_split:
+    dtype: ["float", "None"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  subset:
+    dtype: ["string", "None"]
+    range: ["training", "validation", "both", "None"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  interpolation:
+    dtype: ["string"]
+    range: ["bilinear", "nearest", "bicubic", "area", "lanczos3", "lanczos5", "gaussian", "mitchellcubic"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: '"bilinear"'
+  follow_links:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: 'False'
+  crop_to_aspect_ratio:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: 'False'
+  pad_to_aspect_ratio:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: 'False'
+  data_format:
+    dtype: ["string", "None"]
+    range: ["channel_last", "channel_first", "None"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  verbose:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: 'True'
+constraints:
+  1:
+    Parameter 1: class_names
+    Parameter 2: labels
+    Constraint: (class_names is None) or (labels == "inferred")
+  2:
+    Parameter 1: subset
+    Parameter 2: validation_split
+    Constraint: (subset is None) or (validation_split is not None)

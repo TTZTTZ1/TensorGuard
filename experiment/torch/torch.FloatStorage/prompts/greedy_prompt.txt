@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.FloatStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like shape, stride, and data type to interpret that storage.
+
+### Key Points:
+- **Purpose**: Stores the actual bytes of tensor data. A single storage can be shared by multiple tensors (e.g., tensor views).
+- **Access**: Use `tensor.untyped_storage()` to get a tensor's storage.
+- **Identification**: Each storage has a unique `data_ptr()` identifier.
+- **Manipulation**: Provides low-level methods like `clone()`, `fill_()`, `copy_()`, and `pin_memory()`, but direct manipulation is discouraged in favor of higher-level tensor operations.
+- **Device & Memory**: Can reside on different devices (CPU, CUDA, etc.) and supports memory-mapped files via `from_file()`.
+- **Special Cases**: Tensors on `"meta"` device or using `FakeTensor` have no actual storage. Tensors with gradients have separate storages for data and grad.
+- **Legacy Note**: Typed storage classes (e.g., `torch.FloatStorage`) are deprecated; `torch.UntypedStorage` is the modern, untyped alternative.
+
+### When to Use:
+- Rarely needed in typical workflows. Use standard tensor methods for safety and efficiency.
+- May be relevant for advanced tasks like memory optimization, shared memory across processes, or low-level data manipulation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "sequence", "torch.TypedStorage"]
+    range: null
+    structure: ["scalar", "iterable"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.float32"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.float32"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.float32"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.FloatStorage in a complex way */
+import torch

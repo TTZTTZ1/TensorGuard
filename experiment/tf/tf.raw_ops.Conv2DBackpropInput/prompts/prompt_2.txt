@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Conv2DBackpropInput` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Conv2DBackpropInput` computes the gradient of a 2D convolution operation with respect to its input. It takes the filter and the gradient of the loss with respect to the convolution output (`out_backprop`), along with parameters like strides, padding, and dilations, to produce the gradient for the input tensor. This is essential for backpropagation in convolutional neural networks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_sizes:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filter:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID", "EXPLICIT"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  use_cudnn_on_gpu:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  explicit_paddings:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: ""NHWC""
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "padding"
+    Parameter 2: "explicit_paddings"
+    Constraint: "(padding == 'EXPLICIT' and len(explicit_paddings) == 8) or (padding != 'EXPLICIT' and explicit_paddings == [])"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1)"
+  3:
+    Parameter 1: "strides"
+    Parameter 2: "input_sizes"
+    Constraint: "len(strides) == 4"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Conv2DBackpropInput in a complex way */
+import tensorflow as tf

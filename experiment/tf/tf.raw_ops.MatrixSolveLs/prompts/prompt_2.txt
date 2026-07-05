@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MatrixSolveLs` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.MatrixSolveLs` solves linear least-squares problems for one or more matrix equations of the form \( A X = B \), where \( A \) (matrix) and \( B \) (rhs) are batched tensors. It supports real and complex data types and includes an L2 regularization term (\(\lambda\)) for stabilization.
+
+**Key features:**
+- **Inputs:**  
+  - `matrix`: Shape `[..., M, N]`.  
+  - `rhs`: Shape `[..., M, K]` (same type as `matrix`).  
+  - `l2_regularizer`: Scalar regularization strength (float64).  
+- **Output:** Shape `[..., N, K]`, providing least-squares solutions for each batch.
+- **Algorithm options:**  
+  - `fast=True` (default): Uses Cholesky decomposition for speed, but requires \( A \) to be well-conditioned.  
+  - `fast=False`: Uses a robust complete orthogonal decomposition, handling rank-deficient matrices (slower but more stable; ignores `l2_regularizer`).
+- **Use case:** Solves over-determined (\(m \ge n\)) or under-determined (\(m < n\)) systems, minimizing \(||A X - B||_F^2 + \lambda ||X||_F^2\) (when `fast=True`).
+
+**Note:** This is a low-level operation; for most use cases, prefer higher-level APIs like `tf.linalg.lstsq`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  matrix:
+    dtype: ["float64", "float32", "half", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, N]"]
+    default: null
+  rhs:
+    dtype: ["float64", "float32", "half", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  l2_regularizer:
+    dtype: ["float64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  fast:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: matrix
+    Parameter 2: rhs
+    Constraint: "matrix.dtype == rhs.dtype"
+  2:
+    Parameter 1: matrix
+    Parameter 2: rhs
+    Constraint: "matrix.shape[:-2] == rhs.shape[:-2] and matrix.shape[-2] == rhs.shape[-2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MatrixSolveLs in a complex way */
+import tensorflow as tf

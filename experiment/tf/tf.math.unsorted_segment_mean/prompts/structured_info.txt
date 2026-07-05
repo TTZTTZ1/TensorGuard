@@ -1,0 +1,34 @@
+params:
+  data:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_segments:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: data
+    Constraint: "segment_ids.shape == data.shape[:tf.rank(segment_ids)]"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.reduce_all(tf.less(segment_ids, num_segments))"

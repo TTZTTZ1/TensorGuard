@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.signal.inverse_mdct` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.signal.inverse_mdct` reconstructs a signal from its Modified Discrete Cosine Transform (MDCT) coefficients. It requires the same window function used during the forward MDCT for perfect reconstruction and supports gradients for TPU/GPU compatibility.
+
+**Key Parameters:**
+- `mdcts`: Input MDCT coefficients with shape `[..., frames, frame_length // 2]`.
+- `window_fn`: Window function (e.g., `tf.signal.vorbis_window`); must satisfy perfect reconstruction conditions if not `None`.
+- `norm`: Normalization mode (`"ortho"` for orthonormal, `None` for default scaling).
+
+**Output:** Reconstructed signal with shape `[..., samples]`, where `samples = (frames - 1) * (frame_length // 2) + frame_length`.
+
+**Note:** Ensure consistency between `tf.signal.mdct` and `inverse_mdct` window functions to accurately recover the original waveform.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mdcts:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., frames, frame_length // 2]"]
+    default: null
+  window_fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "tf.signal.vorbis_window"
+  norm:
+    dtype: ["string", "None"]
+    range: [["ortho", null]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "mdcts"
+    Parameter 2: "None"
+    Constraint: "mdcts.shape.rank >= 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.signal.inverse_mdct in a complex way */
+import tensorflow as tf

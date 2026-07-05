@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.RaggedBincount` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.RaggedBincount` counts occurrences of integer values in a ragged tensor. It outputs a vector of length `size`, where each element corresponds to the count (or weighted sum) of a specific integer value across the ragged structure.
+
+**Key parameters:**
+- `splits`: 1D int64 tensor defining the ragged structure.
+- `values`: 2D integer tensor containing the values to count.
+- `size`: Scalar integer specifying the output vector length (bins 0 to `size-1`).
+- `weights`: Optional tensor for weighted counts; if empty, performs simple counting.
+- `binary_output`: If `True`, counts only presence/absence instead of frequencies.
+
+Values outside `[0, size)` are ignored. The output dtype matches `weights` (defaults to integer counts if `weights` is empty).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  splits:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  values:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2"]
+    default: null
+  size:
+    dtype: ["int32", "int64"]
+    range: ["non-negative"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+  weights:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2", "0"]
+    default: null
+  binary_output:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "size"
+    Parameter 2: "values"
+    Constraint: "size.dtype == values.dtype"
+  2:
+    Parameter 1: "weights"
+    Parameter 2: "values"
+    Constraint: "tf.size(weights) == 0 or weights.shape == values.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.RaggedBincount in a complex way */
+import tensorflow as tf

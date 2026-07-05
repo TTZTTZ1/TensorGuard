@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.sparse.map_values` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.map_values` applies a given operation to the non-zero values of one or more sparse tensors while preserving their sparsity structure (indices and shape). It replaces each sparse tensor's values with the result of the operation, leaving implicit zeros unchanged.
+
+**Key points:**
+- **Purpose:** Transform sparse tensor values element-wise without altering indices or dense shape.
+- **Input:** An operation (`op`) and arguments containing at least one `SparseTensor`.
+- **Behavior:** Only explicit non-zero values are modified; implicit zeros remain zero.
+- **Constraint:** If multiple sparse tensors are provided, they must have identical indices and shapes.
+- **Output:** A new `SparseTensor` with the same indices/shape as the input(s), but with updated values.
+
+**Example use:** Apply functions like `tf.multiply` or `tf.add` to sparse tensor values while maintaining sparsity.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  op:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  args:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  kwargs:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: args
+    Parameter 2: args
+    Constraint: "any(isinstance(arg, tf.sparse.SparseTensor) for arg in args)"
+  2:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "all(st.indices == first_st.indices and st.dense_shape == first_st.dense_shape for st in [arg for arg in args if isinstance(arg, tf.sparse.SparseTensor)] + [v for v in kwargs.values() if isinstance(v, tf.sparse.SparseTensor)]) where first_st is next(st for st in [arg for arg in args if isinstance(arg, tf.sparse.SparseTensor)] + [v for v in kwargs.values() if isinstance(v, tf.sparse.SparseTensor)] if True)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.map_values in a complex way */
+import tensorflow as tf

@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyProximalGradientDescent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ResourceApplyProximalGradientDescent` operator implements the **FOBOS (Forward-Backward Splitting) algorithm** with a fixed learning rate to update a variable using proximal gradient descent. It is designed for optimization with L1 and L2 regularization.
+
+### Key Features:
+- **Update Rule**:  
+  Computes `prox_v = var - alpha * delta`, then applies:  
+  `var = sign(prox_v) / (1 + alpha * l2) * max{|prox_v| - alpha * l1, 0}`.
+- **Regularization**:  
+  Supports both **L1** (sparsity-inducing) and **L2** (weight decay) regularization via `l1` and `l2` scalars.
+- **Resource Variable**:  
+  Operates directly on a resource-type variable (`var`), making it suitable for distributed or stateful training.
+- **Thread Safety**:  
+  Optional `use_locking` argument to protect updates with a lock.
+
+### Arguments:
+- `var`: Resource variable to update.
+- `alpha`: Scalar learning rate.
+- `l1`, `l2`: Scalar regularization strengths.
+- `delta`: Update gradient term.
+- `use_locking`: If `True`, enables thread-safe updates.
+
+### Use Case:
+Ideal for training models with **elastic net regularization** (combined L1 + L2) where proximal methods efficiently handle non-smooth L1 penalties.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  alpha:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  delta:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: alpha
+    Parameter 2: l1
+    Constraint: "alpha.dtype == l1.dtype"
+  2:
+    Parameter 1: alpha
+    Parameter 2: l2
+    Constraint: "alpha.dtype == l2.dtype"
+  3:
+    Parameter 1: alpha
+    Parameter 2: delta
+    Constraint: "alpha.dtype == delta.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyProximalGradientDescent in a complex way */
+import tensorflow as tf

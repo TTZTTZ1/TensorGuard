@@ -1,0 +1,115 @@
+
+# You are a Python code generation assistant for the `tf.random.fixed_unigram_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.fixed_unigram_candidate_sampler` is a TensorFlow function that samples a set of candidate classes from a fixed unigram distribution. It is used for candidate sampling in algorithms like NCE or sampled softmax.
+
+**Key functionality:**
+- Samples `num_sampled` candidate classes from the integer range `[0, range_max)` based on a provided unigram distribution.
+- The distribution can be specified via a `vocab_file` or an in-memory `unigrams` list.
+- Supports distortion to skew the distribution (`distortion=1.0` uses original weights, `distortion=0.0` gives uniform sampling).
+- Returns sampled candidates, along with expected counts for both true classes and sampled candidates under the sampling distribution.
+
+**Main use case:**  
+Implementing efficient candidate sampling for training with large output spaces (e.g., language modeling or recommendation systems).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: No mention
+  num_true:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  num_sampled:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  unique:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  range_max:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  vocab_file:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "''"
+  distortion:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1.0"
+  num_reserved_ids:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  num_shards:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  shard:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  unigrams:
+    dtype: ["list", "tuple"]
+    range: No mention
+    structure: ["list", "tuple"]
+    shape: No mention
+    default: "()"
+  seed:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: vocab_file
+    Parameter 2: unigrams
+    Constraint: (vocab_file != '') ^ (unigrams != ())
+  2:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: true_classes.shape[1] == num_true
+  3:
+    Parameter 1: shard
+    Parameter 2: num_shards
+    Constraint: 0 <= shard and shard < num_shards
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.fixed_unigram_candidate_sampler in a complex way */
+import tensorflow as tf

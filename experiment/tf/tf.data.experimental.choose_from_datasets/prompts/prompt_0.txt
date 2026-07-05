@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.choose_from_datasets` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.choose_from_datasets` creates a dataset that selects elements from a list of input datasets based on indices provided by a separate `choice_dataset`. It is now deprecated; use `tf.data.Dataset.choose_from_datasets` instead.
+
+**Key Points:**
+- **Inputs:**  
+  - `datasets`: A non-empty list of datasets with compatible structures.  
+  - `choice_dataset`: A dataset of scalar `tf.int64` values (indices) ranging from `0` to `len(datasets)-1`.  
+- **Behavior:**  
+  Each element from `choice_dataset` determines which input dataset to pick the next element from, enabling deterministic interleaving.  
+- **Important Note:**  
+  The deprecated experimental version defaults `stop_on_empty_dataset=False`, while the replacement method defaults to `True`. Explicitly set this argument to match behavior if migrating.  
+- **Example:**  
+  With three datasets containing repeated `"foo"`, `"bar"`, `"baz"` and a `choice_dataset` cycling `[0, 1, 2]`, the output cycles through `"foo", "bar", "baz"` accordingly.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  datasets:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  choice_dataset:
+    dtype: ["tf.data.Dataset"]
+    range: null
+    structure: ["dataset"]
+    shape: null
+    default: null
+  stop_on_empty_dataset:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+constraints:
+  1:
+    Parameter 1: datasets
+    Parameter 2: datasets
+    Constraint: len(datasets) > 0
+  2:
+    Parameter 1: datasets
+    Parameter 2: choice_dataset
+    Constraint: all(0 <= idx < len(datasets) for idx in choice_dataset)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.choose_from_datasets in a complex way */
+import tensorflow as tf

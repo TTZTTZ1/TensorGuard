@@ -1,0 +1,40 @@
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'categorical_hinge'"
+  dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  y_true:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "null"
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "null"
+  sample_weight:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "y_true.shape == y_pred.shape"
+  2:
+    Parameter 1: "sample_weight"
+    Parameter 2: "y_true"
+    Constraint: "sample_weight is None or tf.shape(sample_weight) == tf.shape(y_true) or tf.rank(sample_weight) == 0"

@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseSegmentMeanWithNumSegments` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseSegmentMeanWithNumSegments` computes the mean along sparse segments of a tensor, similar to `SparseSegmentMean`, but it allows missing IDs in `segment_ids`. Missing segment IDs result in zeroed output at those positions.
+
+**Key Parameters:**
+- `data`: Input tensor (float or bfloat types).
+- `indices`: 1-D tensor with same rank as `segment_ids`.
+- `segment_ids`: 1-D tensor with sorted, repeatable values.
+- `num_segments`: Number of distinct segment IDs.
+- `sparse_gradient` (optional): Controls gradient sparsity (defaults to `False`).
+
+**Use Case:**  
+Useful for segmented mean computations where not all segment IDs are present, ensuring output size matches `num_segments` with zeros for missing segments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [0]
+    default: "null"
+  sparse_gradient:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.rank(indices) == tf.rank(segment_ids)"
+  2:
+    Parameter 1: "segment_ids"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.math.is_non_decreasing(segment_ids)"
+  3:
+    Parameter 1: "num_segments"
+    Parameter 2: "segment_ids"
+    Constraint: "num_segments == tf.size(tf.unique(segment_ids)[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseSegmentMeanWithNumSegments in a complex way */
+import tensorflow as tf

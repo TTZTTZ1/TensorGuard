@@ -1,0 +1,121 @@
+
+# You are a Python code generation assistant for the `torch.nn.ConvTranspose2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`ConvTranspose2d` is a PyTorch module that performs a 2D transposed convolution, often used for upsampling in tasks like image generation or segmentation. It is the gradient counterpart of `Conv2d` and is sometimes referred to as a deconvolution (though not a true inverse).
+
+**Key parameters:**
+- `in_channels`, `out_channels`: Input and output channel counts.
+- `kernel_size`, `stride`, `padding`, `output_padding`, `dilation`: Control kernel behavior and output dimensions.
+- `groups`: Splits input/output channels into independent groups.
+- `bias`: Whether to include a learnable bias term.
+
+**Output shape formula:**
+\[
+H_{out} = (H_{in} - 1) \times \text{stride}[0] - 2 \times \text{padding}[0] + \text{dilation}[0] \times (\text{kernel\_size}[0] - 1) + \text{output\_padding}[0] + 1
+\]
+(Similarly for width.)
+
+**Main features:**
+- When `stride > 1`, it inserts zeros between input elements, effectively upsampling.
+- `padding` adjusts implicit zero padding to align with corresponding `Conv2d` layers.
+- `output_padding` resolves ambiguity when multiple input sizes map to the same output size in `Conv2d`.
+- Supports TensorFloat32 and has deterministic options for reproducibility.
+
+**Example use:**
+```python
+m = nn.ConvTranspose2d(16, 33, 3, stride=2)
+input = torch.randn(20, 16, 50, 100)
+output = m(input)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  output_padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding_mode:
+    dtype: ["string"]
+    range: [["zeros"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "zeros"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.ConvTranspose2d in a complex way */
+import torch

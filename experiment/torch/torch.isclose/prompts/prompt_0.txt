@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.isclose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.isclose` compares two tensors element-wise and returns a boolean tensor indicating whether corresponding elements are considered "close" based on specified tolerance criteria.
+
+**Key behavior:**
+- For finite values, closeness is defined as:  
+  `|input - other| ≤ rtol × |other| + atol`
+- For non-finite values (inf, NaN), closeness is determined by equality, with an option to treat NaN values as equal via `equal_nan`.
+- Default tolerances: `rtol=1e-05`, `atol=1e-08`.
+
+**Parameters:**
+- `input`, `other`: tensors to compare
+- `rtol`: relative tolerance
+- `atol`: absolute tolerance
+- `equal_nan`: if `True`, NaN == NaN returns `True`
+
+**Example:**
+```python
+>>> torch.isclose(torch.tensor([1.0, 2.0]), torch.tensor([1.00001, 2.00002]))
+tensor([True, False])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  rtol:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-05"
+  atol:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-08"
+  equal_nan:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.shape == other.shape or torch.broadcastable(input, other)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.isclose in a complex way */
+import torch

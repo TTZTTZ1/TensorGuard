@@ -1,0 +1,66 @@
+params:
+  input:
+    dtype: ["torch.quint8", "torch.qint8"]
+    range: null
+    structure: ["tensor"]
+    shape: ["4D"]
+    default: null
+  weight:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: "None"
+  bias:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: "None"
+  mean:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: null
+  var:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: null
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  output_scale:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  output_zero_point:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.shape[1] == weight.shape[0]"
+  2:
+    Parameter 1: input
+    Parameter 2: bias
+    Constraint: "input.shape[1] == bias.shape[0]"
+  3:
+    Parameter 1: input
+    Parameter 2: mean
+    Constraint: "input.shape[1] == mean.shape[0]"
+  4:
+    Parameter 1: input
+    Parameter 2: var
+    Constraint: "input.shape[1] == var.shape[0]"

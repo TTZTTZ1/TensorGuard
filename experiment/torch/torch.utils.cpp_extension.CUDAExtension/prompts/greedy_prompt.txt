@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.CUDAExtension` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides tools for building and loading PyTorch C++ extensions, supporting C++, CUDA, and SYCL code integration with Python.
+
+**Key Components:**
+
+1. **Extension Classes:**
+   - `CppExtension`: Creates a `setuptools.Extension` for C++ code.
+   - `CUDAExtension`: For CUDA/C++ extensions, automatically handles CUDA paths and libraries.
+   - `SyclExtension`: For SYCL/C++ extensions (e.g., Intel XPU).
+
+2. **Build Extension:**
+   - `BuildExtension`: A custom `setuptools` build extension that manages compiler flags and mixed C++/CUDA/SYCL compilation. It uses Ninja by default for faster builds.
+
+3. **Just-in-Time (JIT) Loading:**
+   - `load()`: Compiles and loads an extension from source files at runtime.
+   - `load_inline()`: Compiles and loads from string sources, automatically generating bindings if needed.
+
+**Common Usage:**
+- **Setup-based:** Use `CppExtension`/`CUDAExtension` with `setup()` and `BuildExtension` for installing extensions.
+- **JIT:** Use `load()` or `load_inline()` for on-the-fly compilation without installation.
+
+**Important Notes:**
+- **CUDA/SYCL Arch Specs:** Control target architectures via `TORCH_CUDA_ARCH_LIST` or `TORCH_XPU_ARCH_LIST`.
+- **Ninja:** Required for CUDA extensions with RDC linking and SYCL extensions; recommended for faster builds.
+- **Python Limited API:** PyTorch's Python API (`libtorch_python`) is incompatible with `py_limited_api=True`.
+- **Compiler Compatibility:** Use `get_compiler_abi_compatibility_and_version()` to check ABI compatibility.
+
+**Example Workflow:**
+1. Write C++/CUDA source files.
+2. Use `load()` for quick testing or `setup()` with `BuildExtension` for distribution.
+3. Control build parallelism via the `MAX_JOBS` environment variable.
+
+This module simplifies integrating high-performance C++/CUDA/SYCL code into PyTorch, enabling custom operations and kernels.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  sources:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  *args:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  **kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: py_limited_api
+    Parameter 2: libtorch_python
+    Constraint: "py_limited_api == True implies libtorch_python not in APIs"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.CUDAExtension in a complex way */
+import torch

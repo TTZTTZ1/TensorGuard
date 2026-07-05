@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.api.PContext` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` module provides a high-level interface for launching and managing multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment configuration, and log management.
+
+**Key Features:**
+- **Flexible Entrypoints:** Supports both Python callables and binary executables as entry points.
+- **Per-Process Configuration:** Allows specifying distinct arguments (`args`) and environment variables (`envs`) for each worker using a dictionary keyed by local rank.
+- **Comprehensive Logging:** Redirects and/or tees stdout/stderr to log files with configurable filtering. Logs are organized by rank in a specified directory.
+- **Process Management:** Returns a `PContext` object (either `MultiprocessContext` or `SubprocessContext`) for controlling and monitoring the launched processes.
+
+**Core Function:**
+- `start_processes()`: The main function to launch `n` worker copies. It requires:
+  - `name`: A descriptive identifier.
+  - `entrypoint`: The function or binary to run.
+  - `args`/`envs`: Dictionaries mapping local ranks to their respective arguments and environment variables.
+  - `logs_specs`: An object (e.g., `DefaultLogsSpecs`) defining log directory, redirection, and tee behavior.
+
+**Common Use Cases:**
+1. **Launching Function Workers:** For distributed training tasks where each rank runs the same function with different parameters.
+2. **Launching Binary Workers:** For running external commands or scripts in parallel.
+
+**Logging Behavior:**
+- Creates structured log directories per rank.
+- Can redirect outputs to files, tee them to the console, or apply line filters for aggregated logs.
+- Automatically generates `error.json` files for failed processes (for function entrypoints by default).
+
+**Example Workflow:**
+1. Define the worker function or binary command.
+2. Configure arguments and environments per rank.
+3. Set up logging specifications.
+4. Call `start_processes()` to launch workers.
+5. Use the returned context to wait for completion or handle results.
+
+This module abstracts the complexities of multiprocessing and subprocess management, making it easier to orchestrate multi-worker applications, particularly in distributed machine learning scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  entrypoint:
+    dtype: ["Callable", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  envs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  log_line_prefixes:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  duplicate_stdout_filters:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  duplicate_stderr_filters:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "set(args.keys()) == set(envs.keys())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.api.PContext in a complex way */
+import torch

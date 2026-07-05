@@ -1,0 +1,48 @@
+params:
+  input:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  seq_lengths:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  seq_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  batch_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: seq_lengths
+    Parameter 2: input
+    Constraint: "seq_lengths.shape[0] == input.shape[batch_dim]"
+  2:
+    Parameter 1: seq_lengths
+    Parameter 2: input
+    Constraint: "all(seq_lengths[i] <= input.shape[seq_dim] for i in range(seq_lengths.shape[0]))"
+  3:
+    Parameter 1: seq_dim
+    Parameter 2: input
+    Constraint: "0 <= seq_dim < len(input.shape)"
+  4:
+    Parameter 1: batch_dim
+    Parameter 2: input
+    Constraint: "0 <= batch_dim < len(input.shape)"

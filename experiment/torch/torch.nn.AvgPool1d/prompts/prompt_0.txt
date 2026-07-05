@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.nn.AvgPool1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`AvgPool1d` performs 1D average pooling over an input signal, reducing its length by computing the average within sliding windows.
+
+**Key parameters:**
+- `kernel_size`: size of the pooling window
+- `stride`: step size for sliding the window (defaults to `kernel_size`)
+- `padding`: zeros added to both sides of the input
+- `ceil_mode`: uses ceil (instead of floor) for output length calculation
+- `count_include_pad`: includes padding in average computation when True
+
+**Input/Output shape:**
+- Input: `(N, C, L_in)` or `(C, L_in)`
+- Output: `(N, C, L_out)` or `(C, L_out)`
+- Output length formula:  
+  `L_out = floor((L_in + 2×padding - kernel_size)/stride + 1)`  
+  (adjusted when `ceil_mode=True`)
+
+**Example:**
+```python
+m = nn.AvgPool1d(3, stride=2)
+m(torch.tensor([[[1., 2, 3, 4, 5, 6, 7]]]))  # Output: [[[2., 4., 6.]]]
+```
+This computes averages over windows of size 3 with stride 2:  
+(1+2+3)/3=2, (3+4+5)/3=4, (5+6+7)/3=6.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kernel_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[], [1]]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[], [1]]
+    default: "kernel_size"
+  padding:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[], [1]]
+    default: "0"
+  ceil_mode:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  count_include_pad:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "padding"
+    Parameter 2: "kernel_size"
+    Constraint: "padding <= (kernel_size if isinstance(kernel_size, int) else kernel_size[0]) // 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.AvgPool1d in a complex way */
+import torch

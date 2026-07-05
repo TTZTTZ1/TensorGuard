@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.distributions.weibull.Weibull` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive set of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key features include:
+
+**Core Concepts:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for gradient estimation via likelihood ratios, commonly used in reinforcement learning.
+- **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling via deterministic transformations, often used in variational autoencoders.
+
+**Main Components:**
+1. **Distribution Base Class**: Abstract base class with methods like `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, and properties like `mean`, `variance`, `support`.
+2. **Distributions**: Includes common distributions (Bernoulli, Normal, Beta, Gamma, Dirichlet, MultivariateNormal, etc.) and specialized ones (LKJCholesky, Gumbel, VonMises, etc.).
+3. **TransformedDistribution**: Chains transforms to create new distributions (e.g., LogNormal from Normal via exponentiation).
+4. **Transforms**: Bijective transformations (e.g., ExpTransform, SigmoidTransform) with computable log-determinant Jacobians.
+5. **Constraints**: Define valid parameter domains (e.g., simplex, positive definite) with registry systems (`biject_to`, `transform_to`) for unconstrained optimization.
+6. **KL Divergence**: Computes KL divergence between distributions via `kl_divergence()` with registered pairwise implementations.
+
+**Key Use Cases:**
+- **Stochastic Gradient Estimation**: For RL policy gradients and variational inference.
+- **Probabilistic Modeling**: Building complex distributions via transformations and mixtures.
+- **Constrained Optimization**: Using constraints and transforms for unconstrained parameter updates.
+
+**Example Workflow:**
+```python
+# Create a distribution
+dist = Normal(loc=0.0, scale=1.0)
+# Sample and compute gradients
+sample = dist.rsample()  # Differentiable
+loss = -dist.log_prob(sample)
+loss.backward()
+```
+
+This package is essential for probabilistic deep learning, supporting both discrete and continuous distributions with automatic differentiation compatibility.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  concentration:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0"
+  2:
+    Parameter 1: concentration
+    Parameter 2: 
+    Constraint: "concentration > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.weibull.Weibull in a complex way */
+import torch

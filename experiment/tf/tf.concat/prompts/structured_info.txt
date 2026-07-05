@@ -1,0 +1,32 @@
+params:
+  values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list", "tensor"]
+    shape: ["No mention"]
+    default: null
+  axis:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "concat"
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "all(tensor.shape.ndims == (values[0] if isinstance(values, list) else values).shape.ndims for tensor in (values if isinstance(values, list) else [values]))"
+  2:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "all(all((values[i] if isinstance(values, list) else [values][i]).shape[d] == (values[j] if isinstance(values, list) else [values][j]).shape[d] for d in range((values[0] if isinstance(values, list) else values).shape.ndims) if d != axis) for i in range(len(values if isinstance(values, list) else [values])) for j in range(len(values if isinstance(values, list) else [values])))"
+  3:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "-((values[0] if isinstance(values, list) else values).shape.ndims) <= axis < ((values[0] if isinstance(values, list) else values).shape.ndims)"

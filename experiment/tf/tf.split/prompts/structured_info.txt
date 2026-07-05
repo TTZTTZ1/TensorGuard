@@ -1,0 +1,52 @@
+params:
+  value:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  num_or_size_splits:
+    dtype: ["int", "int32 Tensor", "list of ints"]
+    range: "No mention"
+    structure: ["scalar", "tensor", "list"]
+    shape: ["scalar", "1-D"]
+    default: "null"
+  axis:
+    dtype: ["int", "int32 Tensor"]
+    range: ["[-rank(value), rank(value))"]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar"]
+    default: "0"
+  num:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'split'"
+constraints:
+  1:
+    Parameter 1: "axis"
+    Parameter 2: "value"
+    Constraint: "axis >= -tf.rank(value) and axis < tf.rank(value)"
+  2:
+    Parameter 1: "num_or_size_splits"
+    Parameter 2: "value"
+    Constraint: "not isinstance(num_or_size_splits, int) or value.shape[axis] % num_or_size_splits == 0"
+  3:
+    Parameter 1: "num_or_size_splits"
+    Parameter 2: "value"
+    Constraint: "not isinstance(num_or_size_splits, (list, tf.Tensor)) or sum(num_or_size_splits) == value.shape[axis]"
+  4:
+    Parameter 1: "num_or_size_splits"
+    Parameter 2: "num_or_size_splits"
+    Constraint: "not (tf.is_tensor(num_or_size_splits) and tf.rank(num_or_size_splits) == 0)"
+  5:
+    Parameter 1: "num"
+    Parameter 2: "num_or_size_splits"
+    Constraint: "num is not None or (isinstance(num_or_size_splits, int) or (isinstance(num_or_size_splits, (list, tf.Tensor)) and tf.size(num_or_size_splits) is not None))"

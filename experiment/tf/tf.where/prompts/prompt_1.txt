@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.where` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.where` is a versatile TensorFlow function with two primary modes:
+
+1. **Indices of non-zero elements** – When only `condition` is provided, it returns a 2D tensor of indices where `condition` is non-zero. The shape is `[num_nonzero, rank(condition)]`.
+
+2. **Multiplex (choose) between `x` and `y`** – When `x` and `y` are both provided, it selects elements from `x` where `condition` is `True`, and from `y` where `condition` is `False`. Broadcasting rules apply to the shapes of `condition`, `x`, and `y`.
+
+**Key points:**
+- In mode 1, `condition` can be numeric or boolean.
+- In mode 2, `condition` must be boolean.
+- Complex numbers are considered non-zero if either the real or imaginary part is non-zero.
+- Gradient caution: If any branch produces `NaN` gradients, the entire gradient can become `NaN`. Use a safe inner `tf.where` to avoid this.
+- Useful for sparse tensor indices, conditional selection, and data filtering.
+
+**Example:**
+```python
+# Mode 1: Get indices
+tf.where([True, False, True])  # returns [[0], [2]]
+
+# Mode 2: Choose elements
+tf.where([True, False], [1, 2], [3, 4])  # returns [1, 4]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  condition:
+    dtype: ["bool", "int", "float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  x:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+  y:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "(x is None and y is None) or (x is not None and y is not None)"
+  2:
+    Parameter 1: "condition"
+    Parameter 2: "x"
+    Constraint: "x is not None implies condition.dtype == tf.bool"
+  3:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "x is not None and y is not None implies x.dtype == y.dtype"
+  4:
+    Parameter 1: "condition"
+    Parameter 2: "x"
+    Constraint: "x is not None implies tf.broadcast_dynamic_shape(condition.shape, x.shape) is not None"
+  5:
+    Parameter 1: "condition"
+    Parameter 2: "y"
+    Constraint: "y is not None implies tf.broadcast_dynamic_shape(condition.shape, y.shape) is not None"
+  6:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "x is not None and y is not None implies tf.broadcast_dynamic_shape(x.shape, y.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.where in a complex way */
+import tensorflow as tf

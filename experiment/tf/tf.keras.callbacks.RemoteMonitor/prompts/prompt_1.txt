@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.keras.callbacks.RemoteMonitor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.callbacks.RemoteMonitor` is a callback that sends training events (like epoch-end metrics) to a remote server via HTTP POST requests. It requires the `requests` library.
+
+**Key Features:**
+- **Default Behavior:** Sends a JSON-encoded dictionary of event data (e.g., training metrics) to `http://localhost:9000/publish/epoch/end/` at the end of each epoch.
+- **Customization:** You can specify the server root URL, path, HTTP headers, and how the data is sent (as JSON or within a form).
+- **Primary Use:** Enables remote monitoring of training progress, such as streaming metrics to a dashboard or logging service.
+
+**Main Method:**
+- `on_epoch_end(epoch, logs)`: Automatically sends the epoch's metric results (provided in `logs`) to the configured server endpoint.
+
+**Typical Usage:**
+```python
+remote_monitor = tf.keras.callbacks.RemoteMonitor(
+    root='http://myserver.com',
+    path='/monitor/',
+    headers={'Authorization': 'Bearer token'},
+    send_as_json=True
+)
+model.fit(..., callbacks=[remote_monitor])
+```
+
+This callback is useful for real-time tracking of model training in distributed or cloud-based environments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  root:
+    dtype: ["string"]
+    range: []
+    structure: ["scalar"]
+    shape: []
+    default: "http://localhost:9000"
+  path:
+    dtype: ["string"]
+    range: []
+    structure: ["scalar"]
+    shape: []
+    default: "/publish/epoch/end/"
+  field:
+    dtype: ["string"]
+    range: []
+    structure: ["scalar"]
+    shape: []
+    default: "data"
+  headers:
+    dtype: ["dict"]
+    range: []
+    structure: ["dict"]
+    shape: []
+    default: null
+  send_as_json:
+    dtype: ["bool"]
+    range: []
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.callbacks.RemoteMonitor in a complex way */
+import tensorflow as tf

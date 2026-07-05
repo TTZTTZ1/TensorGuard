@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ExtractImagePatches` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ExtractImagePatches` function extracts sliding window patches from a batch of images and flattens them into the depth dimension. It operates on 4-D input tensors with shape `[batch, height, width, depth]` and outputs patches based on specified kernel sizes, strides, dilation rates, and padding.
+
+**Key parameters:**
+- `images`: Input tensor of shape `[batch, in_rows, in_cols, depth]`.
+- `ksizes`: Size of the sliding window for each dimension.
+- `strides`: Spacing between patch centers (must be `[1, stride_rows, stride_cols, 1]`).
+- `rates`: Dilation rate for patches (must be `[1, rate_rows, rate_cols, 1]`), analogous to dilated convolutions.
+- `padding`: Either `"SAME"` or `"VALID"` padding.
+
+The output is a 4-D tensor where patches are placed along the depth dimension, commonly used for patch-based operations like convolution or vision transformers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  images:
+    dtype: ["bfloat16", "half", "float32", "float64", "int8", "int16", "int32", "int64", "uint8", "uint16", "uint32", "uint64", "complex64", "complex128", "bool"]
+    range: null
+    structure: ["tensor"]
+    shape: ["4-D"]
+    default: null
+  ksizes:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["length >= 4"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["4"]
+    default: null
+  rates:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["4"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "ksizes"
+    Parameter 2: "ksizes"
+    Constraint: "len(ksizes) >= 4"
+  2:
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "len(strides) == 4 and strides[0] == 1 and strides[3] == 1"
+  3:
+    Parameter 1: "rates"
+    Parameter 2: "rates"
+    Constraint: "len(rates) == 4 and rates[0] == 1 and rates[3] == 1"
+  4:
+    Parameter 1: "padding"
+    Parameter 2: "padding"
+    Constraint: "padding in ['SAME', 'VALID']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ExtractImagePatches in a complex way */
+import tensorflow as tf

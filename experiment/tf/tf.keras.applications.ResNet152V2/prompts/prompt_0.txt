@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.ResNet152V2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.ResNet152V2` function instantiates the ResNet152V2 model, a deep convolutional neural network architecture designed for image classification and transfer learning.
+
+**Key features:**
+- Based on the ResNetV2 architecture with 152 layers, using identity mappings for improved gradient flow.
+- Supports ImageNet pre-trained weights (`weights='imagenet'`) or custom initialization.
+- Flexible input configuration: requires `(224, 224, 3)` input if `include_top=True`, or custom shapes (min 32x32) if `include_top=False`.
+- Includes options for pooling (`None`, `avg`, `max`) when excluding the top classification layer.
+- Defaults to 1000 ImageNet classes with softmax activation, customizable via `classes` and `classifier_activation`.
+
+**Usage notes:**
+- Input preprocessing: Apply `resnet_v2.preprocess_input` to scale pixels to [-1, 1].
+- For transfer learning, set `include_top=False` to extract features and add custom layers.
+- Reference: [Identity Mappings in Deep Residual Networks](https://arxiv.org/abs/1603.05027).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  weights:
+    dtype: ["string", "NoneType"]
+    range: ["None", "imagenet", "any valid file path string"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple of 3 integers with channels=3 and height,width>=32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["string", "NoneType"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: ["None", "softmax", "any other string or callable"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "not (include_top and input_shape is not None)"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "(classes == 1000) or (include_top == True and weights is None)"
+  3:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights is not None implies (classifier_activation is None or classifier_activation == 'softmax')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.ResNet152V2 in a complex way */
+import tensorflow as tf

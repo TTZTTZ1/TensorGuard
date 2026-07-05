@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.experimental.ExtensionTypeBatchEncoder` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.ExtensionTypeBatchEncoder` is a class used to encode and decode custom extension type values so they can be batched and unbatched by TensorFlow APIs like `tf.data.Dataset`, `tf.keras`, and `tf.map_fn`. It ensures that operations like stacking, unstacking, or concatenating encoded tensors produce the same result as performing those operations directly on the original values.
+
+### Key Points:
+- **Default Behavior**: For most extension types, the default encoder simply applies batching operations to every nested field (e.g., `Tensor`, `ExtensionType`, `CompositeTensor`, `TensorShape`).
+- **Customization**: If the default behavior is insufficient (as with `tf.RaggedTensor` or `tf.SparseTensor`), you can subclass `ExtensionTypeBatchEncoder` and override its core methods:
+  - `batch()`: Converts a single-value TypeSpec into a batched version.
+  - `unbatch()`: Converts a batched TypeSpec back to a single element.
+  - `encode()`: Transforms a value into a nest of batchable tensors or composite tensors.
+  - `decode()`: Reconstructs the original value from its encoded form.
+  - `encoding_specs()`: Describes the structure of the encoded output.
+
+### Usage Example:
+To use a custom encoder, assign it to the `__batch_encoder__` attribute of your `BatchableExtensionType` subclass:
+```python
+class CustomBatchEncoder(tf.experimental.ExtensionTypeBatchEncoder):
+    ...  # Override batch(), unbatch(), encode(), decode()
+
+class CustomType(tf.experimental.BatchableExtensionType):
+    x: tf.Tensor
+    y: tf.Tensor
+    __batch_encoder__ = CustomBatchEncoder()
+```
+
+This mechanism allows complex or structured data types to integrate seamlessly with TensorFlow's batching utilities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["TypeSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  batch_size:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  value:
+    dtype: ["ExtensionType", "Tensor", "CompositeTensor"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  minimum_rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  encoded_value:
+    dtype: ["Tensor", "CompositeTensor", "ExtensionType"]
+    range: null
+    structure: ["nest"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.ExtensionTypeBatchEncoder in a complex way */
+import tensorflow as tf

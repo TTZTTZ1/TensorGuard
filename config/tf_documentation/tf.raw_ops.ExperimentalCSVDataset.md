@@ -1,0 +1,50 @@
+# tf.raw_ops.ExperimentalCSVDataset
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ExperimentalCSVDataset](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ExperimentalCSVDataset)
+
+---
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.ExperimentalCSVDataset`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ExperimentalCSVDataset)
+
+```
+tf.raw_ops.ExperimentalCSVDataset(
+    filenames,
+    compression_type,
+    buffer_size,
+    header,
+    field_delim,
+    use_quote_delim,
+    na_value,
+    select_cols,
+    record_defaults,
+    output_shapes,
+    name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `filenames` | A `Tensor` of type `string`. |
+| `compression_type` | A `Tensor` of type `string`. |
+| `buffer_size` | A `Tensor` of type `int64`. |
+| `header` | A `Tensor` of type `bool`. |
+| `field_delim` | A `Tensor` of type `string`. |
+| `use_quote_delim` | A `Tensor` of type `bool`. |
+| `na_value` | A `Tensor` of type `string`. |
+| `select_cols` | A `Tensor` of type `int64`. |
+| `record_defaults` | A list of `Tensor` objects with types from: `float32`, `float64`, `int32`, `int64`, `string`. |
+| `output_shapes` | A list of shapes (each a [`tf.TensorShape`](https://tensorflow.google.cn/api_docs/python/tf/TensorShape) or list of `ints`) that has length `>= 1`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type `variant`. | |

@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `torch.linalg.tensorinv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.tensorinv` computes the inverse of a tensor for the `torch.tensordot` operation. Given a tensor `A` and an index `ind`, it returns a tensor `X` such that `tensordot(A, X, ind)` yields an identity matrix in the dimension formed by the product of the first `ind` dimensions of `A`. The shape of `X` is `A.shape[ind:] + A.shape[:ind]`.
+
+**Key points:**
+- Requires `prod(A.shape[:ind]) == prod(A.shape[ind:])`.
+- When `A` is 2D and `ind=1`, it is equivalent to `torch.linalg.inv`.
+- For solving tensor equations, prefer `torch.linalg.tensorsolve` for better speed and numerical stability.
+- Supports float, double, cfloat, and cdouble dtypes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  ind:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "2"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: ind
+    Constraint: "math.prod(A.shape[:ind]) == math.prod(A.shape[ind:])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.tensorinv in a complex way */
+import torch

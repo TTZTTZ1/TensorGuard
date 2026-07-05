@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.AssignVariableXlaConcatND` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.AssignVariableXlaConcatND` is a low-level TensorFlow operation that concatenates multiple input tensors across all dimensions, optionally removes specified padding, and assigns the result to a resource variable. It is primarily used in contexts like TPU execution.
+
+**Key Functionality:**
+- **Input:** Takes a list of tensors (`inputs`) and a resource variable (`resource`).
+- **Process:** Merges the input tensors based on `num_concats` (which defines how many splits to concatenate per dimension) and optionally strips specified `paddings` from the final tensor.
+- **Output:** Stores the merged, unpadded result into the provided resource variable.
+
+**Example:**  
+Given 4 input tensors forming a 2×2 grid and `num_concats = [2, 2]`, the operation concatenates them to reconstruct the full tensor. If `paddings = [1, 1]`, it removes one element from the end of each dimension.
+
+**Args:**
+- `resource`: A resource variable to hold the concatenated result.
+- `inputs`: List of tensors (same type, at least one).
+- `num_concats`: List of integers specifying concatenation counts per dimension.
+- `paddings` (optional): List of integers specifying padding to remove from each dimension.
+- `name` (optional): Operation name.
+
+**Returns:**  
+A TensorFlow operation that performs the assignment.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  resource:
+    dtype: ["resource"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  inputs:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["list"]
+    shape: ["at least 1"]
+    default: null
+  num_concats:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  paddings:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1.
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "len(inputs) >= 1"
+  2.
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "all(t.dtype == inputs[0].dtype for t in inputs)"
+  3.
+    Parameter 1: paddings
+    Parameter 2: num_concats
+    Constraint: "len(paddings) == 0 or len(paddings) == len(num_concats)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.AssignVariableXlaConcatND in a complex way */
+import tensorflow as tf

@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.nn.LazyConv2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**LazyConv2d** is a PyTorch module that extends `torch.nn.Conv2d` with lazy initialization of the `in_channels` parameter. Instead of specifying the input channels upfront, it infers this value from the first forward pass using `input.size(1)`. This is useful when the input dimension is unknown during model definition.
+
+**Key Features:**
+- Automatically initializes `weight` and `bias` based on the inferred input channel size.
+- Shares all other parameters and behavior with `torch.nn.Conv2d` (kernel size, stride, padding, etc.).
+- Inherits from `LazyModuleMixin`, which provides lazy initialization capabilities but may have certain limitations (e.g., constraints on certain operations before the first forward pass).
+
+**Use Case:**  
+Helpful in dynamic model architectures where input dimensions are determined at runtime, reducing manual configuration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  out_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  padding_mode:
+    dtype: ["str"]
+    range: [["zeros", "reflect", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "zeros"
+constraints:
+  1:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.LazyConv2d in a complex way */
+import torch

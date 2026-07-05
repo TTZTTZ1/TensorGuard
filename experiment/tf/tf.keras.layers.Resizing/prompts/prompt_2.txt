@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Resizing` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.Resizing` is a preprocessing layer that resizes input images to a specified target height and width. It supports both batched (4D) and unbatched (3D) tensors, with flexible input value ranges (e.g., [0, 1] or [0, 255]).
+
+**Key Features:**
+- **Input/Output Shapes:** Accepts images in `"channels_last"` (default) or `"channels_first"` format. Output matches the target dimensions while preserving the number of channels.
+- **Interpolation Methods:** Supports `"bilinear"`, `"nearest"`, `"bicubic"`, `"lanczos3"`, and `"lanczos5"`.
+- **Aspect Ratio Control:** 
+  - `crop_to_aspect_ratio=True`: Crops the image to fit the target aspect ratio.
+  - `pad_to_aspect_ratio=True`: Pads the image evenly (short sides) to maintain aspect ratio, with constant fill value support.
+- **Integration:** Safe to use within `tf.data` pipelines.
+
+**Common Use Cases:** Image preprocessing, data augmentation, and adapting inputs for neural networks requiring fixed image dimensions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  height:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  width:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  interpolation:
+    dtype: ["string"]
+    range: [["bilinear", "nearest", "bicubic", "lanczos3", "lanczos5"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "bilinear"
+  crop_to_aspect_ratio:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pad_to_aspect_ratio:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  fill_mode:
+    dtype: ["string"]
+    range: [["constant"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "constant"
+  fill_value:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  data_format:
+    dtype: ["string"]
+    range: [["channels_last", "channels_first"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: pad_to_aspect_ratio
+    Parameter 2: fill_mode
+    Constraint: "not pad_to_aspect_ratio or fill_mode == 'constant'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Resizing in a complex way */
+import tensorflow as tf

@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.vectorized_map` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.vectorized_map` is a high-performance parallel mapping function that applies a callable `fn` to each slice of input tensors along their first dimension. It is optimized through static graph vectorization, offering significant speedups over `tf.map_fn` by fusing operations across invocations, especially in eager mode.
+
+**Key Features:**
+- **Vectorization:** Parallelizes batch processing by fusing operations, often yielding one to two orders of magnitude speedup.
+- **Usage:** Similar to `tf.map_fn`, but with stricter constraints and better performance for eligible operations.
+- **Input/Output:** `elems` can be a tensor or nested structure of tensors, each with a first dimension representing batch size (must broadcast consistently). `fn` returns a possibly nested structure of Tensors/Operations.
+
+**Important Limitations:**
+- No data dependencies allowed between invocations of `fn`.
+- Limited support for stateful operations and control flow.
+- Intermediate/output tensor shapes and dtypes must not depend on the input.
+- Operations may fall back to slower while-loop execution if vectorization fails (controlled by `fallback_to_while_loop`).
+
+**Common Use Cases:**
+- Computing per-example gradients in batch.
+- Efficient batch transformations (e.g., outer products across a batch).
+
+**Example:**
+```python
+per_example_gradients = tf.vectorized_map(model_fn, (inputs, labels))
+```
+This is ideal for batch-parallel, stateless computations where performance is critical.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["callable"]
+    shape: ["No mention"]
+    default: null
+  elems:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "nested sequence of tensors"]
+    shape: ["any"]
+    default: null
+  fallback_to_while_loop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  warn:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "fn"
+    Parameter 2: "elems"
+    Constraint: "callable(fn) and tf.nest.is_nested(elems) == tf.nest.is_nested(fn_arg) for fn_arg derived from elems"
+  2:
+    Parameter 1: "elems"
+    Parameter 2: "elems"
+    Constraint: "len({tensor.shape[0] for tensor in tf.nest.flatten(elems) if hasattr(tensor, 'shape') and tensor.shape[0] != 1}) <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.vectorized_map in a complex way */
+import tensorflow as tf

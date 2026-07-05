@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `torch.distributions.log_normal.LogNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Parameterizable Distributions**: Includes a wide range of distributions (e.g., Normal, Bernoulli, Categorical, Beta, Gamma, etc.) that can be parameterized by tensors.
+- **Gradient Estimation**: Supports two primary methods for backpropagation through random samples:
+  1. **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods (e.g., reinforcement learning).
+  2. **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (e.g., variational autoencoders).
+
+### **Main Classes**
+1. **`Distribution`**: Abstract base class for all distributions. Key methods:
+   - `sample()` / `rsample()`: Draw samples (with or without reparameterization).
+   - `log_prob()`: Compute log probability density/mass.
+   - `entropy()`: Compute distribution entropy.
+   - `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution functions.
+
+2. **`ExponentialFamily`**: Base class for exponential family distributions (e.g., Normal, Bernoulli, Beta), providing efficient entropy and KL divergence computations.
+
+3. **`TransformedDistribution`**: Creates new distributions by applying a sequence of transforms to a base distribution (e.g., `LogNormal` from `Normal` via exponentiation).
+
+4. **`Independent`**: Reinterprets batch dimensions as event dimensions, useful for changing the shape of `log_prob()` outputs.
+
+5. **`MixtureSameFamily`**: Models mixture distributions with components from the same distribution type.
+
+### **Key Transforms**
+- **Bijective Transforms**: `ExpTransform`, `SigmoidTransform`, `AffineTransform`, `StickBreakingTransform` (for simplex), etc.
+- **Constraint Handling**: `biject_to()` and `transform_to()` registries map constraints (e.g., positive, simplex) to transforms, enabling unconstrained optimization.
+
+### **KL Divergence**
+- `kl_divergence()`: Computes KL divergence between two distributions. Predefined for many distribution pairs (e.g., Normal-Normal, Beta-Gamma).
+
+### **Constraints**
+- **`Constraint`**: Abstract class for defining valid parameter regions (e.g., `positive`, `simplex`, `interval`).
+- Used in distribution `arg_constraints` to validate parameters.
+
+### **Example Usage**
+```python
+# Create a Normal distribution
+m = Normal(loc=torch.tensor([0.0]), scale=torch.tensor([1.0]))
+samples = m.sample()  # Random samples
+log_prob = m.log_prob(samples)  # Log likelihood
+
+# REINFORCE example (policy gradient)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# Reparameterization trick example (VAE)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### **Key Features**
+- **Batch and Event Shapes**: Supports batched parameters and samples.
+- **Validation**: Optional argument validation via `validate_args`.
+- **Extensibility**: Users can define custom distributions, transforms, and constraints.
+- **Efficient Sampling**: Leverages PyTorch’s tensor operations for performance.
+
+### **Applications**
+- Reinforcement learning (policy gradients)
+- Variational inference (VAEs, Bayesian neural networks)
+- Probabilistic modeling and simulation
+- Unconstrained optimization of constrained parameters
+
+The package is designed to integrate seamlessly with PyTorch’s autograd system, making it suitable for modern deep learning workflows involving probabilistic reasoning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scale"
+    Parameter 2: "None"
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.log_normal.LogNormal in a complex way */
+import torch

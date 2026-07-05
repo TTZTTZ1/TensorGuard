@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.keras.optimizers.Ftrl` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **FTRL optimizer** in TensorFlow/Keras is designed for training shallow models with large, sparse feature spaces, particularly effective for click-through rate prediction. It implements the "Follow The Regularized Leader" algorithm, supporting both L1 and L2 regularization, as well as L2 shrinkage for sparse inputs.
+
+### **Key Features:**
+- **Regularization**: Combines L1 (for sparsity) and L2 (for stabilization) penalties.
+- **L2 Shrinkage**: Adds a magnitude penalty specifically for active weights in sparse data.
+- **Adaptive Learning Rate**: Controlled via `learning_rate_power` to decrease over time.
+- **Additional Optimizations**: Supports gradient clipping, weight decay, exponential moving averages (EMA), gradient accumulation, and loss scaling for mixed precision training.
+
+### **Core Update Rule:**
+Maintains accumulators (`n`, `sigma`, `z`) per variable to adaptively adjust weights:
+1. Accumulate squared gradients (`n`).
+2. Compute learning rate scaling (`sigma`).
+3. Update intermediate variable (`z`) with gradient and regularization.
+4. Apply thresholding: if `|z| < L1 strength`, weight becomes zero; otherwise, compute new weight.
+
+### **Typical Use Case:**
+Ideal for high-dimensional, sparse datasets (e.g., recommendation systems, CTR prediction) where feature selection (via L1) and efficient regularization are critical.
+
+### **Parameters of Note:**
+- `learning_rate`: Base step size (fixed or scheduled).
+- `l1_regularization_strength`: Encourages sparsity.
+- `l2_shrinkage_regularization_strength`: Penalizes magnitude of active weights.
+- `beta`: Stabilization term in denominator.
+- `learning_rate_power`: Controls decay of per-coordinate learning rates.
+
+### **Integration:**
+Seamlessly works with Keras training loops (`fit()`), offering advanced features like EMA and gradient accumulation without manual intervention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  learning_rate:
+    dtype: ["float", "LearningRateSchedule", "callable"]
+    range: null
+    structure: ["scalar", "object", "callable"]
+    shape: [1]
+    default: "0.001"
+  learning_rate_power:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-0.5"
+  initial_accumulator_value:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.1"
+  l1_
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.optimizers.Ftrl in a complex way */
+import tensorflow as tf

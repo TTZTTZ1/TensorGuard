@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.TensorArraySpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TensorArraySpec` is a **type specification class** used to describe the structure and properties of a `tf.TensorArray`. It inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`, enabling type checking, serialization, and compatibility analysis in TensorFlow's graph-based operations.
+
+### **Key Purpose**
+- Defines the expected **shape, data type, and behavior** of a `TensorArray` for use in functions like `tf.function` and structured APIs.
+- Ensures type safety and enables shape inference for dynamic tensor collections.
+
+### **Main Parameters**
+| Parameter | Description |
+|-----------|-------------|
+| `element_shape` | Shape of each element stored in the `TensorArray`. |
+| `dtype` | Data type of elements (default: `tf.float32`). |
+| `dynamic_size` | If `True`, the array can grow beyond its initial size. |
+| `infer_shape` | If `True`, enables shape inference (default: `True`). |
+
+### **Core Functionality**
+1. **Type Compatibility & Subtyping**  
+   - `is_compatible_with()`: Checks if another spec or value is compatible.
+   - `is_subtype_of()`: Determines subtyping relationships (implements `TraceType`).
+   - `most_specific_common_supertype()`: Finds a common supertype for multiple specs.
+
+2. **Serialization**  
+   - `experimental_as_proto()` / `experimental_from_proto()`: Convert to/from protocol buffer representation.
+
+3. **Utility Methods**  
+   - `from_value()`: Creates a spec from an existing `TensorArray`.
+   - `most_specific_compatible_type()`: **Deprecated**; replaced by `most_specific_common_supertype`.
+
+### **Use Case Example**
+```python
+spec = tf.TensorArraySpec(element_shape=(None, 128), dtype=tf.float32, dynamic_size=True)
+# Used to annotate input/output types in tf.function or validate TensorArray structures.
+```
+
+### **Key Notes**
+- Essential for **graph mode** where tensor shapes and types must be explicit.
+- Supports **dynamic tensors** (e.g., variable sequence lengths via `element_shape=(None, ...)`).
+- Integrates with TensorFlow’s type system for safe and efficient execution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_shape:
+    dtype: ["None", "tuple"]
+    range: null
+    structure: ["None", "tuple"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["tf.dtypes.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "tf.dtypes.float32"
+  dynamic_size:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  infer_shape:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TensorArraySpec in a complex way */
+import tensorflow as tf

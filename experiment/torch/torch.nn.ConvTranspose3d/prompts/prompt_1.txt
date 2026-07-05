@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.nn.ConvTranspose3d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`ConvTranspose3d` is a PyTorch module that performs a 3D transposed convolution, often used for upsampling in tasks like volumetric data generation or segmentation. It applies a learnable kernel to expand spatial dimensions by reversing the effect of a regular 3D convolution.
+
+**Key parameters:**
+- `in_channels` / `out_channels`: Number of input/output channels.
+- `kernel_size`: Size of the convolutional kernel (int or tuple).
+- `stride`: Controls upsampling factor (default: 1).
+- `padding`: Adjusts implicit zero padding; set so that `Conv3d` and `ConvTranspose3d` with matching parameters are shape inverses.
+- `output_padding`: Resolves ambiguity when stride > 1 by adding to one side of the output shape (no actual padding added).
+- `dilation`: Spacing between kernel elements.
+- `groups`: Controls input-output connections (e.g., depthwise convolution when `groups = in_channels`).
+
+**Output shape formula** (per dimension):
+```
+output_size = (input_size - 1) × stride - 2 × padding + dilation × (kernel_size - 1) + output_padding + 1
+```
+
+**Example:**
+```python
+m = nn.ConvTranspose3d(16, 33, 3, stride=2)  # Upsamples depth, height, width
+input = torch.randn(20, 16, 10, 50, 100)
+output = m(input)  # Expanded spatial dimensions
+```
+
+**Note:** This operation is not a true deconvolution but a gradient of `Conv3d`, useful for learnable upsampling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "0"
+  output_padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "0"
+  groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "1"
+  padding_mode:
+    dtype: ["string"]
+    range: [["zeros"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  device:
+    dtype: ["None", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["None", "torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.ConvTranspose3d in a complex way */
+import torch

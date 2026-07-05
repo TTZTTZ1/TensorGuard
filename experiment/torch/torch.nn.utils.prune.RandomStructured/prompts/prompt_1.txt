@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.RandomStructured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RandomStructured** is a PyTorch pruning method that randomly removes entire channels (structured pruning) from a tensor.
+
+### Key Features:
+- **Pruning Type**: Randomly prunes full channels along a specified dimension (`dim`, default is last dimension).
+- **Amount**: Can be specified as an integer (absolute number of channels) or float (fraction of channels to prune).
+- **Usage**: Typically applied via the `apply()` class method to a module's parameter.
+
+### Main Methods:
+1. **`apply(module, name, amount, dim=-1)`**:  
+   Attaches pruning to a parameter within a module, adding hooks for dynamic pruning and mask application.
+
+2. **`compute_mask(t, default_mask)`**:  
+   Generates a random binary mask that zeros out channels along `dim` based on the pruning `amount`.
+
+3. **`prune(t, default_mask, importance_scores)`**:  
+   Returns the pruned tensor using the mask computed by `compute_mask()`.
+
+4. **`remove(module)`**:  
+   Removes pruning reparameterization, leaving the parameter permanently pruned (does not revert pruning).
+
+### Notes:
+- Pruning is **permanent** once applied; `remove()` only cleans up auxiliary parameters.
+- Channels are selected **randomly** without considering importance scores.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  amount:
+    dtype: ["int", "float"]
+    range: ["0.0 to 1.0 when float"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "-1"
+  module:
+    dtype: ["torch.nn.Module"]
+    range: ["No mention"]
+    structure: ["object"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "t"
+    Constraint: "dim < len(t.shape)"
+  2:
+    Parameter 1: "default_mask"
+    Parameter 2: "t"
+    Constraint: "default_mask.shape == t.shape"
+  3:
+    Parameter 1: "importance_scores"
+    Parameter 2: "t"
+    Constraint: "importance_scores.shape == t.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.RandomStructured in a complex way */
+import torch

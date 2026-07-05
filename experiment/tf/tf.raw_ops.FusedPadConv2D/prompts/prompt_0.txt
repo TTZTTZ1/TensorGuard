@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FusedPadConv2D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FusedPadConv2D` is a TensorFlow operation that fuses padding and convolution into a single step for efficiency. It applies specified padding to the input tensor before performing a 2D convolution, reducing memory usage and improving latency by avoiding intermediate tensor storage.
+
+**Key Points:**
+- **Purpose:** Optimized fusion of padding and convolution.
+- **Input:** 4-D tensor (`[batch, height, width, channels]`).
+- **Parameters:** 
+  - `paddings`: Specifies padding sizes.
+  - `filter`: 4-D convolution kernel.
+  - `mode`: Padding type (`"REFLECT"` or `"SYMMETRIC"`).
+  - `strides`: Convolution stride.
+  - `padding`: Convolution padding algorithm (`"SAME"` or `"VALID"`).
+- **Data Format:** Only supports `'NHWC'` layout.
+- **Use Case:** Performance optimization for convolution with padding, minimizing memory overhead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  paddings:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [4,2]
+    default: null
+  filter:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["REFLECT", "SYMMETRIC"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: paddings
+    Parameter 2: input
+    Constraint: "paddings.shape[0] == input.ndim"
+  2:
+    Parameter 1: filter
+    Parameter 2: input
+    Constraint: "filter.dtype == input.dtype"
+  3:
+    Parameter 1: filter
+    Parameter 2: input
+    Constraint: "filter.shape[2] == input.shape[3]"
+  4:
+    Parameter 1: strides
+    Parameter 2: input
+    Constraint: "len(strides) == input.ndim"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FusedPadConv2D in a complex way */
+import tensorflow as tf

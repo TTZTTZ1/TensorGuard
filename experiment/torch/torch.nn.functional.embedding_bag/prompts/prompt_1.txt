@@ -1,0 +1,118 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.embedding_bag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.embedding_bag` efficiently computes aggregated embeddings (sum, mean, or max) from bags of indices without creating intermediate embeddings. It is useful for processing variable-length sequences like sentences or user histories.
+
+**Key Parameters:**
+- **`input`**: 1D (concatenated sequences) or 2D (fixed-length sequences) tensor of indices.
+- **`weight`**: Embedding matrix of shape `(num_embeddings, embedding_dim)`.
+- **`offsets`**: Required for 1D `input`; indicates start indices of each bag.
+- **`mode`**: Reduction method: `"sum"`, `"mean"` (default), or `"max"`.
+- **`padding_idx`**: Optional index to ignore during aggregation and gradient updates.
+
+**Output:** Aggregated embeddings of shape `(B, embedding_dim)`, where `B` is the number of bags.
+
+**Example:**
+```python
+import torch.nn.functional as F
+
+embedding_matrix = torch.rand(10, 3)
+input = torch.tensor([1, 2, 4, 5, 4, 3, 2, 9])
+offsets = torch.tensor([0, 4])
+result = F.embedding_bag(input, embedding_matrix, offsets, mode='mean')
+```
+This computes the mean embedding for two bags: indices `[1, 2, 4, 5]` and `[4, 3, 2, 9]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B, N]", "[N]"]
+    default: null
+  weight:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_embeddings, embedding_dim]"]
+    default: null
+  offsets:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B]"]
+    default: "None"
+  max_norm:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  norm_type:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "2"
+  scale_grad_by_freq:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  mode:
+    dtype: ["string"]
+    range: [["sum", "mean", "max"]]
+    structure: ["scalar"]
+    shape: null
+    default: '"mean"'
+  sparse:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  per_sample_weights:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as input"]
+    default: "None"
+  include_last_offset:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  padding_idx:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "offsets"
+    Constraint: "not (input.dim() == 2 and offsets is not None)"
+  2:
+    Parameter 1: "mode"
+    Parameter 2: "scale_grad_by_freq"
+    Constraint: "mode != 'max' or scale_grad_by_freq == False"
+  3:
+    Parameter 1: "mode"
+    Parameter 2: "sparse"
+    Constraint: "mode != 'max' or sparse == False"
+  4:
+    Parameter 1: "per_sample_weights"
+    Parameter 2: "input"
+    Constraint: "per_sample_weights is None or per_sample_weights.shape == input.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.embedding_bag in a complex way */
+import torch

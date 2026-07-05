@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.rnn.pack_padded_sequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.rnn.pack_padded_sequence` converts a padded batch of variable-length sequences into a `PackedSequence` object, which is more efficient for RNN processing.  
+
+**Key points:**  
+- **Input format:** `T x B x *` (default) or `B x T x *` if `batch_first=True`.  
+- **Parameters:**  
+  - `input`: Padded tensor of sequences.  
+  - `lengths`: List/tensor of sequence lengths per batch element.  
+  - `batch_first`: Specifies batch dimension position.  
+  - `enforce_sorted`: If `False`, sorts sequences automatically; `True` requires pre‑sorted lengths (mainly for ONNX export).  
+- **Output:** A `PackedSequence` (access data via `.data` attribute).  
+- **Note:** It truncates each sequence to its specified length and is the inverse of `pad_packed_sequence`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["T x B x *", "B x T x *"]
+    default: null
+  lengths:
+    dtype: ["torch.Tensor", "list[int]"]
+    range: null
+    structure: ["tensor", "list"]
+    shape: ["B"]
+    default: null
+  batch_first:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  enforce_sorted:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1.
+    Parameter 1: input
+    Parameter 2: lengths
+    Constraint: "len(lengths) == (input.size(1) if batch_first else input.size(0))"
+  2.
+    Parameter 1: lengths
+    Parameter 2: enforce_sorted
+    Constraint: "not enforce_sorted or all(lengths[i] >= lengths[i+1] for i in range(len(lengths)-1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.rnn.pack_padded_sequence in a complex way */
+import torch

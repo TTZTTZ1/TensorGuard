@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.InceptionResNetV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.InceptionResNetV2` function instantiates the Inception-ResNet v2 architecture, a convolutional neural network designed for image classification. It is based on the research paper "Inception-v4, Inception-ResNet and the Impact of Residual Connections on Learning."
+
+**Key Features:**
+- Supports optional pre-trained weights from ImageNet.
+- Input images must be preprocessed using `inception_resnet_v2.preprocess_input`, which scales pixel values between -1 and 1.
+- Default input size is 299x299 pixels with 3 color channels.
+
+**Parameters:**
+- `include_top`: Whether to include the final classification layer.
+- `weights`: Can be `None` (random initialization), `"imagenet"` (ImageNet pre-trained), or a custom file path.
+- `input_shape`: Required if `include_top=False`; minimum dimensions are 75x75.
+- `pooling`: Specifies pooling method (`None`, `'avg'`, or `'max'`) when `include_top=False`.
+- `classes`: Number of output classes (only if `include_top=True` and no weights are provided).
+- `classifier_activation`: Activation function for the top layer (default is `'softmax'`).
+
+**Use Cases:**
+- Image classification with pre-trained models.
+- Transfer learning and fine-tuning for custom tasks.
+
+**Note:** Ensure proper input preprocessing and refer to Keras guides for transfer learning best practices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["None", "string"]
+    range: ["None", "imagenet", "any string"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["None", "tuple with 3 ints, channels_last or channels_first, width and height >=75"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["None", "string"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: ["None", "softmax", "any string or callable"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+constraints:
+  1:
+    Parameter 1: include_top
+    Parameter 2: input_shape
+    Constraint: not include_top or input_shape is None or input_shape in [(299, 299, 3), (3, 299, 299)]
+  2:
+    Parameter 1: include_top
+    Parameter 2: pooling
+    Constraint: not include_top or pooling is None
+  3:
+    Parameter 1: include_top
+    Parameter 2: classes
+    Constraint: include_top or classes is None
+  4:
+    Parameter 1: weights
+    Parameter 2: classes
+    Constraint: weights is None or classes is None
+  5:
+    Parameter 1: include_top
+    Parameter 2: classifier_activation
+    Constraint: include_top or classifier_activation is None
+  6:
+    Parameter 1: weights
+    Parameter 2: classifier_activation
+    Constraint: weights is None or classifier_activation in [None, "softmax"]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.InceptionResNetV2 in a complex way */
+import tensorflow as tf

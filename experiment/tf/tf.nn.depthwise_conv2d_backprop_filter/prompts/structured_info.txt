@@ -1,0 +1,62 @@
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4-D"]
+    default: null
+  filter_sizes:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4-D"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID", "list of explicit paddings"]
+    structure: ["string", "list"]
+    shape: ["scalar", "[4,2]"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["string"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: out_backprop
+    Constraint: "input.dtype == out_backprop.dtype"
+  2:
+    Parameter 1: padding
+    Parameter 2: data_format
+    Constraint: "(not isinstance(padding, list)) or (len(padding) == 4 and all(isinstance(p, list) and len(p) == 2 for p in padding) and ((data_format == 'NHWC' and padding[0] == [0,0] and padding[3] == [0,0]) or (data_format == 'NCHW' and padding[0] == [0,0] and padding[1] == [0,0])))"
+  3:
+    Parameter 1: dilations
+    Parameter 2: data_format
+    Constraint: "len(dilations) == 4 and ((data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1))"

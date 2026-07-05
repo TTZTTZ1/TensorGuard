@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.CosineAnnealingLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CosineAnnealingLR** is a PyTorch learning rate scheduler that adjusts the learning rate according to a cosine annealing schedule, gradually decreasing it from an initial maximum to a specified minimum over a fixed number of steps.
+
+### Key Features:
+- **Schedule**: Implements a cosine annealing formula without restarts (unlike SGDR). The learning rate decays smoothly following a cosine curve.
+- **Formula**:  
+  \[
+  \eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min}) \left(1 + \cos\left(\frac{T_{\text{cur}} \pi}{T_{\max}}\right)\right)
+  \]
+  where:
+  - \(\eta_t\): learning rate at step \(t\)
+  - \(T_{\text{cur}}\): current step (epoch) count
+  - \(T_{\max}\): total number of steps in the cycle
+  - \(\eta_{\min}\): minimum learning rate (default: 0)
+- **Behavior**: Learning rate starts high, decreases to \(\eta_{\min}\) at \(T_{\max}\), and continues at \(\eta_{\min}\) thereafter.
+
+### Parameters:
+- `optimizer`: Wrapped optimizer (e.g., SGD, Adam).
+- `T_max`: Maximum number of iterations (epochs) in a cycle.
+- `eta_min`: Minimum learning rate (default: 0).
+- `last_epoch`: Index of the last epoch (default: -1, starts from initial LR).
+
+### Usage Example:
+```python
+scheduler = CosineAnnealingLR(optimizer, T_max=num_epochs)
+for epoch in range(num_epochs):
+    train(...)
+    validate(...)
+    scheduler.step()  # Update LR after each epoch
+```
+
+### Important Notes:
+- **No restarts**: This implementation does **not** include periodic restarts (as in SGDR). \(T_{\text{cur}}\) increases monotonically.
+- **Call order**: Use `scheduler.step()` **after** the optimizer’s `step()` in each training iteration.
+- **LR retrieval**: Use `get_last_lr()` to inspect the current learning rate(s).
+
+### Methods:
+- `step()`: Updates the learning rate for the next epoch.
+- `get_last_lr()`: Returns the most recent learning rate(s).
+- `state_dict()` / `load_state_dict()`: Save and restore scheduler state.
+
+This scheduler is useful for training deep networks where a smooth, gradual reduction in learning rate can help convergence.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  T_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  eta_min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: T_max
+    Parameter 2: T_max
+    Constraint: "T_max > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.CosineAnnealingLR in a complex way */
+import torch

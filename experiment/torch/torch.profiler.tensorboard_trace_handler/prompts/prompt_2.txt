@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.profiler.tensorboard_trace_handler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool for collecting metrics during model training and inference. It helps identify expensive operations, analyze input shapes, examine stack traces, and visualize execution traces.
+
+### Key Components:
+
+1. **`torch.profiler.profile`** – Main context manager for profiling.
+   - **Activities**: Specify devices to profile (CPU, CUDA, XPU, etc.).
+   - **Schedule**: Control profiling cycles (wait, warmup, active phases) using `torch.profiler.schedule()`.
+   - **Trace Handling**: Use `on_trace_ready` to process results (e.g., `tensorboard_trace_handler()` for TensorBoard).
+   - **Additional Options**: Record shapes, memory usage, stack traces, FLOPs, and module hierarchies.
+
+2. **`_KinetoProfile`** – Lower-level profiler wrapper (experimental).
+
+3. **Profiler Actions & Activities** – Define actions (`ProfilerAction`) and supported hardware activities.
+
+4. **Output & Analysis**:
+   - Export traces in Chrome JSON format (`export_chrome_trace()`).
+   - Generate averaged performance tables (`key_averages()`).
+   - Export memory timelines and stack traces.
+
+5. **ITT APIs** – Intel Instrumentation and Tracing Technology for marking events and ranges.
+
+### Basic Usage Example:
+```python
+with torch.profiler.profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+    # Code to profile
+    model(input)
+print(prof.key_averages().table(sort_by="self_cuda_time_total"))
+```
+
+### Key Features:
+- **Flexible Scheduling**: Profile specific iterations to reduce overhead.
+- **TensorBoard Integration**: Direct export for visualization.
+- **Low Overhead Options**: Enable/disable shape and stack tracing as needed.
+- **Memory Profiling**: Track tensor allocations (note: `export_memory_timeline` is deprecated; use `torch.cuda.memory` APIs instead).
+
+The profiler replaces legacy `torch.autograd` profiling and is essential for optimizing PyTorch performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dir_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  worker_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "[hostname]_[pid]"
+  use_gzip:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: worker_name
+    Parameter 2: null
+    Constraint: "worker_name should be unique for each worker in distributed scenario"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.tensorboard_trace_handler in a complex way */
+import torch

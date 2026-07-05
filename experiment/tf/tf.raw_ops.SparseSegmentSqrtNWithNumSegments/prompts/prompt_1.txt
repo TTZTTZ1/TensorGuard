@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseSegmentSqrtNWithNumSegments` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseSegmentSqrtNWithNumSegments` computes the normalized sum across sparse segments of a tensor, where each segment's sum is divided by the square root of the number of elements in that segment (√N). It is an extension of `SparseSegmentSqrtN` that supports missing segment IDs by outputting zeros for those positions.
+
+**Key Features:**
+- **Inputs:**  
+  - `data`: A tensor of supported floating-point types.  
+  - `indices`: A 1-D tensor selecting elements from the first dimension of `data`.  
+  - `segment_ids`: A 1-D tensor mapping each indexed element to a segment ID (sorted, allow repeats).  
+  - `num_segments`: Specifies the total number of distinct segment IDs.  
+- **Handles Missing IDs:** If a segment ID is absent in `segment_ids`, the corresponding output is zero.  
+- **Use Case:** Useful for sparse segmentation tasks where segment IDs may be incomplete (e.g., in distributed computations).  
+
+**Example:**  
+Given sparse indexed data, it outputs a tensor of length `num_segments`, where each segment’s value is the sum of its assigned data elements divided by √(segment size).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  sparse_gradient:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: segment_ids
+    Constraint: "indices.shape.rank == segment_ids.shape.rank"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseSegmentSqrtNWithNumSegments in a complex way */
+import tensorflow as tf

@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `torch.nn.Dropout2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`Dropout2d` randomly zeroes entire **channels** (2D feature maps) in a 4D input tensor `(N, C, H, W)` during training. Each channel is independently dropped with probability `p` to promote feature‑map independence, which is especially useful after convolutional layers (`nn.Conv2d`) where adjacent pixels are strongly correlated.
+
+**Key points:**
+- Operates on **channel‑wise 2D feature maps** (`input[i, j]` is a 2D map).
+- Helps regularize convolutional activations by dropping spatial channels entirely.
+- **Warning:** For 3D inputs `(N, C, L)`, it currently behaves like `Dropout1d` (channel‑wise 1D dropout). Future versions may treat 3D inputs as `(C, H, W)` without a batch dimension.
+- **Shape:** Input and output shapes are identical (`(N, C, H, W)` or `(N, C, L)`).
+- **Parameters:**  
+  - `p` (float): Probability of zeroing a channel (default 0.5).  
+  - `inplace` (bool): If `True`, performs operation in‑place (default `False`).
+
+**Example:**
+```python
+m = nn.Dropout2d(p=0.2)
+input = torch.randn(20, 16, 32, 32)  # (batch, channels, height, width)
+output = m(input)  # Random channels set to zero
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  p:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.5"
+  inplace:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Dropout2d in a complex way */
+import torch

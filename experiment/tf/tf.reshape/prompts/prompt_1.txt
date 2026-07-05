@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.reshape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.reshape` reconfigures the dimensions of a tensor while preserving its total element count and data order. It is efficient because it typically reuses the underlying data buffer.  
+
+**Key features:**  
+- **Shape flexibility:** You can specify new dimensions explicitly.  
+- **Automatic inference:** Use `-1` for one dimension to have it calculated automatically based on the total number of elements.  
+- **Error handling:** Raises an error if the new shape’s total element count doesn’t match the original tensor.  
+
+**Common uses:**  
+- Flattening tensors (e.g., `reshape(t, [-1])`).  
+- Adjusting tensor dimensions for compatibility with different operations.  
+- Converting between scalar and single-element tensors.  
+
+**Note:** Unlike `tf.transpose`, `tf.reshape` does not change the order of elements in memory—only their dimensional grouping.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  shape:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "shape"
+    Parameter 2: "shape"
+    Constraint: "tf.reduce_sum(tf.cast(shape == -1, tf.int32)) <= 1"
+  2:
+    Parameter 1: "tensor"
+    Parameter 2: "shape"
+    Constraint: "(tf.reduce_any(shape == -1) == False and tf.size(tensor) == tf.reduce_prod(shape)) or (tf.reduce_any(shape == -1) == True and tf.mod(tf.size(tensor), tf.reduce_prod(tf.boolean_mask(shape, shape != -1))) == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.reshape in a complex way */
+import tensorflow as tf

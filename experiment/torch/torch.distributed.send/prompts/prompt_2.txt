@@ -1,0 +1,122 @@
+
+# You are a Python code generation assistant for the `torch.distributed.send` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.distributed` package enables multi-process parallelism across multiple machines or GPUs for distributed training. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Process Groups**: Communication primitives for synchronizing processes across nodes.
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional).
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+
+## **Key Components**
+
+### **Initialization**
+- Use `init_process_group()` or `init_device_mesh()` to initialize distributed training.
+- Multiple initialization methods: TCP, shared file-system, or environment variables.
+- Must be called before any other distributed operations.
+
+### **Communication Primitives**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: 
+  - All-reduce: `all_reduce()`
+  - Broadcast: `broadcast()`
+  - Gather/scatter: `all_gather()`, `scatter()`
+  - All-to-all: `all_to_all_single()`
+  - Barrier: `barrier()`, `monitored_barrier()`
+
+### **Process Management**
+- **Groups**: Create subgroups with `new_group()` for fine-grained communication.
+- **Rank/World Size**: Get with `get_rank()` and `get_world_size()`.
+- **Shutdown**: Clean up with `destroy_process_group()`.
+
+## **Best Practices**
+
+### **Backend Selection**
+- **CUDA GPU training**: Use NCCL (best performance)
+- **CPU training**: Use Gloo
+- **XPU GPU training**: Use XCCL
+- **InfiniBand**: NCCL for GPU, Gloo/MPI for CPU
+
+### **Performance Tips**
+- Use NCCL for GPU training with Ethernet/InfiniBand
+- Enable Copy Engine Collectives (NCCL 2.28+) for better computation/communication overlap
+- Set environment variables for network interface selection (`NCCL_SOCKET_IFNAME`, `GLOO_SOCKET_IFNAME`)
+
+### **Debugging**
+- Set `TORCH_DISTRIBUTED_DEBUG=INFO/DETAIL` for detailed logging
+- Use `monitored_barrier()` to detect rank failures
+- Enable `TORCH_CPP_LOG_LEVEL=INFO` for C++ library logs
+- Use `torch.distributed.breakpoint()` for interactive debugging
+
+## **Common Patterns**
+
+### **Distributed Data Parallel (DDP)**
+```python
+model = DistributedDataParallel(model, device_ids=[local_rank])
+```
+
+### **DeviceMesh for N-D Parallelism**
+```python
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+### **Asynchronous Operations**
+```python
+work = all_reduce(tensor, async_op=True)
+work.wait()
+```
+
+## **Important Notes**
+- Each process maintains its own optimizer (no parameter broadcast needed)
+- Independent Python interpreters avoid GIL contention
+- Supports both synchronous and asynchronous operations
+- Windows support available (except NCCL backend)
+- Third-party backends can be registered via `Backend.register_backend()`
+
+The package provides the foundation for scalable distributed training in PyTorch, with optimizations for various hardware configurations and network topologies.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["ProcessGroup", "None"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  group_dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is not None and group_dst is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.send in a complex way */
+import torch

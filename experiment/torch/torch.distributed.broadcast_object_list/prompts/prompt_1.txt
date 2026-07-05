@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.distributed.broadcast_object_list` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It supports synchronous distributed training and offers several backends with different capabilities.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training, supports Ethernet/InfiniBand
+- **NCCL**: Recommended for CUDA GPU training, optimized for multi-GPU/multi-node
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional backend requiring MPI installation
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication groups with `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups across device topologies
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`/`recv` and asynchronous `isend`/`irecv`
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Initialize DeviceMesh for multi-dimensional parallelism
+- `destroy_process_group()`: Clean up resources
+- Various collective operations with synchronous/asynchronous modes
+
+### Distributed Key-Value Store
+- **TCPStore**, **FileStore**, **HashStore**: For sharing information between processes
+- Used for process group initialization and coordination
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout and rank reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- Python breakpoint support with `torch.distributed.breakpoint()`
+
+### Launch Utilities
+- `torch.distributed.launch`: Spawn multiple processes per node (deprecated in favor of `torchrun`)
+- `torch.multiprocessing.spawn`: Alternative for spawning processes
+
+### Best Practices
+- Use NCCL backend for CUDA GPU training
+- Use Gloo backend for CPU training
+- Ensure proper cleanup with `destroy_process_group()`
+- Set `torch.cuda.set_device()` before NCCL operations
+- Use `async_op=True` for overlapping communication and computation
+
+The package enables efficient distributed training by allowing each process to maintain its own optimizer and Python interpreter, reducing communication overhead compared to other parallelism approaches.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  object_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int", "None"]
+    range: [[0, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  group_src:
+    dtype: ["int", "None"]
+    range: [[0, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: src
+    Parameter 2: group_src
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.broadcast_object_list in a complex way */
+import torch

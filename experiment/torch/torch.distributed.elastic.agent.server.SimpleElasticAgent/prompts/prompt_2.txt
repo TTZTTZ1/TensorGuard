@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.SimpleElasticAgent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in PyTorch's torchelastic framework, responsible for launching and managing worker processes in distributed training jobs. It provides **fault tolerance** by monitoring workers and restarting them upon failures, and supports **elasticity** by reacting to membership changes (e.g., scaling nodes).
+
+### Key Responsibilities:
+1. **Distributed Initialization**: Sets up workers with necessary information to call `torch.distributed.init_process_group()`.
+2. **Fault Tolerance**: Detects worker failures/unhealthiness, tears down all workers, and restarts them.
+3. **Elasticity**: Handles dynamic membership changes and restarts workers with updated members.
+
+### Core Components:
+- **`ElasticAgent`**: Abstract base class for agent implementations.
+- **`WorkerSpec`**: Blueprint defining worker configuration (role, local world size, entrypoint, etc.).
+- **`WorkerGroup`**: A set of `Worker` instances managed by an agent.
+- **`WorkerState`**: Tracks the state of a worker group (e.g., `HEALTHY`, `FAILED`, `STOPPED`).
+
+### Implementations:
+- **`LocalElasticAgent`**: Manages host-local workers (one agent per host). It spawns workers as local processes and handles logging, watchdog timers (via named pipes), and health check servers.
+
+### Extending the Agent:
+Developers can implement `ElasticAgent` directly or extend **`SimpleElasticAgent`**, which provides scaffolding and requires implementing abstract methods like `_start_workers`, `_stop_workers`, and `_monitor_workers`.
+
+### Usage Example:
+```python
+agent = LocalElasticAgent(spec)
+result = agent.run()
+if result.is_failed():
+    # Handle failure
+else:
+    # Access results (e.g., result.return_values[0] for rank 0)
+```
+
+### Additional Features:
+- **Watchdog**: Enabled via environment variables (`TORCHELASTIC_ENABLE_FILE_TIMER`) for fault detection using named pipes.
+- **Health Check Server**: Monitors agent liveness via a TCP/HTTP server (enabled by `TORCHELASTIC_HEALTH_CHECK_PORT`).
+
+The Elastic Agent simplifies distributed training by abstracting process management, resilience, and scalability, allowing users to focus on their training logic.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["WorkerSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  exit_barrier_timeout:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "300"
+constraints:
+  1.
+    Parameter 1: exit_barrier_timeout
+    Parameter 2: 
+    Constraint: "exit_barrier_timeout >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.SimpleElasticAgent in a complex way */
+import torch

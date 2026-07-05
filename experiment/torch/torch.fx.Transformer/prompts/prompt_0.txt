@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.fx.Transformer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch, enabling programmatic modification of `nn.Module` instances. It consists of three core components:
+
+1. **Symbolic Tracer** (`symbolic_trace` / `Tracer`):  
+   Performs symbolic execution using proxy objects to capture operations in a module's forward pass.
+
+2. **Intermediate Representation (IR)** (`Graph` / `Node`):  
+   Represents the traced code as a graph of nodes (placeholders, calls, outputs), which can be inspected and manipulated.
+
+3. **Python Code Generation** (`GraphModule`):  
+   Converts the modified graph back into a runnable `nn.Module` with a generated `forward` method.
+
+### Key Use Cases:
+- **Transformations**: Modify models by rewriting the graph (e.g., op replacement, fusion, quantization).
+- **Analysis**: Inspect or profile model execution using patterns like the `Interpreter`.
+- **Code Generation**: Programmatically create models from configurations.
+
+### Workflow:
+1. Trace a module:  
+   ```python
+   traced = torch.fx.symbolic_trace(module)
+   ```
+2. Manipulate the graph (via direct node editing, `replace_pattern`, or proxy-based retracing).
+3. Recompile to produce a new module:  
+   ```python
+   transformed = torch.fx.GraphModule(traced, graph)
+   ```
+
+### Limitations:
+- **Dynamic control flow** (dependent on input values) is not supported.
+- Non-`torch` functions require wrapping with `torch.fx.wrap`.
+- Custom tracing behavior can be implemented by subclassing `Tracer`.
+
+### Example Transformation:
+Replace `torch.add` with `torch.mul`:
+```python
+def transform(m):
+    gm = torch.fx.symbolic_trace(m)
+    for node in gm.graph.nodes:
+        if node.op == 'call_function' and node.target == torch.add:
+            node.target = torch.mul
+    gm.recompile()
+    return gm
+```
+
+### Debugging:
+- Use `print(gm.graph)` or `gm.graph.print_tabular()` to inspect the graph.
+- Validate correctness with `torch.allclose()`.
+- Export code via `gm.to_folder()` for deeper inspection.
+
+torch.fx enables powerful, modular transformations while maintaining the standard `nn.Module` interface, facilitating composable and reusable model modifications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["GraphModule"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: module
+    Parameter 2: null
+    Constraint: "module must be a valid GraphModule instance"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Transformer in a complex way */
+import torch

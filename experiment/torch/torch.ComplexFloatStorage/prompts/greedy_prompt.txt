@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.ComplexFloatStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+- **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (`torch.UntypedStorage`)
+- Primary storage class - a byte array without type information.
+- Accessed via `tensor.untyped_storage()`.
+- Multiple tensors can share the same storage (e.g., tensor views).
+- Has unique identifier via `data_ptr()` method.
+- Can be manipulated with methods like `clone()`, `fill_()`, `copy_()`, `pin_memory()`.
+- **Warning**: Direct storage manipulation is low-level and risky; prefer tensor-level operations.
+
+### Key Behaviors
+1. **Storage Sharing**: Tensor views share storage with original tensor.
+2. **Gradient Storage**: Tensors with gradients have separate storages for data and grad attributes.
+3. **Special Cases**: Meta device tensors and FakeTensors have no actual storage.
+4. **Memory-mapped Files**: Can create storage from files using `from_file()`.
+5. **Shared Memory**: `share_memory_()` enables inter-process sharing.
+
+### Legacy Typed Storage (Deprecated)
+- `torch.TypedStorage` and type-specific classes (e.g., `torch.FloatStorage`) are deprecated.
+- These wrap `UntypedStorage` with dtype information.
+- All new code should use `torch.UntypedStorage`.
+
+### Practical Guidance
+- Most applications don't need to operate at storage level.
+- Use tensor methods instead of storage methods when available.
+- Storage operations are primarily for advanced use cases like memory optimization or inter-process communication.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "list", "tuple"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: [["torch.complex64"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "torch.complex64"
+  device:
+    dtype: ["torch.device", "str", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype is None or dtype == torch.complex64"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "*args"
+    Constraint: "wrap_storage is None or len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ComplexFloatStorage in a complex way */
+import torch

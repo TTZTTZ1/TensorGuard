@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.fake_quantize_per_channel_affine` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fake_quantize_per_channel_affine` applies per‑channel fake quantization to an input tensor. It scales and shifts the input per channel using provided `scale` and `zero_point` tensors, clamps the result between `quant_min` and `quant_max`, and returns a float tensor simulating quantized values. The channel dimension is specified by `axis`. This is commonly used in quantization‑aware training to mimic the effects of integer quantization while preserving gradient flow.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["torch.float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["torch.float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  zero_point:
+    dtype: ["torch.int32", "torch.half", "torch.float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  quant_min:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  quant_max:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "0 <= axis < input.dim()"
+  2:
+    Parameter 1: scale
+    Parameter 2: zero_point
+    Constraint: "scale.shape == zero_point.shape"
+  3:
+    Parameter 1: scale
+    Parameter 2: input
+    Constraint: "scale.shape[0] == input.shape[axis]"
+  4:
+    Parameter 1: quant_min
+    Parameter 2: quant_max
+    Constraint: "quant_min < quant_max"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fake_quantize_per_channel_affine in a complex way */
+import torch

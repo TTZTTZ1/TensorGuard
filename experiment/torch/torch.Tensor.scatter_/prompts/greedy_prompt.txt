@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.scatter_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.scatter_` writes values from a source tensor (`src`) or a scalar (`value`) into the target tensor at positions specified by an index tensor. The operation is performed along a given dimension (`dim`), where the index tensor determines the target positions for that dimension.
+
+**Key behavior:**
+- For each element in `src`, its output index in `self` is determined by its own coordinates for all dimensions except `dim`, and by the corresponding value in `index` for `dim`.
+- The index tensor must have the same shape as `src` (or be broadcastable, except on NPUs).
+- Indices must be within the valid range of `self.size(dim)`.
+- If indices are not unique, the result is non-deterministic and gradients may be incorrect.
+
+**Optional reduction:**
+- Supports `reduce='add'` or `reduce='multiply'` to accumulate values instead of overwriting (deprecated; use `scatter_reduce_` for more options).
+
+**Two main forms:**
+1. `scatter_(dim, index, src, reduce=None)` – scatters all values from `src`.
+2. `scatter_(dim, index, value, reduce=None)` – scatters a single scalar `value`.
+
+**Example (dim=0):**
+```python
+self[index[i][j]][j] = src[i][j]   # 2D case
+```
+This updates `self` at rows given by `index[i][j]` and column `j` with the value from `src[i][j]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  index:
+    dtype: ["torch.LongTensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  src:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  value:
+    dtype: ["scalar"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  reduce:
+    dtype: ["str"]
+    range: ["add", "multiply"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "index"
+    Parameter 2: "src"
+    Constraint: "index.dim() == src.dim() and all(index.size(d) <= src.size(d) for d in range(index.dim()))"
+  2:
+    Parameter 1: "index"
+    Parameter 2: "dim"
+    Constraint: "all(index.size(d) <= self.size(d) for d in range(index.dim()) if d != dim)"
+  3:
+    Parameter 1: "index"
+    Parameter 2: "dim"
+    Constraint: "(index >= 0).all() and (index < self.size(dim)).all()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.scatter_ in a complex way */
+import torch

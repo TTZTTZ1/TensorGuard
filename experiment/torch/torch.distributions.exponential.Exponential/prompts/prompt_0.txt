@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `torch.distributions.exponential.Exponential` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Features**
+
+### **Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with methods like:
+  - `sample()`, `rsample()` (reparameterized sampling)
+  - `log_prob()`, `cdf()`, `icdf()`
+  - `entropy()`, `mean`, `variance`, `mode`
+
+### **Available Distributions** (partial list):
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Pareto, Weibull
+- **Specialized**: LKJCholesky, Wishart, VonMises, MixtureSameFamily
+
+### **Gradient Estimation Methods**
+1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()`
+   ```python
+   loss = -m.log_prob(action) * reward
+   ```
+
+2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()`
+   ```python
+   action = m.rsample()  # Differentiable sampling
+   ```
+
+### **Transforms System**
+- `Transform` classes for bijective transformations
+- Used in `TransformedDistribution` for constructing complex distributions
+- Common transforms: `ExpTransform`, `SigmoidTransform`, `AffineTransform`, `SoftmaxTransform`
+
+### **Constraints System**
+- `Constraint` classes define valid parameter domains
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **KL Divergence**
+- `kl_divergence()` computes KL divergence between distributions
+- Extensive registry of implemented KL pairs
+
+## **Practical Usage**
+```python
+# Creating and sampling from distributions
+m = Normal(loc=0.0, scale=1.0)
+samples = m.sample([100])  # 100 samples
+
+# Computing probabilities
+log_probs = m.log_prob(samples)
+
+# Using in stochastic graphs (REINFORCE)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+## **Design Benefits**
+- **Batch-aware**: All distributions support batched parameters
+- **Gradient-friendly**: Compatible with PyTorch autograd
+- **Extensible**: Easy to add custom distributions and transforms
+- **Numerically stable**: Careful implementation of log-space computations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  rate:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: rate
+    Parameter 2: 
+    Constraint: "rate > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.exponential.Exponential in a complex way */
+import torch

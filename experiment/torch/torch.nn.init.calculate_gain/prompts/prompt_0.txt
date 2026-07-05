@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.calculate_gain` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions for initializing neural network parameters. These functions operate in `torch.no_grad()` mode and do not affect autograd.
+
+**Key Functions:**
+
+1. **Basic Initializers:**
+   - `uniform_`, `normal_`, `constant_`, `ones_`, `zeros_`, `eye_`, `dirac_`
+
+2. **Advanced Initializers:**
+   - `xavier_uniform_`, `xavier_normal_` (Glorot initialization)
+   - `kaiming_uniform_`, `kaiming_normal_` (He initialization)
+   - `orthogonal_`, `sparse_`, `trunc_normal_`
+
+3. **Utility:**
+   - `calculate_gain()`: Returns recommended gain values for various nonlinearities (e.g., 1 for Linear/Sigmoid, √2 for ReLU, 5/3 for Tanh).
+
+**Usage Notes:**
+- All functions modify tensors in-place (suffix `_`).
+- `fan_in` and `fan_out` in Kaiming/Xavier initializers assume weight matrices are used in transposed form (`x @ w.T`). For non-transposed usage, apply initialization to `w.T`.
+- For SELU networks, use `nonlinearity='linear'` with `gain=1` for self-normalizing properties, rather than the default SELU gain.
+
+**Example:**
+```python
+w = torch.empty(3, 5)
+nn.init.kaiming_uniform_(w, mode='fan_in', nonlinearity='relu')
+```
+
+These initializers help stabilize training by setting appropriate starting values for network parameters.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  nonlinearity:
+    dtype: ["string"]
+    range: [["linear", "conv1d", "conv2d", "conv3d", "conv_transpose1d", "conv_transpose2d", "conv_transpose3d", "sigmoid", "tanh", "relu", "leaky_relu", "selu"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  param:
+    dtype: ["int", "float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.calculate_gain in a complex way */
+import torch

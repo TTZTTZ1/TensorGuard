@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.distributions.chi2.Chi2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise overview:
+
+## **Core Concepts**
+- **Parameterizable Distributions**: Includes common distributions (Normal, Bernoulli, Categorical, etc.) with parameter validation via constraints.
+- **Gradient Estimation**: Supports two methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+  - **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling
+
+## **Key Components**
+
+### **Distribution Base Class**
+- Abstract base class with methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `stddev`, `mode`, `support`
+- Batch and event shape handling
+
+### **Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull (via `TransformedDistribution`)
+- **Specialized**: MixtureSameFamily, RelaxedBernoulli, LKJCholesky, VonMises
+
+### **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, StickBreaking, etc.)
+- **Constraints**: Define valid parameter ranges (real, positive, simplex, interval, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for constrained optimization
+
+### **KL Divergence**
+- Automatic computation between distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Reinforcement Learning** (REINFORCE):
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+```
+
+2. **Variational Inference** (Reparameterization):
+```python
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+```
+
+3. **Constrained Optimization**:
+```python
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Design Features**
+- Follows TensorFlow Distributions design
+- Batch-aware operations
+- Exponential family support for efficient entropy/KL computations
+- Validation system with `arg_constraints`
+- Memory-efficient expansion via `expand()` method
+
+The module is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  df:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool", "null"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "df"
+    Parameter 2: null
+    Constraint: "df > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.chi2.Chi2 in a complex way */
+import torch

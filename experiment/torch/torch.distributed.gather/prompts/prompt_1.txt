@@ -1,0 +1,140 @@
+
+# You are a Python code generation assistant for the `torch.distributed.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional build)
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations
+- **Process Groups**: Default world group and custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+
+## **Key Components**
+
+### **Initialization Methods**
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: `init_method='tcp://10.1.1.20:23456'`
+3. **Shared file system**: `init_method='file:///mnt/nfs/sharedfile'`
+
+### **Communication Primitives**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`, `batch_isend_irecv()`
+- **Collectives**: 
+  - `broadcast()`, `all_reduce()`, `reduce()`
+  - `all_gather()`, `gather()`, `scatter()`
+  - `all_to_all()`, `reduce_scatter()`, `barrier()`
+- **Object collectives**: Support Python objects via pickling (with performance caveats)
+
+### **Synchronous vs Asynchronous**
+- **Synchronous** (`async_op=False`): Blocks until operation completes
+- **Asynchronous** (`async_op=True`): Returns `Work` object with `wait()` and `is_completed()` methods
+
+## **Best Practices**
+
+### **Backend Selection**
+- **CUDA GPU training**: Use NCCL (best performance)
+- **CPU training**: Use Gloo
+- **XPU GPU training**: Use XCCL
+- **Fallback**: Gloo if NCCL has issues
+
+### **Environment Variables**
+- `NCCL_SOCKET_IFNAME`/`GLOO_SOCKET_IFNAME`: Specify network interface
+- `NCCL_DEBUG=INFO`: Debug NCCL issues
+- `TORCH_DISTRIBUTED_DEBUG`: Enable detailed debugging (INFO/DETAIL)
+
+### **Performance Features**
+- **Copy Engine Collectives** (NCCL 2.28+): Offload communication to GPU DMA engines
+- **DeviceMesh**: Simplifies multi-dimensional parallelism setups
+- **Symmetric Memory**: Optimized memory allocation for collective operations
+
+## **Common Patterns**
+
+### **Basic Setup**
+```python
+import torch.distributed as dist
+
+dist.init_process_group(backend='nccl', init_method='env://')
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+```
+
+### **Distributed DataParallel**
+```python
+model = torch.nn.parallel.DistributedDataParallel(
+    model, device_ids=[rank], output_device=rank
+)
+```
+
+### **DeviceMesh Usage**
+```python
+from torch.distributed.device_mesh import init_device_mesh
+
+# 2D mesh for data + tensor parallelism
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4), mesh_dim_names=("dp", "tp"))
+```
+
+## **Debugging Tools**
+- `monitored_barrier()`: Timeout-aware barrier with rank failure reporting
+- `torch.distributed.breakpoint()`: Debug single rank interactively
+- HTTP debug server: Runtime debugging across all workers
+- Custom exception types: `DistError`, `DistBackendError`, `DistNetworkError`
+
+## **Important Notes**
+- Each process must have exclusive GPU access with NCCL
+- Initialization is not thread-safe
+- Always call `destroy_process_group()` for cleanup
+- Object collectives have performance limitations (pickling overhead)
+- Windows supports all backends except NCCL
+
+The package enables efficient distributed training with support for various network interconnects, collective operations, and debugging utilities while maintaining the same PyTorch programming model.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  gather_list:
+    dtype: ["list[Tensor]"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  group_dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is None or group_dst is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.gather in a complex way */
+import torch

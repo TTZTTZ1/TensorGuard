@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.linalg.eigh_tridiagonal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.eigh_tridiagonal` computes the eigenvalues (and optionally eigenvectors) of a Hermitian tridiagonal matrix defined by its diagonal `alpha` and super-diagonal `beta`. Key features include:
+
+- **Inputs**:  
+  - `alpha`: Length-`n` tensor for diagonal elements (imaginary parts ignored for Hermitian property).  
+  - `beta`: Length-`(n-1)` tensor for super-diagonal (sub-diagonal is automatically conjugated if complex).
+
+- **Options**:  
+  - `eigvals_only`: If `True` (default), returns only eigenvalues; eigenvectors are not yet implemented if `False`.  
+  - `select` & `select_range`: Filter eigenvalues by index range (`'i'`) or value interval (`'v'`), or compute all (`'a'`).  
+  - `tol`: Convergence tolerance for eigenvalue computation.
+
+- **Outputs**:  
+  - Eigenvalues in non-decreasing order.  
+  - Eigenvectors if `eigvals_only=False` (currently unimplemented).
+
+- **Notes**:  
+  - Inputs must be finite and `beta` values bounded to avoid undefined behavior.  
+  - Supports real or complex inputs but enforces Hermitian symmetry automatically.
+
+**Example**:  
+```python
+eigvals = tf.linalg.eigh_tridiagonal([0., 0., 0.], [1., 1.])
+# Result: [-√2, 0, √2]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  alpha
+    dtype: ["real", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["n"]
+    default: null
+  beta
+    dtype: ["real", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["n-1"]
+    default: null
+  eigvals_only
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  select
+    dtype: ["string"]
+    range: [["a", "v", "i"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'a'"
+  select_range
+    dtype: ["numeric"]
+    range: null
+    structure: ["tuple", "list", "tensor"]
+    shape: ["2"]
+    default: null
+  tol
+    dtype: ["numeric"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1
+    Parameter 1: alpha
+    Parameter 2: beta
+    Constraint: "len(beta) == len(alpha) - 1"
+  2
+    Parameter 1: select
+    Parameter 2: select_range
+    Constraint: "not (select in ['v', 'i']) or (select_range is not None and len(select_range) == 2)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.eigh_tridiagonal in a complex way */
+import tensorflow as tf

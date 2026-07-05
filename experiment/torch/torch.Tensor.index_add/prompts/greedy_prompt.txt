@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.index_add` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.index_add` is an out-of-place operation that adds elements from a `source` tensor to the original tensor along a specified dimension `dim`, using the indices provided in `index`. An optional scaling factor `alpha` can be applied to the `source` elements before addition. Unlike its in-place counterpart `index_add_`, this method returns a new tensor without modifying the original.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  source:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  alpha:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "self"
+    Constraint: "0 <= dim < self.dim()"
+  2:
+    Parameter 1: "index"
+    Parameter 2: "self"
+    Constraint: "index.dim() == 1"
+  3:
+    Parameter 1: "index"
+    Parameter 2: "self"
+    Constraint: "index.size(0) <= self.size(dim)"
+  4:
+    Parameter 1: "source"
+    Parameter 2: "self"
+    Constraint: "source.dim() == self.dim()"
+  5:
+    Parameter 1: "source"
+    Parameter 2: "self"
+    Constraint: "all(source.size(i) == self.size(i) for i in range(self.dim()) if i != dim)"
+  6:
+    Parameter 1: "index"
+    Parameter 2: "source"
+    Constraint: "index.size(0) == source.size(dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.index_add in a complex way */
+import torch

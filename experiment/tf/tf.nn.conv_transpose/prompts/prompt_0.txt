@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `tf.nn.conv_transpose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.conv_transpose` performs a transposed convolution (often called "deconvolution"), which is the gradient operation of a regular convolution. It upsamples the input by applying learned filters, effectively reversing the spatial reduction of a convolution.
+
+**Key Parameters:**
+- **`input`**: Input tensor with shape depending on `data_format`.
+- **`filters`**: Kernel tensor with shape `[spatial_dims..., in_channels, out_channels]`.
+- **`output_shape`**: 1-D tensor specifying the desired output shape.
+- **`strides`**: Stride for the sliding window in each dimension.
+- **`padding`**: Either `'VALID'` or `'SAME'`.
+- **`data_format`**: Specifies channel position (`'NCW'`, `'NHWC'`, etc.).
+- **`dilations`**: Dilation rate for the input (default is 1).
+
+**Note:** Despite the name "deconvolution," this operation computes the transpose of a convolution, not a true deconvolution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["N+2"]
+    default: null
+  filters:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["N+2"]
+    default: null
+  output_shape:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["0", "1"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "SAME"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", None]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "None"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["0", "1"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "input.dtype == filters.dtype"
+  2:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "len(input.shape) == len(filters.shape)"
+  3:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "filters.shape[-2] == (input.shape[1] if data_format is not None and data_format.startswith('NC') else input.shape[-1])"
+  4:
+    Parameter 1: strides
+    Parameter 2: input
+    Constraint: "isinstance(strides, int) or len(strides) in [1, len(input.shape) - 2, len(input.shape)]"
+  5:
+    Parameter 1: dilations
+    Parameter 2: input
+    Constraint: "isinstance(dilations, int) or (dilations is not None and len(dilations) in [1, len(input.shape) - 2, len(input.shape)])"
+  6:
+    Parameter 1: output_shape
+    Parameter 2: input
+    Constraint: "len(output_shape) == len(input.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.conv_transpose in a complex way */
+import tensorflow as tf

@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.api.SubprocessContext` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` module provides a high-level interface for launching and managing multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment setup, and log management.
+
+**Key Features:**
+- **Flexible Entrypoints:** Supports both Python callables and binary executables.
+- **Per-Process Configuration:** Allows specifying distinct arguments (`args`) and environment variables (`envs`) for each worker using a dictionary keyed by local rank.
+- **Comprehensive Logging:** Redirects and/or tees stdout/stderr to log files, with optional line filtering.
+- **Error Handling:** Automatically generates error files for failed processes (for function entrypoints by default, and for binaries when annotated with `@record`).
+
+**Core Function:**
+- `start_processes()`: The main function to launch worker processes. It returns a `PContext` object (either `MultiprocessContext` for functions or `SubprocessContext` for binaries) which can be used to manage the processes (e.g., wait for completion).
+
+**Log Management:**
+- Logs are organized in a specified `log_dir`.
+- The `LogsSpecs` class (or its default implementation `DefaultLogsSpecs`) controls log redirection (`redirects`) and console duplication (`tee`) using the `Std` enum (`NONE`, `OUT`, `ERR`, `ALL`).
+- Filters can be applied to create aggregated log files containing only lines matching specific strings.
+
+**Usage Pattern:**
+1. Define the worker entrypoint (function or binary path).
+2. Prepare `args` and `envs` dictionaries for each local rank.
+3. Configure logging via `LogsSpecs`.
+4. Call `start_processes()`.
+5. Use the returned context to monitor or wait for the processes.
+
+This module is particularly useful for distributed training scenarios where multiple processes need to be coordinated with consistent logging and error handling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  entrypoint:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["dict"]
+    range: null
+    structure: ["dictionary"]
+    shape: null
+    default: null
+  envs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dictionary"]
+    shape: null
+    default: null
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  log_line_prefixes:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  numa_options:
+    dtype: ["None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  duplicate_stdout_filters:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "null"
+  duplicate_stderr_filters:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: args
+    Parameter 2: envs
+    Constraint: "set(args.keys()) == set(envs.keys())"
+  2:
+    Parameter 1: args
+    Parameter 2: args
+    Constraint: "set(args.keys()) == set(range(len(args)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.api.SubprocessContext in a complex way */
+import torch

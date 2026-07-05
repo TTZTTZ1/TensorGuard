@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.histogram_fixed_width_bins` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.histogram_fixed_width_bins` assigns each value in a tensor to a bin index based on a specified range and number of equal-width bins. Values below the range map to bin 0, values above map to the last bin, and values within the range are distributed across the bins accordingly.
+
+**Key parameters:**
+- `values`: Input numeric tensor.
+- `value_range`: A 2-element tensor defining the inclusive lower and upper bounds for binning.
+- `nbins`: Number of bins (default 100).
+- `dtype`: Data type of the returned indices (default `int32`).
+
+**Returns:** A tensor of bin indices with the same shape as `values`.
+
+**Example:**
+```python
+indices = tf.histogram_fixed_width_bins([-1.0, 1.5, 5.0], [0.0, 5.0], nbins=5)
+# Result: [0, 1, 4] (values map to bins: below range → bin 0, within → bin 1, above → bin 4)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  value_range:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  nbins:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "100"
+  dtype:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["dtype"]
+    shape: null
+    default: "int32"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: "'histogram_fixed_width'"
+constraints:
+  1:
+    Parameter 1: value_range
+    Parameter 2: value_range
+    Constraint: "value_range[0] < value_range[1]"
+  2:
+    Parameter 1: value_range
+    Parameter 2: values
+    Constraint: "value_range.dtype == values.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.histogram_fixed_width_bins in a complex way */
+import tensorflow as tf

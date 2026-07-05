@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ComposeTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows TensorFlow Distributions design patterns
+- Supports both discrete and continuous probability distributions
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - Abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, `mean`, `variance`
+- **Exponential Family**: `ExponentialFamily` - Specialized class for distributions in exponential family form
+- **Common Distributions**: Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+- **Transformed Distributions**: `TransformedDistribution` - Applies transforms to base distributions
+- **Specialized**: `MixtureSameFamily`, `Independent`, `LowRankMultivariateNormal`
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### **3. Key Functionality**
+- **Sampling**: `sample()`, `rsample()` (reparameterized), `sample_n()`
+- **Probability**: `log_prob()`, `cdf()`, `icdf()`
+- **Statistics**: `mean`, `variance`, `entropy()`, `mode`
+- **Support**: `enumerate_support()` for discrete distributions
+- **Batch/Event Shapes**: Support for batched parameters and events
+
+### **4. Transforms System**
+- **Transform Classes**: `AffineTransform`, `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`, etc.
+- **Composition**: `ComposeTransform` for chaining transforms
+- **Constraint Mapping**: `biject_to()` and `transform_to()` for constrained optimization
+
+### **5. Constraints**
+- Define valid parameter ranges (e.g., `simplex`, `positive_definite`, `interval`)
+- Used for parameter validation and transformation to unconstrained space
+
+### **6. KL Divergence**
+- `kl_divergence()` computes KL between distributions
+- Extensible via `register_kl()` decorator
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))
+
+# Transformed distribution
+base = Normal(torch.zeros(2), torch.eye(2))
+transforms = [ExpTransform()]
+log_normal = TransformedDistribution(base, transforms)
+```
+
+## **Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Compatibility**: Designed for automatic differentiation
+- **Extensible**: Can register custom distributions, transforms, and KL divergences
+- **Numerical Stability**: Careful implementation of log-space computations
+- **Validation**: Optional argument validation with `validate_args`
+
+This package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  parts:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: cache_size
+    Parameter 2: cache_size
+    Constraint: "cache_size == 0 or cache_size == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ComposeTransform in a complex way */
+import torch

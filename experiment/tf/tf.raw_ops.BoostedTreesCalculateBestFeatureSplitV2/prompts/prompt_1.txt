@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BoostedTreesCalculateBestFeatureSplitV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.BoostedTreesCalculateBestFeatureSplitV2` computes the optimal split for each feature at eligible nodes in a boosted tree model. It evaluates gradient and hessian statistics to determine the best threshold (bucket ID), gain, and leaf contributions per node for each candidate feature. The operation outputs split details only for nodes where a valid split exists, with results organized by feature and node for later combination into the overall best split per node.
+
+**Key Parameters:**
+- `node_id_range`: Range of node IDs to process.
+- `stats_summaries_list`: Accumulated gradient/hessian statistics per feature.
+- `split_types`: Type of split (inequality or equality) per feature.
+- Regularization and constraints: `l1`, `l2`, `tree_complexity`, `min_node_weight`.
+- `logits_dimension`: Number of classes.
+
+**Outputs:** A tuple containing node IDs, gains, feature IDs, dimensions, thresholds, left/right node contributions, and split directions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  node_id_range:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[2]]
+    default: null
+  stats_summaries_list:
+    dtype: ["float"]
+    range: [null]
+    structure: ["list"]
+    shape: [[None]]
+    default: null
+  split_types:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[None]]
+    default: null
+  candidate_feature_ids:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[None]]
+    default: null
+  l1:
+    dtype: ["float"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[]]
+    default: null
+  l2:
+    dtype: ["float"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[]]
+    default: null
+  tree_complexity:
+    dtype: ["float"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[]]
+    default: null
+  min_node_weight:
+    dtype: ["float"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[]]
+    default: null
+  logits_dimension:
+    dtype: ["int"]
+    range: [[1, null]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+constraints:
+  1:
+    Parameter 1: stats_summaries_list
+    Parameter 2: split_types
+    Constraint: len(stats_summaries_list) == len(split_types)
+  2:
+    Parameter 1: stats_summaries_list
+    Parameter 2: candidate_feature_ids
+    Constraint: len(stats_summaries_list) == len(candidate_feature_ids)
+  3:
+    Parameter 1: stats_summaries_list
+    Parameter 2: stats_summaries_list
+    Constraint: all(tensor.ndim == 4 for tensor in stats_summaries_list)
+  4:
+    Parameter 1: node_id_range
+    Parameter 2: node_id_range
+    Constraint: node_id_range.shape == [2] and node_id_range[0] < node_id_range[1]
+  5:
+    Parameter 1: logits_dimension
+    Parameter 2: logits_dimension
+    Constraint: logits_dimension >= 1
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BoostedTreesCalculateBestFeatureSplitV2 in a complex way */
+import tensorflow as tf

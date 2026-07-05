@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.nn.modules.lazy.LazyModuleMixin` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**LazyModuleMixin** enables PyTorch modules to defer parameter initialization until the first forward pass, inferring shapes from input data. This eliminates the need to manually specify dimensions like `in_features` in layers such as `torch.nn.LazyLinear`.
+
+### Key Points:
+- **Lazy Initialization**: Parameters start as `UninitializedParameter` and become regular `Parameter` objects after the first forward call.
+- **Usage Workflow**:
+  1. Construct the network with lazy modules.
+  2. Set the desired device/dtype (e.g., `.cuda()`).
+  3. Perform a "dry run" with sample input to initialize all lazy modules.
+  4. Use the network normally (e.g., attach optimizers).
+- **Serialization**: 
+  - State dicts preserve uninitialized parameters.
+  - Initialized lazy modules can load pre-trained parameters, but won't reinitialize on dry runs if already loaded.
+- **Caveats**:
+  - Initialization order may differ from non-lazy networks, potentially affecting reproducibility.
+  - Parameters should not be accessed before initialization.
+
+### Example:
+```python
+lazy_mlp = LazyMLP()  # Contains LazyLinear layers
+lazy_mlp = lazy_mlp.cuda()
+lazy_mlp(torch.ones(10, 10).cuda())  # Dry run initializes parameters
+optim = torch.optim.SGD(lazy_mlp.parameters(), lr=0.01)  # Now usable
+```
+
+### Methods:
+- `has_uninitialized_params()`: Checks for uninitialized parameters.
+- `initialize_parameters()`: Explicitly initializes parameters using input batch properties.
+
+Lazy modules simplify network design when input dimensions are unknown beforehand, while maintaining full compatibility with standard PyTorch workflows after initialization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["object"]
+    range: null
+    structure: ["tuple"]
+    shape: ["variable"]
+    default: null
+  kwargs:
+    dtype: ["object"]
+    range: null
+    structure: ["dict"]
+    shape: ["variable"]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.modules.lazy.LazyModuleMixin in a complex way */
+import torch

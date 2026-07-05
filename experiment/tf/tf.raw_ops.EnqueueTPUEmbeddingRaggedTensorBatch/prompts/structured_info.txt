@@ -1,0 +1,82 @@
+params:
+  sample_splits:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  embedding_indices:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  aggregation_weights:
+    dtype: ["float32", "float64"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  mode_override:
+    dtype: ["string"]
+    range: ["unspecified", "inference", "training", "backward_pass_only"]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  table_ids:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  device_ordinal:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "-1"
+  combiners:
+    dtype: ["string"]
+    range: ["mean", "sum", "sqrtn"]
+    structure: ["list"]
+    shape: [null]
+    default: "[]"
+  max_sequence_lengths:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "[]"
+  num_features:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: sample_splits
+    Parameter 2: sample_splits
+    Constraint: "len(sample_splits) >= 1"
+  2:
+    Parameter 1: sample_splits
+    Parameter 2: embedding_indices
+    Constraint: "len(sample_splits) == len(embedding_indices)"
+  3:
+    Parameter 1: sample_splits
+    Parameter 2: aggregation_weights
+    Constraint: "len(sample_splits) == len(aggregation_weights)"
+  4:
+    Parameter 1: sample_splits
+    Parameter 2: table_ids
+    Constraint: "len(sample_splits) == len(table_ids)"
+  5:
+    Parameter 1: embedding_indices
+    Parameter 2: aggregation_weights
+    Constraint: "all(tf.rank(embedding_indices[i]) == 1 and tf.rank(aggregation_weights[i]) == 1 and tf.shape(embedding_indices[i]) == tf.shape(aggregation_weights[i]) for i in range(len(embedding_indices)))"

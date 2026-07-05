@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.distributions.mixture_same_family.MixtureSameFamily` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with parameterizable probability distributions in PyTorch. It enables stochastic computation graphs and gradient estimation for optimization, supporting two primary methods for backpropagation through random samples:
+
+## Key Features
+
+### 1. **Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### 2. **Core Components**
+- **Distribution**: Abstract base class for all probability distributions
+- **ExponentialFamily**: Base class for distributions belonging to exponential families
+- **TransformedDistribution**: Applies transforms to base distributions
+- **Independent**: Reinterprets batch dimensions as event dimensions
+- **MixtureSameFamily**: Creates mixture distributions from same family components
+
+### 3. **Available Distributions**
+The package includes numerous distributions including:
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+- **Multivariate**: Dirichlet, LowRankMultivariateNormal, MultivariateNormal, Wishart, etc.
+- **Specialized**: LKJCholesky, VonMises, Weibull, RelaxedBernoulli, RelaxedOneHotCategorical
+
+### 4. **Key Functionality**
+- **Sampling**: `sample()`, `rsample()` (reparameterized)
+- **Probability**: `log_prob()`, `cdf()`, `icdf()`
+- **Statistics**: `mean`, `variance`, `entropy()`, `mode`
+- **Support**: `enumerate_support()` for discrete distributions
+- **Batch/Event Shapes**: Flexible handling of batch and event dimensions
+
+### 5. **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Domain validation (real, positive, simplex, interval, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for constraint transformations
+
+### 6. **KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## Typical Usage Patterns
+
+```python
+# REINFORCE (Score Function)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (Pathwise)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+```
+
+The package is designed for probabilistic modeling in machine learning, particularly useful for reinforcement learning, variational inference, and Bayesian methods where gradient-based optimization of stochastic computations is required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mixture_distribution:
+    dtype: ["Categorical"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+  component_distribution:
+    dtype: ["Distribution"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: mixture_distribution
+    Parameter 2: null
+    Constraint: "isinstance(mixture_distribution, Categorical)"
+  2:
+    Parameter 1: component_distribution
+    Parameter 2: null
+    Constraint: "isinstance(component_distribution, Distribution)"
+  3:
+    Parameter 1: mixture_distribution
+    Parameter 2: component_distribution
+    Constraint: "mixture_distribution.event_shape == torch.Size([]) and mixture_distribution.param_shape[-1] == component_distribution.batch_shape[-1]"
+  4:
+    Parameter 1: mixture_distribution
+    Parameter 2: component_distribution
+    Constraint: "mixture_distribution.batch_shape == torch.Size([]) or mixture_distribution.batch_shape == component_distribution.batch_shape[:-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.mixture_same_family.MixtureSameFamily in a complex way */
+import torch

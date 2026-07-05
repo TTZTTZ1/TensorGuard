@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.futures.Future` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.futures` module provides a `Future` class for managing asynchronous execution, primarily used with PyTorch's Distributed RPC Framework. A `Future` object encapsulates a result that may not yet be available, allowing non-blocking operations.
+
+**Key Functionality:**
+- **Completion Tracking:** Check if a `Future` is done with `done()`.
+- **Result Handling:** Set a result with `set_result()` or an exception with `set_exception()`.
+- **Blocking Retrieval:** Use `wait()` to block until the value is ready (with GPU synchronization if needed).
+- **Non-blocking Retrieval:** Use `value()` to get the result only after `wait()` has completed or inside a callback.
+- **Callbacks:** Attach callbacks via `add_done_callback()` (fire-and-forget) or `then()` (chains a new `Future`).
+- **Multi-Future Utilities:** `collect_all()` returns a single `Future` that completes when all input futures finish. `wait_all()` blocks and returns a list of results, exiting early on any error.
+
+**GPU Support (Beta):** When results contain GPU tensors, methods like `wait()` and `then()` handle necessary stream synchronization automatically, allowing safe operations without manual sync, provided the current stream isn't changed.
+
+**Usage Example:** `Future` objects are often created by asynchronous operations like `rpc_async()`. Users can chain callbacks, wait for results, or combine multiple futures for coordinated asynchronous execution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  devices:
+    dtype: ["NoneType", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "None"
+  add_done_callback_callback:
+    dtype: ["Callable"]
+    range: null
+    structure: ["function"]
+    shape: null
+    default: null
+  set_exception_result:
+    dtype: ["BaseException"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  set_result_result:
+    dtype: ["object"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  then_callback:
+    dtype: ["Callable"]
+    range: null
+    structure: ["function"]
+    shape: null
+    default: null
+  collect_all_futures:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: ["variable"]
+    default: null
+  wait_all_futures:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: ["variable"]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.futures.Future in a complex way */
+import torch

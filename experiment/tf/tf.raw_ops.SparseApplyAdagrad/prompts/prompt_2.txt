@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyAdagrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary:**  
+`tf.raw_ops.SparseApplyAdagrad` performs a sparse update of the Adagrad optimization algorithm, modifying only the rows of `var` and `accum` specified by `indices`.  
+
+**Key Functionality:**  
+- Updates `accum` by adding the square of the gradient:  
+  \[ accum += grad \times grad \]  
+- Adjusts `var` using the learning rate and accumulated gradient:  
+  \[ var -= lr \times grad \times (1 / \sqrt{accum}) \]  
+
+**Parameters:**  
+- **`var`** & **`accum`**: Mutable tensors (same data type) representing the model variable and its accumulator.  
+- **`lr`**: Scalar learning rate tensor.  
+- **`grad`**: Gradient tensor.  
+- **`indices`**: Vector of indices selecting rows to update.  
+- **`use_locking`** (optional): Enables locking for thread-safe updates.  
+- **`update_slots`** (optional): Controls whether `accum` is updated (default `True`).  
+
+**Returns:**  
+- Updated `var` tensor (same type as input).  
+
+**Use Case:**  
+Efficiently applies Adagrad to sparse gradients, commonly used in training embeddings or models with sparse updates.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  accum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  update_slots:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: var
+    Parameter 2: accum
+    Constraint: var.dtype == accum.dtype
+  2:
+    Parameter 1: lr
+    Parameter 2: var
+    Constraint: lr.dtype == var.dtype and tf.rank(lr) == 0
+  3:
+    Parameter 1: grad
+    Parameter 2: var
+    Constraint: grad.dtype == var.dtype
+  4:
+    Parameter 1: indices
+    Parameter 2: var
+    Constraint: indices.dtype in [tf.int32, tf.int64] and tf.rank(indices) == 1
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyAdagrad in a complex way */
+import tensorflow as tf

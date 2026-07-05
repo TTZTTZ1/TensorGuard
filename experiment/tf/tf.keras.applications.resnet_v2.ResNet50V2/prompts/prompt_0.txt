@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.resnet_v2.ResNet50V2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `ResNet50V2` function in TensorFlow/Keras instantiates the ResNet50V2 model, a deep convolutional neural network architecture based on the "Identity Mappings in Deep Residual Networks" paper. It is designed for image classification tasks and supports transfer learning.
+
+**Key Features:**
+- **Pre-trained Weights:** Can load ImageNet pre-trained weights (`weights='imagenet'`) or use custom weights.
+- **Flexible Input:** Allows custom input shapes (minimum 32x32) when `include_top=False`.
+- **Top Layer Control:** The `include_top` parameter determines whether to include the final fully connected classification layer.
+- **Pooling Options:** When `include_top=False`, you can apply global average or max pooling to the last convolutional block's output.
+- **Preprocessing:** Inputs should be scaled between -1 and 1 using `keras.applications.resnet_v2.preprocess_input`.
+
+**Common Use Cases:**
+- **Image Classification:** With `include_top=True` and ImageNet weights for 1000-class classification.
+- **Feature Extraction:** Set `include_top=False` to use the model as a feature extractor for transfer learning.
+
+**Important Notes:**
+- Default input size is 224x224 with 3 channels when `include_top=True`.
+- For transfer learning, refer to Keras guides on fine-tuning and ensure proper input preprocessing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["str", "None"]
+    range: ["None", "\"imagenet\"", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"imagenet\""
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 input channels, width and height >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["str", "None"]
+    range: ["None", "\"avg\"", "\"max\""]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable", "None"]
+    range: ["any string or callable, but only None or \"softmax\" when weights='imagenet'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"softmax\""
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape == None"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "pooling"
+    Constraint: "include_top == False or pooling == None"
+  3:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "(include_top == False) or (weights == None) or (classes == 1000)"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights != 'imagenet' or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.resnet_v2.ResNet50V2 in a complex way */
+import tensorflow as tf

@@ -1,0 +1,120 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_backend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.distributed` package enables distributed training across multiple processes and machines. Here’s a concise summary of its key components and usage:
+
+---
+
+### **Overview**
+- **Purpose**: Supports multi-process parallelism across multiple nodes/machines for synchronous distributed training.
+- **Key Features**:
+  - Multiple backends: `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), `mpi` (optional).
+  - Collective communication (e.g., `all_reduce`, `broadcast`, `all_gather`).
+  - Point-to-point communication (`send`, `recv`, `isend`, `irecv`).
+  - Process groups and `DeviceMesh` for managing communication groups.
+  - Distributed key-value stores (`TCPStore`, `FileStore`, `HashStore`) for coordination.
+
+---
+
+### **Backend Selection**
+| Backend | Recommended Use Case |
+|---------|----------------------|
+| **NCCL** | Distributed training with CUDA GPUs (best performance). |
+| **XCCL** | Distributed training with XPU GPUs. |
+| **Gloo** | CPU training or as a fallback for GPU training. |
+| **MPI** | CPU hosts with InfiniBand (if IP over IB is disabled). |
+
+**Rule of Thumb**:
+- Use **NCCL** for CUDA GPU training.
+- Use **XCCL** for XPU GPU training.
+- Use **Gloo** for CPU training.
+
+---
+
+### **Initialization**
+Before using any distributed functions, initialize the process group:
+```python
+import torch.distributed as dist
+dist.init_process_group(backend="nccl", init_method="env://")
+```
+Common initialization methods:
+- **Environment variables** (`env://`): Uses `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`.
+- **TCP**: `init_method='tcp://10.1.1.20:23456'`.
+- **Shared file system**: `init_method='file:///mnt/nfs/sharedfile'`.
+
+---
+
+### **Core Concepts**
+1. **Process Groups**: 
+   - Default group (`world`) includes all processes.
+   - Create sub-groups with `dist.new_group()`.
+2. **DeviceMesh**:
+   - Higher-level abstraction for managing process groups across devices.
+   - Created via `init_device_mesh()`.
+3. **Collective Operations**:
+   - **Synchronous** (`async_op=False`): Block until operation completes.
+   - **Asynchronous** (`async_op=True`): Returns a `Work` object for non-blocking execution.
+4. **Point-to-Point Communication**:
+   - `send()`/`recv()` (blocking).
+   - `isend()`/`irecv()` (non-blocking).
+
+---
+
+### **Common Collectives**
+| Function | Description |
+|----------|-------------|
+| `broadcast(tensor, src)` | Send tensor from `src` to all ranks. |
+| `all_reduce(tensor, op)` | Reduce tensors across all ranks (e.g., sum). |
+| `all_gather(tensor_list, tensor)` | Gather tensors from all ranks into a list. |
+| `reduce_scatter(output, input_list)` | Reduce then scatter a list of tensors. |
+| `barrier()` | Synchronize all processes. |
+
+---
+
+### **Key-Value Stores**
+Used for coordination during initialization:
+- **TCPStore**: Network-based store (server-client).
+- **FileStore**: File-based store (shared filesystem).
+- **HashStore**: In-memory store (single-process only).
+
+---
+
+### **Debugging & Profiling**
+- **Environment Variables**:
+  - `TORCH_DISTRIBUTED_DEBUG=INFO|DETAIL`: Enables debug logging.
+  - `TORCH_CPP_LOG_LEVEL=INFO`: Enables C++ logging.
+- **Monitored Barrier**: `dist.monitored_barrier()` for detecting stuck ranks.
+- **Python Breakpoint**: `dist.breakpoint(rank=0)` to debug a specific rank.
+- **Profiling**: Use `torch.profiler` to profile collective operations.
+
+---
+
+### **Launching Distributed Jobs**
+- Use `torch.distributed.launch` or `torchrun` to spawn multiple processes.
+- Each process should set its device via `torch.cuda.set_device(args.local_rank)`.
+- Wrap models with `DistributedDataParallel` for data parallelism.
+
+---
+
+### **Best Practices**
+1. Always call `destroy_process_group()` at the end to clean up resources.
+2. Use `NCCL` for GPU training unless debugging (fallback to `Gloo`).
+3. Set `CUDA_VISIBLE_DEVICES` or use `torch.cuda.set_device
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_backend in a complex way */
+import torch

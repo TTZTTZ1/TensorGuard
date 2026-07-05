@@ -1,0 +1,50 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  prepend:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+  append:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.dim() and dim < input.dim()"
+  2:
+    Parameter 1: prepend
+    Parameter 2: input
+    Constraint: "prepend is None or (prepend.dim() == input.dim() and all(prepend.size(i) == input.size(i) for i in range(input.dim()) if i != dim))"
+  3:
+    Parameter 1: append
+    Parameter 2: input
+    Constraint: "append is None or (append.dim() == input.dim() and all(append.size(i) == input.size(i) for i in range(input.dim()) if i != dim))"

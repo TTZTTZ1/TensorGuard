@@ -1,0 +1,132 @@
+params:
+  copy_from:
+    dtype: ["Generator"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  state:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["algorithm-specific"]
+    default: "No mention"
+  alg:
+    dtype: ["int", "string"]
+    range: ["tf.random.Algorithm.PHILOX", "tf.random.Algorithm.THREEFRY", "philox", "threefry"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  shape:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor", "array"]
+    shape: [1]
+    default: "No mention"
+  counts:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["broadcastable with probs and rightmost dimensions of shape"]
+    default: "No mention"
+  probs:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["broadcastable with counts and rightmost dimensions of shape"]
+    default: "No mention"
+  dtype:
+    dtype: ["tf.dtype"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "tf.dtypes.int32"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  seed:
+    dtype: ["int", "tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: ["up to 1024-bit"]
+    default: "No mention"
+  key:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  counter:
+    dtype: ["int"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["algorithm-specific"]
+    default: "No mention"
+  count:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  mean:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  stddev:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  minval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  maxval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  delta:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: minval
+    Parameter 2: maxval
+    Constraint: "(dtype is integer and minval is None and maxval is None) or (dtype is integer and minval is not None and maxval is not None)"
+  2:
+    Parameter 1: counts
+    Parameter 2: probs
+    Constraint: "counts and probs are broadcastable"
+  3:
+    Parameter 1: counts
+    Parameter 2: shape
+    Constraint: "counts is broadcastable with the rightmost dimensions of shape"
+  4:
+    Parameter 1: probs
+    Parameter 2: shape
+    Constraint: "probs is broadcastable with the rightmost dimensions of shape"
+  5:
+    Parameter 1: minval
+    Parameter 2: maxval
+    Constraint: "maxval is not None if dtype is integral"
+  6:
+    Parameter 1: alg
+    Parameter 2: state
+    Constraint: "state length is algorithm-specific"
+  7:
+    Parameter 1: seed
+    Parameter 2: alg
+    Constraint: "seed is 1024-bit or less, padded to 1024-bit"

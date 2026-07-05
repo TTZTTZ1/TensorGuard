@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.nn.LPPool1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`LPPool1d` applies 1D power-average pooling over an input signal. It computes the p-th root of the sum of p-th powers of elements in each sliding window.
+
+**Key parameters:**
+- `norm_type` (p): Exponent value; p=∞ gives max pooling, p=1 gives sum pooling (proportional to average pooling)
+- `kernel_size`: Window size
+- `stride`: Step size (defaults to `kernel_size`)
+- `ceil_mode`: Uses ceil (True) or floor (False) for output shape calculation
+
+**Important notes:**
+- Gradient is set to zero when the sum to the power p equals zero
+- With `ceil_mode=True`, windows may start in padded regions
+
+**Shape:**
+- Input: `(N, C, L_in)` or `(C, L_in)`
+- Output: `(N, C, L_out)` or `(C, L_out)`, where  
+  `L_out = floor((L_in - kernel_size)/stride + 1)`
+
+**Example:**
+```python
+m = nn.LPPool1d(2, 3, stride=2)  # power-2 pooling, window size 3
+output = m(input)  # input shape: (20, 16, 50)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  norm_type:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1]
+    default: "kernel_size"
+  ceil_mode:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.LPPool1d in a complex way */
+import torch

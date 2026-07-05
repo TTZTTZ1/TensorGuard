@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.clip_by_value` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.clip_by_value` clips the values of a tensor to a specified minimum and maximum range. Any values below `clip_value_min` are set to `clip_value_min`, and any values above `clip_value_max` are set to `clip_value_max`. The function supports broadcasting for the clipping bounds, but they must be compatible with the input tensor's shape. It requires `clip_value_min ≤ clip_value_max` and will raise an error if attempting to clip integer tensors with floating-point bounds without explicit casting.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  t:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "indexed_slices"]
+    shape: ["any"]
+    default: "null"
+  clip_value_min:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["[]", "any"]
+    default: "null"
+  clip_value_max:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["[]", "any"]
+    default: "null"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "clip_value_min"
+    Parameter 2: "clip_value_max"
+    Constraint: "clip_value_min <= clip_value_max"
+  2:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_min"
+    Constraint: "tf.shape(clip_value_min).ndims <= tf.shape(t).ndims"
+  3:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_max"
+    Constraint: "tf.shape(clip_value_max).ndims <= tf.shape(t).ndims"
+  4:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_min"
+    Constraint: "not (t.dtype == tf.int32 and clip_value_min.dtype == tf.float32)"
+  5:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_max"
+    Constraint: "not (t.dtype == tf.int32 and clip_value_max.dtype == tf.float32)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.clip_by_value in a complex way */
+import tensorflow as tf

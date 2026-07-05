@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.Joinable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Generic Join Context Manager** in PyTorch enables distributed training with uneven inputs across processes, preventing hangs and errors when some processes finish earlier than others.
+
+### **Core Components**
+
+1. **`Join`** – Context manager that coordinates the join process.
+   - Takes a list of `Joinable` objects.
+   - Calls hooks to shadow collective communications for joined processes.
+   - Optional: can throw an exception if uneven inputs are detected early.
+
+2. **`Joinable`** – Abstract base class for objects that can participate.
+   - Must implement:
+     - `join_hook()` → Returns a `JoinHook`.
+     - `join_device` and `join_process_group` properties.
+
+3. **`JoinHook`** – Defines behavior during/after joining.
+   - `main_hook()`: Called repeatedly to mimic collective ops while some processes are still active.
+   - `post_hook(is_last_joiner)`: Called after all processes have joined.
+
+### **Key Usage Notes**
+- Each `Joinable` must call `Join.notify_join_context()` **before** its per-iteration collective communications.
+- All `JoinHook` objects should use the same process group.
+- Set `enable=False` only if inputs are guaranteed to be even.
+
+### **Example Flow**
+```python
+with Join([model, optimizer]):
+    for input in uneven_inputs:
+        Join.notify_join_context(model)  # Required before collectives
+        # Training step (forward/backward/optimizer)
+```
+This ensures all ranks complete without hanging, even with different input sizes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.Joinable in a complex way */
+import torch

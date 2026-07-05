@@ -1,0 +1,133 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.IntegerLookup` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.IntegerLookup` is a preprocessing layer that maps integer tokens to indices or encoded representations. It is primarily used to convert raw integer inputs into a format suitable for neural networks.
+
+**Key Features:**
+- **Vocabulary Handling:** You can provide a vocabulary directly or learn it from data via `adapt()`.
+- **OOV Tokens:** Supports configurable out-of-vocabulary (OOV) tokens.
+- **Multiple Output Modes:** Output can be integer indices, one-hot, multi-hot, count, or TF-IDF encodings.
+- **Inverse Lookup:** Can map indices back to original tokens when `invert=True`.
+
+**Common Use Cases:**
+- Encoding categorical integer features (e.g., user IDs, product IDs) in recommendation systems.
+- Preprocessing structured data for classification or regression tasks.
+- Feature engineering in NLP or tabular data pipelines.
+
+**Example Usage:**
+```python
+# With a known vocabulary
+layer = IntegerLookup(vocabulary=[12, 36, 1138, 42])
+layer([12, 1138, 42])  # Output: [1, 3, 4]
+
+# With learned vocabulary
+layer = IntegerLookup()
+layer.adapt(data)  # Learn from dataset
+```
+
+**Important Notes:**
+- The layer is safe to use in `tf.data` pipelines.
+- For non-TensorFlow backends, use it only in eager execution or outside the model graph.
+- When using `output_mode='tf_idf'`, provide `idf_weights` matching the vocabulary.
+
+This layer is essential for handling integer-based categorical data in TensorFlow workflows, providing flexibility in encoding and integration with Keras models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  max_tokens:
+    dtype: ["int", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  num_oov_indices:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  mask_token:
+    dtype: ["int", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  oov_token:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  vocabulary:
+    dtype: ["list", "tuple", "numpy.ndarray", "tensor", "string", "None"]
+    range: [null]
+    structure: ["array", "string", "None"]
+    shape: ["variable"]
+    default: "None"
+  vocabulary_dtype:
+    dtype: ["string"]
+    range: [["int64", "int32"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'int64'"
+  idf_weights:
+    dtype: ["list", "tuple", "numpy.ndarray", "tensor", "None"]
+    range: [null]
+    structure: ["array", "None"]
+    shape: ["variable"]
+    default: "None"
+  invert:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  output_mode:
+    dtype: ["string"]
+    range: [["int", "one_hot", "multi_hot", "count", "tf_idf"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'int'"
+  sparse:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pad_to_max_tokens:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "invert"
+    Parameter 2: "output_mode"
+    Constraint: "invert == True implies output_mode == 'int'"
+  2:
+    Parameter 1: "idf_weights"
+    Parameter 2: "output_mode"
+    Constraint: "(idf_weights is not None) == (output_mode == 'tf_idf')"
+  3:
+    Parameter 1: "pad_to_max_tokens"
+    Parameter 2: "output_mode"
+    Constraint: "pad_to_max_tokens == True implies output_mode in ['multi_hot', 'count', 'tf_idf']"
+  4:
+    Parameter 1: "sparse"
+    Parameter 2: "output_mode"
+    Constraint: "sparse == True implies output_mode in ['multi_hot', 'count', 'tf_idf']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.IntegerLookup in a complex way */
+import tensorflow as tf

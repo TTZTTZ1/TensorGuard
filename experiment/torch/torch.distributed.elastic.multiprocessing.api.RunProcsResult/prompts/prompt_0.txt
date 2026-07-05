@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.api.RunProcsResult` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` library provides a unified interface to launch and manage multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment setup, and log management.
+
+**Key Features:**
+- **Launch Methods:** Supports spawning workers via `torch.multiprocessing` for functions or `subprocess.Popen` for binaries.
+- **Process Management:** Manages multiple worker copies with distinct arguments and environment variables per rank.
+- **Logging Control:** Flexible redirection and duplication of stdout/stderr to log files and console, with optional filtering.
+- **Error Handling:** Automatically captures errors in JSON files for function launches (requires annotation for binaries).
+
+**Core Function:**
+- `start_processes()`: Main entry point to start `n` worker processes. Requires:
+  - `entrypoint`: Function or binary command.
+  - `args`/`envs`: Dictionaries mapping local ranks to arguments and environment variables.
+  - `logs_specs`: Configuration for log directory, redirection (`redirects`), and console output (`tee`).
+
+**Returned Context:**
+- Returns a `PContext` object (`MultiprocessContext` for functions, `SubprocessContext` for binaries) to manage process lifecycle (e.g., `wait()` for completion).
+
+**Logging Structure:**
+Logs are organized per rank in `log_dir`, including:
+- `stdout.log`/`stderr.log` for redirected output.
+- `error.json` for failure details (if applicable).
+- Aggregated filtered logs when duplicate filters are provided.
+
+**Use Cases:**
+- Distributed training with multiple trainer instances.
+- Parallel execution of shell commands or scripts with coordinated logging.
+
+This abstraction simplifies multi-process orchestration, especially in distributed Elastic training scenarios, by standardizing setup, execution, and monitoring.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  return_values:
+    dtype: ["Any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  failures:
+    dtype: ["Any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  stdouts:
+    dtype: ["string"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  stderrs:
+    dtype: ["string"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: stdouts
+    Parameter 2: stderrs
+    Constraint: "keys(stdouts) == keys(stderrs)"
+  2:
+    Parameter 1: return_values
+    Parameter 2: failures
+    Constraint: "keys(return_values).isdisjoint(keys(failures))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.api.RunProcsResult in a complex way */
+import torch

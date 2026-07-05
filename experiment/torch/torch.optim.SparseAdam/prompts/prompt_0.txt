@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.optim.SparseAdam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**SparseAdam** is a PyTorch optimizer designed for **sparse gradients**, implementing a masked version of the Adam algorithm. It is optimized for parameters with a dense layout but gradients in a sparse layout (e.g., from `nn.Embedding(sparse=True)`).
+
+### Key Features:
+- **Masked Updates**: Only updates parameters and moments corresponding to non-zero gradient values, ignoring zeros.
+- **Sparse Layout Requirement**: Gradients must be in sparse layout (`grad.is_sparse == True`). It does not verify zero values; any materialized value in the sparse tensor is treated as non-zero.
+- **Performance**: More efficient when gradients are highly sparse, as it avoids computations on zero entries.
+
+### Intended Use Case:
+- Primarily for modules that natively produce sparse gradients (like `nn.Embedding(sparse=True)`).
+- Not suitable for dense gradients that are semantically sparse (many zeros), as converting dense to sparse may negate performance gains.
+
+### Parameters:
+- `params`: Iterable of parameters to optimize.
+- `lr` (float/Tensor, default=1e-3): Learning rate.
+- `betas` (tuple, default=(0.9, 0.999)): Coefficients for computing running averages of gradient and its square.
+- `eps` (float, default=1e-8): Term added to denominator for numerical stability.
+- `maximize` (bool, default=False): Maximize the objective instead of minimizing.
+
+### Important Notes:
+- If gradients are not already sparse, using standard Adam may be better unless you manually convert gradients to sparse layout before calling `.step()`.
+- The optimizer includes standard methods like `step()`, `zero_grad()`, `state_dict()`, and `load_state_dict()`, along with hooks for customization.
+
+### Summary:
+Use **SparseAdam** when working with inherently sparse gradients to save computation and memory. For dense gradients with many zeros, consider alternatives unless sparse gradients can be efficiently generated.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "0.001"
+  betas:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-08"
+  maximize:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.SparseAdam in a complex way */
+import torch

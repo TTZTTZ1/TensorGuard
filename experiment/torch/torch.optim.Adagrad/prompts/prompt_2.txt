@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adagrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Adagrad` class implements the **Adagrad (Adaptive Gradient) optimization algorithm**, which adapts the learning rate for each parameter based on the historical sum of squared gradients. This makes it well-suited for sparse data or problems with varying gradient scales.
+
+### **Key Features & Algorithm**
+- **Adaptive per-parameter learning rates**: Each parameter’s learning rate is scaled by the inverse square root of the cumulative sum of its past squared gradients.
+- **Learning rate decay**: Optional time-based decay via `lr_decay`.
+- **Weight decay**: L2 regularization (optional).
+- **Numerical stability**: Added `eps` term to the denominator.
+
+### **Core Update Rule**
+For each parameter at step \( t \):
+1. Compute gradient \( g_t \).
+2. Update sum of squared gradients:  
+   \( \text{state\_sum}_t = \text{state\_sum}_{t-1} + g_t^2 \).
+3. Adjust learning rate:  
+   \( \tilde{\gamma} = \frac{\text{lr}}{1 + (t-1) \cdot \text{lr\_decay}} \).
+4. Update parameter:  
+   \( \theta_t = \theta_{t-1} - \tilde{\gamma} \cdot \frac{g_t}{\sqrt{\text{state\_sum}_t} + \epsilon} \).
+
+### **Parameters**
+- `params` (iterable): Parameters to optimize.
+- `lr` (float, default=0.01): Learning rate.
+- `lr_decay` (float, default=0): Learning rate decay factor.
+- `weight_decay` (float, default=0): L2 penalty coefficient.
+- `initial_accumulator_value` (float, default=0): Initial value for gradient accumulator.
+- `eps` (float, default=1e-10): Term added to denominator for numerical stability.
+- `foreach` (bool, optional): Use foreach implementation (faster on CUDA, more memory).
+- `maximize` (bool, default=False): Maximize the objective instead of minimizing.
+- `differentiable` (bool, default=False): Allow autograd through optimizer step.
+- `fused` (bool, optional): Use fused CPU implementation (supports specific dtypes).
+
+### **Common Methods**
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` to save memory).
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state.
+- `add_param_group()`: Add new parameter groups dynamically.
+
+### **Use Case**
+Adagrad is particularly effective for **sparse gradients** (e.g., NLP, recommendation systems) because it automatically assigns higher learning rates to infrequent features. However, the monotonically decreasing learning rate can become too small over time—variants like Adadelta or RMSProp address this limitation.
+
+### **Example Usage**
+```python
+optimizer = torch.optim.Adagrad(model.parameters(), lr=0.01, weight_decay=1e-5)
+for epoch in range(num_epochs):
+    optimizer.zero_grad()
+    loss = compute_loss(model, data)
+    loss.backward()
+    optimizer.step()
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: "0.01"
+  lr_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  initial_accumulator_value:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  eps:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1e-10"
+  foreach:
+    dtype: ["bool", "None"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  fused:
+    dtype: ["bool", "None"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adagrad in a complex way */
+import torch

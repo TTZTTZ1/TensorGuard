@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.interpolate` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.interpolate` resizes an input tensor to a specified size or scale factor using a chosen interpolation algorithm.
+
+**Key Parameters:**
+- **input**: Tensor to resize (3D–5D: batch × channels × [depth] × [height] × width).
+- **size** or **scale_factor**: Target output dimensions or scaling multiplier.
+- **mode**: Interpolation method (`'nearest'`, `'bilinear'`, `'bicubic'`, `'trilinear'`, `'area'`, etc.).
+- **align_corners**: Aligns corner pixels if `True` (affects linear, bilinear, bicubic, trilinear modes).
+- **antialias**: Applies anti-aliasing when downsampling (supports `'bilinear'` and `'bicubic'`).
+
+**Notes:**
+- Use `clamp()` for `'bicubic'` mode to avoid overshoot (except `uint8` inputs).
+- `'nearest-exact'` matches PIL/Scikit-Image; `'nearest'` matches OpenCV’s buggy behavior.
+- CUDA `float16` gradients may be inaccurate for certain modes.
+- Operation can be nondeterministic on CUDA devices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1], [2], [3]
+    default: null
+  scale_factor:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1], [2], [3]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["nearest", "linear", "bilinear", "bicubic", "trilinear", "area", "nearest-exact"]]
+    structure: ["scalar"]
+    shape: null
+    default: "nearest"
+  align_corners:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  recompute_scale_factor:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  antialias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "size"
+    Parameter 2: "scale_factor"
+    Constraint: "(size is not None) or (scale_factor is not None)"
+  2:
+    Parameter 1: "align_corners"
+    Parameter 2: "mode"
+    Constraint: "(align_corners is None) or (mode in ['linear', 'bilinear', 'bicubic', 'trilinear'])"
+  3:
+    Parameter 1: "recompute_scale_factor"
+    Parameter 2: "scale_factor"
+    Constraint: "(recompute_scale_factor != True) or (scale_factor is not None)"
+  4:
+    Parameter 1: "antialias"
+    Parameter 2: "mode"
+    Constraint: "(antialias != True) or (mode in ['bilinear', 'bicubic'])"
+  5:
+    Parameter 1: "scale_factor"
+    Parameter 2: "input"
+    Constraint: "not isinstance(scale_factor, tuple) or (len(scale_factor) == input.dim() - 2)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.interpolate in a complex way */
+import torch

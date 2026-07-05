@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.linalg.svd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.svd` computes the singular value decomposition (SVD) of a matrix (or batch of matrices) into three components:  
+- **U** (left singular vectors)  
+- **S** (singular values, real and in descending order)  
+- **Vh** (conjugate transpose of right singular vectors)  
+
+**Key parameters:**  
+- `full_matrices` (bool): If `True` (default), returns full-sized U and Vh; if `False`, returns reduced forms.  
+- `driver` (str, CUDA only): Algorithm choice (`gesvd`, `gesvdj`, `gesvda`, or `None` for auto-selection).  
+
+**Notes:**  
+- Works with float, double, cfloat, and cdouble dtypes, and supports batched inputs.  
+- Output is a named tuple `(U, S, Vh)`.  
+- Gradients can be unstable for repeated or near-zero singular values.  
+- For only singular values, use `torch.linalg.svdvals` instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(..., m, n)"]
+    default: null
+  full_matrices:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  driver:
+    dtype: ["str", "None"]
+    range: [["None", "gesvd", "gesvdj", "gesvda"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  out:
+    dtype: ["tuple", "None"]
+    range: null
+    structure: ["tuple"]
+    shape: ["tuple"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: driver
+    Constraint: "driver is None or A.device.type == 'cuda'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.svd in a complex way */
+import torch

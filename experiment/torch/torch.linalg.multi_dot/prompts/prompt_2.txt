@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.linalg.multi_dot` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.multi_dot` efficiently multiplies two or more matrices by determining the optimal multiplication order to minimize arithmetic operations. It supports float, double, cfloat, and cdouble dtypes but does not handle batched inputs.
+
+**Key details:**
+- All tensors must be 2D, except the first and last may be 1D (treated as row/column vectors).
+- Output is a matrix if both first and last are 2D; otherwise, it's a 1D vector.
+- Unlike NumPy, it strictly requires first/last tensors to be 1D or 2D.
+- Implemented using `torch.mm` after computing the optimal parenthesization.
+- Does not support broadcasting.
+
+**Example:**
+```python
+>>> multi_dot([A, B, C])  # A(2,3), B(3,2), C(2,2)
+tensor([[ 26,  49],
+        [ 80, 148]])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensors:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: "No mention"
+    structure: ["sequence"]
+    shape: "No mention"
+    default: null
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: tensors
+    Parameter 2: tensors
+    Constraint: "len(tensors) >= 2"
+  2:
+    Parameter 1: tensors
+    Parameter 2: tensors
+    Constraint: "all(t.dtype in [torch.float, torch.double, torch.cfloat, torch.cdouble] for t in tensors)"
+  3:
+    Parameter 1: tensors
+    Parameter 2: tensors
+    Constraint: "len(tensors) >= 2 and all(t.ndim == 2 for t in tensors[1:-1]) and tens
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.multi_dot in a complex way */
+import torch

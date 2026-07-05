@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.IndexedSlices` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.IndexedSlices` is a sparse data structure in TensorFlow that efficiently represents selected slices of a larger dense tensor. It consists of two main components:  
+- **`values`**: A tensor containing the actual slice data.  
+- **`indices`**: A 1-D integer tensor specifying which slices (along the first dimension) of the dense tensor these values correspond to.  
+
+**Primary Use**:  
+- Commonly used for **sparse gradients** (e.g., in operations like `tf.gather`), where only a subset of rows or slices have non-zero gradients.  
+- Provides memory efficiency when `LARGE0 >> D0` (i.e., the dense tensor is much larger than the extracted slices).  
+
+**Key Attributes**:  
+- `indices`, `values`, `dense_shape` (shape of the original dense tensor).  
+
+**Contrast with `tf.sparse.SparseTensor`**:  
+- `IndexedSlices` uses **1-D indices** for slices (entire rows/sub-tensors), while `SparseTensor` supports **multi-dimensional indices** for individual scalar values.  
+
+**Example**:  
+```python
+# Represents dense[[1,3], :] = values
+index_slices = tf.IndexedSlices(values=[[1.,1.,1.], [1.,1.,1.]], indices=[1,3])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["int", "float", "bool", "string", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dense_shape:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: indices
+    Constraint: "values.shape[0] == indices.shape[0]"
+  2:
+    Parameter 1: values
+    Parameter 2: dense_shape
+    Constraint: "dense_shape is None or values.shape[1:] == dense_shape[1:]"
+  3:
+    Parameter 1: indices
+    Parameter 2: dense_shape
+    Constraint: "dense_shape is None or (tf.reduce_all(indices >= 0) and tf.reduce_all(indices < dense_shape[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.IndexedSlices in a complex way */
+import tensorflow as tf

@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.sparse.segment_sum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.segment_sum` computes the sum along selected sparse segments of a tensor. Unlike `tf.math.segment_sum`, it uses an `indices` parameter to choose a subset of rows from `data`, and `segment_ids` maps these selected rows to output segments. Missing segment IDs produce zero rows in the output, and `num_segments` can explicitly set the output size. This is useful for sparse or partial segmentation tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  segment_ids
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  num_segments
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  name
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  sparse_gradient
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+constraints:
+  1
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.size(indices) == tf.size(segment_ids)"
+  2
+    Parameter 1: "indices"
+    Parameter 2: "data"
+    Constraint: "tf.reduce_all(tf.logical_and(indices >= 0, indices < tf.shape(data)[0]))"
+  3
+    Parameter 1: "segment_ids"
+    Parameter 2: "num_segments"
+    Constraint: "num_segments is None or tf.reduce_all(segment_ids < num_segments)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.segment_sum in a complex way */
+import tensorflow as tf

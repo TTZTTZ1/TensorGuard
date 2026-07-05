@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.grid_sample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.grid_sample` performs spatial sampling of an input tensor using a grid of normalized coordinates. It is commonly used for tasks like image warping and spatial transformer networks.
+
+**Key Points:**
+- **Input:** A 4‑D (spatial) or 5‑D (volumetric) tensor.
+- **Grid:** A tensor of normalized coordinates (typically in `[-1, 1]`) that define where to sample from the input.
+- **Output:** A tensor with the same batch and channel dimensions as the input, but with spatial dimensions determined by the grid.
+
+**Parameters:**
+- `mode`: Interpolation method (`'bilinear'`, `'nearest'`, or `'bicubic'` for 4‑D only).
+- `padding_mode`: How to handle out‑of‑bounds grid points (`'zeros'`, `'border'`, `'reflection'`).
+- `align_corners`: If `True`, grid coordinates align with pixel centers; if `False`, they align with pixel corners (default is `False` for consistency with `interpolate`).
+
+**Notes:**
+- Grid values outside `[-1, 1]` are handled according to `padding_mode`.
+- NaN values in the grid are treated as `-1`.
+- When using CUDA, the backward pass may be nondeterministic.
+- For bicubic mode, results may exceed the input value range—clamping is recommended.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(N, C, H_in, W_in)", "(N, C, D_in, H_in, W_in)"]
+    default: null
+  grid:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(N, H_out, W_out, 2)", "(N, D_out, H_out, W_out, 3)"]
+    default: null
+  mode:
+    dtype: ["str"]
+    range: [["bilinear", "nearest", "bicubic"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'bilinear'"
+  padding_mode:
+    dtype: ["str"]
+    range: [["zeros", "border", "reflection"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'zeros'"
+  align_corners:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: grid
+    Constraint: "input.shape[0] == grid.shape[0]"
+  2:
+    Parameter 1: input
+    Parameter 2: mode
+    Constraint: "mode != 'bicubic' or input.dim() == 4"
+  3:
+    Parameter 1: input
+    Parameter 2: grid
+    Constraint: "(input.dim() == 4 and grid.shape[-1] == 2) or (input.dim() == 5 and grid.shape[-1] == 3)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.grid_sample in a complex way */
+import torch

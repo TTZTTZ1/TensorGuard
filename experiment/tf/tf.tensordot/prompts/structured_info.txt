@@ -1,0 +1,42 @@
+params:
+  a:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  b:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  axes:
+    dtype: ["int", "int32"]
+    range: "No mention"
+    structure: ["scalar", "list", "tensor"]
+    shape: ["scalar", "variable", "[2, k]"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.dtype == b.dtype"
+  2:
+    Parameter 1: "axes"
+    Parameter 2: "a"
+    Constraint: "(isinstance(axes, int) and 0 <= axes < tf.rank(a)) or (isinstance(axes, (list, tf.Tensor)) and all(0 <= ax < tf.rank(a) for ax in axes[0]))"
+  3:
+    Parameter 1: "axes"
+    Parameter 2: "b"
+    Constraint: "(isinstance(axes, int) and 0 <= axes < tf.rank(b)) or (isinstance(axes, (list, tf.Tensor)) and all(0 <= ax < tf.rank(b) for ax in axes[1]))"
+  4:
+    Parameter 1: "axes"
+    Parameter 2: "a"
+    Constraint: "not (isinstance(axes, (list, tf.Tensor))) or len(axes[0]) == len(axes[1])"

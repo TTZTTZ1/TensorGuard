@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `tf.random.stateless_gamma` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.stateless_gamma` generates deterministic pseudorandom numbers from a gamma distribution, defined by concentration (`alpha`) and inverse scale (`beta`) parameters. It is stateless, meaning the same seed and shape will always produce identical results across runs on the same hardware.
+
+**Key Features:**
+- **Deterministic output:** Guarantees reproducibility with identical `seed` and `shape`.
+- **Differentiable:** Supports gradient computation with respect to `alpha` and `beta`.
+- **Shape handling:** The `shape` parameter must encompass the broadcasted shapes of `alpha` and `beta`.
+
+**Parameters:**
+- `shape`: Output tensor shape (1-D integer array).
+- `seed`: A 2-element tensor (dtype `int32`/`int64`) seeding the RNG.
+- `alpha`: Concentration parameter (must broadcast with `beta` and match trailing dimensions of `shape`).
+- `beta`: Inverse scale parameter (optional; defaults to 1).
+- `dtype`: Floating-point type for inputs/output (default: `tf.float32`).
+
+**Returns:** A tensor of specified `shape` with gamma-distributed samples.
+
+**Note:** For very small `alpha` or large `beta`, outputs may be biased toward the smallest positive floating-point value due to internal casting.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tensor", "array"]
+    shape: [1]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  alpha:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  beta:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  dtype:
+    dtype: ["dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.dtypes.float32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1.
+    Parameter 1: alpha
+    Parameter 2: beta
+    Constraint: tf.broadcast_dynamic_shape(tf.shape(alpha), tf.shape(beta)) is not None
+  2.
+    Parameter 1: alpha
+    Parameter 2: shape
+    Constraint: tf.rank(alpha) <= tf.size(shape) and tf.broadcast_dynamic_shape(tf.shape(alpha), shape[-tf.rank(alpha):]) is not None
+  3.
+    Parameter 1: beta
+    Parameter 2: shape
+    Constraint: tf.rank(beta) <= tf.size(shape) and tf.broadcast_dynamic_shape(tf.shape(beta), shape[-tf.rank(beta):]) is not None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.stateless_gamma in a complex way */
+import tensorflow as tf

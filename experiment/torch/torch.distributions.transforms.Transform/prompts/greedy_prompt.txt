@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.Transform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports two main gradient estimation methods:
+  - **Score function estimator** (REINFORCE): Uses `sample()` and `log_prob()`
+  - **Pathwise derivative estimator** (reparameterization trick): Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+The package includes numerous distributions:
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- **Transformed**: LogNormal, HalfNormal, HalfCauchy, Gumbel, Pareto, Weibull, etc.
+- **Specialized**: MixtureSameFamily, Independent, TransformedDistribution, LKJCholesky
+
+### **3. Key Features**
+- **Parameterization**: Most distributions can be parameterized by either `probs` or `logits`
+- **Batch support**: All distributions support batched parameters
+- **Validation**: Optional argument validation with `validate_args`
+- **Exponential family**: Special support for exponential family distributions
+
+### **4. Gradient Estimation Examples**
+
+**REINFORCE (Score function):**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Reparameterization (Pathwise derivative):**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### **5. Supporting Infrastructure**
+- **Transforms**: Bijective transformations for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain constraints for distribution parameters
+- **KL Divergence**: Pre-registered KL divergences between many distribution pairs
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+### **6. Practical Applications**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders
+- Bayesian inference
+- Probabilistic modeling
+- Stochastic optimization
+
+The package follows a design similar to TensorFlow Distributions and provides a flexible, modular system for probabilistic programming within PyTorch's automatic differentiation framework.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.Transform in a complex way */
+import torch

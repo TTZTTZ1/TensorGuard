@@ -1,0 +1,155 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.WorkerSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in PyTorch's torchelastic framework, responsible for launching and managing distributed worker processes. It handles:
+
+- **Distributed setup**: Provides workers with necessary info to initialize `torch.distributed.init_process_group()`.
+- **Fault tolerance**: Monitors workers, detects failures/unhealthiness, and restarts them as needed.
+- **Elasticity**: Reacts to membership changes and restarts workers with updated members.
+
+### Key Components:
+- **`ElasticAgent`**: Abstract base class for agent implementations.
+- **`WorkerSpec`**: Blueprint defining worker configuration (role, entrypoint, args, etc.).
+- **`WorkerGroup`**: A set of `Worker` instances managed by an agent.
+- **`WorkerState`**: Tracks the state of a worker group (e.g., `HEALTHY`, `FAILED`, `STOPPED`).
+
+### Implementations:
+- **`LocalElasticAgent`**: Manages local workers on a single host, typically used per node with GPU-based training.
+
+### Extending Agents:
+Developers can extend **`SimpleElasticAgent`**, which provides scaffolding and requires implementing abstract methods like `_start_workers`, `_stop_workers`, and `_monitor_workers`.
+
+### Additional Features:
+- **Watchdog**: Optional named pipe-based timer for monitoring agent/worker liveness.
+- **Health Check Server**: Optional TCP/HTTP server for external health monitoring.
+
+### Usage Example:
+```python
+spec = WorkerSpec(role="trainer", local_world_size=4, entrypoint=trainer_fn, args=("data",))
+agent = LocalElasticAgent(spec)
+result = agent.run()
+if result.is_failed():
+    print("Training failed")
+else:
+    print(f"Result: {result.return_values[0]}")
+```
+
+The agent supports both function and binary entrypoints, and it manages retries up to `max_restarts`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  role:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  local_world_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  rdzv_handler:
+    dtype: ["RendezvousHandler"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  fn:
+    dtype: ["Callable", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  entrypoint:
+    dtype: ["Callable", "string", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  args:
+    dtype: ["tuple"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "()"
+  max_restarts:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "3"
+  monitor_interval:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0.1"
+  master_port:
+    dtype: ["int", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  master_addr:
+    dtype: ["string", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  redirects:
+    dtype: ["dict", "NoneType"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  tee:
+    dtype: ["dict", "NoneType"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  event_log_handler:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'null'"
+  numa_options:
+    dtype: ["object", "NoneType"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  duplicate_stdout_filters:
+    dtype: ["list", "NoneType"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  duplicate_stderr_filters:
+    dtype: ["list", "NoneType"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  virtual_local_rank:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: tee
+    Parameter 2: redirects
+    Constraint: "tee is not None and redirects is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.WorkerSpec in a complex way */
+import torch

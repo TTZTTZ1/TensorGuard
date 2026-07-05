@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `torch.qr` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.qr` computes the QR decomposition of a matrix (or batch of matrices) into an orthogonal matrix **Q** and an upper triangular matrix **R**, such that `input = Q @ R`.  
+
+**Key details:**  
+- **Deprecated:** Use `torch.linalg.qr` instead.  
+- **`some=True` (default):** Returns the thin/reduced factorization (Q: m×k, R: k×n, where k = min(m, n)).  
+- **`some=False`:** Returns the complete factorization (Q: m×m, R: m×n).  
+- **Backpropagation caution:** Currently well-defined only when the first min(m, n) columns of the input are linearly independent.  
+- **Platform-dependent:** Uses LAPACK (CPU) or MAGMA (CUDA), which may produce different valid decompositions across devices/platforms.  
+
+**Example replacement:**  
+- `Q, R = torch.qr(A)` → `Q, R = torch.linalg.qr(A)`  
+- `Q, R = torch.qr(A, some=False)` → `Q, R = torch.linalg.qr(A, mode="complete")`
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n) where * is zero or more batch dimensions"]
+    default: null
+  some:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  out:
+    dtype: ["Tensor", "tuple", "list", "None"]
+    range: null
+    structure: ["tensor", "tuple", "list", "none"]
+    shape: null
+    default: "None"
+constraints:
+  (no constraints)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.qr in a complex way */
+import torch

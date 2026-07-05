@@ -1,0 +1,121 @@
+
+# You are a Python code generation assistant for the `torch.nn.RNN` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.RNN` module implements a multi‑layer Elman RNN with either `tanh` or `ReLU` activation. It processes sequential input data, updating a hidden state at each time step according to the formula:
+
+\[
+h_t = \tanh(x_t W_{ih}^T + b_{ih} + h_{t-1} W_{hh}^T + b_{hh})
+\]
+
+(or ReLU if `nonlinearity='relu'`).
+
+**Key parameters:**
+- `input_size`: number of input features.
+- `hidden_size`: size of the hidden state.
+- `num_layers`: number of stacked RNN layers.
+- `nonlinearity`: `'tanh'` (default) or `'relu'`.
+- `batch_first`: if `True`, input/output shape is `(batch, seq, feature)`.
+- `bidirectional`: if `True`, uses bidirectional RNN.
+- `dropout`: dropout probability between layers (except last).
+
+**Inputs:**
+- `input`: tensor of shape `(L, N, H_in)` (or `(N, L, H_in)` if `batch_first=True`).
+- `hx` (optional): initial hidden state; defaults to zeros.
+
+**Outputs:**
+- `output`: tensor containing hidden states for all time steps.
+- `h_n`: final hidden state for each element in the batch.
+
+**Notes:**
+- Weights are initialized uniformly from \(\mathcal{U}(-\sqrt{k}, \sqrt{k})\) where \(k = 1 / \text{hidden\_size}\).
+- Supports packed sequences for variable-length inputs.
+- For bidirectional RNNs, the hidden size doubles in the output dimension.
+- There are known non‑determinism issues with cuDNN/CUDA; environment variables can enforce determinism at a potential performance cost.
+
+**Example:**
+```python
+rnn = nn.RNN(10, 20, 2)  # input_size=10, hidden_size=20, num_layers=2
+input = torch.randn(5, 3, 10)  # (seq_len=5, batch=3, input_size=10)
+h0 = torch.randn(2, 3, 20)     # (num_layers=2, batch=3, hidden_size=20)
+output, hn = rnn(input, h0)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  hidden_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_layers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  nonlinearity:
+    dtype: ["string"]
+    range: [["tanh", "relu"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'tanh'"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  batch_first:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  dropout:
+    dtype: ["float"]
+    range: [[0, 1)]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  bidirectional:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  device:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dropout
+    Parameter 2: dropout
+    Constraint: "dropout >= 0 and dropout < 1"
+  2:
+    Parameter 1: nonlinearity
+    Parameter 2: nonlinearity
+    Constraint: "nonlinearity in ['tanh', 'relu']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.RNN in a complex way */
+import torch

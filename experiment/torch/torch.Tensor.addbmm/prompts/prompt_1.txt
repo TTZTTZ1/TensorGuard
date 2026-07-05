@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.addbmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.addbmm` performs a batch matrix-matrix product of `batch1` and `batch2`, then adds the result to the original input tensor.  
+
+**Key details:**
+- **Operation**: `input = beta * input + alpha * sum(batch1 @ batch2)`  
+  where `@` denotes batch-wise matrix multiplication.
+- **Inputs**:  
+  - `batch1`: 3D tensor of shape `(b, n, m)`  
+  - `batch2`: 3D tensor of shape `(b, m, p)`  
+  - `beta` (scalar): multiplier for the original tensor (`input`)  
+  - `alpha` (scalar): multiplier for the batch product sum
+- **Output**: 2D tensor of shape `(n, p)` (same as the input tensor’s shape).
+
+**Note**: This is an in-place variant of `torch.addbmm`; the calling tensor itself is updated.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  batch1:
+    dtype: ["float", "double", "int", "long"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  batch2:
+    dtype: ["float", "double", "int", "long"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  beta:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1"
+  alpha:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: batch1
+    Parameter 2: batch2
+    Constraint: "batch1.shape[0] == batch2.shape[0]"
+  2:
+    Parameter 1: batch1
+    Parameter 2: batch2
+    Constraint: "batch1.shape[2] == batch2.shape[1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.addbmm in a complex way */
+import torch

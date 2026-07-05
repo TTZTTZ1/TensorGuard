@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `torch.nn.MultiMarginLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`MultiMarginLoss` is a PyTorch loss function for multi-class classification using a hinge loss (margin-based). It penalizes predictions where the correct class score is not sufficiently higher than incorrect class scores by a specified margin.
+
+**Key parameters:**
+- `p` (int): Exponent for the loss (1 or 2, default 1).
+- `margin` (float): Desired margin between correct and incorrect scores (default 1.0).
+- `weight` (Tensor, optional): Per-class weighting.
+- `reduction` (str): How to aggregate loss (`'none'`, `'mean'`, `'sum'`).
+
+**Formula (for each sample):**
+\[
+\text{loss} = \frac{\sum_{i \neq y} \max(0, \text{margin} - x[y] + x[i])^p}{\text{num\_classes}}
+\]
+If `weight` is provided, multiply by `weight[y]`.
+
+**Shapes:**
+- Input: `(N, C)` or `(C)`
+- Target: `(N)` or `()` (class indices)
+- Output: Scalar (or matching target shape if `reduction='none'`)
+
+**Example:**
+```python
+loss_fn = nn.MultiMarginLoss()
+x = torch.tensor([[0.1, 0.2, 0.4, 0.8]])  # 4 classes
+y = torch.tensor([3])                     # target class index
+loss = loss_fn(x, y)  # Computes hinge loss
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  p:
+    dtype: ["int"]
+    range: [1, 2]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  margin:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  weight:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  size_average:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["string"]
+    range: ["none", "mean", "sum"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "mean"
+constraints:
+  1:
+    Parameter 1: p
+    Parameter 2: p
+    Constraint: "p == 1 or p == 2"
+  2:
+    Parameter 1: reduction
+    Parameter 2: reduction
+    Constraint: "reduction in ['none', 'mean', 'sum']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MultiMarginLoss in a complex way */
+import torch

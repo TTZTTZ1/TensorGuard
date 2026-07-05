@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BatchToSpace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.BatchToSpace` operation transforms a 4-D tensor by rearranging batch data into spatial blocks and then cropping the result. It is the inverse of `SpaceToBatch`.
+
+**Key points:**
+- **Input:** A 4-D tensor with shape `[batch*block_size*block_size, height_pad/block_size, width_pad/block_size, depth]`. The batch size must be divisible by `block_size * block_size`.
+- **Parameters:**
+  - `crops`: A 2-D tensor specifying the number of elements to crop from the spatial dimensions (height and width).
+  - `block_size`: An integer ≥ 2 that defines the block size for rearranging data.
+- **Output:** A 4-D tensor of the same type as the input, where values from the batch dimension are moved into spatial blocks in the height and width dimensions, followed by cropping as specified.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  crops:
+    dtype: ["int32", "int64"]
+    range: ["non-negative"]
+    structure: ["tensor"]
+    shape: [2, 2]
+    default: null
+  block_size:
+    dtype: ["int"]
+    range: ["[2, inf)"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: block_size
+    Constraint: "input.shape[0] % (block_size * block_size) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BatchToSpace in a complex way */
+import tensorflow as tf

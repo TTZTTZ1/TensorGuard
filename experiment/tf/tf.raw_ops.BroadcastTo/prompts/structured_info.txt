@@ -1,0 +1,24 @@
+params:
+  input:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  shape:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: shape
+    Constraint: "all(a == 1 or b == 1 or a == b for a, b in zip(tf.shape(input), tf.concat([tf.ones(tf.maximum(0, tf.size(shape) - tf.rank(input)), dtype=tf.int32), tf.shape(input)], axis=0)))"

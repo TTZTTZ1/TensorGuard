@@ -1,0 +1,52 @@
+# tf.raw_ops.MatMul
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MatMul](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MatMul)
+
+---
+
+Multiply the matrix "a" by the matrix "b".
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.MatMul`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/MatMul)
+
+```
+tf.raw_ops.MatMul(
+    a,
+    b,
+    transpose_a=False,
+    transpose_b=False,
+    grad_a=False,
+    grad_b=False,
+    name=None
+)
+```
+
+The inputs must be two-dimensional matrices and the inner dimension of
+"a" (after being transposed if transpose\_a is true) must match the
+outer dimension of "b" (after being transposed if transposed\_b is
+true).
+
+**Note:** The default kernel implementation for MatMul on GPUs uses
+cublas.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `a` | A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `uint8`, `uint16`, `uint32`, `uint64`, `complex64`, `complex128`. |
+| `b` | A `Tensor`. Must have the same type as `a`. |
+| `transpose_a` | An optional `bool`. Defaults to `False`. If true, "a" is transposed before multiplication. |
+| `transpose_b` | An optional `bool`. Defaults to `False`. If true, "b" is transposed before multiplication. |
+| `grad_a` | An optional `bool`. Defaults to `False`. |
+| `grad_b` | An optional `bool`. Defaults to `False`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `a`. | |

@@ -1,0 +1,113 @@
+
+# You are a Python code generation assistant for the `torch.utils.benchmark.Timer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.benchmark` module provides tools for precise performance measurement of PyTorch code. Its core component is the `Timer` class, which measures execution time with features like warmup, thread control, and synchronization for accelerators. Key methods include:
+
+- **`blocked_autorange()`**: Measures many replicates with minimal overhead by dynamically choosing block sizes.
+- **`adaptive_autorange()`**: Extends `blocked_autorange` by checking measurement variability and stopping when noise is below a threshold.
+- **`timeit()`**: Mirrors Python's `timeit.Timer.timeit` for fixed-iteration timing.
+- **`collect_callgrind()`**: Uses Valgrind to collect deterministic instruction counts for detailed performance analysis.
+
+Results are returned as `Measurement` objects, which store runtimes and support statistics (mean, median). For comparing multiple measurements, the `Compare` class formats results into readable tables, grouping by metadata like label, sub_label, and description.
+
+The module also includes `CallgrindStats` and `FunctionCounts` for analyzing instruction-level profiles, with methods to diff, filter, and transform callgrind data.
+
+Overall, this utility enables robust benchmarking with adaptive strategies, metadata tracking, and both wall-time and instruction-level profiling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  stmt:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'pass'"
+  setup:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'pass'"
+  global_setup:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "''"
+  timer:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["callable"]
+    shape: [null]
+    default: "<built-in function perf_counter>"
+  globals:
+    dtype: ["dict", "None"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: "null"
+  label:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  sub_label:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  description:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  env:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  num_threads:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "1"
+  language:
+    dtype: ["enum"]
+    range: [["Language.PYTHON"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "Language.PYTHON"
+constraints:
+  1:
+    Parameter 1: "threshold"
+    Parameter 2: "max_run_time"
+    Constraint: "threshold <= max_run_time"
+  2:
+    Parameter 1: "min_run_time"
+    Parameter 2: "max_run_time"
+    Constraint: "min_run_time <= max_run_time"
+  3:
+    Parameter 1: "number"
+    Parameter 2: "null"
+    Constraint: "number > 0"
+  4:
+    Parameter 1: "repeats"
+    Parameter 2: "null"
+    Constraint: "repeats is None or repeats > 0"
+  5:
+    Parameter 1: "collect_baseline"
+    Parameter 2: "retain_out_file"
+    Constraint: "isinstance(collect_baseline, bool) and isinstance(retain_out_file, bool)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.benchmark.Timer in a complex way */
+import torch

@@ -1,0 +1,209 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.ConvLSTM1D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.ConvLSTM1D` layer is a 1D convolutional LSTM that combines convolutional operations with LSTM recurrent processing. It is designed for sequential data with spatial structure, such as time-series signals.
+
+**Key Features:**
+- **Input Shape:** 4D tensor, either `(samples, time, channels, steps)` for `channels_first` or `(samples, time, steps, channels)` for `channels_last`.
+- **Output Shape:** Varies based on `return_sequences` and `return_state`:
+  - 3D output if only final step is returned.
+  - 4D output if the full sequence is returned (`return_sequences=True`).
+  - List of tensors if states are also returned (`return_state=True`).
+- **Parameters:** Includes standard convolutional (filters, kernel_size, strides, padding) and LSTM (activation, recurrent_activation, dropout) settings.
+- **Use Cases:** Suitable for tasks where both temporal dependencies and local spatial patterns are important, such as video frame prediction or sensor data analysis.
+
+**Common Arguments:**
+- `filters`: Number of output filters.
+- `kernel_size`: Size of the convolutional window.
+- `return_sequences`: Controls whether to output the full sequence or just the last step.
+- `padding`: `"valid"` (no padding) or `"same"` (padding to preserve dimensions).
+
+This layer is part of TensorFlow's Keras API and inherits from `RNN`, supporting features like statefulness, masking, and custom initializers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filters:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  kernel_size:
+    dtype: ["int", "tuple", "list"]
+    range: "No mention"
+    structure: ["scalar", "tuple", "list"]
+    shape: "No mention"
+    default: "null"
+  strides:
+    dtype: ["int", "tuple", "list"]
+    range: "No mention"
+    structure: ["scalar", "tuple", "list"]
+    shape: "No mention"
+    default: "1"
+  padding:
+    dtype: ["string"]
+    range: ["valid", "same"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'valid'"
+  data_format:
+    dtype: ["string"]
+    range: ["channels_last", "channels_first"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  dilation_rate:
+    dtype: ["int", "tuple", "list"]
+    range: "No mention"
+    structure: ["scalar", "tuple", "list"]
+    shape: "No mention"
+    default: "1"
+  activation:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'tanh'"
+  recurrent_activation:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'sigmoid'"
+  use_bias:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  kernel_initializer:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'glorot_uniform'"
+  recurrent_initializer:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'orthogonal'"
+  bias_initializer:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'zeros'"
+  unit_forget_bias:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  kernel_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  recurrent_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  bias_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  activity_regularizer:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  kernel_constraint:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  recurrent_constraint:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  bias_constraint:
+    dtype: ["callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  dropout:
+    dtype: ["float"]
+    range: "[0, 1]"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0"
+  recurrent_dropout:
+    dtype: ["float"]
+    range: "[0, 1]"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0"
+  seed:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  return_sequences:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  return_state:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  go_backwards:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  stateful:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  unroll:
+    dtype: ["boolean"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "dilation_rate"
+    Constraint: "strides <= 1 or dilation_rate <= 1"
+  2:
+    Parameter 1: "unit_forget_bias"
+    Parameter 2: "bias_initializer"
+    Constraint: "not unit_forget_bias or bias_initializer == 'zeros'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.ConvLSTM1D in a complex way */
+import tensorflow as tf

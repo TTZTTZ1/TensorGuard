@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.distributed.DistributedSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and batching in PyTorch, centered around the `DataLoader` class.
+
+**Core Components:**
+- **`DataLoader`**: Main class that creates an iterable over a dataset, supporting automatic batching, shuffling, multi-process loading, and memory pinning.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., indexed data like images).
+  - **Iterable-style**: Implements `__iter__()` (e.g., data streams from databases or real-time logs).
+- **Samplers**: Control data loading order (e.g., `RandomSampler`, `SequentialSampler`), especially for map-style datasets.
+
+**Key Features:**
+- **Automatic Batching**: Combines samples into batches via `batch_size` and `collate_fn`.
+- **Multi-process Loading**: Set `num_workers > 0` to parallelize data loading (with platform-specific considerations for Windows/macOS).
+- **Memory Pinning**: Use `pin_memory=True` to speed up GPU data transfers.
+- **Customization**: Supports custom `collate_fn`, `sampler`, and `worker_init_fn` for advanced use cases.
+
+**Common Dataset Utilities:**
+- `TensorDataset`: Wraps tensors.
+- `ConcatDataset`: Concatenates multiple datasets.
+- `Subset`: Creates a subset of a dataset.
+- `random_split`: Randomly splits a dataset into non-overlapping parts.
+
+**Usage Example:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+This module is fundamental for handling large-scale datasets efficiently in PyTorch workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["torch.utils.data.Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  num_replicas:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  shuffle:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  drop_last:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "rank"
+    Parameter 2: "num_replicas"
+    Constraint: "(rank is None or num_replicas is None) or (rank < num_replicas)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.distributed.DistributedSampler in a complex way */
+import torch

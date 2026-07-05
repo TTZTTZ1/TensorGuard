@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.distributions.multinomial.Multinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling in variational autoencoders
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like:
+   - `sample()`, `rsample()`: Generate samples
+   - `log_prob()`: Compute log probability
+   - `entropy()`, `mean`, `variance`: Statistical properties
+   - `cdf()`, `icdf()`: Cumulative distribution functions
+
+2. **Common Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Dirichlet, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Multinomial, MultivariateNormal, Normal, Poisson, StudentT, Uniform, and many others.
+
+3. **Special Distributions**:
+   - `TransformedDistribution`: Applies transforms to base distributions
+   - `Independent`: Reinterprets batch dims as event dims
+   - `MixtureSameFamily`: Mixture of same distribution type
+   - `LowRankMultivariateNormal`: Efficient multivariate normal with low-rank covariance
+
+4. **Transforms**: Bijective transformations (AbsTransform, AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter optimization.
+
+5. **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.) with registry system (`biject_to`, `transform_to`) for unconstrained optimization.
+
+6. **KL Divergence**: Pre-registered KL divergence computations between distribution pairs.
+
+**Usage Examples:**
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization**:
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  ```
+
+The package follows TensorFlow Distributions design and is essential for probabilistic modeling, variational inference, and reinforcement learning in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["int", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: "1"
+  probs:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  logits:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: null
+    Constraint: "total_count >= 0"
+  2:
+    Parameter 1: probs
+    Parameter 2: null
+    Constraint: "torch.all(probs >= 0) and torch.all(probs <= 1)"
+  3:
+    Parameter 1: logits
+    Parameter 2: null
+    Constraint: "torch.isfinite(logits)"
+  4:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+  5:
+    Parameter 1: total_count
+    Parameter 2: probs
+    Constraint: "torch.broadcast_shapes(total_count.shape, probs.shape) is not None"
+  6:
+    Parameter 1: total_count
+    Parameter 2: logits
+    Constraint: "torch.broadcast_shapes(total_count.shape, logits.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.multinomial.Multinomial in a complex way */
+import torch

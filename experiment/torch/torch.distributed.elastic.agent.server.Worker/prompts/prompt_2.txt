@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.Worker` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** in PyTorch is the control plane for managing distributed worker processes, providing fault tolerance and elasticity. It handles worker lifecycle, monitors health, and reacts to failures or membership changes.
+
+### **Key Responsibilities:**
+- **Worker Management**: Launches and supervises worker processes, providing necessary info for `torch.distributed.init_process_group()`.
+- **Fault Tolerance**: Detects worker failures/unhealthiness, tears down all workers, and restarts them.
+- **Elasticity**: Adapts to membership changes (e.g., scaling nodes) and restarts workers with updated members.
+
+### **Core Components:**
+1. **`ElasticAgent`** (Abstract Base Class):  
+   - Manages one or more workers per node.  
+   - Supports retrying workers up to `max_restarts`.  
+   - Returns a `RunResult` with worker outcomes or failure details.
+
+2. **`WorkerSpec`**:  
+   - Blueprint for a homogeneous set of workers (same role, local world size, entrypoint, args).  
+   - Configures rendezvous, monitoring, logging, and GPU assignment.
+
+3. **`WorkerGroup`**:  
+   - A mutable set of `Worker` instances for a given `WorkerSpec`.  
+   - Tracks collective state (`HEALTHY`, `FAILED`, `STOPPED`, etc.).
+
+4. **`LocalElasticAgent`** (Common Implementation):  
+   - Host-local agent that spawns `n` workers per node (e.g., one per GPU).  
+   - Uses Python multiprocessing (`spawn` by default).  
+   - Supports log customization, named pipe watchdogs, and health check servers.
+
+### **Usage Example:**
+```python
+def trainer(args):
+    return "training done"
+
+spec = WorkerSpec(
+    role="trainer",
+    local_world_size=4,          # 4 workers per agent
+    entrypoint=trainer,
+    args=("example",),
+    max_restarts=3
+)
+agent = LocalElasticAgent(spec)
+result = agent.run()
+
+if result.is_failed():
+    print(f"Worker failed: {result.failures[0]}")
+else:
+    print(result.return_values[0])  # Rank 0's output
+```
+
+### **Extending Agents:**
+- Implement `ElasticAgent` directly or extend `SimpleElasticAgent` (recommended).  
+- Override abstract methods: `_start_workers`, `_stop_workers`, `_monitor_workers`, `_shutdown`.
+
+### **Advanced Features:**
+- **Watchdog**: Enabled via `TORCHELASTIC_ENABLE_FILE_TIMER=1` for named pipe-based liveness checks.  
+- **Health Check Server**: Monitors agent liveness via TCP/HTTP on a configurable port (`TORCHELASTIC_HEALTH_CHECK_PORT`).  
+- **Elastic Rendezvous**: Handles dynamic membership changes across nodes.
+
+### **Deployment Topologies:**
+Agents can be deployed flexibly:  
+- 1 agent per GPU (8 agents on 8 GPUs).  
+- 1 agent managing multiple workers (e.g., 1 agent per 4-GPU node).  
+- Agents can be decentralized or coordinated across nodes.
+
+The Elastic Agent simplifies distributed training by automating process management, recovery, and scaling, allowing users to focus on their training logic.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  local_rank:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  global_rank:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  role_rank:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  world_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  role_world_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: "global_rank"
+    Parameter 2: "world_size"
+    Constraint: "global_rank < world_size or global_rank == -1"
+  2:
+    Parameter 1: "role_rank"
+    Parameter 2: "role_world_size"
+    Constraint: "role_rank < role_world_size or role_rank == -1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.Worker in a complex way */
+import torch

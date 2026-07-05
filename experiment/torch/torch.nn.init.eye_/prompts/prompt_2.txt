@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.eye_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions for initializing neural network parameters. Key points:
+
+**General Behavior:**
+- All functions run in `torch.no_grad()` mode and don't affect autograd
+- Operate in-place on tensors (use underscore suffix convention like `uniform_`)
+
+**Core Initialization Methods:**
+1. **Basic distributions**: `uniform_()`, `normal_()`, `trunc_normal_()`
+2. **Constant values**: `constant_()`, `ones_()`, `zeros_()`
+3. **Special matrices**: `eye_()` (identity), `dirac_()` (convolutional layers)
+4. **Smart initializations**: 
+   - `xavier_uniform_()` / `xavier_normal_()` (Glorot initialization)
+   - `kaiming_uniform_()` / `kaiming_normal_()` (He initialization, good for ReLU)
+   - `orthogonal_()` (semi-orthogonal matrices)
+   - `sparse_()` (sparse matrices)
+
+**Helper Function:**
+- `calculate_gain()`: Returns recommended scaling factors for different nonlinearities
+
+**Important Notes:**
+- For Xavier/Kaiming: Be aware of `fan_in`/`fan_out` calculations assume weight matrix transposition in linear layers
+- For SELU networks: Use `nonlinearity='linear'` with `calculate_gain()` for proper self-normalizing behavior
+- Functions support optional `generator` parameter for reproducible sampling
+
+**Usage Pattern:**
+```python
+w = torch.empty(3, 5)
+nn.init.kaiming_normal_(w, mode='fan_out', nonlinearity='relu')
+```
+
+These initializations help with training stability and convergence by controlling the variance of activations/gradients through the network.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[dim1, dim2]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: null
+    Constraint: "tensor.ndim == 2 and tensor.shape[0] > 0 and tensor.shape[1] > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.eye_ in a complex way */
+import torch

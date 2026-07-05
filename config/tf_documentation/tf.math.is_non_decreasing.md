@@ -1,0 +1,56 @@
+# tf.math.is_non_decreasing
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/math/is_non_decreasing](https://tensorflow.google.cn/api_docs/python/tf/math/is_non_decreasing)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/ops/check_ops.py#L1989-L2027) |
+
+Returns `True` if `x` is non-decreasing.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.debugging.is_non_decreasing`](https://tensorflow.google.cn/api_docs/python/tf/math/is_non_decreasing), [`tf.compat.v1.is_non_decreasing`](https://tensorflow.google.cn/api_docs/python/tf/math/is_non_decreasing), [`tf.compat.v1.math.is_non_decreasing`](https://tensorflow.google.cn/api_docs/python/tf/math/is_non_decreasing)
+
+```
+tf.math.is_non_decreasing(
+    x, name=None
+)
+```
+
+Elements of `x` are compared in row-major order. The tensor `[x[0],...]`
+is non-decreasing if for every adjacent pair we have `x[i] <= x[i+1]`.
+If `x` has less than two elements, it is trivially non-decreasing.
+
+See also: `is_strictly_increasing`
+
+```
+>>> x1 = tf.constant([1.0, 1.0, 3.0])
+>>> tf.math.is_non_decreasing(x1)
+<tf.Tensor: shape=(), dtype=bool, numpy=True>
+>>> x2 = tf.constant([3.0, 1.0, 2.0])
+>>> tf.math.is_non_decreasing(x2)
+<tf.Tensor: shape=(), dtype=bool, numpy=False>
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `x` | Numeric `Tensor`. |
+| `name` | A name for this operation (optional). Defaults to "is\_non\_decreasing" |
+
+| Returns | |
+| Boolean `Tensor`, equal to `True` iff `x` is non-decreasing. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `TypeError` | if `x` is not a numeric tensor. |

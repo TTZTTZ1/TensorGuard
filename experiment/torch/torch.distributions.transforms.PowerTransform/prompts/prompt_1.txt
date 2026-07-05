@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.PowerTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Below is a concise summary of its key components and usage:
+
+### **Core Concepts**
+- **Purpose**: Implements parameterizable probability distributions with sampling functions, supporting stochastic gradient estimators like REINFORCE (score function) and the reparameterization trick (pathwise derivative).
+- **Design**: Follows TensorFlow Distributions, allowing construction of stochastic computation graphs.
+
+### **Key Classes & Methods**
+1. **`Distribution` (Base Class)**:
+   - Abstract base class for all distributions.
+   - Key methods: `sample()`, `log_prob()`, `rsample()` (reparameterized samples for differentiable paths), `entropy()`, `cdf()`, `icdf()`.
+   - Properties: `mean`, `variance`, `support`, `batch_shape`, `event_shape`.
+
+2. **Common Distributions**:
+   - **Univariate**: `Bernoulli`, `Normal`, `Uniform`, `Exponential`, `Gamma`, `Beta`, `Cauchy`, etc.
+   - **Multivariate**: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`.
+   - **Discrete**: `Categorical`, `Binomial`, `Poisson`, `Geometric`.
+   - **Specialized**: `Gumbel`, `StudentT`, `Wishart`, `LKJCholesky` (for correlation matrices).
+
+3. **Transformed Distributions**:
+   - `TransformedDistribution`: Applies a sequence of transforms to a base distribution (e.g., `LogNormal` as `exp(Normal)`).
+   - **Transforms**: `AffineTransform`, `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`, `StickBreakingTransform`, etc., for bijective mappings.
+
+4. **Utilities**:
+   - **KL Divergence**: `kl_divergence(p, q)` computes KL(p || q) for registered distribution pairs.
+   - **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive_definite`). Registries (`biject_to`, `transform_to`) map constraints to transforms for unconstrained optimization or HMC.
+
+### **Gradient Estimation Techniques**
+- **Score Function (REINFORCE)**:
+  - Uses `log_prob()` to estimate gradients. Suitable for discrete distributions.
+  - Example: Policy gradients in reinforcement learning.
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  loss.backward()
+  ```
+- **Pathwise Derivative (Reparameterization)**:
+  - Uses `rsample()` for differentiable sampling. Suitable for continuous distributions.
+  - Example: Variational autoencoders.
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  loss.backward()
+  ```
+
+### **Key Features**
+- **Batch and Event Shapes**: Supports batched parameters and multi-dimensional events.
+- **Exponential Family**: `ExponentialFamily` base class for distributions with natural parameterization (e.g., `Bernoulli`, `Normal`).
+- **Mixture Models**: `MixtureSameFamily` for mixtures of components from the same distribution type.
+- **Constraint Handling**: Automatically validates parameters and enables transformations for constrained optimization.
+
+### **Example Usage**
+```python
+import torch.distributions as dist
+
+# Create a normal distribution
+normal = dist.Normal(loc=0.0, scale=1.0)
+samples = normal.sample((5,))  # Draw 5 samples
+log_prob = normal.log_prob(samples)  # Compute log probabilities
+
+# Transform a distribution
+base = dist.Normal(0, 1)
+log_normal = dist.TransformedDistribution(base, [dist.ExpTransform()])
+
+# KL divergence
+p = dist.Normal(0, 1)
+q = dist.Normal(1, 2)
+kl = dist.kl_divergence(p, q)
+```
+
+### **Applications**
+- **Reinforcement Learning**: Policy gradient methods.
+- **Variational Inference**: Reparameterization for VAEs.
+- **Probabilistic Modeling**: Bayesian networks, hierarchical models.
+- **Optimization**: Stochastic gradient estimation for constrained parameters.
+
+This module is essential for probabilistic modeling in PyTorch, combining flexibility with automatic differentiation for modern machine learning workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  exponent:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.PowerTransform in a complex way */
+import torch

@@ -1,0 +1,26 @@
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  out:
+    dtype: ["cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "A.dtype in [torch.float, torch.double, torch.cfloat, torch.cdouble]"
+  2:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "len(A.shape) >= 2 and A.shape[-1] == A.shape[-2]"
+  3:
+    Parameter 1: out
+    Parameter 2: A
+    Constraint: "out is None or (out.shape == A.shape[:-1] and out.dtype in [torch.cfloat, torch.cdouble])"

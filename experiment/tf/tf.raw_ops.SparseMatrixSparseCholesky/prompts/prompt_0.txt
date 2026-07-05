@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseMatrixSparseCholesky` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseMatrixSparseCholesky` function computes the sparse Cholesky decomposition of a symmetric positive definite (SPD) sparse matrix in CSR format. It returns the lower triangular Cholesky factor **L** as a sparse matrix, such that **A = L * Lᵀ** (or the conjugate transpose for complex types).
+
+**Key points:**
+- **Input:** A sparse matrix in CSR format (`CSRSparseMatrix`).
+- **Permutation:** A fill-reducing permutation (e.g., from AMD ordering) to minimize non-zero entries in the factor.
+- **Matrix type:** Supports `float32`, `float64`, `complex64`, `complex128`.
+- **Requirements:** The input must be SPD (only the lower triangular part is read). The permutation must be valid and match the batch dimensions.
+- **Output:** A `CSRSparseMatrix` representing the sparse Cholesky factor **L**.
+
+**Typical workflow:**
+1. Convert a sparse tensor to CSR format.
+2. Compute a fill-reducing permutation (e.g., using `sparse_matrix_ordering_amd`).
+3. Call this function to obtain the sparse Cholesky factor.
+4. Optionally convert the result to a dense tensor if needed.
+
+This operation is efficient for large sparse systems, as it maintains sparsity in the factorization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  permutation:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  type:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: ["float32", "float64", "complex64", "complex128"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: permutation
+    Constraint: "input.batch_dimension == permutation.shape[0]"
+  2:
+    Parameter 1: permutation
+    Parameter 2: input
+    Constraint: "permutation.shape[1] == input.row_count"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseMatrixSparseCholesky in a complex way */
+import tensorflow as tf

@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `torch.distributions.kl.register_kl` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`
+- **Common Distributions**: Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Exponential, Dirichlet, MultivariateNormal, etc.
+- **Specialized**: TransformedDistribution, MixtureSameFamily, Independent, ExponentialFamily
+
+### **2. Essential Methods**
+- `sample()`: Draw random samples
+- `log_prob()`: Compute log probability (for score function estimator)
+- `rsample()`: Reparameterized sampling (for pathwise derivative estimator)
+- `cdf()`/`icdf()`: Cumulative distribution and inverse CDF
+- `entropy()`: Distribution entropy
+
+### **3. Gradient Estimation Techniques**
+- **Score Function/REINFORCE**: Uses `sample()` + `log_prob()` (no gradient through sampling)
+- **Pathwise Derivative**: Uses `rsample()` (gradient flows through reparameterized samples)
+
+### **4. Supporting Infrastructure**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain constraints for distribution parameters
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+loss.backward()
+```
+
+## **Design Features**
+- Batch-aware: All distributions support batched parameters
+- Validation: Optional argument validation
+- Exponential family: Special handling for distributions in exponential family form
+- Transformed distributions: Easy creation via composition of base distribution and transforms
+
+The package is designed to be compatible with automatic differentiation, making it suitable for variational inference, reinforcement learning, and other stochastic optimization problems in deep learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  type_p:
+    dtype: ["type"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  type_q:
+    dtype: ["type"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: type_p
+    Parameter 2: null
+    Constraint: "issubclass(type_p, torch.distributions.Distribution)"
+  2:
+    Parameter 1: type_q
+    Parameter 2: null
+    Constraint: "issubclass(type_q, torch.distributions.Distribution)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.kl.register_kl in a complex way */
+import torch

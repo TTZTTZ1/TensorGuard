@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.ResNet101V2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.ResNet101V2` is a pre‑trained deep convolutional neural network model based on the ResNet‑V2 architecture with 101 layers. It is designed primarily for image classification tasks, supporting transfer learning and fine‑tuning workflows.
+
+**Key Features:**
+- **Architecture:** Implements residual connections with pre‑activation (batch norm and ReLU before weight layers), as described in the paper “Identity Mappings in Deep Residual Networks.”
+- **Pre‑trained Weights:** Can load weights pre‑trained on ImageNet (`weights='imagenet'`), enabling strong feature extraction out‑of‑the‑box.
+- **Input Preprocessing:** Requires pixel values to be scaled between ‑1 and 1 using `keras.applications.resnet_v2.preprocess_input`.
+- **Flexible Input/Output:**  
+  - `include_top=True` includes the final fully‑connected classification layer (default 1000 ImageNet classes).  
+  - `include_top=False` allows custom input shapes (≥32×32) and custom classifiers, with optional global pooling (`pooling='avg'` or `'max'`).
+- **Use Cases:** Image classification, feature extraction, and transfer learning.
+
+**Typical Usage:**
+```python
+model = ResNet101V2(weights='imagenet', include_top=False, pooling='avg')
+features = model.predict(preprocessed_images)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "True"
+  weights
+    dtype: ["No mention"]
+    range: ["None", "'imagenet'", "string"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "'imagenet'"
+  input_tensor
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  input_shape
+    dtype: ["No mention"]
+    range: ["tuple of 3 integers with last two dimensions >= 32 for channels_last, or first dimension 3 and last two >= 32 for channels_first"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling
+    dtype: ["No mention"]
+    range: ["None", "'avg'", "'max'"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  classes
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "1000"
+  classifier_activation
+    dtype: ["str", "callable"]
+    range: ["None", "'softmax'", "str", "callable"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "'softmax'"
+constraints:
+  1.
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2.
+    Parameter 1: "include_top"
+    Parameter 2: "weights"
+    Constraint: "(include_top == True and weights is None) or classes == 1000"
+  3.
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.ResNet101V2 in a complex way */
+import tensorflow as tf

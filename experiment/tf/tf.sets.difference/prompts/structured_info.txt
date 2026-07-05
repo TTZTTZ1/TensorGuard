@@ -1,0 +1,38 @@
+params:
+  a:
+    dtype: ["int", "string"]
+    range: null
+    structure: ["Tensor", "SparseTensor"]
+    shape: null
+    default: null
+  b:
+    dtype: ["int", "string"]
+    range: null
+    structure: ["Tensor", "SparseTensor"]
+    shape: null
+    default: null
+  aminusb:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  validate_indices:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: a
+    Parameter 2: b
+    Constraint: a.dtype == b.dtype
+  2:
+    Parameter 1: a
+    Parameter 2: b
+    Constraint: a.shape[:-1] == b.shape[:-1]
+  3:
+    Parameter 1: a
+    Parameter 2: b
+    Constraint: not (isinstance(a, tf.SparseTensor) and isinstance(b, tf.Tensor))

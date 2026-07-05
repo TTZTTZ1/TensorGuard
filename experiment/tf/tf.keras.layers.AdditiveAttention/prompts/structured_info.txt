@@ -1,0 +1,60 @@
+params:
+  use_scale:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  dropout:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0"
+  inputs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  mask:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  return_attention_scores:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  training:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  use_causal_mask:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "query"
+    Parameter 2: "key"
+    Constraint: "query.shape[-1] == key.shape[-1]"
+  2:
+    Parameter 1: "key"
+    Parameter 2: "value"
+    Constraint: "key is None or key.shape == value.shape"
+  3:
+    Parameter 1: "query_mask"
+    Parameter 2: "query"
+    Constraint: "query_mask.shape[1] == query.shape[1]"
+  4:
+    Parameter 1: "value_mask"
+    Parameter 2: "value"
+    Constraint: "value_mask.shape[1] == value.shape[1]"

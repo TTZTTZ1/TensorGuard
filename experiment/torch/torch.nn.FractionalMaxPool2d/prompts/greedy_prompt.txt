@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.nn.FractionalMaxPool2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`FractionalMaxPool2d` performs 2D fractional max pooling, which downsamples input tensors using stochastically determined pooling strides to achieve a specified output size or ratio.
+
+**Key parameters:**
+- `kernel_size`: Size of the pooling window (single int or tuple `(kh, kw)`).
+- `output_size` or `output_ratio`: Exactly one must be set to define the output dimensions—either as absolute size (`(oH, oW)`) or as a fraction of the input (`(0.0, 1.0)`).
+- `return_indices`: If `True`, returns pooling indices for use with `MaxUnpool2d`.
+
+**Constraints:**
+- Must satisfy:  
+  `kernel_height + output_height - 1 <= input_height`  
+  `kernel_width + output_width - 1 <= input_width`
+
+**Example:**
+```python
+m = nn.FractionalMaxPool2d(3, output_size=(13, 12))
+output = m(input)  # input shape: (N, C, H_in, W_in)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kernel_size:
+    dtype: ["int", "tuple[int, int]"]
+    range: [null]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: null
+  output_size:
+    dtype: ["int", "tuple[int, int]"]
+    range: [null]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: null
+  output_ratio:
+    dtype: ["float", "tuple[float, float]"]
+    range: ["(0,1)"]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: null
+  return_indices:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: output_size
+    Parameter 2: output_ratio
+    Constraint: "(output_size is not None) != (output_ratio is not None)"
+  2:
+    Parameter 1: output_ratio
+    Parameter 2: output_ratio
+    Constraint: "(isinstance(output_ratio, (int, float)) and 0 < output_ratio < 1) or (isinstance(output_ratio, tuple) and len(output_ratio) == 2 and all(0 < r < 1 for r in output_ratio))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.FractionalMaxPool2d in a complex way */
+import torch

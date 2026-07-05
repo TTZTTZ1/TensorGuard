@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines. It supports synchronous distributed training via `DistributedDataParallel` and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+## Key Features:
+- **Backends**: Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI (optional)
+- **Initialization**: TCP, shared file-system, or environment variables
+- **Communication**: Point-to-point (send/recv) and collective operations (broadcast, all_reduce, etc.)
+- **Groups**: Create sub-groups for fine-grained communication
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+- **Key-Value Store**: TCPStore, FileStore, HashStore for coordination
+- **Debugging**: Tools like monitored_barrier, TORCH_DISTRIBUTED_DEBUG, and breakpoint()
+
+## Common Usage:
+1. Initialize with `init_process_group()` or `init_device_mesh()`
+2. Use collective operations (all_reduce, broadcast, etc.)
+3. Clean up with `destroy_process_group()`
+
+## Best Practices:
+- Use NCCL for CUDA GPU training
+- Use Gloo for CPU training
+- Ensure proper synchronization and error handling
+- Leverage debugging tools for troubleshooting hangs or crashes
+
+The package enables efficient distributed training with support for various network interconnects and hardware configurations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1.
+    Parameter 1: tensor_list
+    Parameter 2: tensor
+    Constraint: tensor.device == tensor_list[0].device and tensor.dtype == tensor_list[0].dtype
+  2.
+    Parameter 1: tensor_list
+    Parameter 2: group
+    Constraint: len(tensor_list) == (group.size() if group is not None else torch.distributed.get_world_size())
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_gather in a complex way */
+import torch

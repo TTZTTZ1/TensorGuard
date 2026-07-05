@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyProximalGradientDescent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseApplyProximalGradientDescent` operator performs a sparse update on a variable using the FOBOS (Forward-Backward Splitting) proximal gradient descent algorithm with a fixed learning rate. It applies L1 and L2 regularization only to the rows specified by the `indices` tensor.
+
+**Key functionality:**
+- Updates the variable `var` for selected rows based on the provided gradient and indices.
+- Implements the proximal gradient step:  
+  `prox_v = var - alpha * grad`  
+  `var = sign(prox_v)/(1 + alpha*l2) * max{|prox_v| - alpha*l1, 0}`
+- Supports various numeric data types (float32, float64, int32, etc.).
+- Allows optional locking to prevent contention during concurrent updates.
+
+**Arguments:**
+- `var`: A mutable tensor (Variable) to update.
+- `alpha`: Scalar learning rate.
+- `l1`, `l2`: Scalar regularization coefficients.
+- `grad`: Gradient tensor.
+- `indices`: Vector of indices selecting rows to update.
+- `use_locking`: Optional boolean for thread-safe updates.
+
+**Returns:**  
+An updated mutable tensor of the same type as `var`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  alpha:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["0"]
+    default: "null"
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["0"]
+    default: "null"
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["0"]
+    default: "null"
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "null"
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "var"
+    Parameter 2: "alpha"
+    Constraint: "var.dtype == alpha.dtype"
+  2:
+    Parameter 1: "var"
+    Parameter 2: "l1"
+    Constraint: "var.dtype == l1.dtype"
+  3:
+    Parameter 1: "var"
+    Parameter 2: "l2"
+    Constraint: "var.dtype == l2.dtype"
+  4:
+    Parameter 1: "var"
+    Parameter 2: "grad"
+    Constraint: "var.dtype == grad.dtype"
+  5:
+    Parameter 1: "alpha"
+    Parameter 2: "alpha"
+    Constraint: "tf.rank(alpha) == 0"
+  6:
+    Parameter 1: "l1"
+    Parameter 2: "l1"
+    Constraint: "tf.rank(l1) == 0"
+  7:
+    Parameter 1: "l2"
+    Parameter 2: "l2"
+    Constraint: "tf.rank(l2) == 0"
+  8:
+    Parameter 1: "indices"
+    Parameter 2: "indices"
+    Constraint: "indices.dtype in [tf.int32, tf.int64]"
+  9:
+    Parameter 1: "indices"
+    Parameter 2: "indices"
+    Constraint: "tf.rank(indices) == 1"
+  10:
+    Parameter 1: "var"
+    Parameter 2: "indices"
+    Constraint: "tf.reduce_all(tf.logical_and(indices >= 0, indices < tf.shape(var)[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyProximalGradientDescent in a complex way */
+import tensorflow as tf

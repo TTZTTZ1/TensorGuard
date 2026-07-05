@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.empty_strided` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.empty_strided` creates a tensor with a specified shape (`size`) and memory stride (`stride`), filled with uninitialized data. It allows low‑level control over memory layout but has undefined behavior if the tensor is “overlapped” (multiple indices point to the same memory).  
+
+**Key parameters:**  
+- `size`: tuple defining tensor shape.  
+- `stride`: tuple defining stride per dimension.  
+- Optional: `dtype`, `layout`, `device`, `requires_grad`, `pin_memory`.  
+
+**Note:** When deterministic mode and `fill_uninitialized_memory` are enabled, the tensor is initialized (NaN for float/complex, max value for integers) to ensure reproducibility.  
+
+**Example:**  
+```python
+a = torch.empty_strided((2, 3), (1, 2))
+# Creates a 2x3 tensor with stride (1, 2) and uninitialized content.
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  layout:
+    dtype: ["torch.layout"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "torch.strided"
+  device:
+    dtype: ["torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  requires_grad:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  pin_memory:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: pin_memory
+    Parameter 2: device
+    Constraint: "not pin_memory or (device is not None and device.type == 'cpu')"
+  2:
+    Parameter 1: size
+    Parameter 2: stride
+    Constraint: "len(size) == len(stride)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.empty_strided in a complex way */
+import torch

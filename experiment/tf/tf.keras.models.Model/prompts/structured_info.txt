@@ -1,0 +1,200 @@
+params:
+  auto_scale_loss:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: true
+  batch_size:
+    dtype: ["int", "null"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: 32
+  callbacks:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  class_weight:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: null
+  epochs:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: 1
+  filepath:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  format:
+    dtype: ["string"]
+    range: ["tf_saved_model"]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'tf_saved_model'
+  initial_epoch:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: 0
+  jit_compile:
+    dtype: ["bool", "string"]
+    range: ["true", "false", "auto"]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'auto'
+  loss:
+    dtype: ["string", "object", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  loss_weights:
+    dtype: ["list", "dict"]
+    range: "No mention"
+    structure: ["list", "dict"]
+    shape: ["any"]
+    default: null
+  metrics:
+    dtype: ["list", "dict", "string", "function", "object"]
+    range: "No mention"
+    structure: ["list", "dict", "scalar"]
+    shape: ["any"]
+    default: null
+  optimizer:
+    dtype: ["string", "object"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: 'rmsprop'
+  overwrite:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: true
+  return_dict:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: false
+  run_eagerly:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: false
+  sample_weight:
+    dtype: ["array"]
+    range: "No mention"
+    structure: ["array"]
+    shape: ["any"]
+    default: null
+  shuffle:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: true
+  skip_mismatch:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: false
+  steps:
+    dtype: ["int", "null"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  steps_per_execution:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: 1
+  steps_per_epoch:
+    dtype: ["int", "null"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  validation_batch_size:
+    dtype: ["int", "null"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: batch_size
+  validation_data:
+    dtype: ["tuple", "dataset", "generator", "PyDataset"]
+    range: "No mention"
+    structure: ["tuple", "object"]
+    shape: ["any"]
+    default: null
+  validation_freq:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: 1
+  validation_split:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [1]
+    default: 0.0
+  validation_steps:
+    dtype: ["int", "null"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  verbose:
+    dtype: ["string", "int"]
+    range: ["auto", 0, 1, 2]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'auto'
+  weighted_metrics:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  x:
+    dtype: ["array", "tensor", "list", "dict", "dataset", "generator", "PyDataset"]
+    range: "No mention"
+    structure: ["array", "list", "dict", "object"]
+    shape: ["any"]
+    default: null
+  y:
+    dtype: ["array", "tensor", "list", "dict", "dataset", "generator", "PyDataset"]
+    range: "No mention"
+    structure: ["array", "list", "dict", "object"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "isinstance(x, (tf.data.Dataset, keras.utils.PyDataset)) implies y is None"
+  2:
+    Parameter 1: x
+    Parameter 2: batch_size
+    Constraint: "isinstance(x, (tf.data.Dataset, keras.utils.PyDataset)) implies batch_size is None"
+  3:
+    Parameter 1: validation_data
+    Parameter 2: validation_split
+    Constraint: "validation_data is not None implies validation_split == 0.0"

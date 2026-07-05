@@ -1,0 +1,120 @@
+
+# You are a Python code generation assistant for the `torch.distributions.half_cauchy.HalfCauchy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators
+- Supports both discrete and continuous probability distributions
+- Facilitates stochastic gradient estimation for optimization
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - Abstract base class with methods like:
+  - `sample()` / `rsample()` - Sampling (with/without reparameterization)
+  - `log_prob()` - Log probability density/mass function
+  - `cdf()` / `icdf()` - Cumulative distribution functions
+  - `entropy()` - Distribution entropy
+  - `mean`, `variance`, `mode` - Distribution properties
+
+- **Common Distributions**:
+  - **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, etc.
+  - **Discrete**: Bernoulli, Categorical, Binomial, Poisson, etc.
+  - **Multivariate**: MultivariateNormal, LowRankMultivariateNormal
+  - **Transformed**: LogNormal, HalfNormal, Gumbel, etc.
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `log_prob()` for policy gradients
+  ```python
+  loss = -m.log_prob(action) * reward
+  ```
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable samples
+  ```python
+  action = m.rsample()  # Differentiable through parameters
+  ```
+
+### **3. Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **Parameter Validation**: Constraints via `arg_constraints`
+- **Exponential Family**: Specialized class for distributions in exponential family form
+- **KL Divergence**: Built-in computation between distributions
+- **Transforms**: Bijective transformations for constrained parameters
+
+### **4. Constraint System**
+- **Constraints**: Define valid parameter ranges (e.g., `simplex`, `positive`, `interval`)
+- **Transforms**: Convert between constrained and unconstrained spaces
+- **Registry System**: `transform_to()` and `biject_to()` for optimization and HMC
+
+### **5. Advanced Distributions**
+- **Mixture Models**: `MixtureSameFamily` for Gaussian mixture models
+- **Transformed Distributions**: `TransformedDistribution` for applying transforms
+- **Independent**: Reinterpret batch dimensions as event dimensions
+- **Relaxed Distributions**: Continuous relaxations of discrete distributions
+
+## **Typical Usage Patterns**
+
+### **1. Basic Distribution**
+```python
+m = Normal(loc=0.0, scale=1.0)
+samples = m.sample([100])  # 100 samples
+log_probs = m.log_prob(samples)
+```
+
+### **2. Policy Gradient (REINFORCE)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+```
+
+### **3. Variational Inference (Reparameterization)**
+```python
+params = network(input)
+m = Normal(*params)
+z = m.rsample()  # Differentiable sample
+```
+
+### **4. Constrained Parameters**
+```python
+unconstrained = torch.randn(3)
+transform = transform_to(Dirichlet.arg_constraints["concentration"])
+concentration = transform(unconstrained)  # Now valid for Dirichlet
+```
+
+## **Design Philosophy**
+- Follows TensorFlow Distributions design
+- Separates sampling from gradient estimation
+- Provides both score function and pathwise derivative estimators
+- Supports both automatic differentiation and manual gradient computation
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: []
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.half_cauchy.HalfCauchy in a complex way */
+import torch

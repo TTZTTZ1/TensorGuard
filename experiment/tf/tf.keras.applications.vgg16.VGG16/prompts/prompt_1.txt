@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.vgg16.VGG16` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.vgg16.VGG16` function instantiates the VGG16 model, a deep convolutional neural network designed for image classification. It accepts parameters to customize the model, such as whether to include the top fully-connected layers (`include_top`), load pre-trained ImageNet weights (`weights`), specify input dimensions (`input_shape`), and set pooling for feature extraction (`pooling`). The default input size is 224x224 pixels, and input preprocessing via `keras.applications.vgg16.preprocess_input` is required to convert images from RGB to BGR and zero-center channels relative to the ImageNet dataset. This model is suitable for both direct image classification and transfer learning tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  weights
+    dtype: ["string", "None"]
+    range: ["None", "\"imagenet\"", "string"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "\"imagenet\""
+  input_tensor
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  input_shape
+    dtype: ["tuple"]
+    range: ["len(input_shape) == 3", "input_shape[-1] == 3", "input_shape[0] >= 32", "input_shape[1] >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling
+    dtype: ["string", "None"]
+    range: ["None", "\"avg\"", "\"max\""]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  classes
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1000"
+  classifier_activation
+    dtype: ["string", "callable"]
+    range: ["string", "callable", "None"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "\"softmax\""
+constraints:
+  1
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "classes == 1000 or (include_top == True and weights is None)"
+  3
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights != 'imagenet' or classifier_activation in [None, 'softmax']"
+  4
+    Parameter 1: "include_top"
+    Parameter 2: "pooling"
+    Constraint: "include_top == False or pooling is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.vgg16.VGG16 in a complex way */
+import tensorflow as tf

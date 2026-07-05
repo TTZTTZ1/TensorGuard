@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.ragged.constant` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.ragged.constant` creates a RaggedTensor from nested Python lists, tuples, or arrays, allowing variable-length inner sequences. It automatically determines the tensor's rank and ragged structure but offers optional control over data type, ragged rank, inner shape, and row splits data type. This function is essential for handling irregular data in TensorFlow.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  pylist:
+    dtype: No mention
+    range: No mention
+    structure: ["list", "tuple", "np.ndarray"]
+    shape: No mention
+    default: null
+  dtype:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: None
+  ragged_rank:
+    dtype: ["int"]
+    range: ["nonnegative"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: None
+  inner_shape:
+    dtype: No mention
+    range: ["nonnegative integers"]
+    structure: ["tuple"]
+    shape: No mention
+    default: None
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: None
+  row_splits_dtype:
+    dtype: ["int32", "int64"]
+    range: ["int32", "int64"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: tf.dtypes.int64
+constraints:
+  1.
+    Parameter 1: ragged_rank
+    Parameter 2: None
+    Constraint: "ragged_rank >= 0"
+  2.
+    Parameter 1: ragged_rank
+    Parameter 2: pylist
+    Constraint: "ragged_rank < get_nesting_depth(pylist)"
+  3.
+    Parameter 1: ragged_rank
+    Parameter 2: inner_shape
+    Constraint: "get_nesting_depth(pylist) == ragged_rank + (len(inner_shape) if inner_shape is not None else 0) + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.ragged.constant in a complex way */
+import tensorflow as tf

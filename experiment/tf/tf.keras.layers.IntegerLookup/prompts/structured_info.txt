@@ -1,0 +1,90 @@
+params:
+  max_tokens:
+    dtype: ["int", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  num_oov_indices:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  mask_token:
+    dtype: ["int", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  oov_token:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  vocabulary:
+    dtype: ["list", "tuple", "numpy.ndarray", "tensor", "string", "None"]
+    range: [null]
+    structure: ["array", "string", "None"]
+    shape: ["variable"]
+    default: "None"
+  vocabulary_dtype:
+    dtype: ["string"]
+    range: [["int64", "int32"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'int64'"
+  idf_weights:
+    dtype: ["list", "tuple", "numpy.ndarray", "tensor", "None"]
+    range: [null]
+    structure: ["array", "None"]
+    shape: ["variable"]
+    default: "None"
+  invert:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  output_mode:
+    dtype: ["string"]
+    range: [["int", "one_hot", "multi_hot", "count", "tf_idf"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'int'"
+  sparse:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pad_to_max_tokens:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "invert"
+    Parameter 2: "output_mode"
+    Constraint: "invert == True implies output_mode == 'int'"
+  2:
+    Parameter 1: "idf_weights"
+    Parameter 2: "output_mode"
+    Constraint: "(idf_weights is not None) == (output_mode == 'tf_idf')"
+  3:
+    Parameter 1: "pad_to_max_tokens"
+    Parameter 2: "output_mode"
+    Constraint: "pad_to_max_tokens == True implies output_mode in ['multi_hot', 'count', 'tf_idf']"
+  4:
+    Parameter 1: "sparse"
+    Parameter 2: "output_mode"
+    Constraint: "sparse == True implies output_mode in ['multi_hot', 'count', 'tf_idf']"

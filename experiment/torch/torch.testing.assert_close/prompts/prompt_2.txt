@@ -1,0 +1,132 @@
+
+# You are a Python code generation assistant for the `torch.testing.assert_close` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.testing` module provides utilities for testing PyTorch code, primarily focusing on tensor comparison and creation.
+
+**Key Functions:**
+
+1. **`torch.testing.assert_close(actual, expected, ...)`**
+   - **Purpose:** Asserts that `actual` and `expected` are close within specified tolerances.
+   - **Comparison Criteria:**
+     - For real-valued tensors: `|actual - expected| ≤ atol + rtol * |expected|`
+     - Non-finite values (`inf`, `-inf`) must be equal.
+     - `NaN` values are considered equal only if `equal_nan=True`.
+   - **Additional Checks:** Validates matching device, dtype, layout, and stride (configurable via flags).
+   - **Supports:** Tensors, scalars, sequences, mappings, sparse tensors, and quantized tensors.
+   - **Tolerances:** Default `rtol`/`atol` values are dtype-specific (e.g., `float32`: `rtol=1.3e-6`, `atol=1e-5`).
+   - **Flexibility:** Use `functools.partial` to create custom assertions (e.g., `assert_equal` with zero tolerances).
+
+2. **`torch.testing.make_tensor(shape, dtype, device, ...)`**
+   - **Purpose:** Creates a tensor with uniformly distributed values in `[low, high)`.
+   - **Parameters:** Control shape, dtype, device, value range, memory layout, and autograd recording.
+   - **Defaults:** `low`/`high` are set based on dtype if not provided (e.g., floats: `[-9, 9)`).
+   - **Features:** Can generate noncontiguous tensors or exclude zero values.
+
+3. **`torch.testing.assert_allclose(...)`**
+   - **Deprecated:** Use `assert_close` instead. Provides similar functionality but with different defaults (e.g., `equal_nan=True`).
+
+**Usage Example:**
+```python
+import torch
+import functools
+
+# Basic tensor comparison
+expected = torch.tensor([1.0, 2.0])
+actual = torch.tensor([1.0, 2.001])
+torch.testing.assert_close(actual, expected)  # Passes with default tolerances
+
+# Create custom strict assertion
+assert_equal = functools.partial(torch.testing.assert_close, rtol=0, atol=0)
+assert_equal(torch.tensor(1.0), torch.tensor(1.0))  # Exact match required
+
+# Generate test tensor
+test_tensor = torch.testing.make_tensor((2, 3), dtype=torch.float32, device='cpu')
+```
+
+**Key Notes:**
+- `assert_close` is highly configurable and recommended over deprecated `assert_allclose`.
+- Python scalars can be compared with different types if `check_dtype=False`.
+- Sequences/mappings are compared recursively if their structures match.
+- Meta tensors only undergo attribute checks, not value comparisons.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  actual:
+    dtype: ["Any"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar", "sequence", "mapping"]
+    shape: ["No mention"]
+    default: null
+  expected:
+    dtype: ["Any"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar", "sequence", "mapping"]
+    shape: ["No mention"]
+    default: null
+  allow_subclasses:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  rtol:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  atol:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  equal_nan:
+    dtype: ["bool", "str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  check_device:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  check_dtype:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  check_layout:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  check_stride:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  msg:
+    dtype: ["str", "callable"]
+    range: ["No mention"]
+    structure: ["scalar", "callable"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "rtol"
+    Parameter 2: "atol"
+    Constraint: "(rtol is None) == (atol is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.testing.assert_close in a complex way */
+import torch

@@ -1,0 +1,34 @@
+params:
+  A:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [["*", "m", "n"]]
+    default: null
+  q:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "min(6, m, n)"
+  center:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  niter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "2"
+constraints:
+  1:
+    Parameter 1: "q"
+    Parameter 2: "A"
+    Constraint: "1 <= q <= min(A.size(-2), A.size(-1))"
+  2:
+    Parameter 1: "niter"
+    Parameter 2: "niter"
+    Constraint: "niter >= 0"

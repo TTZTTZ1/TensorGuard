@@ -1,0 +1,38 @@
+params:
+  condition:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar", "vector", "tensor"]
+    shape: null
+    default: null
+  x:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: condition
+    Parameter 2: condition
+    Constraint: "condition.dtype == tf.bool"
+  2:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "x.dtype == y.dtype and x.shape == y.shape"
+  3:
+    Parameter 1: condition
+    Parameter 2: x
+    Constraint: "(tf.rank(x) == 0 and tf.rank(condition) == 0) or (tf.rank(x) > 0 and (tf.rank(condition) == 0 or (tf.rank(condition) == 1 and tf.size(condition) == tf.shape(x)[0]) or tf.shape(condition) == tf.shape(x)))"

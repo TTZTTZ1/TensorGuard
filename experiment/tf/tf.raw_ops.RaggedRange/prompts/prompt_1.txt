@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.RaggedRange` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.RaggedRange` generates a **ragged tensor** where each row is a sequence defined by `range(starts[i], limits[i], deltas[i])`.  
+
+**Key points:**  
+- Inputs `starts`, `limits`, and `deltas` can be scalars or vectors (vectors must have matching sizes).  
+- Returns a tuple `(rt_nested_splits, rt_dense_values)` that can construct a `RaggedTensor`.  
+- Supports types: `bfloat16`, `float32`, `float64`, `int32`, `int64`.  
+- Splits tensor type defaults to `int64` (configurable via `Tsplits`).  
+
+**Example:**  
+For `starts=[2,5,8]`, `limits=[3,5,12]`, `deltas=1`, output rows are:  
+`[[2], [], [8,9,10,11]]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  starts:
+    dtype: ["bfloat16", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [0, 1]
+    default: "null"
+  limits:
+    dtype: ["bfloat16", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [0, 1]
+    default: "null"
+  deltas:
+    dtype: ["bfloat16", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [0, 1]
+    default: "null"
+  Tsplits:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "tf.int64"
+  name:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "starts"
+    Parameter 2: "limits"
+    Constraint: "tf.rank(starts) != 1 or tf.rank(limits) != 1 or tf.shape(starts)[0] == tf.shape(limits)[0]"
+  2:
+    Parameter 1: "starts"
+    Parameter 2: "deltas"
+    Constraint: "tf.rank(starts) != 1 or tf.rank(deltas) != 1 or tf.shape(starts)[0] == tf.shape(deltas)[0]"
+  3:
+    Parameter 1: "limits"
+    Parameter 2: "deltas"
+    Constraint: "tf.rank(limits) != 1 or tf.rank(deltas) != 1 or tf.shape(limits)[0] == tf.shape(deltas)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.RaggedRange in a complex way */
+import tensorflow as tf

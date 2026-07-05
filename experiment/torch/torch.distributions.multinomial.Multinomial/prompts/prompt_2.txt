@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.distributions.multinomial.Multinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Core methods: `sample()`, `log_prob()`, `rsample()` (reparameterized sampling)
+- Properties: `mean`, `variance`, `entropy`, `support`
+
+### **2. Available Distributions**
+**Continuous:** Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete:** Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate:** MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Specialized:** MixtureSameFamily, TransformedDistribution, Independent
+
+### **3. Gradient Estimation Methods**
+- **Score Function/REINFORCE**: Uses `sample()` + `log_prob()` (no gradient through samples)
+- **Pathwise Derivative**: Uses `rsample()` (gradient flows through reparameterized samples)
+
+### **4. Key Features**
+- **Batch/Event Shapes**: Supports batched parameters and multivariate distributions
+- **Parameter Validation**: Constraint system ensures valid parameter values
+- **KL Divergence**: Built-in KL divergence computation between distributions
+- **Transforms**: Bijective transformations for constrained parameter spaces
+- **Exponential Family**: Specialized class for distributions in exponential family form
+
+### **5. Practical Usage**
+```python
+# REINFORCE example
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization example
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+```
+
+### **6. Constraint System**
+- Validates distribution parameters (e.g., probabilities ∈ [0,1])
+- `transform_to()` and `biject_to()` for unconstrained optimization
+
+### **7. Advanced Functionality**
+- **TransformedDistribution**: Apply transforms to base distributions
+- **Independent**: Reinterpret batch dimensions as event dimensions
+- **MixtureSameFamily**: Mixture distributions with same component type
+
+The package is designed for probabilistic modeling in machine learning, particularly useful for reinforcement learning, variational inference, and Bayesian methods where gradient-based optimization of stochastic models is required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["int", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: "1"
+  probs:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  logits:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: null
+    Constraint: "total_count >= 0"
+  2:
+    Parameter 1: probs
+    Parameter 2: null
+    Constraint: "torch.all(probs >= 0) and torch.all(probs <= 1)"
+  3:
+    Parameter 1: logits
+    Parameter 2: null
+    Constraint: "torch.isfinite(logits)"
+  4:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+  5:
+    Parameter 1: total_count
+    Parameter 2: probs
+    Constraint: "torch.broadcast_shapes(total_count.shape, probs.shape) is not None"
+  6:
+    Parameter 1: total_count
+    Parameter 2: logits
+    Constraint: "torch.broadcast_shapes(total_count.shape, logits.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.multinomial.Multinomial in a complex way */
+import torch

@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `torch.distributions.laplace.Laplace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Follows TensorFlow Distributions design patterns
+- Supports two main gradient estimation methods: REINFORCE (score function) and reparameterization trick (pathwise derivative)
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Core methods: `sample()`, `log_prob()`, `rsample()` (reparameterized sampling)
+- Properties: `mean`, `variance`, `entropy`, `support`
+- Batch and event shape handling for vectorized operations
+
+### **2. Available Distributions**
+**Univariate Continuous:** Normal, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Uniform, etc.
+**Univariate Discrete:** Bernoulli, Binomial, Poisson, Categorical, Geometric, etc.
+**Multivariate:** MultivariateNormal, Dirichlet, LowRankMultivariateNormal, Wishart
+**Specialized:** MixtureSameFamily, TransformedDistribution, Independent
+
+### **3. Gradient Estimation Methods**
+- **Score Function (REINFORCE):** Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative:** Uses `rsample()` for reparameterization trick (VAEs)
+
+### **4. Transforms System**
+- Transform between constrained and unconstrained spaces
+- Common transforms: ExpTransform, SigmoidTransform, SoftmaxTransform, StickBreakingTransform
+- Used in `TransformedDistribution` to create complex distributions from simple ones
+
+### **5. Constraints System**
+- Defines valid parameter domains for distributions
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Typical Usage Patterns**
+
+```python
+# 1. Basic distribution usage
+dist = Normal(loc=0, scale=1)
+samples = dist.sample([100])
+log_probs = dist.log_prob(samples)
+
+# 2. REINFORCE gradient estimation
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# 3. Reparameterization trick
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+loss.backward()
+
+# 4. Transformed distributions
+base = Normal(torch.zeros(2), torch.ones(2))
+transforms = [ExpTransform()]
+log_normal = TransformedDistribution(base, transforms)
+```
+
+## **Key Features**
+- **Batched computations:** All operations support batch dimensions
+- **Gradient support:** Seamless integration with autograd
+- **Validation:** Optional argument validation
+- **Extensibility:** Easy to add new distributions and transforms
+- **Numerical stability:** Careful implementation of log-space operations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: [[0, inf]]
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: null
+    Constraint: scale > 0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.laplace.Laplace in a complex way */
+import torch

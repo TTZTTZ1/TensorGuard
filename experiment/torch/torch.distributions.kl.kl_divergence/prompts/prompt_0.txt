@@ -1,0 +1,108 @@
+
+# You are a Python code generation assistant for the `torch.distributions.kl.kl_divergence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and enabling gradient-based optimization. It supports two main gradient estimation techniques:
+
+## Key Features
+
+### 1. **Score Function Estimator (REINFORCE)**
+- Uses `sample()` and `log_prob()` methods
+- Suitable for reinforcement learning policy gradients
+- Example:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+
+### 2. **Pathwise Derivative Estimator (Reparameterization Trick)**
+- Uses `rsample()` method for differentiable sampling
+- Suitable for variational autoencoders
+- Requires distributions with `.has_rsample == True`
+- Example:
+  ```python
+  m = Normal(*params)
+  action = m.rsample()
+  loss = -reward
+  ```
+
+## Core Components
+
+### **Distribution Class** (Abstract Base)
+- Properties: `batch_shape`, `event_shape`, `mean`, `variance`, `mode`, `support`
+- Methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Key subclasses: `ExponentialFamily`, `TransformedDistribution`
+
+### **Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+- **Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- **Specialized**: MixtureSameFamily, LKJCholesky, VonMises, Weibull
+
+### **Transforms & Constraints**
+- **Transforms**: Affine, Exp, Sigmoid, Softmax, StickBreaking, etc.
+- **Constraints**: Define valid parameter ranges (simplex, positive, interval, etc.)
+- **Constraint Registries**: `biject_to()` and `transform_to()` for mapping between constrained and unconstrained spaces
+
+### **KL Divergence**
+- `kl_divergence(p, q)` computes KL(p∥q)
+- Pre-registered for many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## Common Usage Patterns
+
+1. **Creating distributions**:
+   ```python
+   normal = Normal(loc=0.0, scale=1.0)
+   categorical = Categorical(probs=torch.tensor([0.2, 0.3, 0.5]))
+   ```
+
+2. **Sampling and scoring**:
+   ```python
+   samples = normal.sample((100,))  # 100 samples
+   log_probs = normal.log_prob(samples)
+   ```
+
+3. **Gradient estimation**:
+   ```python
+   # REINFORCE
+   loss = -dist.log_prob(action) * reward
+   
+   # Reparameterization
+   samples = dist.rsample()  # Differentiable
+   ```
+
+4. **Working with constraints**:
+   ```python
+   unconstrained = torch.zeros(100, requires_grad=True)
+   scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+   ```
+
+The package follows TensorFlow Distributions design and enables stochastic gradient estimation for optimization in probabilistic models, reinforcement learning, and variational inference.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  p:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  q:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: p
+    Parameter 2: q
+    Constraint: "isinstance(p, torch.distributions.Distribution) and isinstance(q, torch.distributions.Distribution)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.kl.kl_divergence in a complex way */
+import torch

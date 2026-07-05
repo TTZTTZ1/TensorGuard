@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `tf.math.unsorted_segment_mean` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.unsorted_segment_mean` computes the mean of values grouped by segment IDs. It divides the sum of all entries in a segment by the count of entries in that segment.
+
+**Key points:**
+- **Inputs:** `data` (numeric tensor), `segment_ids` (integer tensor with prefix-matching shape), `num_segments` (scalar integer).
+- **Output:** A tensor where each element at index `i` is the mean of all `data` entries whose `segment_ids` equal `i`.
+- **Handling of missing/negative IDs:** Outputs 0 for segments with no entries; negative segment IDs are ignored.
+- **Validation:** Segment IDs are validated on CPU (error if out-of-bounds) but not on GPU (unspecified behavior for out-of-bounds indices).
+- **Use case:** Useful for grouped averaging operations where segment IDs are not sorted.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_segments:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: data
+    Constraint: "segment_ids.shape == data.shape[:tf.rank(segment_ids)]"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.reduce_all(tf.less(segment_ids, num_segments))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.unsorted_segment_mean in a complex way */
+import tensorflow as tf

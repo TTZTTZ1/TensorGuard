@@ -1,0 +1,40 @@
+params:
+  tensor:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No mention"
+  ord:
+    dtype: ["string", "int", "float"]
+    range: ["fro", "euclidean", 1, 2, "np.inf", "positive real number"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'euclidean'"
+  axis:
+    dtype: ["None", "int", "tuple of ints"]
+    range: ["No mention"]
+    structure: ["None", "scalar", "tuple"]
+    shape: [1, 2]
+    default: "None"
+  keepdims:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "ord"
+    Parameter 2: "axis"
+    Constraint: "if isinstance(axis, tuple) and len(axis) == 2, then ord in ['euclidean', 'fro', 1, 2, np.inf]"
+  2:
+    Parameter 1: "ord"
+    Parameter 2: "axis"
+    Constraint: "if axis is None or isinstance(axis, int), then ord != 'fro'"

@@ -1,0 +1,24 @@
+{
+  "id": "PAPER-PT-004",
+  "title": "sparse.mm on malformed sparse tensors aborts with invalid free",
+  "framework": "PyTorch",
+  "api": "torch.sparse.mm",
+  "related_apis": ["torch.sparse_csr_tensor"],
+  "bug_type": "Crash / allocator corruption",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例"
+  },
+  "trigger": "Construct sparse tensors with indices that violate sparse invariants and pass them to sparse matrix multiplication.",
+  "expected": "PyTorch should reject invalid sparse tensor structure with a clear exception before native kernels corrupt memory.",
+  "observed": "The process aborts with free(): invalid next size (fast).",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["pytorch", "crash", "sparse", "memory-corruption"]
+}

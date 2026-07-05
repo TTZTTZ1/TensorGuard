@@ -1,0 +1,38 @@
+params:
+  loc:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  cov_factor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape + (rank,)"]
+    default: null
+  cov_diag:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cov_factor
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 2)"
+  2:
+    Parameter 1: cov_diag
+    Parameter 2: 
+    Constraint: "IndependentConstraint(GreaterThan(lower_bound=0.0), 1)"
+  3:
+    Parameter 1: loc
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 1)"

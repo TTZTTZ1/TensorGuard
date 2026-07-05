@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MatrixDiagV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.MatrixDiagV3` constructs a batched matrix (or batch of matrices) from provided diagonal values. It places the given diagonals within a matrix of specified dimensions, padding all other positions with a constant value.
+
+**Key functionality:**
+- **Input:** A tensor `diagonal` containing values for one or multiple diagonals.
+- **Output:** A tensor with rank one higher than `diagonal` (for a single diagonal) or the same rank (for a band of diagonals), forming the resulting matrix/matrices.
+- **Parameters:**
+  - `k`: Specifies the diagonal(s) to set (e.g., 0 for main, >0 for superdiagonals, <0 for subdiagonals). Can be a single integer or a range `[low, high]`.
+  - `num_rows`, `num_cols`: Define the dimensions of the innermost output matrix. If omitted, they are inferred.
+  - `padding_value`: Fills all non‑diagonal entries.
+  - `align`: Controls alignment when diagonals are shorter than the longest one in a band (options: `"RIGHT_LEFT"`, `"LEFT_RIGHT"`, etc.).
+
+**Use case:** Efficiently create batched diagonal, tridiagonal, or banded matrices from compact diagonal representations, with flexible padding and alignment.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonal:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  k:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar", [2]]
+    default: null
+  num_rows:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  num_cols:
+    dtype: ["int32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  padding_value:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "0"
+  align:
+    dtype: ["string"]
+    range: ["LEFT_RIGHT", "RIGHT_LEFT", "LEFT_LEFT", "RIGHT_RIGHT"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "RIGHT_LEFT"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: diagonal
+    Parameter 2: diagonal
+    Constraint: tf.rank(diagonal) >= 1
+  2:
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: (tf.size(k) != 2) or (k[0] <= k[1])
+  3:
+    Parameter 1: align
+    Parameter 2: align
+    Constraint: align in ["LEFT_RIGHT", "RIGHT_LEFT", "LEFT_LEFT", "RIGHT_RIGHT"]
+  4:
+    Parameter 1: padding_value
+    Parameter 2: diagonal
+    Constraint: tf.dtype(padding_value) == tf.dtype(diagonal)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MatrixDiagV3 in a complex way */
+import tensorflow as tf

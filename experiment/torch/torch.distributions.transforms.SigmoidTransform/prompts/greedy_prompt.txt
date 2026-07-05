@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.SigmoidTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows TensorFlow Distributions design pattern
+- Supports both discrete and continuous distributions
+
+## **Key Features**
+
+### **1. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### **2. Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with common methods
+- **Exponential Family**: `ExponentialFamily` - specialized for exponential family distributions
+- **Concrete Distributions**: Over 30+ distributions including:
+  - Common: `Normal`, `Bernoulli`, `Categorical`, `Uniform`, `Poisson`
+  - Multivariate: `MultivariateNormal`, `Dirichlet`, `Wishart`
+  - Transformed: `LogNormal`, `HalfNormal`, `Gumbel`
+  - Specialized: `LKJCholesky`, `MixtureSameFamily`, `LowRankMultivariateNormal`
+
+### **3. Core Methods**
+- `sample()` / `rsample()`: Generate samples (with/without reparameterization)
+- `log_prob()`: Compute log probability density/mass
+- `cdf()` / `icdf()`: Cumulative distribution and inverse functions
+- `entropy()`: Compute distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+
+### **4. Transforms System**
+- `Transform` classes for bijective transformations
+- Used in `TransformedDistribution` to create new distributions
+- Common transforms: `ExpTransform`, `SigmoidTransform`, `AffineTransform`, `SoftmaxTransform`
+- Supports composition via `ComposeTransform`
+
+### **5. Constraints System**
+- `Constraint` classes define valid parameter domains
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- `kl_divergence()` computes KL divergence between distributions
+- Extensive registry of pairwise KL implementations
+- `register_kl()` decorator for custom implementations
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = network(input)
+m = Normal(*params)
+sample = m.rsample()  # Differentiable
+loss = -m.log_prob(sample)
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+
+# Transformed distribution
+log_normal = LogNormal(loc=0.0, scale=1.0)
+
+# Multivariate distribution
+mvn = MultivariateNormal(loc=torch.zeros(2), covariance_matrix=torch.eye(2))
+```
+
+## **Design Benefits**
+- **Batch-aware**: All distributions support batched parameters
+- **Gradient-friendly**: Integrates seamlessly with autograd
+- **Extensible**: Easy to add custom distributions and transforms
+- **Numerically stable**: Careful implementation of log-space operations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.SigmoidTransform in a complex way */
+import torch

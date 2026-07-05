@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.fx.symbolic_trace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch models, enabling programmatic analysis and modification of `nn.Module` instances. It works by:
+
+1. **Symbolic Tracing** – Executes the model with proxy values to capture operations as a graph.
+2. **Intermediate Representation (IR)** – Represents the model as a `Graph` of `Node`s (placeholders, calls, outputs).
+3. **Code Generation** – Converts the graph back into runnable Python code (`GraphModule`).
+
+### Key Use Cases
+- **Graph Transformations**: Modify or optimize models by manipulating the graph (e.g., op substitution, fusion).
+- **Analysis**: Inspect model structure, compute metadata (e.g., shape propagation).
+- **Code Generation**: Programmatically create models from configurations.
+
+### Core Workflow
+```python
+import torch.fx
+gm = torch.fx.symbolic_trace(model)  # Trace → GraphModule
+print(gm.graph)                       # View IR
+print(gm.code)                        # View generated code
+```
+
+### Writing Transformations
+- **Direct Graph Manipulation**: Iterate over nodes and modify `target`, `args`, etc.
+- **Proxy-based Rewriting**: Use `Proxy` objects to record new operations into the graph.
+- **Pattern Replacement**: Use `replace_pattern()` for find/replace of subgraphs.
+- **Interpreter Pattern**: Subclass `Interpreter` or `Transformer` to override node execution.
+
+### Limitations
+- **Dynamic Control Flow**: Cannot trace branches/loops dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Built-ins (e.g., `len`, `math.sqrt`) require `torch.fx.wrap()`.
+- **Tensor Constructors**: `torch.rand`/`randn` embed constants; use wrappers for dynamic behavior.
+
+### Debugging
+- Compare outputs with `torch.allclose()`.
+- Inspect generated code via `print(gm.code)` or `gm.to_folder()`.
+- Use `pdb` to step through execution.
+
+### Customization
+Subclass `Tracer` to control:
+- Leaf module detection (`is_leaf_module`)
+- Argument creation (`create_arg`)
+- Module/method handling (`call_module`, `call_method`)
+
+### API Highlights
+- `symbolic_trace()`: Entry point for tracing.
+- `GraphModule`: Contains graph and generated `forward()`.
+- `Graph`/`Node`: IR components.
+- `replace_pattern()`: Automated subgraph rewriting.
+- `Interpreter`/`Transformer`: For analysis/transformation via node-by-node execution.
+
+FX is designed for composability—transformations accept and return `nn.Module` instances, enabling chaining.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  root:
+    dtype: ["torch.nn.Module", "Callable"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  concrete_args:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "root"
+    Parameter 2: "concrete_args"
+    Constraint: "concrete_args is None or isinstance(concrete_args, dict)"
+  2:
+    Parameter 1: "concrete_args"
+    Parameter 2: "concrete_args"
+    Constraint: "all(isinstance(key, str) for key in concrete_args.keys()) if concrete_args else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.symbolic_trace in a complex way */
+import torch

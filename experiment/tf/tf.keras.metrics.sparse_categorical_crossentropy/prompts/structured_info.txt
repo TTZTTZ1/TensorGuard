@@ -1,0 +1,40 @@
+params:
+  y_true:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size]"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_classes]"]
+    default: null
+  from_logits:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  ignore_class:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: "tf.shape(y_true)[0] == tf.shape(y_pred)[0]"
+  2:
+    Parameter 1: axis
+    Parameter 2: y_pred
+    Constraint: "-tf.rank(y_pred) <= axis < tf.rank(y_pred)"

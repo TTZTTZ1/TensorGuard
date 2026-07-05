@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.QUInt4x2Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container for tensors. Here's a concise summary:
+
+### Core Concept
+- **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for tensors.
+- A tensor consists of storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (`torch.UntypedStorage`)
+- **Primary storage type**: A byte-level container independent of data type interpretation.
+- **Key characteristics**:
+  - Multiple tensors can share the same storage (e.g., tensor views).
+  - Accessed via `tensor.untyped_storage()`.
+  - Has unique identifier via `data_ptr()` method.
+  - Can be manipulated with methods like `clone()`, `fill_()`, `copy_()`.
+- **Warning**: Direct storage manipulation is low-level and not recommended; use tensor methods instead.
+
+### Special Cases
+- Tensors with gradients have separate storages for data and grad.
+- Some tensors have no storage: meta device tensors, FakeTensors, certain tensor subclasses.
+
+### Legacy Typed Storage (Deprecated)
+- `torch.TypedStorage` and type-specific classes (`FloatStorage`, `IntStorage`, etc.) are legacy.
+- They wrap `UntypedStorage` with dtype information.
+- **Important**: All typed storage classes are deprecated; use `torch.UntypedStorage` exclusively.
+
+### Key Takeaways
+1. **Storage is the fundamental data container** for tensors.
+2. **Use `UntypedStorage`** for low-level operations (though rarely needed).
+3. **Avoid typed storage classes** as they're deprecated.
+4. **Most applications should use tensor-level APIs** rather than directly manipulating storage.
+
+The documentation emphasizes that storage-level operations are advanced and risky, with tensor methods being the preferred approach for most use cases.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "iterable"]
+    range: [null]
+    structure: ["scalar", "tuple", "list"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "torch.TypedStorage"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.quint4x2"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.quint4x2"
+  device:
+    dtype: ["torch.device", "string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.quint4x2"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "dtype"
+    Constraint: "wrap_storage is None or wrap_storage.dtype == torch.quint4x2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QUInt4x2Storage in a complex way */
+import torch

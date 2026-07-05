@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.experimental.BatchableExtensionType` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.BatchableExtensionType` is a TensorFlow class that extends `ExtensionType` to support batching and unbatching operations, making it compatible with APIs like Keras, `tf.data.Dataset`, and `tf.map_fn`. It allows custom data structures (with typed fields like `tf.Tensor`) to be batched, unbatched, stacked, or concatenated automatically by handling each nested field individually.
+
+### Key Features:
+- **Batching Support**: Enables use in batch-oriented TensorFlow workflows.
+- **Default Encoding**: Uses `ExtensionTypeBatchEncoder` to automatically stack/unstack nested tensors and extension types.
+- **Customization**: Override `__batch_encoder__` if default field-wise batching is insufficient.
+
+### Example:
+```python
+class Vehicle(tf.experimental.BatchableExtensionType):
+    top_speed: tf.Tensor
+    mpg: tf.Tensor
+
+# Batched usage
+batch = Vehicle([120, 150, 80], [30, 40, 12])
+result = tf.map_fn(lambda v: v.top_speed * v.mpg, batch, fn_output_signature=tf.int32)
+```
+
+This class simplifies integrating custom structured data into TensorFlow's batch processing pipelines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["any"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  **kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.BatchableExtensionType in a complex way */
+import tensorflow as tf

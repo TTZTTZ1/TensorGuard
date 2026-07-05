@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ExpTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Parameterizable Distributions**: Includes a wide range of distributions (e.g., `Normal`, `Bernoulli`, `Categorical`, `MultivariateNormal`) that can be parameterized by tensors.
+- **Gradient Estimation**: Supports two primary methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods (e.g., reinforcement learning).
+  - **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (e.g., variational autoencoders).
+
+### **Main Classes**
+1. **`Distribution`**: Abstract base class for all distributions. Key methods:
+   - `sample()` / `rsample()`: Draw samples (with or without reparameterization).
+   - `log_prob()`: Compute log probability density/mass.
+   - `entropy()`: Calculate distribution entropy.
+   - `mean`, `variance`, `mode`: Distribution statistics.
+
+2. **`TransformedDistribution`**: Composes a base distribution with a sequence of transforms (e.g., `LogNormal` as `exp(Normal)`).
+
+3. **`Independent`**: Reinterprets batch dimensions as event dimensions (useful for changing `log_prob` shape).
+
+4. **`MixtureSameFamily`**: Models mixture distributions with components from the same family.
+
+### **Key Features**
+- **Broad Distribution Support**: Includes continuous (e.g., `Normal`, `Gamma`, `Beta`), discrete (e.g., `Bernoulli`, `Poisson`, `Categorical`), and multivariate distributions (e.g., `MultivariateNormal`, `Dirichlet`).
+- **Constraint Handling**: Uses `Constraint` objects (e.g., `simplex`, `positive_definite`) to validate parameters.
+- **Transformations**: Provides `Transform` objects (e.g., `ExpTransform`, `SigmoidTransform`) to map between constrained and unconstrained spaces, enabling unconstrained optimization.
+- **KL Divergence**: Computes KL divergence between distributions via `kl_divergence()`.
+- **Efficient Sampling**: Supports reparameterized sampling (`rsample`) for differentiable gradients.
+
+### **Common Use Cases**
+1. **Stochastic Gradient Estimation**:
+   ```python
+   # REINFORCE
+   m = Categorical(probs)
+   action = m.sample()
+   loss = -m.log_prob(action) * reward
+   loss.backward()
+   
+   # Reparameterization Trick
+   m = Normal(loc, scale)
+   action = m.rsample()
+   loss = -reward
+   loss.backward()
+   ```
+
+2. **Probabilistic Modeling**:
+   ```python
+   # Define a distribution
+   dist = Normal(loc=torch.tensor([0.0]), scale=torch.tensor([1.0]))
+   # Sample and compute log probability
+   sample = dist.sample()
+   log_prob = dist.log_prob(sample)
+   ```
+
+3. **Unconstrained Optimization**:
+   ```python
+   # Transform constrained parameters (e.g., scale > 0) to unconstrained space
+   unconstrained_param = torch.randn(10, requires_grad=True)
+   scale = torch.distributions.transform_to(Normal.arg_constraints["scale"])(unconstrained_param)
+   ```
+
+### **Utilities**
+- **Constraint Registry**: `biject_to()` and `transform_to()` map constraints to transforms for HMC or optimization.
+- **KL Divergence Registry**: Extensible via `register_kl()` for custom distribution pairs.
+
+### **Design Principles**
+- Follows TensorFlow Distributions’ design.
+- Enables composition of distributions and transforms for flexible modeling.
+- Integrates seamlessly with PyTorch’s autograd for gradient-based learning.
+
+This package is essential for probabilistic deep learning, reinforcement learning, and Bayesian methods, providing tools to incorporate uncertainty and stochasticity into neural networks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ExpTransform in a complex way */
+import torch

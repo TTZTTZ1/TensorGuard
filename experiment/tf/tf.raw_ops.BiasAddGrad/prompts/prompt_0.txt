@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BiasAddGrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.BiasAddGrad` computes the gradient for the bias term in a `BiasAdd` operation. It sums the values of `out_backprop` (the gradient from the next layer) along the feature dimension, which depends on the data format:
+
+- **NHWC (default)**: Sums over the last dimension.
+- **NCHW**: Sums over the third-to-last dimension.
+
+This produces a 1D bias gradient tensor, reducing the input gradient to match the bias parameter's shape.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  out_backprop:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: [["NHWC", "NCHW"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "NHWC"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: out_backprop
+    Parameter 2: data_format
+    Constraint: "(data_format != 'NCHW') or (out_backprop.shape.rank >= 3)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BiasAddGrad in a complex way */
+import tensorflow as tf

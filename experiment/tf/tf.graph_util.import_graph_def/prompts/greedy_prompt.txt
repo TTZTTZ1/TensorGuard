@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.graph_util.import_graph_def` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.graph_util.import_graph_def` imports a serialized TensorFlow graph (`GraphDef` proto) into the current default graph. It allows you to map existing tensors to the graph's inputs and retrieve specific operations or tensors from the imported graph.
+
+**Key parameters:**
+- `graph_def`: The `GraphDef` proto to import.
+- `input_map`: Optional dictionary to remap input tensor names to existing `Tensor` objects.
+- `return_elements`: Optional list of operation or tensor names to return as `Operation`/`Tensor` objects.
+- `name`: Optional prefix for names in the imported graph (defaults to `"import"`).
+
+**Returns:**  
+A list of `Operation` and/or `Tensor` objects corresponding to `return_elements`, or `None` if `return_elements` is not provided.
+
+**Common use case:**  
+Loading a saved model or graph to reuse or modify it within a new session.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  graph_def:
+    dtype: ["GraphDef"]
+    range: [null]
+    structure: ["proto"]
+    shape: []
+    default: null
+  input_map:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dictionary"]
+    shape: []
+    default: null
+  return_elements:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: []
+    default: "import"
+  op_dict:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dictionary"]
+    shape: []
+    default: null
+  producer_op_list:
+    dtype: ["OpList"]
+    range: [null]
+    structure: ["proto"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: input_map
+    Parameter 2: graph_def
+    Constraint: "input_map is None or all(key in [node.name for node in graph_def.node] for key in input_map.keys())"
+  2:
+    Parameter 1: return_elements
+    Parameter 2: graph_def
+    Constraint: "return_elements is None or all(elem in [node.name for node in graph_def.node] for elem in return_elements)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.graph_util.import_graph_def in a complex way */
+import tensorflow as tf

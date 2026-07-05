@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorArraySplitV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorArraySplitV3` splits a concatenated input tensor into multiple segments and stores them in a TensorArray, using a lengths vector to determine the size of each segment along the first dimension.
+
+**Key Parameters:**
+- `handle`: Resource handle to the TensorArray.
+- `value`: Concatenated tensor to split and store.
+- `lengths`: 1D int64 tensor specifying the size of each segment along the first axis of `value`.
+- `flow_in`: Float scalar ensuring operation sequencing.
+
+**Functionality:**  
+Given `lengths = [n0, n1, ..., n(T-1)]` and `value` with shape `(sum(lengths), d0, d1, ...)`, the operation splits `value` into `T` tensors, where the `t`-th tensor has shape `(nt, d0, d1, ...)`, and stores them sequentially in the TensorArray.
+
+**Returns:**  
+A float32 scalar flow_out tensor, used to chain subsequent TensorArray operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  handle:
+    dtype: ["resource"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  value:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lengths:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  flow_in:
+    dtype: ["float32"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: "lengths"
+    Parameter 2: "value"
+    Constraint: "tf.reduce_sum(lengths) == tf.shape(value)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorArraySplitV3 in a complex way */
+import tensorflow as tf

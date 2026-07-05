@@ -1,0 +1,28 @@
+params:
+  op:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  args:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  kwargs:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: args
+    Parameter 2: args
+    Constraint: "any(isinstance(arg, tf.sparse.SparseTensor) for arg in args)"
+  2:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "all(st.indices == first_st.indices and st.dense_shape == first_st.dense_shape for st in [arg for arg in args if isinstance(arg, tf.sparse.SparseTensor)] + [v for v in kwargs.values() if isinstance(v, tf.sparse.SparseTensor)]) where first_st is next(st for st in [arg for arg in args if isinstance(arg, tf.sparse.SparseTensor)] + [v for v in kwargs.values() if isinstance(v, tf.sparse.SparseTensor)] if True)"

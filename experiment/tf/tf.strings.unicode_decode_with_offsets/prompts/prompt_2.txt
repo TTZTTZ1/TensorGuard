@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.strings.unicode_decode_with_offsets` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.strings.unicode_decode_with_offsets` decodes strings into Unicode code points while also returning the byte offset for each character, enabling alignment with the original byte sequence.
+
+**Key Features:**
+- **Input:** An N‑dimensional tensor of strings.
+- **Output:** A tuple `(codepoints, start_offsets)`:
+  - `codepoints`: Unicode code points (int32).
+  - `start_offsets`: Starting byte position of each character (int64).
+- **Encoding:** Requires specifying `input_encoding` (e.g., `'UTF-8'`).
+- **Error Handling:** Options: `'strict'`, `'replace'`, or `'ignore'`.
+- **Control Characters:** Optionally replace C0 control characters.
+
+**Returns:**  
+- A `tf.Tensor` if input is scalar; otherwise a `tf.RaggedTensor`.
+
+**Example Use:**  
+```python
+input = [b'G\xc3\xb6\xc3\xb6dnight', b'\xf0\x9f\x98\x8a']
+codepoints, offsets = tf.strings.unicode_decode_with_offsets(input, 'UTF-8')
+# codepoints: [[71, 246, 246, 100, 110, 105, 103, 104, 116], [128522]]
+# offsets:    [[0, 1, 3, 5, 6, 7, 8, 9, 10], [0]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor", "ragged_tensor"]
+    shape: ["variable"]
+    default: null
+  input_encoding:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  errors:
+    dtype: ["string"]
+    range: [["strict", "replace", "ignore"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'replace'"
+  replacement_char:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "65533"
+  replace_control_characters:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: errors
+    Parameter 2: errors
+    Constraint: "errors in ['strict', 'replace', 'ignore']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.strings.unicode_decode_with_offsets in a complex way */
+import tensorflow as tf

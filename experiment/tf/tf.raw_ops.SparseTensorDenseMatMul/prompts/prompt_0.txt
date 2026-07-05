@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseTensorDenseMatMul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseTensorDenseMatMul` performs matrix multiplication between a sparse matrix **A** (rank 2) and a dense matrix **B**.  
+
+**Key inputs:**  
+- `a_indices`: 2D tensor of shape `[nnz, 2]` containing the indices of non-zero values in **A**.  
+- `a_values`: 1D tensor of length `nnz` with the corresponding non-zero values.  
+- `a_shape`: 1D tensor of length 2 defining the shape of **A**.  
+- `b`: Dense matrix **B** (must match **A**'s data type).  
+
+**Optional flags:**  
+- `adjoint_a` / `adjoint_b`: If `True`, uses the adjoint (transpose, with conjugation for complex values) of **A** or **B** in the multiplication.  
+
+**Note:**  
+- No automatic validation of sparse indices is performed.  
+- For best performance, ensure **A**'s indices are sorted lexicographically when `adjoint_a=False`, or by column order when `adjoint_a=True`.  
+
+**Output:**  
+A dense tensor with the same data type as `a_values`, resulting from **A** × **B**.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a_indices:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[nnz, 2]"]
+    default: null
+  a_values:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[nnz]"]
+    default: null
+  a_shape:
+    dtype: ["int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[2]"]
+    default: null
+  b:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  adjoint_a:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  adjoint_b:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: a_indices
+    Parameter 2: a_values
+    Constraint: a_indices.shape[0] == a_values.shape[0]
+  2:
+    Parameter 1: b
+    Parameter 2: a_values
+    Constraint: b.dtype == a_values.dtype
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseTensorDenseMatMul in a complex way */
+import tensorflow as tf

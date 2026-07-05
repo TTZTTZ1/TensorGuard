@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.BoolStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: PyTorch Storage**
+
+**Core Concept:**  
+A PyTorch tensor is built on a **storage**—a contiguous, one-dimensional byte array that holds the actual data. The storage is managed by `torch.UntypedStorage` (or the legacy `torch.TypedStorage`), which serves as the low‑level data container for tensors.
+
+**Key Points:**
+
+1. **Tensor‑Storage Relationship**  
+   - A tensor’s structure is defined by: **storage**, `dtype`, `shape`, `stride`, and `offset`.  
+   - Multiple tensors (e.g., views created via `view()` or slicing) can share the same underlying storage.  
+   - Access a tensor’s storage with `tensor.untyped_storage()`.
+
+2. **Untyped Storage (`torch.UntypedStorage`)**  
+   - A raw byte array, independent of data type or shape.  
+   - Can be shared by tensors of different `dtype` or shape.  
+   - Provides methods for low‑level operations:  
+     - `clone()`, `copy_()`, `fill_()`, `pin_memory()`, `share_memory_()`.  
+     - Device‑aware attributes: `device`, `is_cuda`, `is_hpu`.  
+     - Unique identifier: `data_ptr()` (pointer to the storage’s data).  
+   - **Warning:** Direct storage manipulation is risky; prefer high‑level tensor methods.
+
+3. **Special Cases**  
+   - Tensors with gradients have separate storages for `data` and `grad`.  
+   - Tensors on `"meta"` device or `FakeTensor` have no actual storage.  
+   - Tensor subclasses may exhibit non‑standard storage behavior.
+
+4. **Legacy Typed Storage (Deprecated)**  
+   - `torch.TypedStorage` and type‑specific classes (e.g., `torch.FloatStorage`) are legacy and will be removed.  
+   - They wrap an `UntypedStorage` with a specific `dtype`.  
+   - **Recommendation:** Use `torch.UntypedStorage` exclusively.
+
+**Main Use Cases:**  
+- Low‑level data sharing between tensors (e.g., memory‑efficient views).  
+- Memory‑mapped I/O via `from_file()`.  
+- Inter‑process data sharing with `share_memory_()`.  
+- **Note:** Most user‑level workflows should operate on tensors, not storages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.bool"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.bool"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: wrap_storage
+    Parameter 2: dtype
+    Constraint: "dtype == torch.bool or dtype is None"
+  2:
+    Parameter 1: wrap_storage
+    Parameter 2: device
+    Constraint: "device is None or device == wrap_storage.device"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.BoolStorage in a complex way */
+import torch

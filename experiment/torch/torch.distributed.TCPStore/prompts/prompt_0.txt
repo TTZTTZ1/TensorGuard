@@ -1,0 +1,102 @@
+
+# You are a Python code generation assistant for the `torch.distributed.TCPStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a comprehensive set of tools for distributed training across multiple processes and machines. Here’s a concise summary of its key components and usage:
+
+## **Overview**
+- **Purpose**: Enables multi‑process parallelism across one or more machines, supporting synchronous distributed training.
+- **Main Wrapper**: [`torch.nn.parallel.DistributedDataParallel`](https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html) builds on this for synchronous training.
+
+## **Key Features**
+1. **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), `mpi` (optional), and `ucc` (experimental).
+   - **Rule of thumb**: Use `nccl` for CUDA GPU training, `xccl` for XPU GPU, and `gloo` for CPU.
+2. **Initialization**: Must call [`torch.distributed.init_process_group()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.init_process_group) or [`torch.distributed.device_mesh.init_device_mesh()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.device_mesh.init_device_mesh) before any other distributed operations.
+   - **Methods**: TCP, shared file‑system, or environment variables (`env://` default).
+3. **Groups**: Default group is the world, but custom groups can be created with [`torch.distributed.new_group()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.new_group) for fine‑grained communication.
+4. **DeviceMesh**: Higher‑level abstraction for managing process groups in N‑dimensional device topologies (e.g., for 2D parallelism).
+
+## **Communication Primitives**
+- **Point‑to‑point**: [`send()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.send)/[`recv()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.recv) (synchronous) and [`isend()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.isend)/[`irecv()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.irecv) (asynchronous).
+- **Collectives**: [`broadcast()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.broadcast), [`all_reduce()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_reduce), [`all_gather()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_gather), [`scatter()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.scatter), [`reduce_scatter()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.reduce_scatter), [`all_to_all()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.all_to_all), [`barrier()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.barrier), etc.
+  - **Sync/Async**: Most collectives support an `async_op` flag for non‑blocking operation (returns a [`Work`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.Work) object).
+- **Object Collectives**: Functions like [`broadcast_object_list()`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.broadcast_object_list) handle Python objects (picklable), but have performance limitations.
+
+## **Key Utilities**
+- **Key‑Value Stores**: [`TCPStore`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.TCPStore), [`FileStore`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.FileStore), [`HashStore`](https://pytorch.org/docs/stable/distributed.html#torch.distributed.HashStore) for exchanging connection info.
+- **Launching**: `torch.distributed.launch` (deprecated, use [`torchrun`](https://pytorch.org/docs/stable/elastic/run.html#launcher-api)) and [`torch.multiprocessing.spawn()`](https://pytorch.org/docs/stable/multiprocessing.html#torch.multiprocessing.spawn) for multi‑process startup.
+- **Debugging**: 
+  - [`tor
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  host_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  port:
+    dtype: ["int"]
+    range: [[0, 65535]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  world_size:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_master:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  timeout:
+    dtype: ["datetime.timedelta"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "datetime.timedelta(seconds=300)"
+  wait_for_workers:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  multi_tenant:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  master_listen_fd:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  use_libuv:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: world_size
+    Parameter 2: wait_for_workers
+    Constraint: "world_size is not None or wait_for_workers == True"
+  2:
+    Parameter 1: master_listen_fd
+    Parameter 2: port
+    Constraint: "master_listen_fd is None or (isinstance(master_listen_fd, int) and master_listen_fd >= 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.TCPStore in a complex way */
+import torch

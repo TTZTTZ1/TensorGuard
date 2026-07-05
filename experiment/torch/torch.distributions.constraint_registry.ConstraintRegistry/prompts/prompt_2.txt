@@ -1,0 +1,115 @@
+
+# You are a Python code generation assistant for the `torch.distributions.constraint_registry.ConstraintRegistry` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Two gradient estimation methods**:
+  1. **Score function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  2. **Pathwise derivative (reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## **Main Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+- Batch and event shape handling
+
+### **2. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, LKJCholesky
+
+**Specialized**: 
+- `MixtureSameFamily`: Mixture distributions
+- `TransformedDistribution`: Apply transforms to base distributions
+- `Independent`: Reinterpret batch dims as event dims
+- `Relaxed` distributions: Continuous relaxations of discrete distributions
+
+### **3. Transforms**
+Bijective transformations for reparameterization:
+- `AffineTransform`, `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`
+- `StickBreakingTransform` (simplex), `CorrCholeskyTransform`
+- Composable via `ComposeTransform`
+
+### **4. Constraints**
+Define valid parameter ranges:
+- `interval`, `greater_than`, `simplex`, `positive_definite`, etc.
+- Used in distribution `arg_constraints`
+
+### **5. KL Divergence**
+- `kl_divergence(p, q)`: Compute KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+### **6. Constraint Registry**
+- `transform_to(constraint)`: Get transform for unconstrained optimization
+- `biject_to(constraint)`: Get bijective transform for HMC sampling
+
+## **Key Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))  # 100 samples
+
+# Transformed distribution (e.g., LogNormal)
+base = Normal(loc=0, scale=1)
+log_normal = TransformedDistribution(base, [ExpTransform()])
+```
+
+## **Design Features**
+- Follows TensorFlow Distributions design
+- Supports batch dimensions for vectorized operations
+- Automatic broadcasting of parameters
+- Validation via `validate_args` parameter
+- Memory-efficient `expand()` method
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions within PyTorch computational graphs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  constraint:
+    dtype: ["type", "Constraint"]
+    range: null
+    structure: ["class", "instance"]
+    shape: null
+    default: null
+  factory:
+    dtype: ["callable"]
+    range: null
+    structure: ["function", "callable object"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: constraint
+    Parameter 2: factory
+    Constraint: "(isinstance(constraint, type) and issubclass(constraint, Constraint)) or isinstance(constraint, Constraint) and callable(factory)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.constraint_registry.ConstraintRegistry in a complex way */
+import torch

@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.SubsetRandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and batching in PyTorch, centered around the `DataLoader` class. Here's a concise summary of its core functionality:
+
+### **Core Components**
+- **`DataLoader`**: Main class that creates an iterable over a dataset, supporting automatic batching, shuffling, multi-process loading, and memory pinning.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk).
+  - **Iterable-style**: Implements `__iter__()` (e.g., streaming from a database or real-time logs).
+
+### **Key Features**
+1. **Batching**: Automatically collates samples into batches via `batch_size`, `drop_last`, and `collate_fn`.
+2. **Sampling**: Controls data order with samplers (e.g., `RandomSampler`, `SequentialSampler`). Custom samplers can be provided.
+3. **Multi-process Loading**: Uses `num_workers` to parallelize data loading, reducing CPU-GPU bottleneck.
+4. **Memory Pinning**: `pin_memory=True` accelerates data transfer to CUDA GPUs by using pinned memory.
+
+### **Important Notes**
+- **IterableDataset with Multi-processing**: Requires manual configuration to avoid duplicate data across workers (using `get_worker_info()`).
+- **Platform Differences**: On Windows/macOS, use `if __name__ == '__main__':` to avoid re-execution in workers.
+- **Custom Batching**: Define a custom `collate_fn` for non-standard batching logic (e.g., padding sequences).
+- **Randomness**: In multi-process mode, seeds are set per worker; use `worker_init_fn` to ensure reproducibility.
+
+### **Utility Classes**
+- **Dataset Utilities**: `TensorDataset`, `ConcatDataset`, `Subset`, `random_split`.
+- **Samplers**: `RandomSampler`, `WeightedRandomSampler`, `BatchSampler`, `DistributedSampler` (for distributed training).
+
+### **Common Use Case**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+In short, `torch.utils.data` streamlines data pipeline construction, enabling efficient, scalable, and flexible data loading for PyTorch models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int"]
+    range: null
+    structure: ["sequence"]
+    shape: []
+    default: null
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "len(indices) > 0"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "all(isinstance(i, int) for i in indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.SubsetRandomSampler in a complex way */
+import torch

@@ -1,0 +1,109 @@
+
+# You are a Python code generation assistant for the `torch.distributions.one_hot_categorical.OneHotCategorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Univariate:**
+- Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric
+- Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate:**
+- Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- Wishart, LKJCholesky (for correlation matrices)
+
+**Specialized:**
+- MixtureSameFamily, TransformedDistribution, Independent
+- Relaxed distributions (for differentiable discrete sampling)
+
+### **3. Gradient Estimation Methods**
+
+**Score Function (REINFORCE):**
+```python
+# For policy gradients in RL
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization):**
+```python
+# For reparameterizable distributions
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+loss.backward()
+```
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Define valid parameter ranges (Interval, GreaterThan, Simplex, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for converting between constrained and unconstrained spaces
+
+### **5. KL Divergence**
+- `kl_divergence(p, q)` computes KL(p∥q)
+- Pre-registered implementations for many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Key Features**
+- **Batch support**: All distributions support batched parameters
+- **Gradient compatibility**: Designed for use with autograd
+- **Validation**: Optional argument validation
+- **Extensible**: Easy to add custom distributions and transforms
+- **Efficient**: Vectorized operations and caching where appropriate
+
+## **Common Use Cases**
+1. **Variational Inference**: Using reparameterizable distributions in VAEs
+2. **Reinforcement Learning**: Policy gradient methods with categorical distributions
+3. **Bayesian Modeling**: Building hierarchical probabilistic models
+4. **Statistical Modeling**: Flexible distribution fitting and sampling
+
+The package follows a design similar to TensorFlow Distributions and provides a unified interface for probabilistic programming within PyTorch's autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.one_hot_categorical.OneHotCategorical in a complex way */
+import torch

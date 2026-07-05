@@ -1,0 +1,107 @@
+
+# You are a Python code generation assistant for the `torch.distributions.geometric.Geometric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimation for optimization. It supports two main gradient estimation methods:
+
+## Key Features
+
+### 1. **Score Function (REINFORCE)**
+- Uses `sample()` and `log_prob()` methods
+- Suitable for discrete distributions
+- Common in reinforcement learning policy gradients
+
+### 2. **Pathwise Derivative (Reparameterization Trick)**
+- Uses `rsample()` method
+- Requires differentiable reparameterization
+- Common in variational autoencoders
+
+## Core Components
+
+### **Distribution Base Class**
+- Abstract base class for all distributions
+- Key methods: `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **Available Distributions** (Partial List)
+- **Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT
+- **Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric
+- **Multivariate**: MultivariateNormal, Dirichlet, Wishart
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull
+- **Specialized**: LKJCholesky, MixtureSameFamily, RelaxedBernoulli
+
+## Key Functionality
+
+### **KL Divergence**
+- `kl_divergence(p, q)` computes KL(p∥q)
+- Pre-registered for many distribution pairs
+- Extensible via `register_kl()` decorator
+
+### **Transforms**
+- Bijective transformations for reparameterization
+- Common transforms: Exp, Sigmoid, Softmax, StickBreaking, Affine
+- Used in `TransformedDistribution` for constructing complex distributions
+
+### **Constraints**
+- Define valid parameter ranges for distributions
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+## Practical Usage
+
+### **Example: REINFORCE**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Example: Reparameterization**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+The package follows TensorFlow Distributions design and provides a comprehensive framework for probabilistic modeling with automatic differentiation support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: 
+    Constraint: "probs > 0 and probs <= 1"
+  2:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.geometric.Geometric in a complex way */
+import torch

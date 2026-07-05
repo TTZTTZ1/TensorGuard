@@ -1,0 +1,114 @@
+
+# You are a Python code generation assistant for the `torch.optim.AdamW` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.AdamW` class implements the **AdamW optimizer**, a variant of Adam that decouples weight decay from gradient-based updates, preventing weight decay from accumulating in momentum and variance terms.
+
+**Key Features:**
+- **Decoupled weight decay**: Weight decay is applied directly to parameters before momentum/variance updates.
+- **Supports multiple variants**: Includes AMSGrad (`amsgrad=True`) and maximization (`maximize=True`) options.
+- **Performance optimizations**: Offers `foreach` (CUDA-optimized) and `fused` (theoretically fastest) implementations.
+- **Advanced capabilities**: Supports CUDA graph capture (`capturable`), differentiable optimization (`differentiable`), and custom hooks.
+
+**Default Parameters:**
+- Learning rate (`lr`): 1e-3
+- Betas (`betas`): (0.9, 0.999)
+- Epsilon (`eps`): 1e-8
+- Weight decay (`weight_decay`): 1e-2
+- AMSGrad (`amsgrad`): False
+- Maximize (`maximize`): False
+
+**Core Methods:**
+- `step(closure)`: Performs a single optimization step
+- `zero_grad(set_to_none=True)`: Resets gradients (default uses `None` for memory efficiency)
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state
+- `add_param_group()`: Add new parameter groups dynamically
+
+**Implementation Notes:**
+- Automatically selects `foreach` implementation on CUDA for better performance
+- Fused implementation available for specific dtypes (float64, float32, float16, bfloat16)
+- Supports MPS devices for float32 and float16 dtypes
+- Provides extensive hook system for customizing state dict and step behavior
+
+The optimizer follows the algorithm described in "Decoupled Weight Decay Regularization" (Loshchilov & Hutter, 2019), separating weight decay from the adaptive learning rate mechanism of Adam.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: "No mention"
+    default: "1e-3"
+  betas:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: "No mention"
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1e-2"
+  amsgrad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  foreach:
+    dtype: ["bool"]
+    range: ["None", "True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  capturable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  fused:
+    dtype: ["bool"]
+    range: ["None", "True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "lr"
+    Parameter 2: "fused"
+    Constraint: "not isinstance(lr, torch.Tensor) or fused == True or capturable == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.AdamW in a complex way */
+import torch

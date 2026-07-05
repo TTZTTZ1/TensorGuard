@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.UnicodeEncode` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.UnicodeEncode` encodes a 1D tensor of Unicode code points into strings, using a specified encoding and splitting them into substrings based on provided split indices.
+
+**Key Parameters:**
+- **`input_values`**: 1D tensor of code points to encode.
+- **`input_splits`**: Indices defining how to split `input_values` into separate strings.
+- **`output_encoding`**: Encoding type (`"UTF-8"`, `"UTF-16-BE"`, or `"UTF-32-BE"`).
+- **`errors`**: How to handle invalid input (`"strict"`, `"replace"`, or `"ignore"`).
+- **`replacement_char`**: Code point to replace invalid input when `errors='replace'`.
+
+**Example:**
+```python
+# Encodes code points into two UTF-8 strings: "Hello" and "World"
+input_values = [72, 101, 108, 108, 111, 87, 111, 114, 108, 100]
+input_splits = [0, 5, 10]
+output = tf.raw_ops.UnicodeEncode(input_values, input_splits, 'UTF-8')
+# output: ['Hello', 'World']
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_values:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  input_splits:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  output_encoding:
+    dtype: ["string"]
+    range: [["UTF-8", "UTF-16-BE", "UTF-32-BE"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  errors:
+    dtype: ["string"]
+    range: [["ignore", "replace", "strict"]]
+    structure: ["scalar"]
+    shape: null
+    default: "replace"
+  replacement_char:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "65533"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input_splits
+    Parameter 2: input_values
+    Constraint: "input_splits[-1] == tf.shape(input_values)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.UnicodeEncode in a complex way */
+import tensorflow as tf

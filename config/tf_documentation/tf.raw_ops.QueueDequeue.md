@@ -1,0 +1,42 @@
+# tf.raw_ops.QueueDequeue
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QueueDequeue](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QueueDequeue)
+
+---
+
+Dequeues a tuple of one or more tensors from the given queue.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.QueueDequeue`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QueueDequeue)
+
+```
+tf.raw_ops.QueueDequeue(
+    handle, component_types, timeout_ms=-1, name=None
+)
+```
+
+This operation has k outputs, where k is the number of components
+in the tuples stored in the given queue, and output i is the ith
+component of the dequeued tuple.
+
+N.B. If the queue is empty, this operation will block until an element
+has been dequeued (or 'timeout\_ms' elapses, if specified).
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `handle` | A `Tensor` of type mutable `string`. The handle to a queue. |
+| `component_types` | A list of `tf.DTypes` that has length `>= 1`. The type of each component in a tuple. |
+| `timeout_ms` | An optional `int`. Defaults to `-1`. If the queue is empty, this operation will block for up to timeout\_ms milliseconds. Note: This option is not supported yet. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A list of `Tensor` objects of type `component_types`. | |

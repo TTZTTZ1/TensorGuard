@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.cross` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cross` computes the cross product between two tensors along a specified dimension. By default, it uses the first dimension of size 3, but this behavior is deprecated and will align with `torch.linalg.cross` (default `dim=-1`) in the future. It supports float, double, and complex dtypes, as well as batched inputs, preserving batch dimensions in the output.
+
+**Parameters:**
+- `input`, `other`: Input tensors.
+- `dim` (optional): Dimension along which to compute the cross product.
+- `out` (optional): Output tensor.
+
+**Example:**
+```python
+>>> a = torch.randn(4, 3)
+>>> b = torch.randn(4, 3)
+>>> torch.cross(a, b, dim=1)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  other:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.shape == other.shape"
+  2:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim is None or (isinstance(dim, int) and -input.ndim <= dim < input.ndim and input.size(dim) == 3)"
+  3:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (out.shape == input.shape and out.dtype == input.dtype)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cross in a complex way */
+import torch

@@ -1,0 +1,113 @@
+
+# You are a Python code generation assistant for the `torch.distributions.continuous_bernoulli.ContinuousBernoulli` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview:
+
+### **Core Concepts**
+- **Parameterizable Distributions**: Includes a wide range of distributions (e.g., Normal, Bernoulli, Beta, Gamma, MultivariateNormal) that can be parameterized by tensors.
+- **Gradient Estimation**: Supports two primary methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods (common in reinforcement learning).
+  - **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (common in variational autoencoders).
+
+### **Key Classes & Methods**
+- **`Distribution`**: Abstract base class for all distributions. Key methods:
+  - `sample()` / `rsample()`: Draw samples (with/without reparameterization).
+  - `log_prob()`: Compute log probability density/mass.
+  - `entropy()`: Calculate distribution entropy.
+  - `mean`, `variance`, `mode`: Distribution statistics.
+- **`TransformedDistribution`**: Composes a base distribution with a sequence of transforms (e.g., `LogNormal` as `exp(Normal)`).
+- **`Independent`**: Reinterprets batch dimensions as event dimensions (useful for changing `log_prob` shape).
+- **`MixtureSameFamily`**: Models mixture distributions with components from the same family.
+
+### **Gradient Estimation Examples**
+1. **REINFORCE (Score Function)**:
+   ```python
+   probs = policy_network(state)
+   m = Categorical(probs)
+   action = m.sample()
+   loss = -m.log_prob(action) * reward
+   loss.backward()
+   ```
+2. **Reparameterization (Pathwise)**:
+   ```python
+   params = policy_network(state)
+   m = Normal(*params)
+   action = m.rsample()  # Differentiable
+   loss = -reward
+   loss.backward()
+   ```
+
+### **Additional Features**
+- **KL Divergence**: `kl_divergence(p, q)` computes KL divergence between distributions, with registered implementations for many pairs.
+- **Transforms**: Bijective and non-bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) to map between constrained and unconstrained spaces.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive`). Registries (`biject_to`, `transform_to`) link constraints to transforms for optimization or sampling.
+
+### **Use Cases**
+- **Probabilistic Modeling**: Build complex distributions via transforms and mixtures.
+- **Variational Inference**: Use reparameterized distributions (e.g., `Normal.rsample()`) for gradient-based optimization.
+- **Reinforcement Learning**: Implement policy gradients with `Categorical` or other discrete distributions.
+- **Bayesian Methods**: Leverage distributions as priors/likelihoods in hierarchical models.
+
+### **Example: Creating a Distribution**
+```python
+import torch.distributions as dist
+
+# Normal distribution
+normal = dist.Normal(loc=0.0, scale=1.0)
+samples = normal.sample((10,))  # 10 samples
+log_probs = normal.log_prob(samples)
+
+# Transformed distribution (e.g., Log-Normal)
+log_normal = dist.LogNormal(loc=0.0, scale=1.0)
+```
+
+### **Notes**
+- Distributions support **batch dimensions** and **event dimensions** for vectorized operations.
+- Use `has_rsample` to check if a distribution supports reparameterization.
+- Constraints ensure parameters are valid (e.g., `probs` in `[0, 1]`).
+
+This module is essential for probabilistic deep learning, enabling gradient-based learning in stochastic systems while maintaining mathematical rigor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float", "Tensor"]
+    range: [0, 1]
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  lims:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.499, 0.501)"
+  validate_args:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: null
+    Constraint: "probs is None or (torch.all(probs >= 0) and torch.all(probs <= 1))"
+  2:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.continuous_bernoulli.ContinuousBernoulli in a complex way */
+import torch

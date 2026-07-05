@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.backward` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.Tensor.backward()` method computes gradients of the current tensor with respect to graph leaves using automatic differentiation.
+
+**Key points:**
+- **Purpose:** Performs backpropagation to calculate gradients.
+- **For non-scalar tensors:** Requires a `gradient` argument specifying the gradient of the differentiated function.
+- **Gradient accumulation:** Gradients accumulate in leaf tensors' `.grad` attributes; you typically need to zero them before calling.
+- **Optional parameters:**
+  - `retain_graph`: Keeps the computational graph for reuse (default inferred from `create_graph`).
+  - `create_graph`: Enables higher-order derivative computation.
+  - `inputs`: Limits gradient accumulation to specified tensors only.
+
+**Common usage:** Call `backward()` on a scalar loss to compute gradients for all parameters in the model.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  gradient:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: "None"
+  retain_graph:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  create_graph:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  inputs:
+    dtype: ["Sequence[torch.Tensor]", "None"]
+    range: null
+    structure: ["sequence", "None"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "retain_graph"
+    Parameter 2: "create_graph"
+    Constraint: "not (create_graph and retain_graph is False)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.backward in a complex way */
+import torch

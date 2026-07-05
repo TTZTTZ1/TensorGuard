@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `tf.lookup.StaticVocabularyTable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.StaticVocabularyTable` is a TensorFlow lookup table that maps string keys to integer IDs, with built‑in handling for out‑of‑vocabulary (OOV) terms.  
+
+**Key features:**  
+- Uses an initializer (e.g., `KeyValueTensorInitializer`, `TextFileInitializer`) to define known vocabulary mappings.  
+- Assigns OOV keys to one of `num_oov_buckets` hash buckets, with IDs ranging from `vocab_size` to `vocab_size + num_oov_buckets - 1`.  
+- The hash function is `Fingerprint64`.  
+- Returns dense tensors, sparse tensors, or ragged tensors depending on the input format.  
+
+**Common use cases:**  
+- Token‑to‑ID mapping in NLP pipelines (e.g., subword tokenizers, BERT preprocessing).  
+- Assigning fixed IDs to known terms while handling unknown terms via hashing.  
+
+**Important notes:**  
+- OOV bucket IDs are determined solely by hash and bucket count, which can lead to collisions.  
+- If no OOV handling is needed, `StaticHashTable` may be more appropriate.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initializer:
+    dtype: ["TableInitializerBase"]
+    range: ["None", "TableInitializerBase instance"]
+    structure: ["object"]
+    shape: "No mention"
+    default: null
+  num_oov_buckets:
+    dtype: ["int"]
+    range: ["greater than 0"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  lookup_key_dtype:
+    dtype: ["string", "integer"]
+    range: ["string", "integer"]
+    structure: ["dtype specifier"]
+    shape: "No mention"
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["any string"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  experimental_is_anonymous:
+    dtype: ["bool"]
+    range: ["False", "True"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: num_oov_buckets
+    Parameter 2: None
+    Constraint: "num_oov_buckets > 0"
+  2:
+    Parameter 1: lookup_key_dtype
+    Parameter 2: None
+    Constraint: "lookup_key_dtype is None or lookup_key_dtype in [tf.string, tf.int64]"
+  3:
+    Parameter 1: initializer
+    Parameter 2: None
+    Constraint: "initializer is None or initializer.key_dtype in [tf.string, tf.int64]"
+  4:
+    Parameter 1: initializer
+    Parameter 2: None
+    Constraint: "initializer is None or initializer.value_dtype == tf.int64"
+  5:
+    Parameter 1: lookup_key_dtype
+    Parameter 2: initializer
+    Constraint: "lookup_key_dtype is None or initializer is None or (lookup_key_dtype in [tf.string, tf.int64] and initializer.key_dtype in [tf.string, tf.int64])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.StaticVocabularyTable in a complex way */
+import tensorflow as tf

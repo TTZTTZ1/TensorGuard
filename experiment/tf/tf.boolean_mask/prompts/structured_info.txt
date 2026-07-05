@@ -1,0 +1,46 @@
+params:
+  tensor:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  mask:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  axis:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [0]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "boolean_mask"
+constraints:
+  1:
+    Parameter 1: mask
+    Parameter 2: tensor
+    Constraint: "tf.rank(mask) > 0"
+  2:
+    Parameter 1: mask
+    Parameter 2: tensor
+    Constraint: "tf.rank(mask) <= tf.rank(tensor)"
+  3:
+    Parameter 1: mask
+    Parameter 2: tensor
+    Constraint: "if axis is None: tf.reduce_all(tf.equal(tf.shape(mask), tf.shape(tensor)[:tf.rank(mask)])) else: True"
+  4:
+    Parameter 1: axis
+    Parameter 2: tensor
+    Constraint: "axis is None or axis + tf.rank(mask) <= tf.rank(tensor)"
+  5:
+    Parameter 1: mask
+    Parameter 2: tensor
+    Constraint: "if axis is not None: tf.reduce_all(tf.equal(tf.shape(mask), tf.shape(tensor)[axis:axis+tf.rank(mask)])) else: True"

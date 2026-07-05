@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.distributed.broadcast_object_list` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines. It enables synchronous distributed training and supports several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU and GPU operations.
+
+## Key Features
+
+- **Multiple Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), MPI (CPU/GPU), and XCCL (XPU GPU)
+- **DeviceMesh**: Higher-level abstraction for managing process groups and device topologies
+- **Collective Operations**: Broadcast, all-reduce, gather, scatter, all-to-all, etc.
+- **Point-to-Point Communication**: Send/receive operations with synchronous and asynchronous variants
+- **Key-Value Store**: TCPStore, FileStore, and HashStore for distributed coordination
+- **Process Groups**: Fine-grained communication groups beyond the default world group
+
+## Initialization Methods
+
+1. **Environment Variables** (default): Uses `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify a network address and port
+3. **Shared File System**: Use a shared file for coordination
+
+## Backend Selection Guidelines
+
+- **CUDA GPU training**: Use NCCL (best performance)
+- **XPU GPU training**: Use XCCL  
+- **CPU training**: Use Gloo
+- **InfiniBand with GPU**: NCCL (only backend supporting GPUDirect)
+- **Ethernet with GPU**: NCCL (fallback to Gloo if issues)
+- **InfiniBand with CPU**: Gloo (if IP over IB enabled), otherwise MPI
+- **Ethernet with CPU**: Gloo
+
+## Common Patterns
+
+```python
+# Basic initialization
+dist.init_process_group(backend='nccl', init_method='env://')
+
+# Collective operations
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+dist.all_gather(tensor_list, tensor)
+
+# Point-to-point
+dist.send(tensor, dst=1)
+dist.recv(tensor, src=0)
+
+# DeviceMesh for multi-dimensional parallelism
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+## Debugging & Profiling
+
+- **TORCH_DISTRIBUTED_DEBUG**: Environment variable for debug logging
+- **monitored_barrier()**: Enhanced barrier with timeout and failure reporting
+- **torch.profiler**: Profile collective communication operations
+- **breakpoint()**: Interactive debugging for single rank
+
+## Important Notes
+
+- Each process maintains its own optimizer (no parameter broadcast needed)
+- Independent Python interpreters per process avoid GIL contention
+- Must call `destroy_process_group()` for proper cleanup
+- Object collectives have performance limitations and should be used cautiously
+- Third-party backends can be registered via `Backend.register_backend()`
+
+The package is essential for scaling PyTorch models across multiple GPUs and nodes, with `DistributedDataParallel` being the primary wrapper for synchronous distributed training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  object_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int", "None"]
+    range: [[0, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  group_src:
+    dtype: ["int", "None"]
+    range: [[0, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: src
+    Parameter 2: group_src
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.broadcast_object_list in a complex way */
+import torch

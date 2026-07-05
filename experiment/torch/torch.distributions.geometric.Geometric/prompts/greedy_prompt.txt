@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.distributions.geometric.Geometric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling capabilities
+- Supports gradient estimation via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` + `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, LKJCholesky
+
+### **3. Key Features**
+- **Batch/Event shapes**: Support for batched parameters and samples
+- **ExponentialFamily**: Specialized class for distributions in exponential family form
+- **Parameter constraints**: Automatic validation via `arg_constraints`
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+
+### **4. Transforms System**
+- Transformations between constrained/unconstrained spaces
+- Common transforms: `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`, `StickBreakingTransform`
+- Used in `TransformedDistribution` for constructing complex distributions
+
+### **5. Constraint Registry**
+- `transform_to()`: For optimization (not necessarily bijective)
+- `biject_to()`: For HMC sampling (guaranteed bijective)
+- Maps constraints to appropriate transforms
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Construction**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample([100])
+
+# Transformed distribution (e.g., LogNormal)
+log_normal = LogNormal(loc=0.0, scale=1.0)
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions design
+- Enables stochastic computation graphs
+- Provides automatic gradient estimation
+- Supports both discrete and continuous distributions
+- Efficient batched operations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: 
+    Constraint: "probs > 0 and probs <= 1"
+  2:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.geometric.Geometric in a complex way */
+import torch

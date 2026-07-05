@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.tensordot` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.tensordot` performs tensor contraction or outer product between two tensors `a` and `b` along specified axes. It generalizes operations like matrix multiplication and outer product to higher-dimensional tensors.
+
+**Key points:**
+- **Purpose:** Sums products of elements from `a` and `b` over contracted indices.
+- **Axes parameter:**  
+  - Scalar `N`: Contracts last `N` axes of `a` with first `N` axes of `b`.  
+  - List/`Tensor` shape `[2, k]`: Specifies exact axis pairs for contraction in `a` (row 0) and `b` (row 1).  
+  - `axes=0`: Computes outer product.
+- **Output order:** `order(a) + order(b) - 2 * len(axes[0])`.
+- **Compatibility:** Mirrors `numpy.tensordot` behavior.
+- **Common cases:**  
+  - Matrices with `axes=1` → matrix multiplication.  
+  - `axes=[[1], [0]]` for matrices → also matrix multiplication.  
+  - Higher-order tensor contraction reduces dimensionality.
+
+**Raises errors** for incompatible shapes or out-of-range axes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  b:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  axes:
+    dtype: ["int", "int32"]
+    range: "No mention"
+    structure: ["scalar", "list", "tensor"]
+    shape: ["scalar", "variable", "[2, k]"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.dtype == b.dtype"
+  2:
+    Parameter 1: "axes"
+    Parameter 2: "a"
+    Constraint: "(isinstance(axes, int) and 0 <= axes < tf.rank(a)) or (isinstance(axes, (list, tf.Tensor)) and all(0 <= ax < tf.rank(a) for ax in axes[0]))"
+  3:
+    Parameter 1: "axes"
+    Parameter 2: "b"
+    Constraint: "(isinstance(axes, int) and 0 <= axes < tf.rank(b)) or (isinstance(axes, (list, tf.Tensor)) and all(0 <= ax < tf.rank(b) for ax in axes[1]))"
+  4:
+    Parameter 1: "axes"
+    Parameter 2: "a"
+    Constraint: "not (isinstance(axes, (list, tf.Tensor))) or len(axes[0]) == len(axes[1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.tensordot in a complex way */
+import tensorflow as tf

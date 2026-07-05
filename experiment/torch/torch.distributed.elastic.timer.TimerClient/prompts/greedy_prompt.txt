@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerClient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers system provides a mechanism to detect and handle stuck workers in distributed training. Here's a concise summary:
+
+## **Purpose**
+Prevent worker processes from hanging indefinitely by setting time limits on critical code blocks. If a worker exceeds the allotted time, it gets terminated and restarted.
+
+## **Core Components**
+
+### **Timer Client** (`TimerClient`)
+- Used within worker processes to request timers
+- Main methods: `acquire()` and `release()`
+- Must be configured before use via `timer.configure()`
+
+### **Timer Server** (`TimerServer`)
+- Monitors active timers and expires them when deadlines pass
+- Terminates workers with expired timers
+- Runs locally on each host
+
+## **Basic Usage Pattern**
+
+```python
+# 1. Configure timer client in worker process
+timer.configure(LocalTimerClient(message_queue))
+
+# 2. Wrap critical code with timeout
+with timer.expires(after=60):  # 60-second timeout
+    # Potentially blocking operation
+    torch.distributed.all_reduce(...)
+```
+
+## **Provided Implementations**
+
+1. **LocalTimerServer/Client** - Uses `multiprocessing.Queue` for IPC
+2. **FileTimerServer/Client** - Uses named pipes (FIFO) for IPC
+
+## **Key Features**
+- Each host runs its own timer server for local workers
+- Workers are identified by PID
+- Timer expiration makes workers "eligible" for termination (not guaranteed immediate)
+- Supports custom server/client implementations via abstract base classes
+- Includes debug logging for expired timers
+
+## **Use Case**
+Primarily for distributed training scenarios where worker processes might hang during collective operations like `all_reduce()`, ensuring the overall training job can continue by restarting stuck workers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scope_id:
+    dtype: ["string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  expiration_time:
+    dtype: ["int", "float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time > 0 for acquire requests"
+  2:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time < 0 for release requests"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerClient in a complex way */
+import torch

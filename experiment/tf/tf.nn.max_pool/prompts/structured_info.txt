@@ -1,0 +1,74 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["rank N+2"]
+    default: null
+  ksize:
+    dtype: ["int", "list"]
+    range: ["positive integer or list of positive integers"]
+    structure: ["scalar", "list"]
+    shape: ["length 1, N, or N+2"]
+    default: null
+  strides:
+    dtype: ["int", "list"]
+    range: ["positive integer or list of positive integers"]
+    structure: ["scalar", "list"]
+    shape: ["length 1, N, or N+2"]
+    default: null
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID", "list of lists of two ints"]
+    structure: ["string", "list"]
+    shape: ["scalar", "list of length rank(input) with each element a list of 2 ints"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: ksize
+    Parameter 2: input
+    Constraint: "isinstance(ksize, int) or (isinstance(ksize, list) and len(ksize) in [1, tf.rank(input)-2, tf.rank(input)])"
+  2:
+    Parameter 1: strides
+    Parameter 2: input
+    Constraint: "isinstance(strides, int) or (isinstance(strides, list) and len(strides) in [1, tf.rank(input)-2, tf.rank(input)])"
+  3:
+    Parameter 1: padding
+    Parameter 2: input
+    Constraint: "not isinstance(padding, list) or (isinstance(padding, list) and len(padding) == tf.rank(input) and all(isinstance(p, list) and len(p) == 2 for p in padding))"
+  4:
+    Parameter 1: padding
+    Parameter 2: data_format
+    Constraint: "not isinstance(padding, list) or (data_format is not None and ((not data_format.startswith('NC') and padding[0] == [0,0] and padding[-1] == [0,0]) or (data_format.startswith('NC') and padding[0] == [0,0] and padding[1] == [0,0])))"
+  5:
+    Parameter 1: padding
+    Parameter 2: ksize
+    Constraint: "not isinstance(padding, list) or all(padding[i][0] + padding[i][1] <= (ksize if isinstance(ksize, int) else (ksize[i] if isinstance(ksize, list) and len(ksize) == tf.rank(input) else (1 if i not in spatial_indices else ksize))) for i in range(tf.rank(input))) where spatial_indices = list(range(1, tf.rank(input)-1)) if not data_format.startswith('NC') else list(range(2, tf.rank(input)))"
+  6:
+    Parameter 1: ksize
+    Parameter 2: data_format
+    Constraint: "all((ksize if isinstance(ksize, int) else (ksize[i] if isinstance(ksize, list) else 1)) == 1 for i in range(tf.rank(input)) if i not in spatial_indices) where spatial_indices = list(range(1, tf.rank(input)-1)) if not data_format.startswith('NC') else list(range(2, tf.rank(input)))"
+  7:
+    Parameter 1: strides
+    Parameter 2: data_format
+    Constraint: "all((strides if isinstance(strides, int) else (strides[i] if isinstance(strides, list) else 1)) == 1 for i in range(tf.rank(input)) if i not in spatial_indices) where spatial_indices = list(range(1, tf.rank(input)-1)) if not data_format.startswith('NC') else list(range(2, tf.rank(input)))"
+  8:
+    Parameter 1: data_format
+    Parameter 2: input
+    Constraint: "(tf.rank(input) == 3 and data_format in ['NWC','NCW']) or (tf.rank(input) == 4 and data_format in ['NHWC','NCHW']) or (tf.rank(input) == 5 and data_format in ['NDHWC','NCDHW'])"
+  9:
+    Parameter 1: padding
+    Parameter 2: input
+    Constraint: "not (isinstance(padding, list) and (tf.rank(input) == 5 or data_format == 'NCHW_VECT_C'))"

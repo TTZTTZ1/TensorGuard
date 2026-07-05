@@ -1,0 +1,54 @@
+params:
+  input:
+    dtype: ["torch.float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["torch.float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  zero_point:
+    dtype: ["torch.int32", "torch.half", "torch.float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  quant_min:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  quant_max:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "0 <= axis < input.dim()"
+  2:
+    Parameter 1: scale
+    Parameter 2: zero_point
+    Constraint: "scale.shape == zero_point.shape"
+  3:
+    Parameter 1: scale
+    Parameter 2: input
+    Constraint: "scale.shape[0] == input.shape[axis]"
+  4:
+    Parameter 1: quant_min
+    Parameter 2: quant_max
+    Constraint: "quant_min < quant_max"

@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `tf.RaggedTensorSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.RaggedTensorSpec` is a **type specification class** for `tf.RaggedTensor`, describing its structure and data types. It inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+
+### **Key Purpose**
+- Defines the metadata for a `RaggedTensor`, including shape, data type, ragged rank, and row-splits data type.
+- Used for type checking, serialization, and compatibility validation in TensorFlow's graph and function tracing.
+
+---
+
+### **Constructor Parameters**
+| Parameter | Description |
+|-----------|-------------|
+| `shape` | Tensor shape (ragged dimensions must be `None`). |
+| `dtype` | Data type of tensor values (default: `tf.float32`). |
+| `ragged_rank` | Number of partitioned dimensions (default: `shape.ndims - 1`). |
+| `row_splits_dtype` | Data type for row splits (`tf.int32` or `tf.int64`). |
+| `flat_values_spec` | TypeSpec for flat values if they are a `CompositeTensor`. |
+
+---
+
+### **Main Attributes**
+| Attribute | Description |
+|-----------|-------------|
+| `dtype` | Data type of the tensor values. |
+| `flat_values_spec` | TypeSpec of the flat values. |
+| `ragged_rank` | Number of ragged partitions. |
+| `row_splits_dtype` | Data type of row splits. |
+| `shape` | Static shape of the tensor. |
+| `value_type` | Python type compatible with this spec (`tf.RaggedTensor`). |
+
+---
+
+### **Key Methods**
+| Method | Purpose |
+|--------|---------|
+| `is_compatible_with(spec_or_value)` | Checks compatibility with another spec or value. |
+| `is_subtype_of(other)` | Determines if this spec is a subtype of another (TraceType). |
+| `most_specific_common_supertype(others)` | Finds the common supertype spec. |
+| `experimental_as_proto()` / `experimental_from_proto()` | Serialization/deserialization to/from proto. |
+| `from_value(value)` | Creates a spec from a `RaggedTensor` instance. |
+
+---
+
+### **Example Usage**
+```python
+import tensorflow as tf
+
+# Create a RaggedTensor
+rt = tf.ragged.constant([["a"], ["b", "c"]], dtype=tf.string)
+
+# Get its TypeSpec
+spec = tf.type_spec_from_value(rt)
+print(spec.dtype)           # tf.string
+print(spec.shape)           # (2, None)
+print(spec.ragged_rank)     # 1
+```
+
+---
+
+### **Notes**
+- Used in TensorFlow's ragged tensor operations, serialization, and custom gradient functions.
+- Part of the `tf.TypeSpec` system for defining custom tensor-like types.
+- The `flat_values_spec` parameter is experimental and used when flat values are not simple tensors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["No mention"]
+    range: ["None", "shape with ragged dimensions as None"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["tf.DType"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "tf.dtypes.float32"
+  ragged_rank:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  row_splits_dtype:
+    dtype: ["tf.int32", "tf.int64"]
+    range: ["tf.int32", "tf.int64"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "tf.dtypes.int64"
+  flat_values_spec:
+    dtype: ["No mention"]
+    range: ["None", "TypeSpec"]
+    structure: ["TypeSpec"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "flat_values_spec"
+    Constraint: "(dtype is None or flat_values_spec is None) or (dtype == flat_values_spec.dtype)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.RaggedTensorSpec in a complex way */
+import tensorflow as tf

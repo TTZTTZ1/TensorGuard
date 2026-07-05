@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CudnnRNNV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.CudnnRNNV2` is a TensorFlow operation that implements a Recurrent Neural Network (RNN) using NVIDIA's cuDNN library for GPU acceleration. It supports various RNN types (LSTM, GRU, RNN with tanh/ReLU) and configurations like bidirectional layers and dropout.
+
+**Key Features:**
+- **Inputs:** Sequence data (`input`), initial hidden/cell states (`input_h`, `input_c`), and a pre-initialized parameter buffer (`params`).
+- **Configurable:** Allows setting RNN type (`rnn_mode`), input projection (`input_mode`), direction (`direction`), and dropout.
+- **Outputs:** Returns the output sequence, final states, and optional tensors (`reserve_space`, `host_reserved`) for backpropagation during training.
+- **Training/Inference:** Controlled via `is_training`; training mode produces additional reserve tensors for gradient computation.
+
+**Use Case:** Efficient RNN computation on GPUs, suitable for sequence modeling tasks where performance is critical. Requires proper parameter initialization via `CudnnRNNParamsSize` and compatibility checks across hardware/software versions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[seq_length, batch_size, input_size]"]
+    default: null
+  input_h:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_layer * dir, batch_size, num_units]"]
+    default: null
+  input_c:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_layer * dir, batch, num_units]"]
+    default: null
+  params:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n]"]
+    default: null
+  rnn_mode:
+    dtype: ["string"]
+    range: [["rnn_relu", "rnn_tanh", "lstm", "gru"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "lstm"
+  input_mode:
+    dtype: ["string"]
+    range: [["linear_input", "skip_input", "auto_select"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "linear_input"
+  direction:
+    dtype: ["string"]
+    range: [["unidirectional", "bidirectional"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "unidirectional"
+  dropout:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  is_training:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: input_h
+    Constraint: "input_mode != 'skip_input' or input.shape[2] == input_h.shape[2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CudnnRNNV2 in a complex way */
+import tensorflow as tf

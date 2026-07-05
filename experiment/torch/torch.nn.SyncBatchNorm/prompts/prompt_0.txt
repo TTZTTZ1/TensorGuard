@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.nn.SyncBatchNorm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`SyncBatchNorm` is a PyTorch module that extends standard batch normalization to synchronize mean and variance statistics across multiple GPUs during distributed training. It is designed for use with `DistributedDataParallel` (DDP) when using one GPU per process.
+
+**Key Features:**
+- Computes batch statistics across all processes in the specified `process_group` (default is the entire world).
+- Synchronization occurs only during training (`model.eval()` disables it).
+- Supports conversion of existing `BatchNorm*D` layers via `convert_sync_batchnorm()`.
+
+**Parameters:**
+- `num_features`: Number of channels `C` in the input.
+- `process_group`: Defines the group of processes for synchronization (optional).
+
+**Usage:**
+1. **Direct instantiation:**  
+   `m = nn.SyncBatchNorm(num_features, process_group=process_group)`
+2. **Convert existing BatchNorm layers:**  
+   `sync_bn_module = nn.SyncBatchNorm.convert_sync_batchnorm(module, process_group)`
+3. **Wrap with DDP:**  
+   Must be used with `DistributedDataParallel` and a single GPU per process.
+
+**Note:**  
+Currently only supports single-GPU per process in DDP. Statistics are synchronized per channel across the process group during training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-05"
+  momentum:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.1"
+  affine:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  track_running_stats:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  process_group:
+    dtype: ["Any", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.SyncBatchNorm in a complex way */
+import torch

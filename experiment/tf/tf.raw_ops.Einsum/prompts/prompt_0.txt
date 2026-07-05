@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Einsum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Einsum` performs tensor contractions using Einstein summation notation. It supports unary and binary operations with explicit output subscripts (requiring the `->` symbol). Key features include handling generalized diagonals, reduction, batch dimensions, contraction, and diagonal expansion—the latter being unique to TensorFlow for gradient computation. Inputs are one or two tensors, and the equation must follow NumPy-style einsum formatting. This is a low-level op primarily used internally by `tf.einsum`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["list"]
+    shape: [1, 2]
+    default: "null"
+  equation:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "inputs"
+    Parameter 2: "null"
+    Constraint: "len(inputs) in [1, 2]"
+  2:
+    Parameter 1: "inputs"
+    Parameter 2: "null"
+    Constraint: "all(t.dtype == inputs[0].dtype for t in inputs) and len(inputs) > 0"
+  3:
+    Parameter 1: "equation"
+    Parameter 2: "inputs"
+    Constraint: "'->' in equation and equation.split('->')[0].count(',') + 1 == len(inputs)"
+  4:
+    Parameter 1: "equation"
+    Parameter 2: "null"
+    Constraint: "equation.count('->') == 1"
+  5:
+    Parameter 1: "equation"
+    Parameter 2: "null"
+    Constraint: "set(c for c in equation.split('->')[1] if c not in ',.->').issubset(set(c for part in equation.split('->')[0].split(',') for c in part if c not in ',.->'))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Einsum in a complex way */
+import tensorflow as tf

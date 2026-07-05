@@ -1,0 +1,102 @@
+params:
+  processing_mode:
+    dtype: ["string", "object"]
+    range: ["parallel_epochs", "distributed_epoch", "OFF", "DYNAMIC"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  service:
+    dtype: ["string", "tuple"]
+    range: ["[<protocol>://]<address>", "(protocol, address)"]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", [2]]
+    default: "null"
+  job_name:
+    dtype: ["string", "null"]
+    range: ["non-empty string"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  consumer_index:
+    dtype: ["int", "null"]
+    range: ["0 to num_consumers"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  num_consumers:
+    dtype: ["int", "null"]
+    range: ["positive integer"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  max_outstanding_requests:
+    dtype: ["int", "null"]
+    range: ["positive integer"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  data_transfer_protocol:
+    dtype: ["string", "null"]
+    range: ["string"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "grpc"
+  compression:
+    dtype: ["string", "null"]
+    range: ["AUTO", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "AUTO"
+  cross_trainer_cache:
+    dtype: ["CrossTrainerCache", "null"]
+    range: ["CrossTrainerCache object"]
+    structure: ["object"]
+    shape: ["object"]
+    default: "null"
+  target_workers:
+    dtype: ["string"]
+    range: ["AUTO", "ANY", "LOCAL"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "AUTO"
+constraints:
+  1:
+    Parameter 1: "processing_mode"
+    Parameter 2: "None"
+    Constraint: "processing_mode in ['parallel_epochs', 'distributed_epoch', 'OFF', 'DYNAMIC']"
+  2:
+    Parameter 1: "job_name"
+    Parameter 2: "None"
+    Constraint: "job_name is None or len(job_name) > 0"
+  3:
+    Parameter 1: "consumer_index"
+    Parameter 2: "num_consumers"
+    Constraint: "(consumer_index is None) == (num_consumers is None)"
+  4:
+    Parameter 1: "num_consumers"
+    Parameter 2: "None"
+    Constraint: "num_consumers is None or num_consumers > 0"
+  5:
+    Parameter 1: "consumer_index"
+    Parameter 2: "num_consumers"
+    Constraint: "consumer_index is None or num_consumers is None or (0 <= consumer_index < num_consumers)"
+  6:
+    Parameter 1: "max_outstanding_requests"
+    Parameter 2: "None"
+    Constraint: "max_outstanding_requests is None or max_outstanding_requests > 0"
+  7:
+    Parameter 1: "target_workers"
+    Parameter 2: "None"
+    Constraint: "target_workers in ['AUTO', 'ANY', 'LOCAL']"
+  8:
+    Parameter 1: "service"
+    Parameter 2: "None"
+    Constraint: "not isinstance(service, tuple) or (len(service) == 2 and all(isinstance(x, str) for x in service))"
+  9:
+    Parameter 1: "compression"
+    Parameter 2: "None"
+    Constraint: "compression in ['AUTO', None]"
+  10:
+    Parameter 1: "cross_trainer_cache"
+    Parameter 2: "None"
+    Constraint: "cross_trainer_cache is None or isinstance(cross_trainer_cache, tf.data.experimental.service.CrossTrainerCache)"

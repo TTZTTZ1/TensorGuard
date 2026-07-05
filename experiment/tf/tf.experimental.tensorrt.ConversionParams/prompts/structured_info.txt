@@ -1,0 +1,42 @@
+params:
+  max_workspace_size_bytes:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "DEFAULT_TRT_MAX_WORKSPACE_SIZE_BYTES"
+  precision_mode:
+    dtype: ["string"]
+    range: [["FP32", "FP16", "INT8"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "FP32"
+  minimum_segment_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "3"
+  maximum_cached_engines:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  use_calibration:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  allow_build_at_runtime:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "precision_mode"
+    Parameter 2: "use_calibration"
+    Constraint: "not use_calibration or precision_mode == 'INT8'"

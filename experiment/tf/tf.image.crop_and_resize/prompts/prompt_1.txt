@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.image.crop_and_resize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.crop_and_resize` extracts and resizes image crops from a batch of images. It takes normalized bounding box coordinates (`boxes`) and corresponding image indices (`box_indices`) to crop regions from the input 4D image tensor, then resizes each crop to a specified `crop_size`. The function supports bilinear or nearest-neighbor interpolation and handles out-of-bounds coordinates via an extrapolation value. The output is a 4D tensor containing the resized crops.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  image:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  boxes:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  box_indices:
+    dtype: ["int32"]
+    range: ["[0, batch)"]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  crop_size:
+    dtype: ["No mention"]
+    range: ["positive"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  method:
+    dtype: ["string"]
+    range: ["bilinear", "nearest"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "bilinear"
+  extrapolation_value:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: box_indices
+    Parameter 2: image
+    Constraint: tf.reduce_all(tf.logical_and(box_indices >= 0, box_indices < tf.shape(image)[0]))
+  2:
+    Parameter 1: boxes
+    Parameter 2: box_indices
+    Constraint: tf.shape(boxes)[0] == tf.shape(box_indices)[0]
+  3:
+    Parameter 1: image
+    Parameter 2: image
+    Constraint: image.shape[1] > 0 and image.shape[2] > 0
+  4:
+    Parameter 1: crop_size
+    Parameter 2: crop_size
+    Constraint: crop_size[0] > 0 and crop_size[1] > 0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.crop_and_resize in a complex way */
+import tensorflow as tf

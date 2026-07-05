@@ -1,0 +1,32 @@
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  tau:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, k)"]
+    default: null
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as A"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "A.shape[-2] >= A.shape[-1]"
+  2:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[:-2] == tau.shape[:-1]"
+  3:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[-1] >= tau.shape[-1]"

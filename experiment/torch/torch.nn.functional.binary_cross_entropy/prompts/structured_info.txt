@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["[0, 1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  target:
+    dtype: ["No mention"]
+    range: ["[0, 1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  reduce:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "target"
+    Constraint: "input.shape == target.shape"
+  2:
+    Parameter 1: "weight"
+    Parameter 2: "input"
+    Constraint: "weight is None or (weight.ndim <= input.ndim and all(weight.shape[i] == 1 or weight.shape[i] == input.shape[input.ndim - weight.ndim + i] for i in range(weight.ndim)))"

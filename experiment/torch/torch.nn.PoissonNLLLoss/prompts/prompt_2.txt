@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.nn.PoissonNLLLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`PoissonNLLLoss` computes the negative log-likelihood loss for targets following a Poisson distribution. It is used when modeling count data.
+
+**Key Parameters:**
+- `log_input`: If `True`, the input is expected to be the logarithm of the mean (loss = exp(input) - target * input). If `False`, input is the mean directly (loss = input - target * log(input + eps)).
+- `full`: If `True`, includes a Stirling approximation term for the factorial, improving accuracy for larger target values.
+- `eps`: Small constant to prevent log(0) when `log_input=False`.
+- `reduction`: Controls output reduction (`'none'`, `'mean'`, `'sum'`).
+
+**Loss Formula (simplified):**  
+`loss = input - target * log(input) + log(target!)`  
+The factorial term is omitted unless `full=True`.
+
+**Example Usage:**
+```python
+loss_fn = nn.PoissonNLLLoss()
+log_input = torch.randn(5, 2, requires_grad=True)
+target = torch.randn(5, 2)
+output = loss_fn(log_input, target)  # Scalar loss
+```
+
+**Shape:**  
+- Input and target must have the same shape.
+- Output is a scalar if reduction is `'mean'` or `'sum'`, otherwise same shape as input.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  log_input:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  full:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  size_average:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  eps:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1e-8"
+  reduce:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "reduction"
+    Parameter 2: "reduction"
+    Constraint: "reduction in ['none', 'mean', 'sum']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.PoissonNLLLoss in a complex way */
+import torch

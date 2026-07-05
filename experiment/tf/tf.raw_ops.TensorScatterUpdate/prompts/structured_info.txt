@@ -1,0 +1,42 @@
+params:
+  tensor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  indices:
+    dtype: ["int16", "int32", "int64", "uint16"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  updates:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: indices
+    Constraint: "len(indices.shape) >= 2"
+  2:
+    Parameter 1: indices
+    Parameter 2: tensor
+    Constraint: "indices.shape[-1] <= tensor.ndim"
+  3:
+    Parameter 1: updates
+    Parameter 2: tensor
+    Constraint: "updates.dtype == tensor.dtype"
+  4:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape[:-1] + tensor.shape[indices.shape[-1]:]"

@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BatchToSpaceND` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.BatchToSpaceND` reshapes and reorganizes a batch dimension into spatial dimensions, effectively converting batch data into a spatial grid. It is the inverse operation of `SpaceToBatch`.
+
+**Key Functionality:**
+- **Input:** An N-D tensor with shape `[batch] + spatial_shape + remaining_shape`.
+- **Parameters:**
+  - `block_shape`: 1-D tensor specifying how to split the batch into blocks (must be ≥1).
+  - `crops`: 2-D tensor defining cropping amounts for each spatial dimension after reshaping.
+- **Process:** Reshapes the batch dimension into `M + 1` dimensions, interleaves blocks into spatial dimensions, and optionally crops the result.
+- **Use Case:** Useful for transforming batched data into spatially arranged data (e.g., in convolutional networks or image processing).
+
+**Example:**  
+For input shape `[4, 1, 1, 1]` with `block_shape = [2, 2]` and no cropping (`crops = [[0, 0], [0, 0]]`), the output becomes `[1, 2, 2, 1]`, reorganizing four batch elements into a 2×2 spatial grid.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  block_shape:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[M]"]
+    default: null
+  crops:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[M, 2]"]
+    default: null
+  name:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: block_shape
+    Parameter 2: None
+    Constraint: "all(value >= 1 for value in block_shape)"
+  2:
+    Parameter 1: crops
+    Parameter 2: None
+    Constraint: "all(value >= 0 for value in crops)"
+  3:
+    Parameter 1: block_shape
+    Parameter 2: crops
+    Constraint: "len(block_shape) == crops.shape[0]"
+  4:
+    Parameter 1: input
+    Parameter 2: block_shape
+    Constraint: "len(input.shape) >= len(block_shape) + 1"
+  5:
+    Parameter 1: crops
+    Parameter 2: block_shape
+    Constraint: "for i in range(len(block_shape)): crops[i, 0] + crops[i, 1] <= block_shape[i] * input.shape[i + 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BatchToSpaceND in a complex way */
+import tensorflow as tf

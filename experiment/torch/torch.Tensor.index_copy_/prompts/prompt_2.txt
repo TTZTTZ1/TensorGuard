@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.index_copy_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.index_copy_` copies elements from a source tensor into the target tensor along a specified dimension, using an index array to map positions.  
+
+**Key points:**  
+- **Operation:** For `dim = d` and `index[i] = j`, the `i`-th slice along dimension `d` of the source tensor is copied to the `j`-th slice of the target tensor.  
+- **Requirements:**  
+  - The size of the source tensor along `dim` must equal the length of `index`.  
+  - All other dimensions must match between the source and target tensors.  
+- **Duplicate indices:** If `index` has duplicates, the last copy overwrites earlier ones, making the result nondeterministic.  
+- **In-place:** Modifies the target tensor directly (note the trailing underscore).  
+
+**Example:**  
+```python
+x = torch.zeros(5, 3)
+t = torch.tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+index = torch.tensor([0, 4, 2])
+x.index_copy_(0, index, t)  # Copies rows of t into rows 0, 4, and 2 of x
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["torch.LongTensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: index
+    Constraint: tensor.shape[dim] == index.shape[0]
+  2:
+    Parameter 1: tensor
+    Parameter 2: self
+    Constraint: tensor.ndim == self.ndim and all(tensor.shape[i] == self.shape[i] for i in range(tensor.ndim) if i != dim)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.index_copy_ in a complex way */
+import torch

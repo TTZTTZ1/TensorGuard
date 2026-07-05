@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.math.bincount` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.bincount` counts occurrences of integer values in an array, optionally weighted. It outputs a vector where each index corresponds to a value in the input, with the bin value indicating either the count or weighted sum for that index. Key features include:
+
+- **Basic usage**: Without weights, it counts frequency of each integer.
+- **Weighted counts**: Supports incrementing bins by corresponding weights instead of 1.
+- **Multi-axis support**: Using `axis`, it can count rows independently in 2D inputs.
+- **Binary output**: With `binary_output=True`, outputs 1 for presence instead of counts.
+- **SparseTensor handling**: Missing zeros are not counted; convert to dense if needed.
+
+Parameters allow control over output length (`minlength`, `maxlength`), data type (`dtype`), and axis selection. On GPU, weighted bin-counting requires XLA; otherwise, `unsorted_segment_sum` is an alternative.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  arr:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "ragged_tensor", "sparse_tensor"]
+    shape: ["No mention"]
+    default: "null"
+  weights:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  minlength:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  maxlength:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.int32"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: [null, 0, -1]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  binary_output:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "weights"
+    Parameter 2: "binary_output"
+    Constraint: "weights is None or not binary_output"
+  2:
+    Parameter 1: "arr"
+    Parameter 2: "axis"
+    Constraint: "axis != -1 or tf.rank(arr) == 2"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "arr"
+    Constraint: "weights is None or tf.shape(weights) == tf.shape(arr)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.bincount in a complex way */
+import tensorflow as tf

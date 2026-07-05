@@ -1,0 +1,135 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Convolution1DTranspose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.Conv1DTranspose` layer performs a **1D transposed convolution** (also called deconvolution), which is commonly used for **upsampling** in tasks like signal generation or sequence-to-sequence models. It reverses the spatial transformation of a regular convolution, expanding the input dimensions rather than reducing them.
+
+### **Key Parameters:**
+- **`filters`**: Number of output channels.
+- **`kernel_size`**: Size of the convolution window.
+- **`strides`**: Upsampling factor; values >1 increase the output length.
+- **`padding`**: `"valid"` (no padding) or `"same"` (output length matches input length when stride=1).
+- **`data_format`**: `"channels_last"` (default, shape: `[batch, steps, channels]`) or `"channels_first"` (`[batch, channels, steps]`).
+
+### **Input/Output Shapes:**
+- **Input**: 3D tensor `(batch, steps, channels)` (channels_last) or `(batch, channels, steps)` (channels_first).
+- **Output**: 3D tensor with upsampled `steps` dimension and number of channels equal to `filters`.
+
+### **Example:**
+```python
+x = np.random.rand(4, 10, 128)  # 4 samples, 10 time steps, 128 channels
+y = Conv1DTranspose(filters=32, kernel_size=3, strides=2, activation='relu')(x)
+print(y.shape)  # Output: (4, 21, 32)  (length increased due to stride=2)
+```
+
+### **Common Use Cases:**
+- **Upsampling** in autoencoders or generative models (e.g., WaveNet, TCNs).
+- **Sequence expansion** in time-series synthesis.
+- **Avoid** combining `strides > 1` with `dilation_rate > 1` (raises `ValueError`).
+
+This layer effectively learns to "invert" a convolution, making it essential for architectures requiring dimensional expansion while preserving structural patterns.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filters:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar", "tuple", "list"]
+    shape: No mention
+    default: null
+  strides:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar", "tuple", "list"]
+    shape: No mention
+    default: "1"
+  padding:
+    dtype: ["string"]
+    range: ["valid", "same"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "'valid'"
+  data_format:
+    dtype: ["string"]
+    range: ["channels_last", "channels_first"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+  dilation_rate:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar", "tuple", "list"]
+    shape: No mention
+    default: "1"
+  activation:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+  use_bias:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "True"
+  kernel_initializer:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+  bias_regularizer:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+  activity_regularizer:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+  kernel_constraint:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+  bias_constraint:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: strides
+    Parameter 2: dilation_rate
+    Constraint: "strides <= 1 or dilation_rate <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Convolution1DTranspose in a complex way */
+import tensorflow as tf

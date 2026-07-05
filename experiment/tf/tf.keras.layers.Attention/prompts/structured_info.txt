@@ -1,0 +1,76 @@
+params:
+  use_scale:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  score_mode:
+    dtype: ["string"]
+    range: ["dot", "concat"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'dot'"
+  dropout:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0"
+  seed:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  inputs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  mask:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  return_attention_scores:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+  training:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+  use_causal_mask:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dropout
+    Parameter 2: dropout
+    Constraint: "0 <= dropout <= 1"
+  2:
+    Parameter 1: score_mode
+    Parameter 2: score_mode
+    Constraint: "score_mode in ['dot', 'concat']"
+  3:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "len(inputs) in [2, 3]"
+  4:
+    Parameter 1: inputs
+    Parameter 2: mask
+    Constraint: "(mask is None) or (len(mask) == 2 and mask[0].shape == inputs[0].shape[:2] and mask[1].shape == inputs[1].shape[:2])"
+  5:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "inputs[0].shape[-1] == inputs[1].shape[-1]"

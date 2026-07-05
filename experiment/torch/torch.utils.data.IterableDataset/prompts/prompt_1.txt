@@ -1,0 +1,181 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.IterableDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and batching in PyTorch, centered around the `DataLoader` class. Here's a concise summary of its core functionality:
+
+**Core Components:**
+- **`DataLoader`**: The main class that wraps a dataset and provides an iterable for loading data with configurable batching, shuffling, and parallelization.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., indexed data like images).
+  - **Iterable-style**: Implements `__iter__()` (e.g., streams from databases or logs).
+- **Samplers**: Control data loading order (e.g., `RandomSampler`, `SequentialSampler`).
+
+**Key Features:**
+1. **Automatic Batching**: Combines samples into batches via `batch_size` and `collate_fn`.
+2. **Multi-process Loading**: Uses `num_workers` to parallelize data loading (avoiding GIL limitations).
+3. **Memory Pinning**: `pin_memory=True` accelerates GPU data transfer by using pinned memory.
+4. **Customization**: Supports custom samplers, collation functions (`collate_fn`), and worker initialization.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+loader = DataLoader(
+    dataset, 
+    batch_size=32, 
+    shuffle=True, 
+    num_workers=4, 
+    pin_memory=True
+)
+for batch in loader:
+    # Training loop
+```
+
+**Important Notes:**
+- Use `if __name__ == '__main__':` guards for multi-process loading on Windows/macOS.
+- For iterable datasets with multiple workers, implement sharding to avoid duplicate data.
+- The default `collate_fn` stacks tensors; customize it for padding or complex structures.
+
+This module enables scalable and flexible data pipelines, crucial for training deep learning models efficiently.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  shuffle:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  num_workers:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  collate_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  pin_memory:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  drop_last:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  timeout:
+    dtype: ["numeric"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  worker_init_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  multiprocessing_context:
+    dtype: ["string", "multiprocessing.context.BaseContext"]
+    range: [null]
+    structure: ["scalar", "object"]
+    shape: [1, null]
+    default: null
+  generator:
+    dtype: ["torch.Generator"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  prefetch_factor:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  persistent_workers:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pin_memory_device:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: ""
+  in_order:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: shuffle
+    Parameter 2: sampler
+    Constraint: "shuffle must not be specified when sampler is specified"
+  2:
+    Parameter 1: batch_sampler
+    Parameter 2: batch_size
+    Constraint: "batch_sampler is mutually exclusive with batch_size"
+  3:
+    Parameter 1: batch_sampler
+    Parameter 2: shuffle
+    Constraint: "batch_sampler is mutually exclusive with shuffle"
+  4:
+    Parameter 1: batch_sampler
+    Parameter 2: sampler
+    Constraint: "batch_sampler is mutually exclusive with sampler"
+  5:
+    Parameter 1: batch_sampler
+    Parameter 2: drop_last
+    Constraint: "batch_sampler is mutually exclusive with drop_last"
+  6:
+    Parameter 1: sampler
+    Parameter 2: dataset
+    Constraint: "sampler is not compatible with iterable-style datasets"
+  7:
+    Parameter 1: batch_sampler
+    Parameter 2: dataset
+    Constraint: "batch_sampler is not compatible with iterable-style datasets"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.IterableDataset in a complex way */
+import torch

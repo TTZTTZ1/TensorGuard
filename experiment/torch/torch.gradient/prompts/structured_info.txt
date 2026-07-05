@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  spacing:
+    dtype: ["scalar", "list of scalar", "list of Tensor"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: "1"
+  dim:
+    dtype: ["int", "list of int"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: "None"
+  edge_order:
+    dtype: ["int"]
+    range: [[1, 2]]
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+constraints:
+  1:
+    Parameter 1: spacing
+    Parameter 2: dim
+    Constraint: "dim is None or not isinstance(spacing, (list, tuple)) or len(spacing) == (1 if isinstance(dim, int) else len(dim))"
+  2:
+    Parameter 1: input
+    Parameter 2: edge_order
+    Constraint: "all(s >= edge_order + 1 for s in input.shape)"

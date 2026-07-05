@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.tensordot` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.tensordot` performs a generalized tensor contraction between two input tensors `a` and `b` over specified dimensions.  
+
+**Key parameters:**
+- `a`, `b`: input tensors to contract.
+- `dims`: can be an integer `d` (contracts last `d` dims of `a` with first `d` dims of `b`) or a tuple of two lists specifying exact dimensions to contract in `a` and `b`.
+
+**Functionality:**  
+It sums over the product of elements along the contracted dimensions, similar to a higher‑dimensional dot product. The contracted dimensions must match in size (broadcasting is supported for non‑contracted dimensions).
+
+**Example use:**
+```python
+torch.tensordot(a, b, dims=([1, 0], [0, 1]))
+```
+This contracts dimension 1 of `a` with dimension 0 of `b`, and dimension 0 of `a` with dimension 1 of `b`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  b:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  dims:
+    dtype: ["int", "tuple", "list", "torch.Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list", "tensor"]
+    shape: ["No mention"]
+    default: "2"
+  out:
+    dtype: ["torch.Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dims"
+    Parameter 2: "a"
+    Constraint: "isinstance(dims, int) and dims >= 0 and dims <= a.ndim"
+  2:
+    Parameter 1: "dims"
+    Parameter 2: "b"
+    Constraint: "isinstance(dims, int) and dims >= 0 and dims <= b.ndim"
+  3:
+    Parameter 1: "dims"
+    Parameter 2: "a"
+    Constraint: "isinstance(dims, (tuple, list)) and len(dims) == 2 and all(isinstance(d, int) and 0 <= d < a.ndim for d in dims[0])"
+  4:
+    Parameter 1: "dims"
+    Parameter 2: "b"
+    Constraint: "isinstance(dims, (tuple, list)) and len(dims) == 2 and all(isinstance(d, int) and 0 <= d < b.ndim for d in dims[1])"
+  5:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "if isinstance(dims, int): all(a.shape[-dims:][i] == b.shape[:dims][i] or a.shape[-dims:][i] == 1 or b.shape[:dims][i] == 1 for i in range(dims)) elif isinstance(dims, (tuple, list)) and len(dims) == 2: all(a.shape[dims[0][i]] == b.shape[dims[1][i]] or a.shape[dims[0][i]] == 1 or b.shape[dims[1][i]] == 1 for i in range(len(dims[0]))) else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.tensordot in a complex way */
+import torch

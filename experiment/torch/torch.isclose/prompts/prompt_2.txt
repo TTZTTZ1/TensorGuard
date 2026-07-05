@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.isclose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.isclose` compares two tensors element-wise and returns a boolean tensor indicating whether each pair of elements is approximately equal. Closeness is determined by the formula:
+
+\[
+| \text{input} - \text{other} | \leq \text{rtol} \times | \text{other} | + \text{atol}
+\]
+
+**Key parameters:**
+- `rtol`: relative tolerance (default 1e-05)
+- `atol`: absolute tolerance (default 1e-08)
+- `equal_nan`: if `True`, treats NaN values as equal (default `False`)
+
+**Special cases:**
+- Non‑finite values (inf, -inf) are considered close only if they are exactly equal.
+- When `equal_nan=True`, NaN values are regarded as equal to each other.
+
+**Example:**
+```python
+>>> torch.isclose(torch.tensor([1.0, 2.0, 3.0]), torch.tensor([1.0000001, 3.0, 4.0]))
+tensor([True, False, False])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  rtol:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-05"
+  atol:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-08"
+  equal_nan:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.shape == other.shape or torch.broadcastable(input, other)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.isclose in a complex way */
+import torch

@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.distributed.isend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional build)
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations
+- **Process Groups**: Default world group and custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups
+
+## **Key Components**
+
+### **1. Initialization Methods**
+- **TCP**: `tcp://IP:PORT`
+- **Shared File System**: `file:///path/to/file`
+- **Environment Variables**: Default (`env://`) using `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+
+### **2. Communication Primitives**
+- **Point-to-Point**: `send()`, `recv()`, `isend()`, `irecv()`, `batch_isend_irecv()`
+- **Collectives**: 
+  - All-reduce, broadcast, gather, scatter
+  - All-gather, reduce-scatter, all-to-all
+  - Barrier operations
+- **Object Collectives**: Python object communication (with performance caveats)
+
+### **3. Key Features**
+- **Synchronous/Asynchronous Operations**: Most collectives support `async_op=True` for non-blocking execution
+- **Groups**: Fine-grained communication subsets via `new_group()`
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+- **DeviceMesh**: Simplifies N-dimensional parallelism setup
+
+## **Best Practices**
+- Use **NCCL** for CUDA GPU training
+- Use **Gloo** for CPU training
+- Use **XCCL** for XPU GPU training
+- Always call `destroy_process_group()` for cleanup
+- Set `torch.cuda.set_device()` before NCCL operations
+
+## **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout detection
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `breakpoint()`: Rank-specific debugging
+- HTTP debug server for runtime diagnostics
+
+## **Launch Utilities**
+- `torch.distributed.launch`: Legacy multi-process launcher (deprecated in favor of `torchrun`)
+- `torch.multiprocessing.spawn`: Python-based process spawning
+
+The package enables scalable distributed training with support for various network interconnects and hardware configurations, while providing tools for performance optimization and debugging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group_dst:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: dst is not None and group_dst is not None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.isend in a complex way */
+import torch

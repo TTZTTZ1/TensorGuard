@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.nn.LPPool2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`LPPool2d` is a 2D pooling layer that applies power-average pooling over an input signal. It computes the p-th root of the sum of the p-th powers of elements in each sliding window.
+
+**Key Features:**
+- **Formula**: \( f(X) = \sqrt[p]{\sum_{x \in X} x^p} \)
+- **Special Cases**:  
+  - \( p = \infty \) → Max Pooling  
+  - \( p = 1 \) → Sum Pooling (proportional to average pooling)
+- **Parameters**:  
+  - `norm_type` (float): The exponent \( p \) in the pooling formula.  
+  - `kernel_size` (int or tuple): Size of the pooling window.  
+  - `stride` (int or tuple, optional): Stride of the window; defaults to `kernel_size`.  
+  - `ceil_mode` (bool): If `True`, uses ceil instead of floor for output shape calculation.
+
+**Notes:**
+- Gradient is set to zero if the sum to the power of \( p \) is zero (to handle undefined gradients).
+- When `ceil_mode=True`, windows starting within left padding may extend beyond bounds; windows in right padding are ignored.
+
+**Input/Output Shapes:**
+- **Input**: \((N, C, H_{in}, W_{in})\) or \((C, H_{in}, W_{in})\)
+- **Output**: \((N, C, H_{out}, W_{out})\) or \((C, H_{out}, W_{out})\), where:  
+  \[
+  H_{out} = \left\lfloor \frac{H_{in} - \text{kernel\_size}[0]}{\text{stride}[0]} + 1 \right\rfloor
+  \]
+  \[
+  W_{out} = \left\lfloor \frac{W_{in} - \text{kernel\_size}[1]}{\text{stride}[1]} + 1 \right\rfloor
+  \]
+
+**Example**:
+```python
+m = nn.LPPool2d(2, 3, stride=2)  # power-2 pooling with 3x3 window, stride 2
+output = m(input)  # input shape: (20, 16, 50, 32)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  norm_type:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: [[1]]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[1], [2]]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[1], [2]]
+    default: "kernel_size"
+  ceil_mode:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [[1]]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.LPPool2d in a complex way */
+import torch

@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.py_function` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.py_function` wraps a Python function into a TensorFlow operation, allowing it to execute eagerly even within a `tf.function` graph. This enables the use of arbitrary Python code, including non-TensorFlow operations and debugging tools like `pdb` or `print`, while maintaining differentiability.
+
+**Key Features:**
+- **Eager Execution in Graphs:** Runs Python code eagerly inside `tf.function`, bypassing AutoGraph conversion.
+- **Debugging Support:** Useful for inserting breakpoints or print statements in TensorFlow models.
+- **TensorFlow Operations:** Supports TensorFlow ops within the wrapped function (unlike `tf.numpy_function`).
+- **Differentiability:** Outputs remain differentiable within the TensorFlow graph.
+
+**Usage Modes:**
+1. **As a Decorator:**  
+   ```python
+   @tf.py_function(Tout=tf.float32)
+   def my_func(x):
+       # Python code here
+       return result
+   ```
+   - Must specify `Tout` (output type(s)).
+   - Cannot set `func` or `inp` explicitly.
+
+2. **In-Place Call:**  
+   ```python
+   tf.py_function(func=my_func, inp=[x, y], Tout=tf.float32)
+   ```
+
+**Limitations:**
+- **Performance:** Acquires the Python GIL, hindering parallelization.
+- **Serialization:** Function body is not serialized in `GraphDef`; not suitable for saving/restoring models in different environments.
+- **Distribution:** Must run in the same process as the calling program in distributed settings.
+- **XLA Incompatibility:** Cannot be used inside `tf.function(jit_compile=True)`.
+
+**Use Case:** Primarily for prototyping, debugging, or integrating non-TensorFlow Python logic into TensorFlow workflows where performance and serialization are not critical.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  inp:
+    dtype: ["Tensor", "CompositeTensor"]
+    range: null
+    structure: ["list", "scalar"]
+    shape: null
+    default: "None"
+  Tout:
+    dtype: ["tf.DType", "tf.TypeSpec", "list", "empty_list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: func
+    Parameter 2: inp
+    Constraint: "not (func is None) or (inp is None)"
+  2:
+    Parameter 1: func
+    Parameter 2: Tout
+    Constraint: "not (func is None) or (Tout is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.py_function in a complex way */
+import tensorflow as tf

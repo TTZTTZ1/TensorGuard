@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.image.decode_image` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.decode_image` (also `tf.io.decode_image`) is a versatile function for decoding BMP, GIF, JPEG, and PNG images from encoded bytes into a TensorFlow tensor. It automatically detects the image format and decodes accordingly.
+
+**Key features:**
+- **Input:** A string tensor containing the raw image bytes.
+- **Output:** A tensor of the specified `dtype` (default `tf.uint8`).
+- **Shape behavior:**  
+  - For BMP, JPEG, and PNG: Returns a 3D tensor `[height, width, channels]`.  
+  - For GIFs: By default (`expand_animations=True`), returns a 4D tensor `[num_frames, height, width, 3]` to include all animation frames. If `expand_animations=False`, it returns a 3D tensor with only the first frame (same as static images).
+- **Parameters:**  
+  - `channels`: Optional number of color channels (e.g., 1 for grayscale, 3 for RGB).  
+  - `dtype`: Desired output tensor data type.  
+  - `expand_animations`: Controls whether animated GIFs are expanded to 4D or truncated to the first frame.
+
+**Notes:**
+- Animated GIFs that don’t fill the entire canvas are padded with zeros (black) in unoccupied areas for the first frame; subsequent frames reuse the previous frame to fill gaps.
+- Raises a `ValueError` if the channel count is incompatible with the image.
+
+**Use case:** Simplifies decoding multiple image formats in a single operation, especially useful when handling mixed image types in a pipeline.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  contents:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [0]
+    default: "null"
+  channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "tf.dtypes.uint8"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  expand_animations:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.decode_image in a complex way */
+import tensorflow as tf

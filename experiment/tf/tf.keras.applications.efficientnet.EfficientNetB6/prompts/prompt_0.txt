@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.efficientnet.EfficientNetB6` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.efficientnet.EfficientNetB6` is a pre-trained deep learning model for image classification, based on the EfficientNet architecture. It is designed to balance model size and accuracy through compound scaling.
+
+**Key Features:**
+- **Architecture:** EfficientNetB6, optimized for scaling depth, width, and resolution.
+- **Pre-trained Weights:** Can load weights trained on ImageNet (1000 classes).
+- **Input:** Expects RGB images with pixel values in [0, 255] (preprocessing is built into the model).
+- **Flexibility:** Allows customization via parameters like `include_top`, `pooling`, and `classes`.
+
+**Main Parameters:**
+- `include_top`: Whether to include the classification head (default `True`).
+- `weights`: Set to `'imagenet'` for pre-trained weights, `None` for random initialization, or a file path.
+- `input_shape`: Required if `include_top=False` (must have 3 channels).
+- `pooling`: Optional pooling (`'avg'` or `'max'`) when `include_top=False`.
+- `classes`: Number of output classes (only if `include_top=True` and no pre-trained weights are used).
+- `classifier_activation`: Activation for the top layer (default `'softmax'`).
+
+**Common Use Cases:**
+1. **Image Classification:** Direct use with `include_top=True` and ImageNet weights.
+2. **Feature Extraction:** Set `include_top=False` to extract features from the last convolutional layer.
+3. **Transfer Learning:** Fine-tune on custom datasets by modifying the top layers.
+
+**Note:** For transfer learning, refer to Keras guides on fine-tuning. The model includes built-in rescaling, so external preprocessing is not required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "None"]
+    range: ["None", "'imagenet'", "string"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["3"]
+    default: "null"
+  pooling:
+    dtype: ["string", "None"]
+    range: ["None", "'avg'", "'max'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "input_shape is not None implies include_top == False"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes is not None implies include_top == True"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "classes is not None implies weights is None"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "include_top"
+    Constraint: "classifier_activation is not None implies include_top == True"
+  5:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights is not None implies classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.efficientnet.EfficientNetB6 in a complex way */
+import tensorflow as tf

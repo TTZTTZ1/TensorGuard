@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.SubsetRandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for efficient data loading in PyTorch, centered around the `DataLoader` class. Here's a concise summary of its core functionality:
+
+**Key Components:**
+- **`DataLoader`**: The main class that creates an iterable over a dataset, supporting batching, shuffling, and parallel data loading.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk).
+  - **Iterable-style**: Implements `__iter__()` (e.g., streaming from a database or real-time logs).
+- **Samplers**: Control data loading order (e.g., `RandomSampler`, `SequentialSampler`).
+
+**Main Features:**
+1. **Automatic Batching**: Combines individual samples into batches via `batch_size` and `collate_fn`.
+2. **Multi-process Loading**: Uses `num_workers` to parallelize data loading, avoiding GIL limitations.
+3. **Memory Pinning**: With `pin_memory=True`, data is transferred faster to CUDA GPUs.
+4. **Customizable Collation**: `collate_fn` merges samples into batches; default handles tensors, NumPy arrays, and nested structures.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+**Important Notes:**
+- For iterable datasets with multi-processing, implement sharding to avoid duplicate data.
+- On Windows, wrap main script code in `if __name__ == '__main__':` for multi-process compatibility.
+- Use `persistent_workers=True` to keep worker processes alive across epochs for efficiency.
+
+This module enables scalable and flexible data pipelines, crucial for training machine learning models with large datasets.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int"]
+    range: null
+    structure: ["sequence"]
+    shape: []
+    default: null
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "len(indices) > 0"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "all(isinstance(i, int) for i in indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.SubsetRandomSampler in a complex way */
+import torch

@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.AbsTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Follows TensorFlow Distributions design patterns
+- Supports two main gradient estimation methods: Score Function (REINFORCE) and Pathwise Derivative (reparameterization trick)
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - Abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`
+- **Exponential Family**: `ExponentialFamily` - Specialized class for distributions with exponential family form
+- **Concrete Distributions**: Over 30+ distributions including:
+  - Common distributions: `Normal`, `Bernoulli`, `Categorical`, `Beta`, `Gamma`, `Dirichlet`
+  - Multivariate: `MultivariateNormal`, `LowRankMultivariateNormal`
+  - Mixture models: `MixtureSameFamily`
+  - Transformed distributions: `LogNormal`, `HalfNormal`, `Gumbel`, etc.
+
+### **2. Gradient Estimation Methods**
+- **Score Function/REINFORCE**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (VAEs)
+
+### **3. Transforms System**
+- **Transform**: Abstract class for invertible transformations with computable log determinants
+- **Common Transforms**: `ExpTransform`, `SigmoidTransform`, `AffineTransform`, `SoftmaxTransform`, etc.
+- **TransformedDistribution**: Chains transforms with base distributions
+
+### **4. Constraints System**
+- **Constraint**: Defines valid parameter/value regions
+- **Registry System**: `biject_to()` and `transform_to()` for mapping between constrained/unconstrained spaces
+
+### **5. KL Divergence**
+- `kl_divergence()`: Computes KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+## **Key Features**
+- **Batch/Event Shape**: Clear separation for vectorized operations
+- **Parameter Validation**: Automatic constraint checking via `arg_constraints`
+- **Reparameterization**: `rsample()` for differentiable sampling
+- **Efficient Computation**: Optimized implementations for common operations
+- **Extensibility**: Easy to add custom distributions, transforms, and constraints
+
+## **Typical Usage Patterns**
+1. **Policy Gradients (REINFORCE)**:
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+```
+
+2. **Variational Inference (Reparameterization)**:
+```python
+m = Normal(loc, scale)
+z = m.rsample()  # Differentiable
+```
+
+3. **Constrained Parameter Optimization**:
+```python
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+The package provides a unified, efficient interface for probabilistic modeling that integrates seamlessly with PyTorch's autograd system, making it suitable for both research and production use cases in machine learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.AbsTransform in a complex way */
+import torch

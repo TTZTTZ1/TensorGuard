@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.distributions.gamma.Gamma` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet, Wishart
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, LKJCholesky
+
+### **3. Gradient Estimation Methods**
+- **Score Function/REINFORCE**: Uses `sample()` + `log_prob()` (no gradient through samples)
+- **Pathwise Derivative**: Uses `rsample()` (gradient flows through reparameterized samples)
+
+### **4. Transforms System**
+- Transform distributions via invertible mappings (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- Used in `TransformedDistribution` to create new distributions
+- Support for computing log determinant Jacobians
+
+### **5. Constraints System**
+- Defines valid parameter domains for distributions
+- Registry system (`biject_to`, `transform_to`) maps constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Variational Inference**: Using reparameterized distributions (Normal, etc.)
+2. **Reinforcement Learning**: Policy gradients with categorical distributions
+3. **Probabilistic Modeling**: Building complex distributions via transforms and mixtures
+4. **Bayesian Methods**: Prior/posterior distributions with constrained parameters
+
+## **Key Design Features**
+- Batch-aware: All distributions support batched parameters
+- Validation: Optional argument validation for debugging
+- Exponential family: Special handling for distributions in exponential family form
+- GPU/CPU compatible: Works seamlessly with PyTorch tensors
+
+The package follows TensorFlow Distributions design and provides the necessary tools for modern probabilistic deep learning, combining mathematical rigor with practical computational efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  rate:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "concentration"
+    Parameter 2: "None"
+    Constraint: "concentration > 0.0"
+  2:
+    Parameter 1: "rate"
+    Parameter 2: "None"
+    Constraint: "rate > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.gamma.Gamma in a complex way */
+import torch

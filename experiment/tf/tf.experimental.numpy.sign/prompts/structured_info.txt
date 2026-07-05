@@ -1,0 +1,34 @@
+params:
+  x:
+    dtype: ["int", "float", "complex"]
+    range: ["any"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "null"
+  out:
+    dtype: ["int", "float"]
+    range: ["tensor", "null"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  where:
+    dtype: ["bool"]
+    range: ["boolean", "tensor of boolean"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "None"
+  **kwargs:
+    dtype: ["any"]
+    range: ["any"]
+    structure: ["any"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "out"
+    Parameter 2: "x"
+    Constraint: "out is None or tf.shape(out) == tf.shape(x)"
+  2:
+    Parameter 1: "where"
+    Parameter 2: "x"
+    Constraint: "where is None or tf.rank(where) == 0 or tf.shape(where) == tf.shape(x)"

@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `tf.train.Checkpoint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.Checkpoint` is a TensorFlow class for saving and restoring the state of trackable objects (like `tf.Variable`, `tf.keras.Model`, or `tf.keras.Optimizer`) to disk. It uses object-based checkpointing, which saves dependencies between Python objects, making it more robust to code changes compared to name-based approaches.
+
+**Key Features:**
+- **Object-Based:** Tracks dependencies between objects (e.g., layers, variables) rather than relying on variable names.
+- **Automatic Dependency Management:** Objects like `tf.keras.Model` automatically track their variables, simplifying checkpoint creation.
+- **Incremental Saving:** Includes a `save_counter` to number checkpoints when using `save()`.
+- **Flexible Restoration:** Supports deferred restoration (variables restored when created) and can load TensorFlow 1.x name-based checkpoints or SavedModel directories.
+
+**Basic Usage:**
+```python
+checkpoint = tf.train.Checkpoint(model=model, optimizer=optimizer)
+save_path = checkpoint.save('/tmp/ckpt')  # Saves with auto-incremented suffix
+checkpoint.restore(save_path)             # Restores state
+```
+
+**Main Methods:**
+- `save(file_prefix)`: Saves a checkpoint, increments `save_counter`, and returns the file path.
+- `restore(save_path)`: Restores from a checkpoint (created by `save()`). Returns a status object for verification (e.g., `assert_consumed()`).
+- `write(file_prefix)`: Low-level save without counter management (use with `read()`).
+- `read(save_path)`: Restores from checkpoints created by `write()`.
+
+**Use Cases:**
+- Training model checkpoints.
+- Loading pre-trained models (including from SavedModel).
+- Distributed training with shared filesystems.
+
+**Note:** For advanced checkpoint management (e.g., garbage collection), use `tf.train.CheckpointManager`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  root:
+    dtype: ["object"]
+    range: [null, "trackable_object", "WeakRef"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  kwargs:
+    dtype: ["dict"]
+    range: ["trackable_object", "list", "dict", "tuple"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "root"
+    Parameter 2: "None"
+    Constraint: "root is None or (hasattr(root, '__tf_trackable__') or (isinstance(root, weakref.ref) and hasattr(root(), '__tf_trackable__')))"
+  2:
+    Parameter 1: "kwargs"
+    Parameter 2: "None"
+    Constraint: "all(is_trackable_or_nested(v) for v in kwargs.values())"
+  3:
+    Parameter 1: "root"
+    Parameter 2: "kwargs"
+    Constraint: "root is None or all(not hasattr(root, key) or getattr(root, key) is kwargs[key] for key in kwargs)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.Checkpoint in a complex way */
+import tensorflow as tf

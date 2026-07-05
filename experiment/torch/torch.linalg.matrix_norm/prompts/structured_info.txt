@@ -1,0 +1,50 @@
+params:
+  A:
+    dtype: ["torch.Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2 or more dimensions"]
+    default: null
+  ord:
+    dtype: ["int", "float", "string"]
+    range: ["fro", "nuc", "inf", "-inf", 1, -1, 2, -2]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'fro'"
+  dim:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [2]
+    default: "(-2, -1)"
+  keepdim:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  out:
+    dtype: ["torch.Tensor", "None"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["same as output"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "A"
+    Parameter 2: "dim"
+    Constraint: "all(-A.dim() <= d < A.dim() for d in dim)"
+  2:
+    Parameter 1: "A"
+    Parameter 2: "ord"
+    Constraint: "A.dim() >= 2"
+  3:
+    Parameter 1: "dtype"
+    Parameter 2: "A"
+    Constraint: "dtype is None or dtype in [torch.float32, torch.float64, torch.complex64, torch.complex128]"

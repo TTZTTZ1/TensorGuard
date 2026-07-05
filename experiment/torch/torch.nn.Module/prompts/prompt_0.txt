@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.nn.Module` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.Module` class is the foundational building block for all neural network models in PyTorch. It serves as a base class that enables the creation of modular, hierarchical, and reusable network architectures.
+
+### Key Features and Usage:
+
+1. **Hierarchical Structure**: Modules can contain other Modules, allowing nested, tree-like architectures. Submodules assigned as attributes are automatically registered, enabling parameter management and device transfers.
+
+2. **Core Methods**:
+   - **`forward()`**: Must be overridden to define the computation performed during each forward pass.
+   - **`__init__()`**: Should call `super().__init__()` before assigning submodules.
+
+3. **Parameter and Buffer Management**:
+   - **Parameters**: Learnable weights (via `register_parameter()` or direct assignment).
+   - **Buffers**: Non-learnable state (e.g., BatchNorm running statistics) registered with `register_buffer()`.
+   - Methods like `parameters()`, `named_parameters()`, `buffers()`, and `named_buffers()` provide iterators over these components.
+
+4. **State Management**:
+   - **`state_dict()`**: Returns a dictionary of the module’s parameters and persistent buffers.
+   - **`load_state_dict()`**: Loads parameters and buffers from a state dictionary.
+
+5. **Device and Data Type Control**:
+   - Methods like `cpu()`, `cuda()`, `to()`, `float()`, `double()`, `half()`, and `bfloat16()` move or cast parameters/buffers to different devices or data types.
+
+6. **Training vs. Evaluation Mode**:
+   - **`train()`**: Sets the module to training mode (affects modules like Dropout and BatchNorm).
+   - **`eval()`**: Sets the module to evaluation mode.
+
+7. **Module Inspection and Navigation**:
+   - **`children()`**, **`modules()`**, **`named_children()`**, **`named_modules()`**: Iterate over submodules.
+   - **`get_submodule()`**, **`get_parameter()`**, **`get_buffer()`**: Retrieve specific components by name.
+
+8. **Hooks**:
+   - Forward hooks (`register_forward_hook()`, `register_forward_pre_hook()`) and backward hooks (`register_full_backward_hook()`, `register_full_backward_pre_hook()`) allow interception and modification of forward/backward passes.
+
+9. **Utility Methods**:
+   - **`apply()`**: Recursively applies a function to every submodule.
+   - **`zero_grad()`**: Resets gradients of all parameters.
+   - **`requires_grad_()`**: Toggles gradient recording for parameters.
+   - **`compile()`**: Compiles the forward pass using `torch.compile()`.
+
+### Example:
+```python
+import torch.nn as nn
+
+class Model(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv = nn.Conv2d(1, 20, 5)
+        self.fc = nn.Linear(20, 10)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.fc(x)
+        return x
+```
+
+In summary, `nn.Module` provides a structured and efficient framework for defining, managing, and executing neural networks, with built-in support for parameter handling, device placement, training modes, and extensibility through hooks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  training:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Module in a complex way */
+import torch

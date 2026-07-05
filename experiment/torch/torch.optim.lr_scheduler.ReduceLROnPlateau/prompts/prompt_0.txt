@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.ReduceLROnPlateau` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**ReduceLROnPlateau** is a PyTorch learning rate scheduler that reduces the learning rate when a monitored metric (e.g., validation loss) stops improving.
+
+**Key Features:**
+- **Purpose:** Automatically lowers the learning rate during training when progress stalls.
+- **Trigger:** Monitors a metric (like loss or accuracy) and reduces LR if no improvement occurs for a specified number of epochs (`patience`).
+- **Modes:** `'min'` (reduce when metric stops decreasing) or `'max'` (reduce when metric stops increasing).
+- **Reduction:** Multiplies the current LR by `factor` (default 0.1) when triggered.
+
+**Main Parameters:**
+- `optimizer`: The optimizer to adjust.
+- `mode`: `'min'` or `'max'` (default `'min'`).
+- `factor`: LR multiplier (default 0.1).
+- `patience`: Epochs to wait for improvement before reducing LR (default 10).
+- `threshold`/`threshold_mode`: Define what qualifies as "improvement."
+- `cooldown`: Epochs to wait after an LR reduction before resuming monitoring.
+- `min_lr`: Minimum allowed learning rate.
+- `eps`: Minimum LR change to apply.
+
+**Usage Example:**
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+scheduler = ReduceLROnPlateau(optimizer, mode='min', patience=5)
+
+for epoch in range(epochs):
+    train(...)
+    val_loss = validate(...)
+    scheduler.step(val_loss)  # Call after validation
+```
+
+**Key Methods:**
+- `step(metrics)`: Updates LR based on the provided metric.
+- `get_last_lr()`: Returns the current learning rates.
+- `state_dict()` / `load_state_dict()`: Save/restore scheduler state.
+
+This scheduler helps stabilize training and improve convergence by adapting the learning rate dynamically based on performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["str"]
+    range: [["min", "max"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "min"
+  factor:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.1"
+  patience:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "10"
+  threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0001"
+  threshold_mode:
+    dtype: ["str"]
+    range: [["rel", "abs"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "rel"
+  cooldown:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  min_lr:
+    dtype: ["float", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: [[1], null]
+    default: "0"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-08"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.ReduceLROnPlateau in a complex way */
+import torch

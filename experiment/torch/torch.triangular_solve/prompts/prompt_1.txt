@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.triangular_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.triangular_solve(b, A, ...)`  
+**Purpose:** Solves the linear system \(AX = b\) where \(A\) is a square, invertible triangular matrix (upper or lower) and \(b\) contains one or multiple right-hand sides. Supports batched inputs.
+
+**Key Parameters:**
+- `b`: Right-hand side tensor of shape `(*, m, k)`.
+- `A`: Triangular coefficient matrix of shape `(*, m, m)`.
+- `upper`: If `True` (default), \(A\) is upper-triangular; else lower-triangular.
+- `transpose`: If `True`, solves \(A^T X = b\).
+- `unitriangular`: If `True`, treats diagonal of \(A\) as 1 (not referenced).
+
+**Returns:** A namedtuple `(solution, cloned_coefficient)`.
+
+**Note:** This function is **deprecated**. Use `torch.linalg.solve_triangular(A, b)` instead, which has reversed arguments and does not return a cloned matrix.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  b:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, k)"]
+    default: null
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, m)"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  transpose:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  unitriangular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: null
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "A"
+    Parameter 2: "b"
+    Constraint: "A.shape[:-2] == b.shape[:-2] and A.shape[-2] == b.shape[-2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.triangular_solve in a complex way */
+import torch

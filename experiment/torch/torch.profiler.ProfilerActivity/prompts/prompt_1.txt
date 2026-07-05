@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.profiler.ProfilerActivity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool that collects detailed metrics during model training and inference. It helps identify expensive operations, analyze input shapes, examine stack traces, and visualize execution traces.
+
+### Key Components:
+
+1. **Context Manager (`torch.profiler.profile`)**
+   - Main entry point for profiling
+   - Supports CPU, CUDA, and XPU activities
+   - Configurable via parameters like `record_shapes`, `with_stack`, `with_flops`, etc.
+
+2. **Profiling Features**
+   - **Activity Tracking**: Monitor CPU/GPU operations
+   - **Memory Profiling**: Track tensor allocation/deallocation
+   - **Shape Recording**: Capture operator input shapes
+   - **Stack Tracing**: Record source file and line numbers
+   - **FLOPs Estimation**: Estimate floating-point operations for specific ops
+   - **Module Hierarchy**: Track TorchScript module calls
+
+3. **Advanced Controls**
+   - **Schedule**: Control profiling cycles with `wait`, `warmup`, `active`, `repeat` phases
+   - **Trace Handlers**: Export results via `tensorboard_trace_handler()` or custom callbacks
+   - **Dynamic Control**: Toggle activity collection during profiling with `toggle_collection_dynamic()`
+
+4. **Output & Analysis**
+   - **Chrome Trace**: Export to JSON format for Chrome tracing tools
+   - **TensorBoard**: Direct integration for visualization
+   - **Statistical Analysis**: Use `key_averages()` to aggregate and sort results
+   - **Stack Export**: Save stack traces for detailed analysis
+
+5. **Experimental & Specialized Features**
+   - Execution Trace Observer for graph-based workload representation
+   - ITT (Intel Instrumentation and Tracing Technology) APIs for low-level instrumentation
+   - Metadata injection for custom trace annotations
+
+### Basic Usage Pattern:
+```python
+with torch.profiler.profile(activities=[...]) as prof:
+    # Code to profile
+    prof.step()  # For iterative profiling
+
+# Analyze results
+print(prof.key_averages().table(sort_by="cuda_time_total"))
+```
+
+### Notes:
+- Legacy `torch.autograd.profiler` is deprecated
+- Enabling shape/stack tracing adds overhead
+- Memory timeline export is deprecated in favor of `torch.cuda.memory` APIs
+- Supports distributed profiling with worker name customization
+
+The profiler enables systematic performance optimization by providing insights into computational bottlenecks, memory usage patterns, and operator-level efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  activity:
+    dtype: ["string"]
+    range: [["CPU", "XPU", "MTIA", "CUDA", "HPU", "PrivateUse1"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.ProfilerActivity in a complex way */
+import torch

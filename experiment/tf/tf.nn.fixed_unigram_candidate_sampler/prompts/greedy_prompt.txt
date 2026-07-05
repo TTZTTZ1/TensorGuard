@@ -1,0 +1,131 @@
+
+# You are a Python code generation assistant for the `tf.nn.fixed_unigram_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.fixed_unigram_candidate_sampler` is a TensorFlow function that samples a set of candidate classes from a fixed unigram distribution. It is commonly used in candidate sampling algorithms for tasks like negative sampling in language models or recommendation systems.
+
+**Key Functionality:**
+- Samples `num_sampled` candidate classes from the integer range `[0, range_max)` based on a provided unigram distribution (from a file or list).
+- Returns sampled candidates, along with expected count tensors for both true and sampled classes, which are useful for loss calculations in sampling-based algorithms.
+- Allows skewing the distribution via a `distortion` parameter and supports unique sampling (without replacement).
+
+**Main Parameters:**
+- `true_classes`: Target class IDs (shape `[batch_size, num_true]`).
+- `num_sampled`: Number of classes to sample.
+- `unique`: If `True`, ensures sampled classes are unique per batch.
+- `range_max`: Number of possible classes.
+- `vocab_file` / `unigrams`: Source of the unigram distribution (word frequencies/probabilities).
+- `distortion`: Adjusts distribution skew (1.0 = original unigram, 0.0 = uniform).
+
+**Outputs:**
+- `sampled_candidates`: Sampled class IDs (may overlap with true classes).
+- `true_expected_count`: Expected frequencies of true classes under the sampling distribution.
+- `sampled_expected_count`: Expected frequencies of sampled classes.
+
+**Note:** This function only provides the sampling components; you must implement the specific candidate sampling algorithm (e.g., NCE, sampled softmax) yourself.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_size", "num_true"]
+    default: "No mention"
+  num_true:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  num_sampled:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  unique:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  range_max:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  vocab_file:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: ""
+  distortion:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  num_reserved_ids:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  num_shards:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  shard:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  unigrams:
+    dtype: ["int", "float"]
+    range: [null]
+    structure: ["list", "tuple"]
+    shape: ["any"]
+    default: "()"
+  seed:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+
+constraints:
+  1:
+    Parameter 1: vocab_file
+    Parameter 2: unigrams
+    Constraint: (vocab_file != '') != (len(unigrams) != 0)
+  2:
+    Parameter 1: shard
+    Parameter 2: num_shards
+    Constraint: 0 <= shard < num_shards
+  3:
+    Parameter 1: num_reserved_ids
+    Parameter 2: range_max
+    Constraint: num_reserved_ids < range_max
+  4:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: true_classes.shape[1] == num_true
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.fixed_unigram_candidate_sampler in a complex way */
+import tensorflow as tf

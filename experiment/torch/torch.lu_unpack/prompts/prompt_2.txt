@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.lu_unpack` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.lu_unpack` reconstructs the permutation matrix **P** and lower/upper triangular matrices **L** and **U** from the packed LU decomposition output by `torch.linalg.lu_factor`.  
+
+**Key points:**  
+- Inputs: `LU_data` (packed LU factorization) and `LU_pivots` (pivot indices).  
+- Optional flags `unpack_data` and `unpack_pivots` control whether **L/U** and **P** are returned.  
+- Returns a namedtuple `(P, L, U)` such that the original matrix can be recovered as `P @ L @ U`.  
+- For gradient efficiency, prefer `torch.linalg.lu` over `lu_factor` + `lu_unpack`.  
+
+**Example use:**  
+```python
+LU, pivots = torch.linalg.lu_factor(A)
+P, L, U = torch.lu_unpack(LU, pivots)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  LU_data:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["*"]
+    default: null
+  LU_pivots:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["*"]
+    default: null
+  unpack_data:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  unpack_pivots:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "LU_data"
+    Parameter 2: "LU_pivots"
+    Constraint: "len(LU_data.shape) >= 2 and LU_data.shape[:-2] == LU_pivots.shape[:-1] and LU_pivots.shape[-1] == min(LU_data.shape[-2], LU_data.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.lu_unpack in a complex way */
+import torch

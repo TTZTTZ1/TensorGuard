@@ -1,0 +1,28 @@
+params:
+  value:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  bias:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: value
+    Parameter 2: bias
+    Constraint: "value.dtype == bias.dtype"
+  2:
+    Parameter 1: bias
+    Parameter 2: value
+    Constraint: "len(bias.shape) == 1 and bias.shape[0] == value.shape[-1]"

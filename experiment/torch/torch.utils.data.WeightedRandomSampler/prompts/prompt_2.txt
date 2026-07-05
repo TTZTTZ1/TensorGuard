@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.WeightedRandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for loading and processing data in PyTorch, centered around the `DataLoader` class. Here’s a concise overview of its core functionality:
+
+### **Key Components**
+1. **`DataLoader`**  
+   - An iterable over a dataset that supports:
+     - **Map‑style datasets** (implement `__getitem__` and `__len__`).
+     - **Iterable‑style datasets** (implement `__iter__`).
+   - **Automatic batching** (via `batch_size`, `drop_last`, `collate_fn`).
+   - **Customizable loading order** (via `sampler`/`batch_sampler`).
+   - **Single‑ or multi‑process loading** (via `num_workers`).
+   - **Memory pinning** (via `pin_memory`) for faster GPU transfer.
+
+2. **Dataset Types**
+   - **Map‑style**: Indexable (e.g., `dataset[idx]`). Use `Dataset` subclass.
+   - **Iterable‑style**: Stream‑based (e.g., from a database). Use `IterableDataset` subclass.
+
+3. **Samplers** (`Sampler`, `RandomSampler`, `SequentialSampler`, etc.)  
+   - Define the order of indices (for map‑style datasets) or batches (`BatchSampler`).
+
+4. **Collation** (`collate_fn`)  
+   - Merges individual samples into a batch. The default `default_collate` stacks tensors, preserves data structures (dicts, tuples), and converts NumPy arrays to tensors.
+
+5. **Multi‑process Loading**  
+   - Set `num_workers > 0` to parallelize data loading.  
+   - **Note**: For iterable‑style datasets, care must be taken to avoid duplicate data across workers (use `get_worker_info()` or `worker_init_fn`).
+
+6. **Memory Pinning**  
+   - Enable with `pin_memory=True` to accelerate host‑to‑GPU data transfers.
+
+### **Common Usage**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in loader:
+    # batch is collated (batched tensors by default)
+    pass
+```
+
+### **Important Notes**
+- **Windows/macOS**: Use `if __name__ == '__main__':` guard for multi‑process loading.
+- **CUDA tensors**: Avoid returning them directly from workers; use `pin_memory=True` instead.
+- **Randomness**: In multi‑process mode, seed management (`worker_init_fn`) is needed for reproducibility.
+
+In short, `torch.utils.data` offers a flexible pipeline to efficiently load, batch, and parallelize data for PyTorch models, accommodating both static and streaming data sources.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weights:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+  num_samples:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  replacement:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: weights
+    Parameter 2: num_samples
+    Constraint: "replacement or (len(weights) >= num_samples)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.WeightedRandomSampler in a complex way */
+import torch

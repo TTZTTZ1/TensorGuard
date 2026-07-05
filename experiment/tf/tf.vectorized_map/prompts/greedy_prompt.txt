@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.vectorized_map` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.vectorized_map` is a high-performance parallel mapping function that applies a callable `fn` to each slice of input tensors along their first dimension. It is optimized through static graph vectorization, offering significant speedups over `tf.map_fn`, especially in eager mode, but with certain constraints.
+
+**Key Features:**
+- **Vectorization:** Fuses operations across all invocations of `fn` at graph generation time, similar to manual fusion.
+- **Parallel Execution:** Fully parallelizes batch processing, leading to faster execution than `tf.map_fn`.
+- **Fallback Option:** If vectorization fails for unsupported operations, it can wrap them in a `tf.while_loop` (when `fallback_to_while_loop=True`), though this may reduce performance.
+
+**Main Limitations:**
+- No data dependencies allowed between invocations of `fn`.
+- Limited support for stateful operations and control flow within `fn`.
+- Output shapes and dtypes must not depend on inputs.
+- Input tensors must have compatible first dimensions (either `B` or `1` for a common batch size `B`).
+
+**Common Use Cases:**
+- Computing per-example gradients in batch processing.
+- Applying element-wise transformations to batched data efficiently.
+
+**Example:**
+```python
+def outer_product(a):
+    return tf.tensordot(a, a, 0)
+
+batch_size = 100
+a = tf.ones((batch_size, 32, 32))
+c = tf.vectorized_map(outer_product, a)  # Shape: (batch_size, 32, 32, 32, 32)
+```
+
+**Parameters:**
+- `fn`: Callable accepting structured inputs like `elems` and returning tensors/operations.
+- `elems`: Input tensor(s) to map over.
+- `fallback_to_while_loop`: Enables fallback to loops for unsupported ops (default `True`).
+- `warn`: Controls warnings for fallback conversions (default `True`).
+
+**Returns:** Structured outputs packing results from each slice of `elems`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["callable"]
+    shape: ["No mention"]
+    default: null
+  elems:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "nested sequence of tensors"]
+    shape: ["any"]
+    default: null
+  fallback_to_while_loop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  warn:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "fn"
+    Parameter 2: "elems"
+    Constraint: "callable(fn) and tf.nest.is_nested(elems) == tf.nest.is_nested(fn_arg) for fn_arg derived from elems"
+  2:
+    Parameter 1: "elems"
+    Parameter 2: "elems"
+    Constraint: "len({tensor.shape[0] for tensor in tf.nest.flatten(elems) if hasattr(tensor, 'shape') and tensor.shape[0] != 1}) <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.vectorized_map in a complex way */
+import tensorflow as tf

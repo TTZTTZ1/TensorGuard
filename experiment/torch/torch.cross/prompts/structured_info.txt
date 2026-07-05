@@ -1,0 +1,38 @@
+params:
+  input:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  other:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.shape == other.shape"
+  2:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim is None or (isinstance(dim, int) and -input.ndim <= dim < input.ndim and input.size(dim) == 3)"
+  3:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (out.shape == input.shape and out.dtype == input.dtype)"

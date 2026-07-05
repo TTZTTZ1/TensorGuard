@@ -1,0 +1,40 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.logical_and` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.logical_and()` is a method that performs an element-wise logical AND operation. It returns a new boolean tensor where each element is `True` only if the corresponding elements in the input tensor and another specified tensor are both `True`. This method is equivalent to calling the standalone function `torch.logical_and()`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  other:
+    dtype: ["bool", "int"]
+    range: ["any"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["tensor"]
+    range: ["any"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: self
+    Parameter 2: other
+    Constraint: "self.dtype in [torch.bool, torch.int8, torch.int16, torch.int32, torch.int64] and (torch.is_tensor(other) and other.dtype in [torch.bool, torch.int8, torch.int16, torch.int32, torch.int64] or isinstance(other, (int, bool)))"
+  2:
+    Parameter 1: self
+    Parameter 2: other
+    Constraint: "torch.is_tensor(other) == False or all(s1 == s2 or s1 == 1 or s2 == 1 for s1, s2 in zip(self.shape, other.shape)) or (len(self.shape) != len(other.shape) and (len(self.shape) > len(other.shape) and all(s == 1 for s in other.shape) or len(other.shape) > len(self.shape) and all(s == 1 for s in self.shape)))"
+  3:
+    Parameter 1: out
+    Parameter 2: self
+    Constraint: "out is None or out.shape == torch.broadcast_shapes(self.shape, other.shape if torch.is_tensor(other) else self.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.logical_and in a complex way */
+import torch

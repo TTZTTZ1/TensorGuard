@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.nest.assert_same_structure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nest.assert_same_structure` checks that two nested structures (like lists, tuples, dicts) have identical hierarchical organization, regardless of their atomic content. It verifies matching depths, sequence lengths, and dictionary keys.
+
+**Key parameters:**
+- `check_types`: If `True` (default), enforces matching container types (e.g., list vs. tuple raises error).
+- `expand_composites`: If `True`, expands composite tensors (e.g., `tf.RaggedTensor`) into internal components for comparison.
+
+**Use cases:**
+- Validate structures before operations like `tf.nest.map_structure`.
+- Compatible with various nested types, including namedtuples and dictionaries (order-insensitive for dict keys).
+
+**Raises:**
+- `ValueError` for structural mismatches (e.g., different lengths).
+- `TypeError` if `check_types=True` and container types differ.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  nest1:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: null
+  nest2:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: null
+  check_types:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: "No mention"
+    shape: "No mention"
+    default: "True"
+  expand_composites:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: "No mention"
+    shape: "No mention"
+    default: "False"
+constraints:
+  1.
+    Parameter 1: nest1
+    Parameter 2: nest2
+    Constraint: "len(tf.nest.flatten(nest1)) == len(tf.nest.flatten(nest2))"
+  2.
+    Parameter 1: check_types
+    Parameter 2: nest1
+    Constraint: "check_types == False or all(type(sub1) == type(sub2) for sub1, sub2 in zip(tf.nest.flatten(nest1, expand_composites=False), tf.nest.flatten(nest2, expand_composites=False)) if tf.nest.is_nested(sub1) and tf.nest.is_nested(sub2))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nest.assert_same_structure in a complex way */
+import tensorflow as tf

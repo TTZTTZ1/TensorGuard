@@ -1,0 +1,41 @@
+
+# You are a Python code generation assistant for the `tf.grad_pass_through` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.grad_pass_through` is a TensorFlow function that allows you to preserve the forward pass behavior of an operation while making its backward pass act as an identity function. This means gradients will flow through unchanged, ignoring the operation's actual gradient computation.
+
+**Key usage:**
+- **Purpose:** Decouple forward and backward pass behavior.
+- **Effect in forward pass:** The wrapped operation `f` executes normally.
+- **Effect in backward pass:** Gradients pass through as if `f` were an identity operation.
+
+**Common use cases:**
+1. **Gradient manipulation:** Override an operation's natural gradient (e.g., treat variable assignments as non-differentiable in forward pass but allow gradients to flow through).
+2. **Custom approximations:** Use approximate forward computations while preserving original gradients (e.g., differentiable moving averages).
+
+**Example:**
+```python
+# Gradients flow through `x.assign` as if it were identity, 
+# but forward pass still performs assignment
+y = tf.grad_pass_through(x.assign)(z**2)
+# Gradient w.r.t z is 2*z, not affected by assign operation
+```
+
+**Output:** Returns a function with the same forward behavior as `f` but identity-like gradients.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  f:
+    dtype: ["callable"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.grad_pass_through in a complex way */
+import tensorflow as tf

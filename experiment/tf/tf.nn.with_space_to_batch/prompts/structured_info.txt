@@ -1,0 +1,68 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dilation_rate:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[num_spatial_dims]"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  op:
+    dtype: ["function"]
+    range: ["No mention"]
+    structure: ["function"]
+    shape: ["No mention"]
+    default: null
+  filter_shape:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[>=num_spatial_dims]"]
+    default: null
+  spatial_dims:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["sequence"]
+    shape: ["[num_spatial_dims]"]
+    default: "range(1, num_spatial_dims+1)"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", None]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: spatial_dims
+    Constraint: "tf.rank(input) > max(spatial_dims)"
+  2:
+    Parameter 1: dilation_rate
+    Parameter 2: spatial_dims
+    Constraint: "dilation_rate.shape[0] == len(spatial_dims)"
+  3:
+    Parameter 1: padding
+    Parameter 2: padding
+    Constraint: "padding in ['VALID', 'SAME']"
+  4:
+    Parameter 1: spatial_dims
+    Parameter 2: spatial_dims
+    Constraint: "all(spatial_dims[i] < spatial_dims[i+1] for i in range(len(spatial_dims)-1)) and all(dim >= 1 for dim in spatial_dims)"
+  5:
+    Parameter 1: padding
+    Parameter 2: filter_shape
+    Constraint: "(padding == 'VALID') or (padding == 'SAME' and filter_shape is not None and filter_shape.shape[0] >= len(spatial_dims))"
+  6:
+    Parameter 1: data_format
+    Parameter 2: spatial_dims
+    Constraint: "data_format is None or ( (data_format in ['NWC', 'NCW'] and len(spatial_dims) == 1) or (data_format in ['NHWC', 'NCHW'] and len(spatial_dims) == 2) or (data_format in ['NDHWC', 'NCDHW'] and len(spatial_dims) == 3) )"

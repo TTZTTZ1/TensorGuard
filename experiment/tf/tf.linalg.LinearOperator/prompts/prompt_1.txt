@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperator` is a base class for representing linear operators (like matrices) without explicitly materializing them, enabling efficient matrix-free computations and leveraging special structures. It provides a consistent API for common linear algebra operations such as matrix multiplication (`matmul`), solving linear systems (`solve`), and computing determinants, while supporting batch operations.
+
+**Key Features:**
+- **Subclassing:** Implement leading-underscore methods (e.g., `_matmul`) to expose public methods.
+- **Performance:** Subclasses should document computational complexity and avoid O(N³) asserts.
+- **Shape Compatibility:** Operators act on batch matrices with compatible shapes (defined per subclass).
+- **Matrix Hints:** Boolean flags (`is_non_singular`, `is_self_adjoint`, etc.) set expectations but aren't runtime asserts.
+- **Parameters:** All subclasses pass a `parameters` dict to `__init__` for introspection.
+
+**Common Methods:**
+- `matmul(x)`: Compute `A @ x`.
+- `solve(rhs)`: Solve `A X = rhs`.
+- `determinant()`, `log_abs_determinant()`: Compute determinants.
+- `adjoint()` / `H`: Return the adjoint operator.
+- `to_dense()`: Materialize as a dense tensor (if needed).
+
+**Use Case:** Ideal for large-scale or structured linear operators where explicit matrix representation is inefficient.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dtype:
+    dtype: [No mention]
+    range: [null]
+    structure: [scalar]
+    shape: [null]
+    default: null
+  graph_parents:
+    dtype: [No mention]
+    range: [null]
+    structure: [list]
+    shape: [any]
+    default: None
+  is_non_singular:
+    dtype: [bool]
+    range: [true, false, null]
+    structure: [scalar]
+    shape: [null]
+    default: null
+  is_self_adjoint:
+    dtype: [bool]
+    range: [true, false, null]
+    structure: [scalar]
+    shape: [null]
+    default: null
+  is_positive_definite:
+    dtype: [bool]
+    range: [true, false, null]
+    structure: [scalar]
+    shape: [null]
+    default: null
+  is_square:
+    dtype: [bool]
+    range: [true, false, null]
+    structure: [scalar]
+    shape: [null]
+    default: null
+  name:
+    dtype: [string]
+    range: [null]
+    structure: [scalar]
+    shape: [null]
+    default: null
+  parameters:
+    dtype: [No mention]
+    range: [null]
+    structure: [dict]
+    shape: [any]
+    default: null
+constraints:
+  1.
+    Parameter 1: graph_parents
+    Parameter 2: null
+    Constraint: "graph_parents is None or all(gp is not None and isinstance(gp, tf.Tensor) for gp in graph_parents)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperator in a complex way */
+import tensorflow as tf

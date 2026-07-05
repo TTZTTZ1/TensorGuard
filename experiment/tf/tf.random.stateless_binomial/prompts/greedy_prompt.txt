@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.random.stateless_binomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.stateless_binomial` generates deterministic pseudorandom numbers from a binomial distribution, using specified counts and success probabilities. It is stateless, meaning identical seeds and shapes produce identical results across runs on the same hardware, though outputs may vary between TensorFlow versions or hardware types.
+
+**Key Parameters:**
+- `shape`: Output tensor shape.
+- `seed`: A 2-element seed tensor (dtype `int32` or `int64`).
+- `counts`: Number of trials for the binomial distribution.
+- `probs`: Probability of success per trial.
+- `output_dtype`: Output data type (default: `tf.int32`).
+
+**Broadcasting:** `counts` and `probs` must be broadcastable with each other and with the rightmost dimensions of `shape`.
+
+**Returns:** A tensor of the given shape containing binomial random samples, where each element is an independent draw based on the corresponding `counts` and `probs`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tensor", "list"]
+    shape: [1]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  counts:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  probs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  output_dtype:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.int32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1.
+    Parameter 1: counts
+    Parameter 2: probs
+    Constraint: all(c == p or c == 1 or p == 1 for c, p in zip(tf.shape(counts).numpy(), tf.shape(probs).numpy()))
+  2.
+    Parameter 1: counts
+    Parameter 2: shape
+    Constraint: all(c == s or c == 1 or s == 1 for c, s in zip(tf.shape(counts).numpy()[-min(tf.rank(counts), tf.size(shape)):], tf.reshape(shape, [-1]).numpy()[-min(tf.rank(counts), tf.size(shape)):]))
+  3.
+    Parameter 1: probs
+    Parameter 2: shape
+    Constraint: all(p == s or p == 1 or s == 1 for p, s in zip(tf.shape(probs).numpy()[-min(tf.rank(probs), tf.size(shape)):], tf.reshape(shape, [-1]).numpy()[-min(tf.rank(probs), tf.size(shape)):]))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.stateless_binomial in a complex way */
+import tensorflow as tf

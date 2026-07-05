@@ -1,0 +1,108 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyProximalAdagrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseApplyProximalAdagrad` operator performs a sparse update of variables using the FOBOS (Forward-Backward Splitting) algorithm with proximal Adagrad optimization. It updates only the rows of `var` and `accum` specified by `indices`, applying L1 and L2 regularization.
+
+**Key functionality:**
+- Updates `accum` by adding the square of the gradient.
+- Computes a proximal update step for `var` using the learning rate (`lr`), L1 (`l1`), and L2 (`l2`) regularization.
+- Supports sparse gradients, where `grad` corresponds only to the rows indexed by `indices`.
+
+**Arguments:**
+- `var` and `accum`: Mutable tensors (like variables) of the same data type.
+- `lr`, `l1`, `l2`: Scalars of the same type as `var` (learning rate and regularization coefficients).
+- `grad`: Gradient tensor.
+- `indices`: 1-D tensor specifying which rows to update.
+- `use_locking`: Optional boolean to enable locking during updates.
+
+**Returns:** An updated version of `var` (same type and shape).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  accum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["vector"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: accum
+    Parameter 2: var
+    Constraint: accum.dtype == var.dtype
+  2:
+    Parameter 1: lr
+    Parameter 2: var
+    Constraint: lr.dtype == var.dtype
+  3:
+    Parameter 1: l1
+    Parameter 2: var
+    Constraint: l1.dtype == var.dtype
+  4:
+    Parameter 1: l2
+    Parameter 2: var
+    Constraint: l2.dtype == var.dtype
+  5:
+    Parameter 1: grad
+    Parameter 2: var
+    Constraint: grad.dtype == var.dtype
+  6:
+    Parameter 1: indices
+    Parameter 2: var
+    Constraint: indices.dtype in [tf.int32, tf.int64] and tf.rank(indices) == 1 and tf.reduce_all(indices >= 0) and tf.reduce_all(indices < tf.shape(var)[0])
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyProximalAdagrad in a complex way */
+import tensorflow as tf

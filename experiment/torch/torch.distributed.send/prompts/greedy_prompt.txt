@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `torch.distributed.send` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Components**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional). NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up communication before any distributed operations.
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies.
+
+## **Key Features**
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous `isend`/`irecv` for direct rank-to-rank communication.
+- **Process Groups**: Create subgroups with `new_group()` for fine-grained communication.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination and initialization.
+
+## **Usage Patterns**
+1. **Basic Setup**:
+```python
+dist.init_process_group(backend='nccl', init_method='env://')
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+```
+
+2. **Collective Example**:
+```python
+# All-reduce across all processes
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+```
+
+3. **DDP Wrapper**:
+```python
+model = DistributedDataParallel(model, device_ids=[local_rank])
+```
+
+## **Important Notes**
+- Requires explicit launch of separate script copies per process
+- Each process maintains its own optimizer (no parameter broadcasting needed)
+- Supports both synchronous (`async_op=False`) and asynchronous (`async_op=True`) operations
+- Must call `destroy_process_group()` for cleanup
+- Object collectives (for Python objects) have performance limitations
+
+## **Debugging Tools**
+- `monitored_barrier()` for timeout-aware synchronization
+- `TORCH_DISTRIBUTED_DEBUG` environment variable for detailed logging
+- Python breakpoint support via `torch.distributed.breakpoint()`
+
+The package enables efficient distributed training with advantages over `DataParallel`, including reduced GIL contention and independent Python interpreters per process.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["ProcessGroup", "None"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  group_dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is not None and group_dst is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.send in a complex way */
+import torch

@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.distributed.recv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Features**
+- **Multi‑process/multi‑node training** – Supports synchronous distributed training across multiple processes and nodes.
+- **Backends** – Built‑in backends: `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), `mpi` (optional).  
+  - **Rule of thumb**: Use NCCL for CUDA GPU training, XCCL for XPU GPU, Gloo for CPU.
+- **DeviceMesh** – Higher‑level abstraction for managing process groups and device topologies (e.g., 2D mesh for data/tensor parallelism).
+
+## **Initialization**
+- Must call `init_process_group()` or `init_device_mesh()` before any distributed operations.
+- **Initialization methods**:
+  - **TCP**: `init_method='tcp://IP:PORT'`
+  - **Shared file‑system**: `init_method='file:///path/to/sharedfile'`
+  - **Environment variables** (default): Set `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`.
+
+## **Key APIs**
+- **Process management**: `get_rank()`, `get_world_size()`, `new_group()`, `destroy_process_group()`.
+- **Point‑to‑point communication**: `send()`/`recv()` (synchronous), `isend()`/`irecv()` (asynchronous), `batch_isend_irecv()`.
+- **Collective communication** (synchronous/async via `async_op`):
+  - `broadcast()`, `all_reduce()`, `reduce()`
+  - `all_gather()`, `gather()`, `scatter()`
+  - `all_to_all()`, `reduce_scatter()`, `barrier()`
+- **Object collectives**: Support Python objects via pickling (but with performance limitations).
+- **Key‑value stores**: `TCPStore`, `FileStore`, `HashStore` for coordination.
+
+## **Debugging & Profiling**
+- **`TORCH_DISTRIBUTED_DEBUG`**: Set to `INFO`/`DETAIL` for enhanced logging and synchronization checks.
+- **`monitored_barrier()`**: Barrier with timeout and rank‑failure reporting.
+- **`torch.distributed.breakpoint()`**: Debug a single rank while others wait.
+- **Profiling**: Use `torch.profiler` to profile collective operations.
+
+## **Utilities**
+- **`torch.distributed.launch`** (deprecated in favor of `torchrun`): Spawn multiple processes per node.
+- **`torch.multiprocessing.spawn`**: Spawn multiple processes for single‑node/multi‑node training.
+
+## **Best Practices**
+- Use `DistributedDataParallel` wrapper for synchronous data‑parallel training.
+- Ensure each GPU process has exclusive GPU access when using NCCL.
+- Call `destroy_process_group()` at the end to clean up resources.
+- For GPU training, set the device via `torch.cuda.set_device()` before initialization.
+
+This package enables scalable distributed training with fine‑grained control over communication patterns, groups, and device layouts.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+  group_src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.recv in a complex way */
+import torch

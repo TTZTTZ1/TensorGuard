@@ -1,0 +1,24 @@
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  lengths:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  generator:
+    dtype: ["Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "torch.Generator()"
+constraints:
+  1:
+    Parameter 1: lengths
+    Parameter 2: dataset
+    Constraint: "isinstance(lengths, (list, tuple)) and all(isinstance(l, (int, float)) for l in lengths) and all(l > 0 for l in lengths) and ((all(isinstance(l, int) for l in lengths) and sum(lengths) == len(dataset)) or (all(isinstance(l, float) for l in lengths) and abs(sum(lengths) - 1) < 1e-9))"

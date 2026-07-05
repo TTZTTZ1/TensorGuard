@@ -1,0 +1,32 @@
+params:
+  signal:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., frames, frame_length]"]
+    default: null
+  frame_step:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "signal"
+    Parameter 2: "signal"
+    Constraint: "tf.rank(signal) >= 2"
+  2:
+    Parameter 1: "frame_step"
+    Parameter 2: "frame_step"
+    Constraint: "tf.rank(frame_step) == 0"
+  3:
+    Parameter 1: "frame_step"
+    Parameter 2: "signal"
+    Constraint: "frame_step <= tf.shape(signal)[-1]"

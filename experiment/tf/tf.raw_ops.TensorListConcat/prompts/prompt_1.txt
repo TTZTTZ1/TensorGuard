@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorListConcat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorListConcat` concatenates all tensors stored in a TensorList along their first dimension (axis 0). It requires that all tensors in the list have identical shapes except for the first dimension. The operation returns both the concatenated tensor and a list of the sizes of each tensor's first dimension, which is useful for gradient computation.
+
+**Arguments:**
+- `input_handle`: A variant-type Tensor representing the input TensorList.
+- `element_dtype`: The data type of the tensors in the list.
+- `element_shape` (optional): The shape of the individual tensors (excluding the first dimension).
+- `name` (optional): A name for the operation.
+
+**Returns:**
+- `tensor`: The concatenated result, with type `element_dtype`.
+- `lengths`: An int64 Tensor containing the sizes of each original tensor's first dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_handle:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  element_dtype:
+    dtype: ["tf.DType"]
+    range: "No mention"
+    structure: ["dtype"]
+    shape: "No mention"
+    default: null
+  element_shape:
+    dtype: ["tf.TensorShape", "list"]
+    range: "No mention"
+    structure: ["object", "list"]
+    shape: "No mention"
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input_handle
+    Parameter 2: element_dtype
+    Constraint: "all(tf.raw_ops.TensorListGetItem(input_handle, i).dtype == element_dtype for i in range(tf.raw_ops.TensorListLength(input_handle)))"
+  2:
+    Parameter 1: input_handle
+    Parameter 2: element_shape
+    Constraint: "len(set(tf.raw_ops.TensorListGetItem(input_handle, i).shape[1:] for i in range(tf.raw_ops.TensorListLength(input_handle)))) == 1 and (element_shape is None or tf.raw_ops.TensorListGetItem(input_handle, 0).shape[1:] == element_shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorListConcat in a complex way */
+import tensorflow as tf

@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorKronecker` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorKronecker` is a TensorFlow class that constructs a new linear operator representing the Kronecker product of one or more linear operators. It efficiently composes operators without explicitly forming the full dense matrix, making it suitable for large-scale operations.
+
+### Key Features:
+- **Kronecker Product**: Given linear operators `[op1, ..., opJ]`, it builds `op1 ⊗ op2 ⊗ ... ⊗ opJ`.
+- **Shape Handling**: If each `opj` has shape `batch_shape_j + [M_j, N_j]`, the resulting operator has shape `broadcast_batch_shape + [∏ M_j, ∏ N_j]`.
+- **Performance**: Operations on the Kronecker operator sum the costs of the individual operators.
+- **Matrix Properties**: Supports hints like `is_non_singular`, `is_self_adjoint`, etc., for optimization.
+
+### Common Use Cases:
+1. **Constructing Block Operators**: Combine smaller operators to form larger structured operators.
+2. **Batch Operations**: Efficiently handle batches of Kronecker products.
+3. **Implicit Representation**: Avoid dense matrix storage for large Kronecker products.
+
+### Example:
+```python
+import tensorflow as tf
+
+# Create two 2x2 linear operators
+op1 = tf.linalg.LinearOperatorFullMatrix([[1., 2.], [3., 4.]])
+op2 = tf.linalg.LinearOperatorFullMatrix([[1., 0.], [2., 1.]])
+kronecker_op = tf.linalg.LinearOperatorKronecker([op1, op2])
+
+# Resulting operator is 4x4
+print(kronecker_op.to_dense())  # Kronecker product matrix
+```
+
+### Key Methods:
+- `matmul(x)`: Compute `A @ x`.
+- `solve(rhs)`: Solve linear systems `A X = rhs`.
+- `determinant()`, `log_abs_determinant()`: Compute determinants efficiently.
+- `to_dense()`: Explicitly form the dense matrix (use cautiously for large operators).
+
+### Notes:
+- All operators must have the same `dtype`.
+- The Kronecker product is associative, so parentheses are not needed.
+- Useful in domains like quantum mechanics, signal processing, and solving partial differential equations with separable operators.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operators:
+    dtype: [null]
+    range: [null]
+    structure: ["iterable"]
+    shape: [null]
+    default: null
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_square:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "len(operators) > 0"
+  2:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "all(op.dtype == operators[0].dtype for op in operators)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorKronecker in a complex way */
+import tensorflow as tf

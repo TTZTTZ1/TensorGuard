@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.strings.unsorted_segment_join` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.strings.unsorted_segment_join` concatenates string elements from `inputs` based on grouping defined by `segment_ids`. It joins strings within each segment using a specified `separator`, producing an output tensor with `num_segments` segments.
+
+**Key Parameters:**
+- `inputs`: List/Tensor of strings to join.
+- `segment_ids`: Tensor mapping each element in `inputs` to a segment ID.
+- `num_segments`: Total number of segments (must be ≥ max segment ID).
+- `separator`: String used to join elements (default is empty string).
+
+**Example:**
+```python
+inputs = ['this', 'a', 'test', 'is']
+segment_ids = [0, 1, 1, 0]
+tf.strings.unsorted_segment_join(inputs, segment_ids, 2, ' ')
+# Output: [b'this is', b'a test']
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  separator:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ""
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: inputs
+    Constraint: "inputs.shape[:len(segment_ids.shape)] == segment_ids.shape"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.reduce_max(segment_ids) < num_segments and num_segments >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.strings.unsorted_segment_join in a complex way */
+import tensorflow as tf

@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.SparseTopKCategoricalAccuracy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.SparseTopKCategoricalAccuracy` is a metric that measures how often integer-encoded true labels appear within the top `K` predicted probabilities. It is commonly used in multi-class classification tasks.
+
+**Key Features:**
+- **Inputs:** Integer labels (`y_true`) and prediction probabilities (`y_pred`).
+- **Parameter `k`:** Specifies the number of top predictions to consider (default is 5).
+- **Usage:** Suitable for evaluating models where the true labels are integers (e.g., 0, 1, 2) rather than one-hot encoded vectors.
+- **Integration:** Can be used directly in `model.compile()` as a metric.
+
+**Example:**
+```python
+metric = tf.keras.metrics.SparseTopKCategoricalAccuracy(k=3)
+metric.update_state([2, 1], [[0.1, 0.9, 0.8], [0.05, 0.95, 0]])
+print(metric.result())  # Output: 0.5 (50% accuracy in top-3 predictions)
+```
+
+**Main Methods:**
+- `update_state()`: Accumulates metric statistics.
+- `result()`: Computes and returns the current metric value.
+- `reset_state()`: Resets the metric state between epochs/steps.
+
+This metric is useful for scenarios where being among the top `K` predictions is acceptable, such as recommendation systems or image classification with many classes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "5"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'sparse_top_k_categorical_accuracy'"
+  dtype:
+    dtype: ["string", "dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  y_true:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: ["[batch_size]", "[None]"]
+    default: "null"
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: ["[batch_size, num_classes]", "[None, None]"]
+    default: "null"
+  sample_weight:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor", "array", "scalar"]
+    shape: ["[batch_size]", "[None]", "[]"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "k"
+    Parameter 2: "k"
+    Constraint: "k > 0"
+  2:
+    Parameter 1: "y_true"
+    Parameter 2: "y_true"
+    Constraint: "tf.reduce_all(y_true >= 0)"
+  3:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "y_true.shape[0] == y_pred.shape[0]"
+  4:
+    Parameter 1: "k"
+    Parameter 2: "y_pred"
+    Constraint: "k <= y_pred.shape[-1]"
+  5:
+    Parameter 1: "sample_weight"
+    Parameter 2: "y_true"
+    Constraint: "sample_weight is None or tf.broadcast_to(sample_weight, y_true.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.SparseTopKCategoricalAccuracy in a complex way */
+import tensorflow as tf

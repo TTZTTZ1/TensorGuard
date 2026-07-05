@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.nn.bias_add` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.bias_add` adds a 1-D bias tensor to a multi-dimensional input tensor, primarily used for adding channel-wise biases in neural networks. It supports broadcasting and allows different quantized types between `value` and `bias`. The `data_format` argument specifies the channel dimension ('N...C' for channels-last or 'NC...' for channels-first). It is a specialized version of `tf.add` with restrictions on bias shape and flexible type handling for quantized data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["float", "double", "int64", "int32", "uint8", "int16", "int8", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No mention"
+  bias:
+    dtype: ["float", "double", "int64", "int32", "uint8", "int16", "int8", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "No mention"
+  data_format:
+    dtype: ["string", "None"]
+    range: [None, "N...C", "NC..."]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: data_format
+    Parameter 2: None
+    Constraint: "data_format is None or data_format in ['N...C', 'NC...']"
+  2:
+    Parameter 1: value
+    Parameter 2: data_format
+    Constraint: "not (data_format in [None, 'N...C']) or len(value.shape) >= 2"
+  3:
+    Parameter 1: value
+    Parameter 2: data_format
+    Constraint: "data_format != 'NC...' or len(value.shape) >= 3"
+  4:
+    Parameter 1: bias
+    Parameter 2: None
+    Constraint: "len(bias.shape) == 1"
+  5:
+    Parameter 1: bias
+    Parameter 2: value
+    Constraint: "(data_format in [None, 'N...C'] and bias.shape[0] == value.shape[-1]) or (data_format == 'NC...' and bias.shape[0] == value.shape[1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.bias_add in a complex way */
+import tensorflow as tf

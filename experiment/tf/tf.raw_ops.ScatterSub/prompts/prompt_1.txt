@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ScatterSub` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ScatterSub` performs an in-place subtraction of sparse updates to a variable tensor (`ref`) at specified indices. It subtracts values from `updates` into `ref` based on `indices`, handling duplicates by accumulating the subtracted contributions. The operation outputs the updated `ref` for chaining.
+
+**Key Points:**
+- **Usage:** `ref[indices, ...] -= updates[...]`
+- **Inputs:**
+  - `ref`: Mutable variable tensor (supports numeric types).
+  - `indices`: Tensor of indices into the first dimension of `ref` (int32/int64).
+  - `updates`: Values to subtract (same dtype as `ref`).
+- **Shape:** `updates.shape` must equal `indices.shape + ref.shape[1:]` or be scalar.
+- **Behavior:** Duplicate indices cause cumulative subtraction; optional locking for thread safety.
+- **Output:** Returns the updated `ref` tensor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ref:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: ref
+    Parameter 2: updates
+    Constraint: "ref.dtype == updates.dtype"
+  2:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape + ref.shape[1:] or updates.shape == []"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ScatterSub in a complex way */
+import tensorflow as tf

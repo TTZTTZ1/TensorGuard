@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.orthogonal_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions for initializing neural network parameters. All functions operate in `torch.no_grad()` mode and do not affect autograd.
+
+**Key Functions:**
+
+1. **Basic Initializations:**
+   - `uniform_`, `normal_`, `constant_`, `ones_`, `zeros_`, `eye_`, `dirac_` – fill tensors with values from specific distributions or constants.
+
+2. **Advanced Initializations:**
+   - `xavier_uniform_` / `xavier_normal_` (Glorot) – suitable for tanh/sigmoid activations.
+   - `kaiming_uniform_` / `kaiming_normal_` (He) – designed for ReLU/Leaky ReLU activations.
+   - `orthogonal_` – generates (semi) orthogonal matrices.
+   - `sparse_` – creates sparse matrices with a specified sparsity.
+   - `trunc_normal_` – samples from a truncated normal distribution.
+
+3. **Utility:**
+   - `calculate_gain()` – returns recommended gain values for various nonlinearities to scale initializations appropriately.
+
+**Usage Notes:**
+- Functions are in-place (suffix `_`).
+- For linear/convolutional layers, ensure correct `fan_in`/`fan_out` mode based on weight matrix orientation.
+- Special considerations for SELU activation: use `nonlinearity='linear'` for self-normalizing networks.
+
+These initializations help stabilize training and improve convergence by controlling the variance of activations and gradients.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["at least 2-dimensional"]
+    default: null
+  gain:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "1"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["generator"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "tensor"
+    Parameter 2: "None"
+    Constraint: "tensor.dim() >= 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.orthogonal_ in a complex way */
+import torch

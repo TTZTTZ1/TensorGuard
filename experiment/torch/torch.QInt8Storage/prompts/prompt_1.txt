@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.QInt8Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` system provides low-level access to the underlying data of tensors. Here's a concise summary:
+
+## Core Concepts
+
+**`torch.UntypedStorage`** is the fundamental data container - a contiguous, one-dimensional byte array that holds tensor data. Tensors are views over this storage, defined by metadata (dtype, shape, stride, offset).
+
+## Key Relationships
+
+- **Tensor-Storage Connection**: Most tensors have a 1:1 relationship with their storage, but multiple tensors can share the same storage (via views, slicing).
+- **Storage Access**: Use `tensor.untyped_storage()` to get the underlying storage.
+- **Identification**: `storage.data_ptr()` provides a unique identifier for the storage.
+
+## Important Behaviors
+
+1. **Storage Sharing**: Views of a tensor share the original tensor's storage
+2. **Gradient Storage**: Tensors with gradients have separate storages for data and grad
+3. **Special Cases**: Meta device tensors and FakeTensors have no actual storage
+4. **Memory Mapping**: Storages can be memory-mapped from files using `from_file()`
+
+## API Highlights
+
+**Core Methods**:
+- `clone()`: Create a copy
+- `copy_()`, `fill_()`: In-place operations
+- `to()`, `cuda()`, `cpu()`: Device transfers
+- `pin_memory()`: Prepare for GPU transfer
+- `share_memory_()`: Enable multiprocessing sharing
+
+**Type Casting**: Methods like `float()`, `int()`, `double()` convert storage types
+
+## Legacy & Deprecated
+
+- **TypedStorage classes** (`torch.FloatStorage`, etc.) are deprecated
+- Use `torch.UntypedStorage` exclusively going forward
+- `torch.TypedStorage` wraps `UntypedStorage` with dtype information
+
+## Warnings
+
+- Direct storage manipulation is low-level and risky
+- Prefer tensor-level operations when possible
+- Storage APIs are primarily for advanced use cases like memory optimization or multiprocessing
+
+The storage system enables memory-efficient operations through shared storage and provides mechanisms for advanced memory management, though most users should work at the tensor level.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["tuple", "list", "int", "torch.Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list", "tensor"]
+    shape: ["any"]
+    default: "null"
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: ["torch.qint8"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.qint8"
+  device:
+    dtype: ["string", "torch.device"]
+    range: ["cpu", "cuda", "hpu", "mps", "meta"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  _internal:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "None"
+    Constraint: "dtype == torch.qint8"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "args"
+    Constraint: "wrap_storage is None or len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QInt8Storage in a complex way */
+import torch

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.distributions.one_hot_categorical.OneHotCategorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive set of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods: the **score function estimator (REINFORCE)** and the **pathwise derivative estimator (reparameterization trick)**.
+
+### Key Features:
+- **Distributions**: Includes common distributions (e.g., `Normal`, `Bernoulli`, `Categorical`, `Beta`, `Gamma`, `Dirichlet`, `MultivariateNormal`) and specialized ones (e.g., `LKJCholesky`, `Wishart`, `VonMises`).
+- **Gradient Estimation**:
+  - **Score Function**: Uses `sample()` and `log_prob()` for REINFORCE (common in reinforcement learning).
+  - **Pathwise Derivative**: Uses `rsample()` for reparameterized gradients (common in variational autoencoders).
+- **Transformed Distributions**: Allows creating complex distributions via transforms (e.g., `LogNormal` from `Normal` via `exp`).
+- **KL Divergence**: Precomputed KL divergences for many distribution pairs.
+- **Constraints & Transforms**: Tools to handle constrained parameters (e.g., simplex, positive-definite) via bijective mappings.
+
+### Core Classes:
+1. **`Distribution`**: Abstract base class with methods like `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, and properties like `mean`, `variance`, `support`.
+2. **`TransformedDistribution`**: Chains transforms to a base distribution.
+3. **`Independent`**: Reinterprets batch dimensions as event dimensions.
+4. **`MixtureSameFamily`**: Mixture of components from the same distribution family.
+
+### Example Usage:
+```python
+# REINFORCE with a categorical policy
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# Reparameterization trick with a normal distribution
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### Utilities:
+- **`kl_divergence(p, q)`**: Computes KL divergence between distributions.
+- **`transform_to` / `biject_to`**: Registries to map constraints to transforms for unconstrained optimization or HMC.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive_definite`).
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and other stochastic optimization tasks in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.one_hot_categorical.OneHotCategorical in a complex way */
+import torch

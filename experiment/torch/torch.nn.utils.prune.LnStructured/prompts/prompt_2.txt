@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.LnStructured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `LnStructured` class in PyTorch performs structured pruning by removing entire channels from a tensor based on their Ln-norm.  
+
+**Key features:**  
+- Prunes channels along a specified dimension (`dim`) by selecting those with the smallest Ln-norm.  
+- `amount` can be an integer (absolute number of channels) or a float (fraction of channels).  
+- `n` defines the norm type (e.g., L1, L2, Frobenius).  
+
+**Main methods:**  
+- `apply()`: Attaches pruning logic to a module parameter.  
+- `compute_mask()`: Generates a mask zeroing out low-norm channels.  
+- `prune()`: Returns a pruned tensor using the computed mask.  
+- `remove()`: Removes pruning reparameterization but keeps the tensor pruned.  
+
+**Use case:**  
+Reducing model size by eliminating less important channels in weight tensors, often applied to convolutional filters or fully-connected layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  amount:
+    dtype: ["int", "float"]
+    range: ["if float: [0.0, 1.0]", "if int: No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  n:
+    dtype: ["int", "float", "string"]
+    range: ["if string: ['fro', 'nuc']", "if int or float: No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  module:
+    dtype: ["torch.nn.Module"]
+    range: ["No mention"]
+    structure: ["module"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["same as parameter being pruned"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: amount
+    Parameter 2: amount
+    Constraint: "isinstance(amount, float) and 0.0 <= amount <= 1.0 or isinstance(amount, int)"
+  2:
+    Parameter 1: dim
+    Parameter 2: module
+    Constraint: "dim < len(module[name].shape)"
+  3:
+    Parameter 1: importance_scores
+    Parameter 2: module
+    Constraint: "importance_scores is None or importance_scores.shape == module[name].shape"
+  4:
+    Parameter 1: amount
+    Parameter 2: module
+    Constraint: "not isinstance(amount, int) or amount <= module[name].shape[dim]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.LnStructured in a complex way */
+import torch

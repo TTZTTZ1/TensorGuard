@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.math.segment_prod` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.segment_prod` computes the product of elements in segments of a tensor. It groups rows of `data` based on `segment_ids` and returns a tensor where each element is the product of all rows belonging to that segment.
+
+**Key points:**
+- **Inputs:**  
+  - `data`: A tensor of numeric type.  
+  - `segment_ids`: A 1-D tensor with sorted, repeatable integer IDs, matching the size of `data`'s first dimension.
+- **Output:** A tensor with the same type as `data`, where `output[i]` is the product of all rows `j` in `data` where `segment_ids[j] == i`.
+- **Empty segments:** If a segment has no rows, its output is `1`.
+- **Sorting requirement:** On CPU, `segment_ids` must be sorted; on GPU, unsorted IDs lead to undefined behavior.
+- **Example:**  
+  ```python
+  c = tf.constant([[1,2,3,4], [4,3,2,1], [5,6,7,8]])
+  tf.math.segment_prod(c, [0, 0, 1])  # → [[4,6,6,4], [5,6,7,8]]
+  ```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "data"
+    Parameter 2: "segment_ids"
+    Constraint: "segment_ids.shape[0] == data.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.segment_prod in a complex way */
+import tensorflow as tf

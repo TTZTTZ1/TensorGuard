@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.l1_unstructured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.prune.l1_unstructured` prunes a specified parameter in a PyTorch module by removing units with the smallest L1-norm. It modifies the module in place by adding a binary mask buffer and storing the original parameter separately, while replacing the parameter with its pruned version.
+
+**Key parameters:**
+- `module`: The module containing the tensor to prune.
+- `name`: Name of the parameter to prune.
+- `amount`: Fraction (float 0–1) or absolute number (int) of units to prune.
+- `importance_scores`: Optional tensor for custom importance scoring; defaults to the parameter itself.
+
+**Example:**
+```python
+m = prune.l1_unstructured(nn.Linear(2, 3), "weight", amount=0.2)
+```
+This removes 20% of the weight entries with the lowest L1-norm.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  amount:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "amount"
+    Parameter 2: "self"
+    Constraint: "isinstance(amount, float) and 0.0 <= amount <= 1.0 or isinstance(amount, int) and amount >= 0"
+  2:
+    Parameter 1: "importance_scores"
+    Parameter 2: "name"
+    Constraint: "importance_scores is None or importance_scores.shape == getattr(module, name).shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.l1_unstructured in a complex way */
+import torch

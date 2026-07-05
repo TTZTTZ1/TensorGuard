@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.image.non_max_suppression_with_scores` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.non_max_suppression_with_scores` performs greedy selection of bounding boxes based on scores, using either standard Non-Maximum Suppression (NMS) or Soft-NMS. It returns both the indices of selected boxes and their updated scores.
+
+**Key features:**
+- **Input:** Boxes (`[num_boxes, 4]` as `[y1, x1, y2, x2]`) and corresponding scores (`[num_boxes]`).
+- **Output:** Selected indices and their scores (scores may be modified if using Soft-NMS).
+- **Modes:**  
+  - Standard NMS (`soft_nms_sigma=0.0`): Removes boxes with IoU > `iou_threshold`.  
+  - Soft-NMS (`soft_nms_sigma>0.0`): Reduces scores of overlapping boxes based on Gaussian weighting (ignores `iou_threshold`).
+- **Parameters:**  
+  - `max_output_size`: Maximum boxes to select.  
+  - `score_threshold`: Discards boxes below this score.  
+  - `iou_threshold`: IoU cutoff for standard NMS.  
+  - `soft_nms_sigma`: Sigma for Soft-NMS Gaussian weighting.
+
+**Use case:** Filter overlapping detections in object detection, with optional Soft-NMS for improved handling of crowded scenes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1, 4]]
+    default: null
+  scores:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1]]
+    default: null
+  max_output_size:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: [[]]
+    default: null
+  iou_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [[]]
+    default: "0.5"
+  score_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [[]]
+    default: "float('-inf')"
+  soft_nms_sigma:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [[]]
+    default: "0.0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "boxes"
+    Parameter 2: "scores"
+    Constraint: "tf.shape(boxes)[0] == tf.shape(scores)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.non_max_suppression_with_scores in a complex way */
+import tensorflow as tf

@@ -1,0 +1,34 @@
+# tf.raw_ops.SerializeIterator
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/SerializeIterator](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/SerializeIterator)
+
+---
+
+Converts the given `resource_handle` representing an iterator to a variant tensor.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.SerializeIterator`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/SerializeIterator)
+
+```
+tf.raw_ops.SerializeIterator(
+    resource_handle, external_state_policy=0, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `resource_handle` | A `Tensor` of type `resource`. A handle to an iterator resource. |
+| `external_state_policy` | An optional `int`. Defaults to `0`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type `variant`. | |

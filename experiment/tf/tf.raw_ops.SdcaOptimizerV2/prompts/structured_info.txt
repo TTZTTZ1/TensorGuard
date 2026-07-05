@@ -1,0 +1,128 @@
+params:
+  sparse_example_indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  sparse_feature_indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  sparse_feature_values:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  dense_features:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  example_weights:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: "null"
+  example_labels:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: "null"
+  sparse_indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  sparse_weights:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  dense_weights:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  example_state_data:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  loss_type:
+    dtype: ["string"]
+    range: ["logistic_loss", "squared_loss", "hinge_loss", "smooth_hinge_loss", "poisson_loss"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  l1:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  l2:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  num_loss_partitions:
+    dtype: ["int"]
+    range: ["[1, )"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  num_inner_iterations:
+    dtype: ["int"]
+    range: ["[1, )"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  adaptive:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "sparse_feature_indices"
+    Parameter 2: "sparse_example_indices"
+    Constraint: "len(sparse_feature_indices) == len(sparse_example_indices)"
+  2:
+    Parameter 1: "sparse_indices"
+    Parameter 2: "sparse_example_indices"
+    Constraint: "len(sparse_indices) == len(sparse_example_indices)"
+  3:
+    Parameter 1: "sparse_weights"
+    Parameter 2: "sparse_example_indices"
+    Constraint: "len(sparse_weights) == len(sparse_example_indices)"
+  4:
+    Parameter 1: "dense_weights"
+    Parameter 2: "dense_features"
+    Constraint: "len(dense_weights) == len(dense_features)"
+  5:
+    Parameter 1: "num_loss_partitions"
+    Parameter 2: "num_loss_partitions"
+    Constraint: "num_loss_partitions >= 1"
+  6:
+    Parameter 1: "num_inner_iterations"
+    Parameter 2: "num_inner_iterations"
+    Constraint: "num_inner_iterations >= 1"

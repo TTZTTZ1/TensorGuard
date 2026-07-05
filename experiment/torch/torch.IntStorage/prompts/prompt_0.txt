@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `torch.IntStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container underlying tensors. Here's a concise summary:
+
+### Core Concept
+- A **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- Tensors are multi-dimensional views defined by metadata (dtype, shape, stride, offset) over this storage.
+
+### Key Components
+1. **`torch.UntypedStorage`** (Modern API)
+   - Untyped byte array independent of tensor dtype/shape.
+   - Accessed via `tensor.untyped_storage()`.
+   - Multiple tensors can share the same storage (e.g., tensor views).
+   - Provides low-level methods like `clone()`, `fill_()`, `data_ptr()`, `pin_memory()`.
+
+2. **`torch.TypedStorage`** (Legacy, Deprecated)
+   - Typed wrapper around `UntypedStorage` with a specific dtype.
+   - Avoid in new code; will be removed in future versions.
+
+### Important Behaviors
+- **Storage Sharing**: Tensor views (via `view()`, slicing) share the same underlying storage.
+- **Gradient Storage**: Tensors with `requires_grad=True` have separate storages for data and gradients.
+- **Special Cases**: Meta/Fake tensors have no actual storage; subclasses may behave unusually.
+
+### Common Operations
+- Check storage identity: `tensor.untyped_storage().data_ptr()`
+- Clone storage: `storage.clone()`
+- Fill storage: `storage.fill_(value)`
+- Memory mapping: `UntypedStorage.from_file()`
+- Shared memory: `storage.share_memory_()`
+
+### Warnings
+- Direct storage manipulation is low-level and risky; prefer high-level tensor operations.
+- Legacy typed storages (`FloatStorage`, `IntStorage`, etc.) are deprecated.
+- Storage APIs are rarely needed in typical use cases.
+
+### Use Case Guidance
+Most applications should operate at the tensor level. Storage-level operations are primarily for advanced scenarios like memory optimization, inter-process communication, or debugging tensor relationships.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "iterable"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: [1]
+    default: null
+  wrap_storage:
+    dtype: ["UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.int32"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: None
+    Constraint: "dtype == torch.int32"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.IntStorage in a complex way */
+import torch

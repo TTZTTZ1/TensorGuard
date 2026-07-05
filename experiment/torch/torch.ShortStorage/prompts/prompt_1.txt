@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.ShortStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+A **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor. A tensor's structure is defined by its storage plus metadata (dtype, shape, stride, offset).
+
+### Key Components
+1. **`torch.UntypedStorage`** (primary API): A byte-level storage container independent of data type.
+   - Accessed via `tensor.untyped_storage()`.
+   - Multiple tensors can share the same storage (e.g., tensor views).
+   - Provides methods like `clone()`, `fill_()`, `data_ptr()`, `pin_memory()`.
+   - Supports memory-mapped files via `from_file()`.
+
+2. **`torch.TypedStorage`** (legacy/deprecated): A typed wrapper around `UntypedStorage`, associating a specific dtype.
+   - Includes legacy classes like `FloatStorage`, `IntStorage`, etc.
+   - Usage is discouraged; `UntypedStorage` is now preferred.
+
+### Important Behaviors
+- **Storage Sharing**: Tensor views and slices point to the same underlying storage.
+- **Gradient Storage**: Tensors with `requires_grad=True` have separate storages for data and gradients.
+- **Special Cases**: Tensors on `"meta"` device or `FakeTensor` have no actual storage.
+- **Low-Level Manipulation**: Direct storage modification (e.g., `set_()`) is possible but not recommended; use high-level tensor methods instead.
+
+### Common Use Cases
+- Inspecting storage properties (`data_ptr`, `device`, `nbytes`).
+- Creating memory-mapped storages for large datasets.
+- Advanced memory management (pinning, sharing across processes via `share_memory_()`).
+
+### Warning
+Most applications should operate at the tensor level, not the storage level. Storage APIs are low-level and require careful handling to avoid errors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: No mention
+  wrap_storage:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: ["torch.int16"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  device:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  _internal:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: false
+
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: None
+    Constraint: dtype == torch.int16
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ShortStorage in a complex way */
+import torch

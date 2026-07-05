@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_rank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables distributed training with synchronous communication primitives and collective operations.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training and as fallback for GPU
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires building from source
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication groups
+- **DeviceMesh**: Higher-level abstraction for managing process groups across device topologies
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`, `recv`, `isend`, `irecv`
+
+### Key Functions
+- `init_process_group()`: Initialize distributed processing
+- `init_device_mesh()`: Initialize device mesh for multi-dimensional parallelism
+- `new_group()`: Create sub-groups for fine-grained communication
+- `destroy_process_group()`: Clean up resources
+
+### Communication Patterns
+- **Synchronous** (default): Block until operation completes
+- **Asynchronous**: Return `Work` object for non-blocking operations
+
+### Distributed Key-Value Store
+- `TCPStore`, `FileStore`, `HashStore`: For sharing information between processes
+- `PrefixStore`: Wrapper to add prefixes to keys
+
+### Launch Utilities
+- `torch.distributed.launch`: Deprecated, use `torchrun` instead
+- `torch.multiprocessing.spawn`: For spawning multiple processes
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout and error reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `torch.distributed.breakpoint()`: Debug single rank with pdb
+- HTTP debug server for runtime diagnostics
+
+### Best Practices
+- Use NCCL for CUDA GPU training
+- Use Gloo for CPU training
+- Always call `destroy_process_group()` for cleanup
+- Set appropriate timeouts for operations
+- Use environment variables for initialization when possible
+
+The package supports both single-machine and multi-machine distributed training, with advantages over `DataParallel` including per-process optimizers and independent Python interpreters to avoid GIL limitations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_rank in a complex way */
+import torch

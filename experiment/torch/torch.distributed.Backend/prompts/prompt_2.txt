@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `torch.distributed.Backend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines. It enables synchronous distributed training with primitives for communication and coordination between processes.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training
+- **NCCL**: Recommended for CUDA GPU training (supports InfiniBand/GPUDirect)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires building from source
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication subsets via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups across device topologies
+- **Collective Operations**: 
+  - Point-to-point: `send()`, `recv()`, `isend()`, `irecv()`
+  - Collective: `all_reduce()`, `broadcast()`, `all_gather()`, `scatter()`, etc.
+  - Synchronous (`async_op=False`) and asynchronous (`async_op=True`) modes
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Create DeviceMesh for multi-dimensional parallelism
+- `destroy_process_group()`: Clean up resources
+- `get_rank()`, `get_world_size()`: Get process information
+
+### Distributed Key-Value Store
+- **TCPStore**: Network-based store for multi-machine coordination
+- **FileStore**: File-based store for shared file systems
+- **HashStore**: In-memory store for single-process multi-threaded use
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `torch.distributed.breakpoint()`: Debug single rank with pdb
+- Debug HTTP server for runtime data collection
+
+### Launch Utilities
+- `torch.distributed.launch`: Spawn multiple processes per node (deprecated in favor of `torchrun`)
+- `torch.multiprocessing.spawn`: Python multiprocessing spawn utility
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU training
+- Ensure exclusive GPU access per process with NCCL
+- Clean up with `destroy_process_group()` to avoid hangs
+- Set `TORCH_NCCL_ASYNC_ERROR_HANDLING=1` for better error detection
+- Use `async_op=True` for computation/communication overlap
+
+The package supports various network configurations and provides both low-level communication primitives and high-level abstractions like `DistributedDataParallel` for model parallelism.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  func:
+    dtype: ["function"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  extended_api:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  devices:
+    dtype: ["string", "list"]
+    range: [null]
+    structure: ["scalar", "list"]
+    shape: [1, -1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "devices"
+    Parameter 2: ""
+    Constraint: "devices is None or isinstance(devices, str) or (isinstance(devices, list) and all(isinstance(d, str) for d in devices))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.Backend in a complex way */
+import torch

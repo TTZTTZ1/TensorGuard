@@ -1,0 +1,22 @@
+params:
+  mask:
+    dtype: ["bool"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  source:
+    dtype: ["int", "float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: mask
+    Parameter 2: self
+    Constraint: "len(mask.shape) <= len(self.shape) and all(a == b or a == 1 or b == 1 for a, b in zip(mask.shape[::-1], self.shape[::-1]))"
+  2:
+    Parameter 1: source
+    Parameter 2: mask
+    Constraint: "source.numel() >= mask.sum().item()"

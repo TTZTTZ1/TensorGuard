@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.api.PContext` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed.elastic.multiprocessing` module provides a high-level interface for launching and managing multiple worker processes, either as Python functions or external binaries. It handles process spawning, environment setup, and log management.
+
+**Key Features:**
+- **Flexible Entrypoints:** Supports both Python callables and binary executables.
+- **Per-Process Configuration:** Allows specifying distinct arguments (`args`) and environment variables (`envs`) for each worker using a dictionary keyed by local rank.
+- **Comprehensive Logging:** Redirects and/or tees stdout/stderr to log files with optional filtering.
+- **Error Handling:** Automatically generates error files for failed processes.
+
+**Core Function:**
+- `start_processes()`: Launches `n` worker processes based on the provided entrypoint, arguments, and environments. Returns a `PContext` object for managing the processes.
+
+**Process Contexts:**
+- `MultiprocessContext`: For function-based workers (uses `torch.multiprocessing`).
+- `SubprocessContext`: For binary-based workers (uses `subprocess.Popen`).
+
+**Log Management:**
+- `LogsSpecs`: Defines logging behavior (redirects, tee, log directory).
+- Supports redirecting outputs to files, duplicating to console (tee), and filtering log content.
+
+**Typical Usage:**
+1. Define the worker function or binary.
+2. Specify per-rank arguments and environments.
+3. Configure logging via `LogsSpecs`.
+4. Call `start_processes()` and use the returned context to monitor/manage the processes.
+
+This module simplifies distributed training setups by abstracting process management and log handling complexities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  entrypoint:
+    dtype: ["Callable", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  envs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  log_line_prefixes:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  duplicate_stdout_filters:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  duplicate_stderr_filters:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "set(args.keys()) == set(envs.keys())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.api.PContext in a complex way */
+import torch

@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.linalg.tensorsolve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.tensorsolve` computes the solution **X** to the tensor equation `torch.tensordot(A, X) = B`.  
+
+**Key points:**  
+- It solves for **X** in the system where `A` is a tensor and `B` is a tensor of shape `A.shape[:B.ndim]`.  
+- The function internally reshapes `A` into a square matrix and solves the linear system.  
+- The `dims` argument can optionally reorder dimensions of `A` before solving.  
+- The output tensor **X** satisfies `tensordot(A, X, dims=X.ndim) == B`.  
+
+**Example use:**  
+```python
+X = torch.linalg.tensorsolve(A, B, dims=(0, 2))
+```  
+This is useful for solving tensor equations arising in multilinear algebra.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dims:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: ["any"]
+    default: "None"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "A"
+    Parameter 2: "B"
+    Constraint: "math.prod(A.shape[:B.ndim]) == math.prod(A.shape[B.ndim:])"
+  2:
+    Parameter 1: "B"
+    Parameter 2: "A"
+    Constraint: "B.shape == A.shape[:B.ndim]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.tensorsolve in a complex way */
+import torch

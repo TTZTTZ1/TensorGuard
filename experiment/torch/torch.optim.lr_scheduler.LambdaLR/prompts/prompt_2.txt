@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.LambdaLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**LambdaLR** is a PyTorch learning rate scheduler that multiplies the initial learning rate of each parameter group by a user-defined function of the current epoch.
+
+**Key Features:**
+- **Purpose:** Dynamically adjusts the learning rate based on a custom function (`lr_lambda`).
+- **Inputs:** 
+  - `optimizer`: The optimizer to wrap.
+  - `lr_lambda`: A function (or list of functions) that takes the epoch index as input and returns a multiplicative factor.
+  - `last_epoch`: The index of the last epoch (default: -1, meaning start from initial LR).
+- **Usage:** Call `scheduler.step()` after each epoch (typically after `optimizer.step()`).
+
+**Example:**
+```python
+# Single function for all parameter groups
+scheduler = LambdaLR(optimizer, lr_lambda=lambda epoch: 0.95 ** epoch)
+
+# Different functions per parameter group
+lambda1 = lambda epoch: epoch // 30
+lambda2 = lambda epoch: 0.95 ** epoch
+scheduler = LambdaLR(optimizer, lr_lambda=[lambda1, lambda2])
+```
+
+**Important Notes:**
+- The scheduler updates the learning rate at each epoch via `step()`.
+- Use `get_last_lr()` to inspect the current learning rates.
+- State saving/loading (`state_dict`, `load_state_dict`) should be done alongside the optimizer's state.
+- The `epoch` parameter in `step()` is deprecated; call `step()` without arguments.
+
+**Ideal for:** Custom, non-standard learning rate schedules defined by arbitrary epoch-dependent functions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  lr_lambda:
+    dtype: ["function", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: lr_lambda
+    Parameter 2: optimizer
+    Constraint: not isinstance(lr_lambda, list) or len(lr_lambda) == len(optimizer.param_groups)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.LambdaLR in a complex way */
+import torch

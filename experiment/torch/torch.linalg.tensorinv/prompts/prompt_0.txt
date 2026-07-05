@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `torch.linalg.tensorinv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.tensorinv` computes the inverse of a tensor with respect to `torch.tensordot`. It reshapes the input tensor into a square matrix, inverts it, and then reshapes the result back, effectively computing the tensor that yields the identity when tensordotted with the original.
+
+**Key points:**
+- **Purpose**: Finds tensor `X` such that `tensordot(A, X, ind)` equals an identity matrix.
+- **Shape requirement**: The product of the first `ind` dimensions must equal the product of the remaining dimensions.
+- **Output shape**: `X.shape = A.shape[ind:] + A.shape[:ind]`.
+- **Special case**: When `A` is 2D and `ind=1`, it reduces to standard matrix inversion (`torch.linalg.inv`).
+- **Recommended alternative**: Prefer `torch.linalg.tensorsolve` for solving tensor equations, as it is faster and more numerically stable than explicitly computing the inverse.
+
+**Parameters:**
+- `A`: Tensor to invert (must satisfy dimension product equality).
+- `ind`: Split index for the tensordot operation (default: 2).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  ind:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "2"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: ind
+    Constraint: "math.prod(A.shape[:ind]) == math.prod(A.shape[ind:])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.tensorinv in a complex way */
+import torch

@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.EfficientNetB5` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.EfficientNetB5` function instantiates the EfficientNetB5 architecture, a convolutional neural network designed for image classification. It is based on the EfficientNet model scaling approach introduced in the 2019 ICML paper.
+
+**Key Features:**
+- Supports pre-trained ImageNet weights for transfer learning.
+- Includes built-in input preprocessing (pixel values scaled to [0, 255]).
+- Flexible configuration for including/excluding the top classification layer.
+
+**Main Parameters:**
+- `include_top`: Whether to include the final fully-connected classification layer.
+- `weights`: Load pre-trained ImageNet weights, use custom weights, or initialize randomly.
+- `input_shape`: Required only if `include_top=False`, specifying input dimensions (3 channels).
+- `pooling`: Optional global pooling (`avg` or `max`) when `include_top=False`.
+- `classes`: Number of output classes (default 1000 for ImageNet).
+- `classifier_activation`: Activation for the top layer (default `'softmax'`).
+
+**Use Cases:**
+- Image classification with pre-trained models.
+- Transfer learning by removing the top layer and adding custom classifiers.
+
+**Note:** EfficientNet models handle input normalization internally, so preprocessing is minimal.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  weights
+    dtype: ["string", "NoneType"]
+    range: [null, "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: '"imagenet"'
+  input_tensor
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  input_shape
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: ["3"]
+    default: "null"
+  pooling
+    dtype: ["string", "NoneType"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  classes
+    dtype: ["int"]
+    range: ["positive integers"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1000"
+  classifier_activation
+    dtype: ["string", "callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'softmax'"
+constraints:
+  1
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "input_shape is not None implies include_top == False"
+  2
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes != 1000 implies (include_top == True and weights is None)"
+  3
+    Parameter 1: "classifier_activation"
+    Parameter 2: "include_top"
+    Constraint: "classifier_activation != 'softmax' implies include_top == True"
+  4
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights == 'imagenet' implies (classifier_activation is None or classifier_activation == 'softmax')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.EfficientNetB5 in a complex way */
+import tensorflow as tf

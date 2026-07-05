@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ExpandDims` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ExpandDims` function inserts a dimension of size 1 into a tensor at a specified axis. It is commonly used to add batch dimensions or adjust tensor shapes for compatibility in operations.
+
+**Key Points:**
+- **Purpose:** Adds a singleton dimension to a tensor's shape.
+- **Axis Handling:** 
+  - Positive `axis` counts from the start (0-based).
+  - Negative `axis` counts backward from the end.
+- **Constraint:** `axis` must be in `[-rank(input)-1, rank(input)]`.
+- **Use Case:** Often used to add a batch dimension (e.g., converting `[height, width, channels]` to `[1, height, width, channels]`).
+- **Related Function:** Inverse of `squeeze()`, which removes size-1 dimensions.
+
+**Example:**
+For a tensor `t` of shape `[2, 3]`:
+- `expand_dims(t, 0)` → `[1, 2, 3]`
+- `expand_dims(t, 1)` → `[2, 1, 3]`
+- `expand_dims(t, -1)` → `[2, 3, 1]`
+
+**Arguments:**
+- `input`: Input tensor.
+- `axis`: Scalar specifying dimension index (int32/int64).
+- `name`: Optional operation name.
+
+**Returns:** A tensor with the same data but an added dimension of size 1.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "int32", "int64", "bool", "string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  axis:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "axis >= -1 - tf.rank(input) and axis <= tf.rank(input)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ExpandDims in a complex way */
+import tensorflow as tf

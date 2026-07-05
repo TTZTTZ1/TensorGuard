@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.RNN` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.RNN` is the base class for recurrent neural network layers in TensorFlow/Keras. It wraps an RNN cell (or a stack of cells) to process sequential data over multiple timesteps.
+
+**Key Features:**
+- **Cell-based design:** Accepts a single RNN cell or a list of cells (stacked RNN).
+- **Flexible output:** Can return the final output only, the full output sequence, and/or the final hidden state(s).
+- **Bidirectional support:** Can process sequences forward or backward (`go_backwards`).
+- **Stateful mode:** Retains hidden states across batches for continuous sequences.
+- **Masking support:** Handles variable-length sequences via masking.
+
+**Main Parameters:**
+- `cell`: The RNN cell instance(s) defining the recurrent computation.
+- `return_sequences`: Whether to output the last timestep or all timesteps.
+- `return_state`: Whether to return the final state(s) in addition to the output.
+- `stateful`: If `True`, states persist between batches (requires fixed batch size).
+- `unroll`: Unrolls the RNN loop for speed (suitable for short sequences).
+
+**Input/Output:**
+- **Input shape:** `(batch_size, timesteps, features)`
+- **Output shape:** 
+  - Default: `(batch_size, output_size)`
+  - If `return_sequences`: `(batch_size, timesteps, output_size)`
+  - If `return_state`: List of tensors [output, state1, state2, ...]
+
+**Common Use Cases:**
+- Time series forecasting
+- Sequence classification/generation
+- Stacked or custom RNN architectures
+
+The layer supports masking, state management, and custom RNN cell implementations, providing a flexible foundation for recurrent models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cell:
+    dtype: ["object", "list"]
+    range: null
+    structure: ["instance", "list"]
+    shape: null
+    default: null
+  return_sequences:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  return_state:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  go_backwards:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  stateful:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  unroll:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  zero_output_for_mask:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: zero_output_for_mask
+    Parameter 2: return_sequences
+    Constraint: "return_sequences or not zero_output_for_mask"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.RNN in a complex way */
+import tensorflow as tf

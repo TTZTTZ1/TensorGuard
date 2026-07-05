@@ -1,0 +1,54 @@
+params:
+  resource:
+    dtype: ["resource"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  T:
+    dtype: ["tf.DType"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  N:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  num_splits:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  paddings:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "N"
+    Parameter 2: "N"
+    Constraint: "N >= 1"
+  2:
+    Parameter 1: "resource"
+    Parameter 2: "num_splits"
+    Constraint: "tf.rank(resource) == len(num_splits)"
+  3:
+    Parameter 1: "num_splits"
+    Parameter 2: "paddings"
+    Constraint: "not paddings or len(paddings) == len(num_splits)"
+  4:
+    Parameter 1: "resource"
+    Parameter 2: "num_splits"
+    Constraint: "all((tf.shape(resource)[i] + (paddings[i] if i < len(paddings) else 0)) % num_splits[i] == 0 for i in range(len(num_splits)))"

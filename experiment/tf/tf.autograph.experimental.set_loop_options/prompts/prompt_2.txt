@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.autograph.experimental.set_loop_options` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.autograph.experimental.set_loop_options` is a directive used to customize the behavior of loops when they are converted by TensorFlow's AutoGraph into TensorFlow control flow operations (specifically `tf.while_loop`). It allows you to set loop-specific parameters that are passed directly to the underlying `tf.while_loop` call.
+
+### Key Points:
+- **Scope**: Only affects the immediately enclosing loop when it is transformed into a TensorFlow while loop. Has no effect on regular Python loops or if AutoGraph is not used.
+- **Purpose**: Provides fine-grained control over loop execution, such as limiting iterations, enabling memory optimization, or handling dynamic tensor shapes.
+- **Common Use Cases**:
+  - Limiting the total number of loop iterations (`maximum_iterations`).
+  - Specifying shape invariants for tensors that change shape across iterations (`shape_invariants`).
+  - Controlling parallelism (`parallel_iterations`) or GPU-CPU memory swapping (`swap_memory`).
+
+### Example Usage:
+```python
+@tf.function(autograph=True)
+def example():
+    v = tf.constant([0])
+    for i in tf.range(5):
+        tf.autograph.experimental.set_loop_options(
+            maximum_iterations=3,
+            shape_invariants=[(v, tf.TensorShape([None]))]
+        )
+        v = tf.concat([v, [i]], 0)
+    return v
+```
+In this example, the loop is limited to 3 iterations, and `v` is allowed to change its first dimension dynamically.
+
+### Important Notes:
+- The parameters mirror those of `tf.while_loop` but are adapted for use within AutoGraph-decorated functions.
+- It is primarily useful for advanced performance tuning, memory management, or handling loops with dynamic tensor shapes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  parallel_iterations:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "UNSPECIFIED"
+  swap_memory:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "UNSPECIFIED"
+  maximum_iterations:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "UNSPECIFIED"
+  shape_invariants:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "UNSPECIFIED"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.autograph.experimental.set_loop_options in a complex way */
+import tensorflow as tf

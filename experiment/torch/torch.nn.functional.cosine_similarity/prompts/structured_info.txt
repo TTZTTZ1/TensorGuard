@@ -1,0 +1,34 @@
+params:
+  x1:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  x2:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  eps:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1e-8"
+constraints:
+  1:
+    Parameter 1: "x1"
+    Parameter 2: "x2"
+    Constraint: "common_ndim = max(x1.dim(), x2.dim()); shape1 = (1,)*(common_ndim - x1.dim()) + tuple(x1.shape); shape2 = (1,)*(common_ndim - x2.dim()) + tuple(x2.shape); all(a == b or a == 1 or b == 1 for a, b in zip(shape1, shape2))"
+  2:
+    Parameter 1: "dim"
+    Parameter 2: "x1"
+    Constraint: "ndim = max(x1.dim(), x2.dim()); -ndim <= dim < ndim"

@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `tf.nn.atrous_conv2d_transpose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.atrous_conv2d_transpose` performs the transpose (gradient) of an atrous (dilated) 2D convolution, often referred to as a "deconvolution." It upsamples the input by applying a dilated filter in a transposed manner.
+
+**Key Parameters:**
+- `value`: Input tensor of shape `[batch, in_height, in_width, in_channels]`.
+- `filters`: Filter tensor of shape `[filter_height, filter_width, out_channels, in_channels]`.
+- `output_shape`: Desired output shape `[batch, out_height, out_width, out_channels]`.
+- `rate`: Dilation rate (stride for sampling input, or zero-insertion rate in filters).
+- `padding`: Either `'VALID'` or `'SAME'`.
+
+**Functionality:**
+- Computes the gradient of `atrous_conv2d` with respect to its input.
+- Equivalent to standard convolution transpose with filters dilated by inserting `rate - 1` zeros spatially.
+- Used for tasks like semantic segmentation where upsampling is required.
+
+**Constraints:**
+- Input and filter depths must match.
+- `rate` must be ≥ 1.
+- `output_shape` must be a 4-element tensor.
+- Only supports `'VALID'` and `'SAME'` padding.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filters:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  output_shape:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  rate:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["VALID", "SAME"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: rate
+    Parameter 2: null
+    Constraint: "rate >= 1"
+  2:
+    Parameter 1: padding
+    Parameter 2: null
+    Constraint: "padding in ['VALID', 'SAME']"
+  3:
+    Parameter 1: output_shape
+    Parameter 2: null
+    Constraint: "tf.size(output_shape) == 4"
+  4:
+    Parameter 1: value
+    Parameter 2: filters
+    Constraint: "value.shape[3] == filters.shape[3]"
+  5:
+    Parameter 1: output_shape
+    Parameter 2: filters
+    Constraint: "output_shape[3] == filters.shape[2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.atrous_conv2d_transpose in a complex way */
+import tensorflow as tf

@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.bilinear` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.bilinear` applies a bilinear transformation using two input tensors, a weight matrix, and an optional bias. It computes the output as:
+
+\[
+y = x_1^T A x_2 + b
+\]
+
+**Key details:**
+- **Inputs:**  
+  - `input1`: Shape `(N, *, in1_features)`  
+  - `input2`: Shape `(N, *, in2_features)`  
+  - `weight`: Shape `(out_features, in1_features, in2_features)`  
+  - `bias` (optional): Shape `(out_features)`
+
+- **Output:** Shape `(N, *, out_features)`, where all but the last dimension match the inputs' shapes.
+
+- **Requirement:** The inputs must share the same dimensions except for the last feature dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input1:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(N, *, Hin1)"]
+    default: null
+  input2:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(N, *, Hin2)"]
+    default: null
+  weight:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(out_features, in1_features, in2_features)"]
+    default: null
+  bias:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["(out_features)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input1
+    Parameter 2: input2
+    Constraint: "input1.shape[:-1] == input2.shape[:-1]"
+  2:
+    Parameter 1: input1
+    Parameter 2: weight
+    Constraint: "input1.shape[-1] == weight.shape[1]"
+  3:
+    Parameter 1: input2
+    Parameter 2: weight
+    Constraint: "input2.shape[-1] == weight.shape[2]"
+  4:
+    Parameter 1: bias
+    Parameter 2: weight
+    Constraint: "bias is None or bias.shape == (weight.shape[0],)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.bilinear in a complex way */
+import torch

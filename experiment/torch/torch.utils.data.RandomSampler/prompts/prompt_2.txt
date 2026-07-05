@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.RandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for loading and processing data in PyTorch, centered around the `DataLoader` class. Here’s a concise overview:
+
+### **Core Components**
+- **`DataLoader`**: An iterable that combines a dataset with a sampler, supporting:
+  - **Map‑style datasets** (implement `__getitem__` and `__len__`) for random access.
+  - **Iterable‑style datasets** (implement `__iter__`) for streaming/sequential data.
+  - **Automatic batching**, customizable loading order, single‑/multi‑process loading, and memory pinning.
+
+### **Key Features**
+1. **Data Loading Order**  
+   - For map‑style datasets, use a `Sampler` (e.g., `RandomSampler`, `SequentialSampler`) to control index sequencing.
+   - Iterable‑style datasets define their own order via `__iter__`.
+
+2. **Batching**  
+   - Enabled by `batch_size`; samples are collated via `collate_fn` (default stacks tensors).
+   - Disable batching by setting `batch_size=None` and `batch_sampler=None` for per‑sample processing.
+
+3. **Multi‑Process Loading**  
+   - Set `num_workers > 0` to parallelize data loading across subprocesses.
+   - **Note**: For iterable‑style datasets, each worker gets a replica—implement sharding (e.g., using `get_worker_info`) to avoid duplicates.
+
+4. **Memory Pinning**  
+   - Set `pin_memory=True` to speed up host‑to‑GPU transfers by using page‑locked memory.
+
+5. **Customization**  
+   - **`sampler` / `batch_sampler`**: Control index sampling.
+   - **`collate_fn`**: Customize how samples are merged into a batch.
+   - **`worker_init_fn`**: Configure each worker process (e.g., set different seeds).
+
+### **Important Notes**
+- **Platform behavior**: On Unix, workers are forked; on Windows/macOS, they are spawned (requires guarding main script with `if __name__ == '__main__'`).
+- **Randomness**: In multi‑process loading, each worker’s PyTorch seed is set to `base_seed + worker_id`. Use `worker_init_fn` to seed other libraries.
+- **Memory usage**: Worker processes may copy Python objects from the parent; consider using non‑refcounted data (e.g., NumPy arrays) to reduce memory overhead.
+
+### **Helper Classes & Functions**
+- **Datasets**: `TensorDataset`, `ConcatDataset`, `ChainDataset`, `Subset`, `StackDataset`.
+- **Samplers**: `RandomSampler`, `WeightedRandomSampler`, `BatchSampler`, `DistributedSampler`.
+- **Collation**: `default_collate` (batched), `default_convert` (non‑batched), and `collate` for extensible custom collation.
+- **Utilities**: `get_worker_info`, `random_split`.
+
+### **Typical Usage**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class MyDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = MyDataset()
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in loader:
+    # batch is collated (e.g., stacked tensors)
+    ...
+```
+
+In short, `torch.utils.data` offers a flexible, efficient pipeline for feeding data into PyTorch models, with built‑in support for batching, parallelism, and customization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data_source:
+    dtype: ["Sized"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  replacement:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  num_samples:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.RandomSampler in a complex way */
+import torch

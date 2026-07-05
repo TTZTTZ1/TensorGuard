@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.nn.weighted_cross_entropy_with_logits` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.weighted_cross_entropy_with_logits` computes a weighted binary cross-entropy loss, allowing adjustment of the cost for positive errors via `pos_weight`. This helps balance recall and precision in classification tasks.
+
+**Key points:**
+- **Purpose**: Weighted version of `sigmoid_cross_entropy_with_logits`.
+- **Formula**:  
+  `loss = labels * -log(sigmoid(logits)) * pos_weight + (1 - labels) * -log(1 - sigmoid(logits))`
+- **Effect**:
+  - `pos_weight > 1`: Increases recall (reduces false negatives).
+  - `pos_weight < 1`: Increases precision (reduces false positives).
+- **Inputs**:
+  - `labels`: Values in [0, 1], same shape as `logits`.
+  - `logits`: Real numbers (`float32`/`float64`).
+  - `pos_weight`: Non-negative weight for positive examples.
+- **Output**: Tensor of loss values, same shape as `logits`.
+- **Error**: Raises `ValueError` if `logits` and `labels` shapes mismatch.
+
+**Example**:
+```python
+loss = tf.nn.weighted_cross_entropy_with_logits(
+    labels=[1., 0.], 
+    logits=[1.5, -0.1], 
+    pos_weight=2.0
+)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  labels:
+    dtype: ["float32", "float64"]
+    range: [[0, 1]]
+    structure: ["tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  pos_weight:
+    dtype: ["float32", "float64"]
+    range: [[0, null]]
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: labels
+    Parameter 2: logits
+    Constraint: "labels.dtype == logits.dtype and labels.shape == logits.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.weighted_cross_entropy_with_logits in a complex way */
+import tensorflow as tf

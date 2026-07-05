@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.TensorShape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TensorShape` represents the static shape of a Tensor in TensorFlow, which can be fully known, partially known, or unknown. It is used to inspect and manipulate tensor shapes during both eager execution and graph tracing (e.g., in `tf.function`). Key functionalities include:
+
+- **Shape Inspection**: Get dimensions as a list (`as_list()`), check rank (`rank`), and determine if fully defined (`is_fully_defined()`).
+- **Compatibility & Comparison**: Verify shape compatibility (`is_compatible_with()`), check subtyping (`is_subtype_of()`), and compare equality (`__eq__()`).
+- **Shape Manipulation**: Merge shapes (`merge_with()`), concatenate (`concatenate()`), and derive common supertypes (`most_specific_common_supertype()`).
+- **Dynamic vs. Static**: While `TensorShape` provides static shape information, use `tf.shape(tensor)` to obtain dynamic shape as a tensor.
+
+Commonly used in shape validation, dimension operations, and when working with partially defined shapes in traced functions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dims:
+    dtype: ["list", "None"]
+    range: ["No mention"]
+    structure: ["list", "None"]
+    shape: ["variable", "null"]
+    default: "No mention"
+  rank:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  other:
+    dtype: ["TensorShape"]
+    range: ["No mention"]
+    structure: ["TensorShape"]
+    shape: ["variable"]
+    default: "No mention"
+  others:
+    dtype: ["Sequence of TensorShape"]
+    range: ["No mention"]
+    structure: ["sequence"]
+    shape: ["variable"]
+    default: "No mention"
+  key:
+    dtype: ["int", "slice"]
+    range: ["No mention"]
+    structure: ["scalar", "slice"]
+    shape: ["1", "variable"]
+    default: "No mention"
+  proto:
+    dtype: ["TensorShapeProto"]
+    range: ["No mention"]
+    structure: ["TensorShapeProto"]
+    shape: ["No mention"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "self.dims"
+    Parameter 2: "other.dims"
+    Constraint: "all(self.dims[i] == other.dims[i] or self.dims[i] is None or other.dims[i] is None for i in range(min(len(self.dims), len(other.dims))))"
+  2:
+    Parameter 1: "self.rank"
+    Parameter 2: "rank"
+    Constraint: "self.rank == rank"
+  3:
+    Parameter 1: "self"
+    Parameter 2: "other"
+    Constraint: "self.is_compatible_with(other)"
+  4:
+    Parameter 1: "self.dims"
+    Parameter 2: "other.dims"
+    Constraint: "len(self.dims) == len(other.dims) or self.dims is None or other.dims is None"
+  5:
+    Parameter 1: "dims"
+    Parameter 2: "None"
+    Constraint: "dims is None or all(isinstance(d, (int, type(None))) for d in dims)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TensorShape in a complex way */
+import tensorflow as tf

@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.LocalTimerClient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timer system provides a mechanism to detect and handle stuck workers in distributed training by using countdown timers. Here's a concise summary:
+
+## Purpose
+Prevent worker processes from hanging indefinitely by automatically terminating them if they exceed a specified time limit for critical operations.
+
+## Core Components
+
+### 1. **Timer Client** (`TimerClient`)
+- Worker-side component that requests timer acquisition/release
+- Two implementations:
+  - `LocalTimerClient`: Uses multiprocessing Queue
+  - `FileTimerClient`: Uses named pipe (FIFO)
+
+### 2. **Timer Server** (`TimerServer`)
+- Monitors active timers and expires them when deadlines pass
+- Two implementations:
+  - `LocalTimerServer`: Works with LocalTimerClient
+  - `FileTimerServer`: Works with FileTimerClient
+
+## Basic Usage Pattern
+
+```python
+import torch.distributed.elastic.timer as timer
+
+# 1. Configure timer client
+timer.configure(timer.LocalTimerClient(message_queue))
+
+# 2. Use timer in critical sections
+with timer.expires(after=60):  # 60-second timeout
+    # Potentially stuck operation
+    torch.distributed.all_reduce(...)
+```
+
+## Key Features
+
+- **Automatic Worker Reaping**: If a worker doesn't release its timer before expiration, the server kills the process
+- **Local Operation**: Each host runs its own timer server for local workers
+- **Retry Mechanism**: When a worker is killed, the elastic agent automatically retries the worker group
+- **Customizable**: Can implement custom server/client pairs by extending base classes
+
+## Implementation Notes
+
+- Timer servers and clients must be used in matching pairs
+- The system uses PID-based worker identification
+- Negative expiration times indicate timer release requests
+- Exact termination timing depends on server polling intervals
+
+This system is particularly useful for operations like distributed collective communications that could potentially hang, ensuring training jobs can recover from stuck workers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mp_queue:
+    dtype: ["multiprocessing.Queue"]
+    range: null
+    structure: ["object"]
+    shape: [null]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.LocalTimerClient in a complex way */
+import torch

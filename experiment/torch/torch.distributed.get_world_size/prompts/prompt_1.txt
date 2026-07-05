@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_world_size` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The provided documentation covers PyTorch's `torch.distributed` package for distributed training. Here's a concise summary:
+
+## Overview
+`torch.distributed` enables multi-process parallelism across multiple machines/nodes. It supports synchronous distributed training via `DistributedDataParallel` wrapper.
+
+## Key Components
+
+### **Backends**
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training  
+- **Gloo**: Recommended for CPU training
+- **MPI**: Optional, requires building from source
+- **UCC**: Experimental
+
+### **Initialization Methods**
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### **Core Concepts**
+- **Process groups**: Default group (world) or custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+- **Collective operations**: Synchronous/async operations like `all_reduce`, `broadcast`, `all_gather`
+- **Point-to-point**: `send`/`recv` and async variants `isend`/`irecv`
+
+### **Key Functions**
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Create DeviceMesh for multi-dimensional parallelism
+- `destroy_process_group()`: Clean up resources
+- Various collective operations with `async_op` flag for async execution
+
+### **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `breakpoint()`: Interactive debugging on specific rank
+- Debug HTTP server for runtime data collection
+
+### **Performance Features**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+- **Symmetric Memory**: Optimized memory allocation for collective operations
+- **Environment variables**: For network interface selection and performance tuning
+
+### **Utilities**
+- **Launch scripts**: `torch.distributed.launch` (deprecated in favor of `torchrun`)
+- **Spawn utility**: `torch.multiprocessing.spawn` for multi-process spawning
+- **Key-value stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+
+## Best Practices
+- Use NCCL for GPU training, Gloo for CPU
+- Call `destroy_process_group()` for cleanup
+- Set `async_op=True` for overlapping communication/computation
+- Use `TORCH_DISTRIBUTED_DEBUG` for troubleshooting
+- Ensure consistent tensor sizes across ranks for collectives
+
+The package provides both low-level communication primitives and high-level abstractions like `DeviceMesh` for complex parallel training scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["object", "scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: group
+    Parameter 2: null
+    Constraint: "group is None or isinstance(group, ProcessGroup)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_world_size in a complex way */
+import torch

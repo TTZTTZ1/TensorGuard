@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers system provides a mechanism to detect and handle stuck workers in distributed training by setting time limits on code blocks. Here's a concise summary:
+
+## **Purpose**
+Prevent worker processes from hanging indefinitely by automatically terminating them if they exceed a specified time limit for a given operation.
+
+## **Core Components**
+
+### **Client-Server Architecture**
+- **Timer Server**: Monitors active timers and kills workers when timers expire
+- **Timer Client**: Worker-side interface to acquire and release timers
+- **Communication**: Uses message queues (multiprocessing.Queue) or named pipes
+
+### **Key Functions**
+```python
+# Configuration
+torch.distributed.elastic.timer.configure(timer_client)
+
+# Usage in code
+with timer.expires(after=60):  # 60-second timeout
+    # Potentially stuck operation
+    torch.distributed.all_reduce(...)
+```
+
+## **Built-in Implementations**
+
+1. **LocalTimerServer/LocalTimerClient**
+   - Uses `multiprocessing.Queue` for communication
+   - Designed for subprocesses on the same host
+
+2. **FileTimerServer/FileTimerClient**
+   - Uses named pipes (FIFO files) for communication
+   - Multiple clients can connect to the same server
+
+## **Workflow**
+1. Agent process starts a timer server
+2. Worker processes configure a timer client
+3. Workers acquire timers before entering critical sections
+4. If the timer expires before release, the server kills the worker
+5. Agent retries the worker group
+
+## **Customization**
+You can implement custom timer servers/clients by extending:
+- `TimerServer` abstract base class
+- `TimerClient` abstract base class
+- Using `TimerRequest` objects for messaging
+
+## **Use Case**
+Primarily for distributed training scenarios where operations like collective communications (all_reduce, all_gather) might hang due to network issues or deadlocks, ensuring the training job can continue by restarting stuck workers.
+
+The system provides fault tolerance by allowing elastic training jobs to recover from individual worker failures while maintaining overall job progress.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  request_queue:
+    dtype: ["object"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  max_interval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  daemon:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerServer in a complex way */
+import torch

@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.nn.SmoothL1Loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**SmoothL1Loss** is a PyTorch loss function that combines L1 and L2 losses, using a squared term for small errors (below `beta`) and an L1 term for larger errors. This makes it less sensitive to outliers than MSE loss and helps prevent exploding gradients.
+
+**Key Features:**
+- **Formula:**  
+  For each element:  
+  If `|x - y| < beta`: loss = `0.5 * (x - y)^2 / beta`  
+  Else: loss = `|x - y| - 0.5 * beta`
+- **Reduction options:** `'none'`, `'mean'` (default), or `'sum'`.
+- **Parameter `beta`:** Threshold for switching between L1/L2 (default: 1.0).
+- **Shape:** Input and target must have the same shape; output is a scalar (or same shape if `reduction='none'`).
+
+**Use Cases:**  
+Common in regression tasks (e.g., object detection in Fast R-CNN) where robustness to outliers is needed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size_average:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: [['none', 'mean', 'sum']]
+    structure: ["scalar"]
+    shape: null
+    default: "'mean'"
+  beta:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1.0"
+constraints:
+  1:
+    Parameter 1: "beta"
+    Parameter 2: "None"
+    Constraint: "beta >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.SmoothL1Loss in a complex way */
+import torch

@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.make_saveable_from_iterator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.make_saveable_from_iterator` is a deprecated function that creates a `SaveableObject` to save and restore the state of a TensorFlow dataset iterator using the legacy `tf.compat.v1.Saver` (for TF1). It is not compatible with TF2's `tf.train.Checkpoint`.
+
+**Key Points:**
+*   **Purpose:** Enables checkpointing of dataset iterator state within a TF1 graph.
+*   **Usage:** The created `SaveableObject` must be added to the `tf.GraphKeys.SAVEABLE_OBJECTS` collection so `Saver` can manage it.
+*   **Important Notes:**
+    1.  **Deprecated:** Use `tf.train.Checkpoint` in TF2.
+    2.  **State Discard on Restore:** Restoring a checkpoint completely resets the iterator, discarding any modifications to the dataset graph (e.g., a separate validation dataset graph). Re-initialize the dataset after restoration.
+    3.  **Limited Support:** Not all iterators support checkpointing; attempting to save an unsupported iterator raises an error.
+*   **Parameter:** `external_state_policy` controls how to handle external state in the input pipeline (`'ignore'`, `'warn'`, or `'fail'`).
+
+**Example Workflow (TF1):**
+1.  Create iterator from a dataset.
+2.  Generate the saveable object via `make_saveable_from_iterator`.
+3.  Add the object to the `SAVEABLE_OBJECTS` collection.
+4.  Use a `tf.compat.v1.train.Saver` to save/restore checkpoints.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  iterator:
+    dtype: ["iterator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  external_state_policy:
+    dtype: ["string"]
+    range: [["ignore", "warn", "fail"]]
+    structure: ["scalar"]
+    shape: null
+    default: "fail"
+constraints:
+  1.
+    Parameter 1: external_state_policy
+    Parameter 2: "none"
+    Constraint: "external_state_policy in ['ignore', 'warn', 'fail']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.make_saveable_from_iterator in a complex way */
+import tensorflow as tf

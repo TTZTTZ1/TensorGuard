@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.AffineTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+2. **Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+3. **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter spaces
+4. **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+5. **KL Divergence**: Computes KL divergence between distributions with registered implementations
+
+**Common Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders (reparameterization trick)
+- Probabilistic modeling and Bayesian inference
+- Stochastic optimization
+
+**Registry System:**
+- `transform_to()`: Maps constraints to transforms for unconstrained optimization
+- `biject_to()`: Maps constraints to bijective transforms for HMC sampling
+
+The package follows TensorFlow Distributions design and enables gradient-based optimization through surrogate functions when direct backpropagation through random samples isn't possible.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["Tensor", "float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["Tensor", "float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  event_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  cache_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "event_dim"
+    Parameter 2: "event_dim"
+    Constraint: "event_dim >= 0"
+  2:
+    Parameter 1: "cache_size"
+    Parameter 2: "cache_size"
+    Constraint: "cache_size == 0 or cache_size == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.AffineTransform in a complex way */
+import torch

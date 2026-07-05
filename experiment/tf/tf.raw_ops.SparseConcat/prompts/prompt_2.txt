@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseConcat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseConcat` concatenates multiple sparse tensors along a specified dimension. It merges their indices, values, and shapes while preserving the order of non-zero elements. All input tensors must have identical shapes except along the concatenation axis, where the output shape becomes the sum of the inputs' sizes. The operation runs in **O(M log M)** time due to internal sorting, where **M** is the total number of non-zero values across all inputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [2]
+    default: "null"
+  values:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: [1]
+    default: "null"
+  shapes:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [1]
+    default: "null"
+  concat_dim:
+    dtype: ["int"]
+    range: "[-rank, rank)"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "len(indices) == len(values)"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "shapes"
+    Constraint: "len(indices) == len(shapes)"
+  3:
+    Parameter 1: "shapes"
+    Parameter 2: "concat_dim"
+    Constraint: "all(shapes[i][k] == shapes[0][k] for i in range(1, len(shapes)) for k in range(len(shapes[0])) if k != concat_dim)"
+  4:
+    Parameter 1: "concat_dim"
+    Parameter 2: "shapes"
+    Constraint: "concat_dim >= -len(shapes[0]) and concat_dim < len(shapes[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseConcat in a complex way */
+import tensorflow as tf

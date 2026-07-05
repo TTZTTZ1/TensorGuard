@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `torch.distributions.lowrank_multivariate_normal.LowRankMultivariateNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and gradient estimators. Key features include:
+
+**Core Components:**
+- **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, and properties for mean/variance
+- **ExponentialFamily**: Specialized base class for exponential family distributions
+- **TransformedDistribution**: Chains transforms to create new distributions
+- **Independent**: Reinterprets batch dimensions as event dimensions
+
+**Gradient Estimation Methods:**
+1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+2. **Pathwise Derivative**: Uses `rsample()` with reparameterization trick for differentiable sampling
+
+**Available Distributions:**
+- Univariate: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- Multivariate: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- Specialized: MixtureSameFamily, LKJCholesky, VonMises, Weibull, etc.
+
+**Supporting Infrastructure:**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter spaces
+- **Constraints**: Domain validation (interval, simplex, positive definite, etc.)
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Constraint Registry**: `biject_to()` and `transform_to()` for optimization and HMC
+
+**Key Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational inference (reparameterization)
+- Probabilistic modeling
+- Bayesian methods
+
+The package follows TensorFlow Distributions design and enables gradient-based optimization through surrogate functions when direct backpropagation through random samples isn't possible.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  cov_factor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape + (rank,)"]
+    default: null
+  cov_diag:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cov_factor
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 2)"
+  2:
+    Parameter 1: cov_diag
+    Parameter 2: 
+    Constraint: "IndependentConstraint(GreaterThan(lower_bound=0.0), 1)"
+  3:
+    Parameter 1: loc
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.lowrank_multivariate_normal.LowRankMultivariateNormal in a complex way */
+import torch

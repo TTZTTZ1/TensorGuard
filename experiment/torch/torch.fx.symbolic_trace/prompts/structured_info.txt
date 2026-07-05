@@ -1,0 +1,22 @@
+params:
+  root:
+    dtype: ["torch.nn.Module", "Callable"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  concrete_args:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "root"
+    Parameter 2: "concrete_args"
+    Constraint: "concrete_args is None or isinstance(concrete_args, dict)"
+  2:
+    Parameter 1: "concrete_args"
+    Parameter 2: "concrete_args"
+    Constraint: "all(isinstance(key, str) for key in concrete_args.keys()) if concrete_args else True"

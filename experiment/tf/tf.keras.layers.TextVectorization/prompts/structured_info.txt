@@ -1,0 +1,115 @@
+params:
+  max_tokens:
+    dtype: ["int", "null"]
+    range: ["positive integers", null]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'None'
+  standardize:
+    dtype: ["string", "null", "callable"]
+    range: ["lower_and_strip_punctuation", "lower", "strip_punctuation", null, callable]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'lower_and_strip_punctuation'"
+  split:
+    dtype: ["string", "null", "callable"]
+    range: ["whitespace", "character", null, callable]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'whitespace'"
+  ngrams:
+    dtype: ["int", "tuple", "null"]
+    range: ["positive integers", null]
+    structure: ["scalar", "tuple"]
+    shape: [1, "variable"]
+    default: 'None'
+  output_mode:
+    dtype: ["string"]
+    range: ["int", "multi_hot", "count", "tf_idf"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'int'"
+  output_sequence_length:
+    dtype: ["int", "null"]
+    range: ["positive integers", null]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'None'
+  pad_to_max_tokens:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'False'
+  vocabulary:
+    dtype: ["string", "array", "null"]
+    range: ["file path strings", "array of strings", null]
+    structure: ["scalar", "array"]
+    shape: [1, "1D"]
+    default: 'None'
+  idf_weights:
+    dtype: ["float", "array", "null"]
+    range: ["floating point values", null]
+    structure: ["array"]
+    shape: ["1D"]
+    default: 'None'
+  sparse:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'False'
+  ragged:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'False'
+  encoding:
+    dtype: ["string"]
+    range: ["encoding strings"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'utf-8'"
+  name:
+    dtype: ["string", "null"]
+    range: ["any string", null]
+    structure: ["scalar"]
+    shape: [1]
+    default: 'None'
+  kwargs:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: 'No mention'
+constraints:
+  1:
+    Parameter 1: output_sequence_length
+    Parameter 2: output_mode
+    Constraint: (output_sequence_length is not None) implies (output_mode == "int")
+  2:
+    Parameter 1: pad_to_max_tokens
+    Parameter 2: output_mode
+    Constraint: (pad_to_max_tokens == True) implies (output_mode in ["multi_hot", "count", "tf_idf"])
+  3:
+    Parameter 1: idf_weights
+    Parameter 2: output_mode
+    Constraint: (idf_weights is not None) implies (output_mode == "tf_idf")
+  4:
+    Parameter 1: vocabulary
+    Parameter 2: output_mode
+    Parameter 3: idf_weights
+    Constraint: (vocabulary is not None and output_mode == "tf_idf") implies (idf_weights is not None)
+  5:
+    Parameter 1: sparse
+    Parameter 2: output_mode
+    Constraint: (sparse == True) implies (output_mode in ["multi_hot", "count", "tf_idf"])
+  6:
+    Parameter 1: ragged
+    Parameter 2: output_mode
+    Constraint: (ragged == True) implies (output_mode == "int")
+  7:
+    Parameter 1: pad_to_max_tokens
+    Parameter 2: max_tokens
+    Constraint: (pad_to_max_tokens == True) implies (max_tokens is not None)

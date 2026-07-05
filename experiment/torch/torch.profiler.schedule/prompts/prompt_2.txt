@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.profiler.schedule` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool that collects metrics during model training and inference. It helps identify expensive operators, examine input shapes and stack traces, analyze device kernel activity, and visualize execution traces.
+
+### Key Components:
+
+**Main Classes:**
+- `torch.profiler.profile`: Primary context manager for profiling
+- `torch.profiler._KinetoProfile`: Low-level profiler wrapper (experimental)
+- `ProfilerAction`: Enumeration of profiling actions
+- `ProfilerActivity`: Supported hardware activities (CPU, CUDA, XPU, etc.)
+
+**Core Features:**
+- **Activity Tracking**: Monitor CPU, CUDA, and other device operations
+- **Shape Recording**: Capture operator input shapes for analysis
+- **Memory Profiling**: Track tensor allocation/deallocation (deprecated in favor of `torch.cuda.memory` APIs)
+- **Stack Tracing**: Record source file and line numbers
+- **FLOPs Estimation**: Calculate floating-point operations for specific operators
+- **Module Hierarchy**: Track callstack relationships (TorchScript only)
+
+**Usage Patterns:**
+1. **Basic Profiling**: Use context manager to profile code blocks
+2. **Scheduled Profiling**: Control profiling cycles with `schedule()` for long-running jobs
+3. **TensorBoard Integration**: Export traces for visualization via `tensorboard_trace_handler()`
+4. **Execution Tracing**: Enable graph-based workload representation with Execution Trace Observer
+
+**Output Methods:**
+- Export Chrome trace format (JSON)
+- Generate memory timeline plots (deprecated)
+- Save stack traces
+- Aggregate and display performance metrics in tables
+
+**Additional APIs:**
+- `torch.profiler.itt`: Intel Instrumentation and Tracing Technology for marking events and ranges
+- Dynamic collection toggling during profiling
+- Metadata addition for trace annotation
+
+**Important Notes:**
+- Legacy `torch.autograd.profiler` is deprecated
+- Enabling shape/stack tracing adds overhead
+- Memory profiling via profiler is deprecated; use `torch.cuda.memory` APIs instead
+- Module hierarchy support currently limited to TorchScript models
+
+The profiler enables systematic performance optimization by providing detailed insights into PyTorch operation execution across different hardware platforms.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  wait:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  warmup:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  active:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  repeat:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  skip_first:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  skip_first_wait:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: wait
+    Parameter 2: wait
+    Constraint: "wait >= 0"
+  2:
+    Parameter 1: warmup
+    Parameter 2: warmup
+    Constraint: "warmup >= 0"
+  3:
+    Parameter 1: active
+    Parameter 2: active
+    Constraint: "active >= 0"
+  4:
+    Parameter 1: repeat
+    Parameter 2: repeat
+    Constraint: "repeat >= 0"
+  5:
+    Parameter 1: skip_first
+    Parameter 2: skip_first
+    Constraint: "skip_first >= 0"
+  6:
+    Parameter 1: skip_first_wait
+    Parameter 2: skip_first_wait
+    Constraint: "skip_first_wait == 0 or skip_first_wait == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.schedule in a complex way */
+import torch

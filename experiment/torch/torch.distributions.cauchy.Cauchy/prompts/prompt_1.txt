@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.distributions.cauchy.Cauchy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive suite of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimation for optimization. It supports two primary gradient estimation methods: the score function estimator (REINFORCE) and the pathwise derivative estimator (reparameterization trick).
+
+### Key Components:
+1. **Distribution Classes**: Abstract base class `Distribution` with subclasses for specific distributions (e.g., `Normal`, `Bernoulli`, `Categorical`, `MultivariateNormal`).
+2. **Core Methods**:
+   - `sample()` / `rsample()`: Generate random samples (with reparameterization for `rsample`).
+   - `log_prob()`: Compute log probability density/mass.
+   - `entropy()`: Calculate distribution entropy.
+   - `cdf()` / `icdf()`: Cumulative distribution and inverse functions.
+
+3. **Gradient Estimation**:
+   - **Score Function**: Uses `sample()` and `log_prob()` for REINFORCE (common in reinforcement learning).
+   - **Pathwise Derivative**: Uses `rsample()` for reparameterization (common in variational autoencoders).
+
+4. **Transforms and Constraints**:
+   - `Transform`: Bijective transformations for reparameterization (e.g., `ExpTransform`, `SigmoidTransform`).
+   - `Constraint`: Define valid parameter ranges (e.g., `positive`, `simplex`).
+   - Registries (`biject_to`, `transform_to`) map constraints to transforms for unconstrained optimization.
+
+5. **Specialized Distributions**:
+   - Includes continuous (e.g., `Gamma`, `Beta`), discrete (e.g., `Poisson`, `Binomial`), and multivariate distributions (e.g., `Dirichlet`, `Wishart`).
+   - Supports transformed distributions (`TransformedDistribution`) and mixtures (`MixtureSameFamily`).
+
+6. **KL Divergence**: Utilities for computing Kullback-Leibler divergence between distributions.
+
+### Example Usage:
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  loss.backward()
+  ```
+- **Reparameterization**:
+  ```python
+  m = Normal(loc, scale)
+  action = m.rsample()
+  loss = -reward
+  loss.backward()
+  ```
+
+This module is essential for probabilistic modeling, variational inference, and reinforcement learning in PyTorch, offering both flexibility and performance for stochastic gradient estimation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "array"]
+    default: null
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "array"]
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scale"
+    Parameter 2: null
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.cauchy.Cauchy in a complex way */
+import torch

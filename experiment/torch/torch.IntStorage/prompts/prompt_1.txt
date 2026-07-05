@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.IntStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### **Core Concept**
+- A **`torch.UntypedStorage`** is a contiguous, one-dimensional array of bytes that serves as the raw data container for tensors.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### **Key Points**
+1. **Storage Sharing**: Multiple tensors (e.g., views created via `.view()` or slicing) can share the same underlying storage.
+2. **Access**: Use `tensor.untyped_storage()` to get the storage. The storage's unique identifier is `data_ptr()`.
+3. **Independence**: Storages are somewhat independent—tensors with different dtypes or shapes can point to the same storage.
+4. **Manipulation**: Low-level methods like `fill_()`, `copy_()`, `clone()`, and `pin_memory()` exist but are **discouraged** for typical use. Prefer tensor-level operations.
+5. **Special Cases**:
+   - Tensors with gradients have separate storages for data and grad.
+   - Tensors on `"meta"` device or `FakeTensor` have no actual storage.
+   - Tensor subclasses may behave unusually.
+
+### **Legacy & Deprecated APIs**
+- **Typed storages** (e.g., `torch.FloatStorage`) are deprecated. Use `torch.UntypedStorage` instead.
+- `torch.Storage` is an alias that resolves to a typed storage based on the default dtype (e.g., `torch.FloatStorage` if default is float).
+
+### **Important Warnings**
+- Direct storage manipulation is **not recommended**—it's low-level and risky.
+- Most storage operations have safer tensor-level equivalents.
+- The storage API is primarily for educational understanding; few real-world use cases require operating at this level.
+
+In short, `torch.UntypedStorage` is the byte-level backbone of tensors, enabling memory sharing and efficient serialization, but users should typically interact with tensors directly rather than their storages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "iterable"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: [1]
+    default: null
+  wrap_storage:
+    dtype: ["UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.int32"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: None
+    Constraint: "dtype == torch.int32"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.IntStorage in a complex way */
+import torch

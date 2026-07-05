@@ -1,0 +1,34 @@
+# tf.raw_ops.ResourceScatterNdMax
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ResourceScatterNdMax](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ResourceScatterNdMax)
+
+---
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.ResourceScatterNdMax`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ResourceScatterNdMax)
+
+```
+tf.raw_ops.ResourceScatterNdMax(
+    ref, indices, updates, use_locking=True, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `ref` | A `Tensor` of type `resource`. A resource handle. Must be from a VarHandleOp. |
+| `indices` | A `Tensor`. Must be one of the following types: `int32`, `int64`. A Tensor. Must be one of the following types: int32, int64. A tensor of indices into ref. |
+| `updates` | A `Tensor`. A Tensor. Must have the same type as ref. A tensor of values whose element wise max is taken with ref |
+| `use_locking` | An optional `bool`. Defaults to `True`. An optional bool. Defaults to True. If True, the assignment will be protected by a lock; otherwise the behavior is undefined, but may exhibit less contention. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| The created Operation. | |

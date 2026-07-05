@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.optim.Rprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Rprop` class implements the Resilient Backpropagation (Rprop) algorithm, an adaptive learning rate optimizer that adjusts step sizes individually for each parameter based on gradient sign changes.
+
+**Key Features:**
+- **Adaptive Step Sizes**: Each parameter has its own step size (η) that adjusts based on whether consecutive gradients have the same or opposite signs.
+- **Gradient Sign-Based Updates**: Uses only the sign of gradients for parameter updates, ignoring magnitude.
+- **Step Size Adjustment Rules**:
+  - If gradient signs are consistent (g_prev * g_current > 0): Increase step size multiplicatively (η ← min(η * η_plus, Γ_max))
+  - If gradient signs change (g_prev * g_current < 0): Decrease step size multiplicatively (η ← max(η * η_minus, Γ_min)) and reset current gradient to zero
+  - If gradient is zero: Keep step size unchanged
+
+**Parameters:**
+- `params`: Parameters to optimize
+- `lr`: Initial learning rate (default: 0.01)
+- `etas`: (etaminus, etaplus) multiplicative adjustment factors (default: (0.5, 1.2))
+- `step_sizes`: (min_step, max_step) allowed step size range (default: (1e-6, 50))
+- `capturable`, `foreach`, `maximize`, `differentiable`: Advanced optimization flags
+
+**Typical Use Case:**
+```python
+optimizer = torch.optim.Rprop(model.parameters(), lr=0.01)
+```
+
+**Best For**: Problems where gradient magnitudes are unreliable or noisy, as Rprop relies only on gradient signs. Particularly effective for batch learning rather than online/mini-batch scenarios.
+
+**Note**: Unlike momentum-based methods, Rprop doesn't use gradient momentum and can be sensitive to mini-batch training due to its sign-based adaptation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.01"
+  etas
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.5, 1.2)"
+  step_sizes
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(1e-06, 50)"
+  capturable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Rprop in a complex way */
+import torch

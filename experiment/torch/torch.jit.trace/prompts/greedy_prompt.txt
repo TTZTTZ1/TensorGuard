@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.jit.trace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.jit.trace` is a PyTorch function that converts a Python function or `nn.Module` into a TorchScript representation by recording operations performed during a forward pass with example inputs. It is ideal for pure tensor operations without data-dependent control flow (e.g., conditionals, loops) or external dependencies.
+
+**Key Points:**
+- **Usage**: Provide a callable (`func`) and example inputs (`example_inputs` or `example_kwarg_inputs`).
+- **Output**: Returns a `ScriptModule` (for modules) or `ScriptFunction` (for standalone functions) containing the traced graph.
+- **Limitations**: Does not capture dynamic control flow; the traced graph is static and runs the same operations for all inputs.
+- **Verification**: By default, checks consistency between original and traced outputs (`check_trace=True`).
+- **When to Use**: Suitable for deterministic models with fixed operations; for dynamic behavior, use `torch.jit.script` instead.
+
+**Example:**
+```python
+traced = torch.jit.trace(model, example_input)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["callable", "torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  example_inputs:
+    dtype: ["tuple", "torch.Tensor", "None"]
+    range: null
+    structure: ["tuple", "torch.Tensor"]
+    shape: null
+    default: "None"
+  check_trace:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  check_inputs:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  check_tolerance:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-05"
+  strict:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  example_kwarg_inputs:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: example_inputs
+    Parameter 2: example_kwarg_inputs
+    Constraint: "not (example_inputs is None and example_kwarg_inputs is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.jit.trace in a complex way */
+import torch

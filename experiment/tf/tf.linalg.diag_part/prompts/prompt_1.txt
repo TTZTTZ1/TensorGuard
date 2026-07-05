@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `tf.linalg.diag_part` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.diag_part` extracts specified diagonals from batched matrices. It supports single diagonals or a band of diagonals, with options for padding and alignment.
+
+**Key features:**
+- Extracts diagonals from tensors with rank ≥ 2.
+- `k` specifies diagonal offsets: positive for superdiagonals, negative for subdiagonals, 0 for the main diagonal.
+- Returns a tensor where shorter diagonals are padded with `padding_value` (default 0).
+- `align` controls padding alignment (default "RIGHT_LEFT").
+
+**Example behavior:**
+- For a single diagonal, output rank reduces by one.
+- For multiple diagonals, output retains input rank with an added dimension for diagonal indices.
+
+**Common use cases:** Extracting main/super/sub-diagonals from batched matrices, with flexible padding for irregular diagonal lengths.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "diag_part"
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "0"
+  padding_value:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  align:
+    dtype: ["string"]
+    range: [["RIGHT_LEFT", "LEFT_RIGHT", "LEFT_LEFT", "RIGHT_RIGHT"]]
+    structure: ["scalar"]
+    shape: null
+    default: "RIGHT_LEFT"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: 
+    Constraint: input.shape.ndims >= 2
+  2:
+    Parameter 1: k
+    Parameter 2: 
+    Constraint: not isinstance(k, tuple) or (isinstance(k, tuple) and len(k) == 2 and k[0] <= k[1])
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.diag_part in a complex way */
+import tensorflow as tf

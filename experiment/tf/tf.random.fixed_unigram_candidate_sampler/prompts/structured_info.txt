@@ -1,0 +1,92 @@
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: No mention
+  num_true:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  num_sampled:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  unique:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  range_max:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: No mention
+  vocab_file:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "''"
+  distortion:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1.0"
+  num_reserved_ids:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  num_shards:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  shard:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  unigrams:
+    dtype: ["list", "tuple"]
+    range: No mention
+    structure: ["list", "tuple"]
+    shape: No mention
+    default: "()"
+  seed:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: vocab_file
+    Parameter 2: unigrams
+    Constraint: (vocab_file != '') ^ (unigrams != ())
+  2:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: true_classes.shape[1] == num_true
+  3:
+    Parameter 1: shard
+    Parameter 2: num_shards
+    Constraint: 0 <= shard and shard < num_shards

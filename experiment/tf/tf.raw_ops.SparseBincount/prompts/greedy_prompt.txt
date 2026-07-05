@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseBincount` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseBincount` counts occurrences of integer values in a sparse tensor. It outputs a vector of length `size`, where each element represents either the count or weighted sum of a specific value.
+
+**Key Parameters:**
+- `indices`, `values`, `dense_shape`: Define the sparse tensor.
+- `size`: Output vector length (counts values in range `[0, size)`).
+- `weights`: Optional; if provided, sums weights instead of counting.
+- `binary_output`: If `True`, counts only presence (max 1 per value).
+
+**Returns:** A tensor with the same dtype as `weights`, containing aggregated counts or weighted sums.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  values:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  dense_shape:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  size:
+    dtype: ["int32", "int64"]
+    range: ["[0, inf)"]
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  weights:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  binary_output:
+    dtype: ["bool"]
+    range: ["False", "True"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "size"
+    Parameter 2: "values"
+    Constraint: "size.dtype == values.dtype"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "indices.shape[0] == values.shape[0]"
+  3:
+    Parameter 1: "indices"
+    Parameter 2: "dense_shape"
+    Constraint: "indices.shape[1] == dense_shape.shape[0]"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "dense_shape"
+    Constraint: "tf.equal(tf.size(weights), 0) or tf.reduce_all(tf.equal(tf.shape(weights), dense_shape))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseBincount in a complex way */
+import tensorflow as tf

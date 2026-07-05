@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.queue.PaddingFIFOQueue` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.queue.PaddingFIFOQueue` is a TensorFlow queue that extends `FIFOQueue` to handle **variable-sized tensors** by **padding** them during batching operations. It is particularly useful when working with sequences or data of differing dimensions, as it allows dynamic shapes in specified dimensions while supporting batch dequeuing via `dequeue_many`.
+
+### Key Features:
+- **Variable-sized Tensors**: Dimensions set to `None` in `shapes` allow enqueuing tensors with variable sizes in those axes.
+- **Batching Support**: Enables `dequeue_many` to batch together tensors of different sizes by padding them to a uniform shape.
+- **FIFO Order**: Maintains first-in-first-out ordering of elements.
+
+### Main Parameters:
+- `capacity`: Maximum number of elements the queue can hold.
+- `dtypes`: List of data types for each tensor component.
+- `shapes`: List of shapes corresponding to `dtypes`; use `None` for dynamic dimensions.
+- `names` (optional): Names for components, enabling dictionary returns on dequeue.
+- `shared_name` (optional): Allows queue sharing across sessions.
+- `name` (optional): Name scope for the queue operation.
+
+### Common Methods:
+- `enqueue` / `enqueue_many`: Add single or batched elements to the queue.
+- `dequeue` / `dequeue_many`: Remove single or batched elements; `dequeue_many` pads variable-sized dimensions.
+- `close`: Closes the queue, preventing further enqueues.
+- `size`: Returns the current number of elements in the queue.
+
+### Typical Use Case:
+Ideal for batching sequences of different lengths (e.g., in NLP or audio processing), where padding is required to form consistent batch dimensions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  capacity:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtypes:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  shapes:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  names:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list", "None"]
+    shape: null
+    default: "None"
+  shared_name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: null
+    default: "padding_fifo_queue"
+constraints:
+  1:
+    Parameter 1: dtypes
+    Parameter 2: shapes
+    Constraint: len(dtypes) == len(shapes)
+  2:
+    Parameter 1: dtypes
+    Parameter 2: names
+    Constraint: names is None or len(names) == len(dtypes)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.queue.PaddingFIFOQueue in a complex way */
+import tensorflow as tf

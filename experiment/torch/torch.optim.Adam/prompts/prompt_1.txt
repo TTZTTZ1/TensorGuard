@@ -1,0 +1,128 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Adam` class implements the Adam optimization algorithm, which adapts learning rates for each parameter using estimates of the first and second moments of gradients.
+
+**Key Parameters:**
+- `params`: Iterable of parameters to optimize (required)
+- `lr`: Learning rate (default: 0.001)
+- `betas`: Coefficients for computing running averages (default: (0.9, 0.999))
+- `eps`: Term added to denominator for numerical stability (default: 1e-8)
+- `weight_decay`: L2 penalty (default: 0)
+- `amsgrad`: Whether to use AMSGrad variant (default: False)
+- `foreach`: Use foreach implementation for better performance on CUDA (default: None)
+- `fused`: Use fused implementation for maximum performance (default: None)
+
+**Core Algorithm Features:**
+- Maintains exponentially decaying averages of past gradients (first moment) and squared gradients (second moment)
+- Includes bias correction for initial timesteps
+- Supports weight decay (L2 regularization)
+- Optional AMSGrad variant for better convergence properties
+- Can maximize instead of minimize the objective
+
+**Implementation Notes:**
+- Multiple implementations available: for-loop (default), foreach (faster on CUDA), and fused (fastest)
+- Supports CUDA graphs and torch.compile via `capturable` parameter
+- Can handle decoupled weight decay (AdamW-style) via `decoupled_weight_decay`
+- Works with various data types including float32, float16, and bfloat16
+
+**Common Methods:**
+- `step()`: Performs a single optimization step
+- `zero_grad()`: Resets gradients of optimized tensors
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state
+- `add_param_group()`: Add parameter groups during training
+
+The optimizer is widely used for training neural networks due to its adaptive learning rate capabilities and robust performance across different problem domains.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "0.001"
+  betas:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  amsgrad:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  fused:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+
+constraints:
+  1:
+    Parameter 1: "lr"
+    Parameter 2: "fused"
+    Constraint: "not isinstance(lr, torch.Tensor) or fused"
+  2:
+    Parameter 1: "lr"
+    Parameter 2: "capturable"
+    Constraint: "not isinstance(lr, torch.Tensor) or capturable"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adam in a complex way */
+import torch

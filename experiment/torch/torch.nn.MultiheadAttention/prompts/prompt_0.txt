@@ -1,0 +1,109 @@
+
+# You are a Python code generation assistant for the `torch.nn.MultiheadAttention` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.MultiheadAttention` module implements the multi-head attention mechanism from the Transformer architecture. It allows the model to attend to different parts of the input sequence simultaneously across multiple attention heads.
+
+**Key Features:**
+- **Input/Output Shapes:** Supports both batch-first (`batch_first=True`) and sequence-first (`batch_first=False`) formats.
+- **Masks:** Accepts `key_padding_mask` for padding tokens and `attn_mask` for attention restrictions (causal or custom masks).
+- **Optimized Path:** Uses `scaled_dot_product_attention` for faster inference when conditions are met (e.g., self-attention, no gradients, etc.).
+- **Flexible Dimensions:** Allows separate dimensions for keys (`kdim`) and values (`vdim`).
+
+**Main Parameters:**
+- `embed_dim`: Total embedding dimension.
+- `num_heads`: Number of attention heads (must divide `embed_dim`).
+- `dropout`: Dropout probability on attention weights.
+- `batch_first`: If `True`, input/output tensors are (batch, seq, feature); default is (seq, batch, feature).
+
+**Forward Pass:**
+- Takes `query`, `key`, `value` tensors (often same for self-attention).
+- Returns `attn_output` and optionally `attn_output_weights`.
+- Use `need_weights=False` for optimized performance.
+
+**Typical Usage:**
+```python
+attn = nn.MultiheadAttention(embed_dim=512, num_heads=8, batch_first=True)
+output, weights = attn(query, key, value)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  embed_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_heads:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dropout:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  add_bias_kv:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  add_zero_attn:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  kdim:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  vdim:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  batch_first:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  device:
+    dtype: ["string", "torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "embed_dim"
+    Parameter 2: "num_heads"
+    Constraint: "embed_dim % num_heads == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MultiheadAttention in a complex way */
+import torch

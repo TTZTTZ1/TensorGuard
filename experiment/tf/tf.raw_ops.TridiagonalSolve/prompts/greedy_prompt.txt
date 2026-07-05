@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TridiagonalSolve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TridiagonalSolve` solves batched tridiagonal linear systems of equations. It takes a tensor of tridiagonal matrices (shape `[..., 3, M]`) and a right-hand side tensor (shape `[..., M, K]`), returning solutions for multiple right-hand sides per system. The operation supports CPU (Gaussian elimination with/without partial pivoting) and GPU (via cuSPARSE), but XLA backends do not yet support partial pivoting.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonals:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., 3, M]"]
+    default: null
+  rhs:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  partial_pivoting:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  perturb_singular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "diagonals.dtype == rhs.dtype"
+  2:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "diagonals.shape[:-2] == rhs.shape[:-2] and diagonals.shape[-1] == rhs.shape[-2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TridiagonalSolve in a complex way */
+import tensorflow as tf

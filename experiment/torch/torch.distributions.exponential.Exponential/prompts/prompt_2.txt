@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.distributions.exponential.Exponential` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling in variational autoencoders
+
+**Core Components:**
+1. **Distribution Base Class**: Abstract class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+2. **Built-in Distributions**: Includes Bernoulli, Beta, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, etc.
+3. **TransformedDistribution**: Applies transforms to base distributions (e.g., LogNormal from Normal via exponential transform)
+4. **KL Divergence**: Computes KL divergence between distributions with registered implementations
+5. **Transforms**: Bijective transformations with log-determinant Jacobians (e.g., ExpTransform, SigmoidTransform)
+6. **Constraints**: Define valid parameter domains with registry system (`biject_to`, `transform_to`)
+
+**Common Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational inference
+- Probabilistic modeling
+- Bayesian methods
+
+**Example Usage:**
+```python
+# REINFORCE example
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization example
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+```
+
+The package follows TensorFlow Distributions design and provides tools for both discrete and continuous distributions with batch and event shape support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  rate:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: rate
+    Parameter 2: 
+    Constraint: "rate > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.exponential.Exponential in a complex way */
+import torch

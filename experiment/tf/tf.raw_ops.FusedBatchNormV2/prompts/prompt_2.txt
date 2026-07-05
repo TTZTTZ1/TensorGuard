@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FusedBatchNormV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FusedBatchNormV2` performs fused batch normalization on a 4D input tensor, combining normalization, scaling, and offsetting into a single optimized operation. It supports both training and inference modes, with parameters for data format (`NHWC` or `NCHW`), a small epsilon for numerical stability, and an exponential averaging factor for updating moving statistics during training. The function returns the normalized output along with batch statistics and reserve spaces for gradient computation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["half", "bfloat16", "float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  scale:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  offset:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  mean:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  variance:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  epsilon:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0001"
+  exponential_avg_factor:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NHWC"
+  is_training:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "scale"
+    Parameter 2: "x"
+    Constraint: "scale.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"
+  2:
+    Parameter 1: "offset"
+    Parameter 2: "scale"
+    Constraint: "offset.dtype == scale.dtype"
+  3:
+    Parameter 1: "mean"
+    Parameter 2: "scale"
+    Constraint: "mean.dtype == scale.dtype"
+  4:
+    Parameter 1: "variance"
+    Parameter 2: "scale"
+    Constraint: "variance.dtype == scale.dtype"
+  5:
+    Parameter 1: "mean"
+    Parameter 2: "is_training"
+    Constraint: "not is_training or mean.shape[0] == 0"
+  6:
+    Parameter 1: "variance"
+    Parameter 2: "is_training"
+    Constraint: "not is_training or variance.shape[0] == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FusedBatchNormV2 in a complex way */
+import tensorflow as tf

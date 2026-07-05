@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.saved_model.save` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.saved_model.save` exports a TensorFlow module or model to the SavedModel format for deployment and sharing.  
+
+**Key points:**  
+- **Input:** A trackable object (e.g., `tf.Module`, `tf.keras.Model`, or `tf.train.Checkpoint`).  
+- **Output:** SavedModel saved to `export_dir` with optional signatures for inference.  
+- **Signatures:** Define input/output specs for serving; can be a single `tf.function`, a concrete function, or a dictionary mapping keys to functions.  
+- **Variables:** Must be tracked (e.g., as attributes) and are saved in a `variables/` subdirectory, compatible with `tf.train.Checkpoint`.  
+- **Compatibility:** Strips default-valued attributes to improve cross-version compatibility, but device-specific ops or unsupported operations may cause issues.  
+
+**Example usage:**  
+```python
+class Adder(tf.Module):
+    @tf.function(input_signature=[tf.TensorSpec(shape=[], dtype=tf.float32)])
+    def add(self, x):
+        return x + x
+
+model = Adder()
+tf.saved_model.save(model, '/tmp/adder')
+```  
+The SavedModel can then be loaded with `tf.saved_model.load` and used via its `.signatures` attribute.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  obj:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  export_dir:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  signatures:
+    dtype: ["NoneType", "function", "dict"]
+    range: null
+    structure: ["scalar", "dict"]
+    shape: []
+    default: "None"
+  options:
+    dtype: ["SaveOptions", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "obj"
+    Parameter 2: "obj"
+    Constraint: "isinstance(obj, tf.Module) or isinstance(obj, tf.train.Checkpoint)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.saved_model.save in a complex way */
+import tensorflow as tf

@@ -1,0 +1,102 @@
+
+# You are a Python code generation assistant for the `tf.keras.Model` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.Model` class is the core component for building and training neural networks in TensorFlow. It groups layers into an object with training and inference capabilities, inheriting from `Layer` and `Operation`.
+
+### **Key Features:**
+- **Three Instantiation Methods:**
+  1. **Functional API:** Chain layers from `Input` to output, creating models from input/output tensors.
+  2. **Subclassing:** Define layers in `__init__` and forward pass in `call()`, with optional `training` argument for different behaviors.
+  3. **Sequential:** Simplified for linear stacks of layers.
+
+### **Core Functionality:**
+- **Training & Evaluation:** Configure with `compile()` (setting optimizer, loss, metrics), then train with `fit()` and evaluate with `evaluate()`.
+- **Prediction:** Generate predictions using `predict()`.
+- **Saving & Loading:** Save entire models (architecture, weights, optimizer state) as `.keras` files via `save()`, or just weights with `save_weights()`/`load_weights()`.
+- **Export for Inference:** Create standalone TF SavedModel artifacts with `export()` for serving.
+
+### **Additional Capabilities:**
+- **Inspection:** Use `summary()` for architecture overview and `get_layer()` to retrieve specific layers.
+- **Customization:** Override methods like `compute_loss()` and `compute_metrics()` for custom training logic.
+- **Flexible Data Handling:** Supports various input types (arrays, tensors, datasets) and handles sample/class weighting.
+
+### **Use Cases:**
+Widely used across guides and tutorials for tasks like time series forecasting, autoencoders, and distributed training, providing a high-level, flexible interface for building and deploying machine learning models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["string", "object"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "rmsprop"
+  loss:
+    dtype: ["string", "object"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  loss_weights:
+    dtype: ["list", "dict"]
+    range: [null]
+    structure: ["list", "dict"]
+    shape: [null]
+    default: null
+  metrics:
+    dtype: ["string", "function", "object", "list", "dict"]
+    range: [null]
+    structure: ["scalar", "list", "dict"]
+    shape: [null]
+    default: null
+  weighted_metrics:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  run_eagerly:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "false"
+  steps_per_execution:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "1"
+  jit_compile:
+    dtype: ["bool", "string"]
+    range: [[true, false, "auto"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "\"auto\""
+  auto_scale_loss:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "true"
+constraints:
+  1:
+    Parameter 1: metrics
+    Parameter 2: weighted_metrics
+    Constraint: "metrics and weighted_metrics are mutually exclusive in terms of sample weighting; weighted_metrics apply sample_weight or class_weight, while metrics do not"
+  2:
+    Parameter 1: loss_weights
+    Parameter 2: model outputs
+    Constraint: "len(loss_weights) == len(model.outputs) if loss_weights is a list"
+  3:
+    Parameter 1: steps_per_execution
+    Parameter 2: batch size
+    Constraint: "steps_per_execution <= ceil(dataset_size / batch_size)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.Model in a complex way */
+import tensorflow as tf

@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.distributed.HashStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Process Groups**: The fundamental abstraction for collective communication among processes.
+- **Backends**: Supports multiple communication backends:
+  - **NCCL**: Recommended for CUDA GPU training (best performance, supports InfiniBand/GPUDirect).
+  - **XCCL**: For XPU GPU training.
+  - **Gloo**: Recommended for CPU training.
+  - **MPI**: Optional backend requiring source build.
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies.
+
+## **Key Features**
+1. **Initialization Methods**:
+   - TCP initialization (`tcp://`)
+   - Shared file-system (`file://`)
+   - Environment variables (default: `env://`)
+
+2. **Communication Primitives**:
+   - **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `reduce_scatter`, `all_to_all`, `barrier`
+   - **Point-to-Point**: `send`/`recv`, `isend`/`irecv`
+   - **Object Collectives**: Python object communication (with performance caveats)
+
+3. **Synchronous vs Asynchronous**:
+   - Synchronous (`async_op=False`): Blocks until operation completes
+   - Asynchronous (`async_op=True`): Returns `Work` object for non-blocking execution
+
+## **Common Usage Patterns**
+
+### **Basic Initialization**
+```python
+import torch.distributed as dist
+
+# Initialize with environment variables (most common)
+dist.init_process_group(backend='nccl', init_method='env://')
+
+# Or with explicit parameters
+dist.init_process_group(
+    backend='nccl',
+    init_method='tcp://10.1.1.20:23456',
+    rank=args.rank,
+    world_size=4
+)
+```
+
+### **DeviceMesh Initialization**
+```python
+from torch.distributed.device_mesh import init_device_mesh
+
+# 1D mesh
+mesh_1d = init_device_mesh("cuda", mesh_shape=(8,))
+
+# 2D mesh with named dimensions
+mesh_2d = init_device_mesh("cuda", mesh_shape=(2, 8), mesh_dim_names=("dp", "tp"))
+```
+
+### **Collective Operations**
+```python
+# All-reduce example
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# All-gather example
+tensor_list = [torch.zeros(2, 2) for _ in range(dist.get_world_size())]
+dist.all_gather(tensor_list, tensor)
+```
+
+### **Distributed DataParallel**
+```python
+model = torch.nn.parallel.DistributedDataParallel(
+    model,
+    device_ids=[args.local_rank],
+    output_device=args.local_rank
+)
+```
+
+## **Important Considerations**
+1. **Backend Selection**:
+   - GPU training: Use NCCL
+   - CPU training: Use Gloo
+   - Multi-node InfiniBand: NCCL for GPU, Gloo/MPI for CPU
+
+2. **Environment Variables**:
+   - `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+   - `NCCL_SOCKET_IFNAME`/`GLOO_SOCKET_IFNAME` for network interface selection
+   - `TORCH_DISTRIBUTED_DEBUG` for debugging
+
+3. **Performance Tips**:
+   - Use NCCL for GPU training whenever possible
+   - Consider Copy Engine Collectives for better computation/communication overlap
+   - Avoid object collectives for performance-critical paths
+
+4. **Debugging Tools**:
+   - `torch.distributed.breakpoint()` for interactive debugging
+   - `torch.distributed.monitored_barrier()` for timeout-aware synchronization
+   - HTTP debug server for runtime diagnostics
+
+## **Best Practices**
+- Always call `destroy_process_group()` for cleanup
+- Use `async_op=True` for overlapping communication with computation
+- Set `torch.cuda.set_device()` before NCCL operations
+- Ensure consistent mesh shapes across all ranks in DeviceMesh
+- Use `TORCH_DISTRIBUTED_DEBUG=DETAIL` for troubleshooting complex issues
+
+The package enables scalable distributed training with support for various network topologies and hardware configurations, while providing tools for debugging and performance optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.HashStore in a complex way */
+import torch

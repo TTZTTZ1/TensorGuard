@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.LocalTimerServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers system provides a mechanism to detect and handle stuck workers in distributed training. Here's a concise summary:
+
+## Core Concept
+Expiration timers allow you to set time limits on code blocks. If a worker doesn't complete within the specified timeframe, it gets terminated and restarted by the elastic agent.
+
+## Basic Usage Pattern
+1. **Setup**: Start a timer server and configure a timer client
+2. **Protection**: Wrap potentially stuck code blocks with `timer.expires(after=seconds)`
+3. **Recovery**: Expired timers trigger worker termination and automatic retry
+
+## Key Components
+
+### Client API
+- `configure(timer_client)`: Must be called before using timers
+- `expires(after, scope=None)`: Context manager for time-limited code blocks
+
+### Provided Implementations
+1. **LocalTimerServer/Client**: Uses `multiprocessing.Queue` for communication
+2. **FileTimerServer/Client**: Uses named pipes (FIFO files) for communication
+
+### Abstract Base Classes
+- `TimerServer`: Base class for server implementations
+- `TimerClient`: Base class for client implementations  
+- `TimerRequest`: Message object for server-client communication
+
+## How It Works
+1. Worker acquires a timer when entering a protected code block
+2. Timer server monitors expiration deadlines
+3. If worker doesn't release timer before deadline, server kills the process
+4. Elastic agent automatically restarts the worker
+
+## Use Case
+Primarily for distributed training scenarios where workers might hang during operations like collective communications (all_reduce, all_gather, etc.), ensuring job resilience without manual intervention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mp_queue:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  max_interval:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "60"
+  daemon:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.LocalTimerServer in a complex way */
+import torch

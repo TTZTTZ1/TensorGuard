@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributed.reduce_op` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Features**
+- **Multi-process parallelism** across multiple nodes/machines
+- **Synchronous distributed training** via `DistributedDataParallel`
+- Supports **multiple backends**: Gloo (CPU), NCCL (CUDA), XCCL (XPU), MPI
+- **SPMD programming model** - same code runs on all processes
+
+## **Key Components**
+
+### **1. Initialization**
+```python
+dist.init_process_group(backend="nccl")  # or "gloo", "xccl"
+dist.init_device_mesh("cuda", mesh_shape=(8,))  # DeviceMesh for multi-dimensional parallelism
+```
+
+### **2. Backend Selection**
+- **NCCL**: Best for CUDA GPU training (supports InfiniBand/GPUDirect)
+- **XCCL**: For XPU GPU training
+- **Gloo**: For CPU training or as NCCL fallback
+- **MPI**: Optional, requires building from source
+
+### **3. Communication Primitives**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: `all_reduce()`, `broadcast()`, `all_gather()`, `reduce_scatter()`, `all_to_all()`
+- **Barriers**: `barrier()`, `monitored_barrier()` (with timeout/debugging)
+- **Object collectives**: For Python objects (with performance caveats)
+
+### **4. Process Groups**
+```python
+# Create sub-groups
+group = dist.new_group(ranks=[0, 1, 2])
+# Shrink existing groups
+new_group = dist.shrink_group(ranks_to_exclude=[3])
+```
+
+### **5. DeviceMesh (Higher-level Abstraction)**
+```python
+# 2D mesh for hybrid parallelism
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4), mesh_dim_names=("dp", "tp"))
+```
+
+## **Key Concepts**
+
+### **Synchronous vs Asynchronous Operations**
+- **Synchronous** (`async_op=False`): Blocks until operation completes
+- **Asynchronous** (`async_op=True`): Returns `Work` object for non-blocking execution
+
+### **Environment Variables**
+- `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK` for initialization
+- `NCCL_SOCKET_IFNAME`, `GLOO_SOCKET_IFNAME` for network interface selection
+- `TORCH_DISTRIBUTED_DEBUG` for debugging (OFF/INFO/DETAIL)
+
+### **Initialization Methods**
+1. **TCP**: `tcp://10.1.1.20:23456`
+2. **Shared File**: `file:///mnt/nfs/sharedfile`
+3. **Environment Variables** (default): Reads from `MASTER_ADDR`, `MASTER_PORT`, etc.
+
+## **Advanced Features**
+
+### **Copy Engine Collectives** (NCCL 2.28+)
+- Offload communication to GPU DMA engines
+- Better computation/communication overlap
+- Requires symmetric memory allocation
+
+### **Debugging Tools**
+- `torch.distributed.breakpoint()`: Debug single rank
+- `monitored_barrier()`: Timeout with rank reporting
+- HTTP debug server for runtime inspection
+- Custom exception types for distributed errors
+
+### **Third-party Backends**
+- Extensible via `Backend.register_backend()`
+- Experimental support for custom backends
+
+## **Best Practices**
+1. Use **NCCL for GPU**, **Gloo for CPU** training
+2. Call `destroy_process_group()` for cleanup
+3. Set `torch.cuda.set_device()` before NCCL operations
+4. Use `async_op=True` for computation/communication overlap
+5. Enable `TORCH_DISTRIBUTED_DEBUG=DETAIL` for troubleshooting hangs
+
+## **Launch Utilities**
+- `torch.distributed.launch`: For spawning multiple processes (deprecated in favor of `torchrun`)
+- `torch.multiprocessing.spawn`: For single-node multi-process training
+
+The package enables scalable distributed training with fine-grained control over communication patterns while maintaining performance through backend optimizations and asynchronous operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  None
+
+constraints:
+  None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.reduce_op in a complex way */
+import torch

@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ParallelDynamicStitch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ParallelDynamicStitch` interleaves values from multiple tensors into a single merged tensor using parallel indices. Each `data[i]` is placed into the output at positions specified by `indices[i]`. Unlike `DynamicStitch`, it does not guarantee deterministic behavior when indices overlap across different `indices[m]` and `indices[n]`, as merging may occur in parallel.
+
+**Key Points:**
+- **Inputs:**  
+  - `indices`: List of at least 1 int32 tensor.  
+  - `data`: List of tensors (same length as `indices`) with matching types.  
+- **Output:** A merged tensor where `output[indices[m][...]] = data[m][...]`.  
+- **Shape Requirements:**  
+  `data[i].shape` must start with `indices[i].shape`, and the remaining dimensions must be constant across all `i`.  
+- **Use Case:** Often used with `dynamic_partition` to process and recombine partitioned data efficiently.  
+- **Caution:** Overlapping indices across different `indices` entries may produce invalid results due to parallel merging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int32"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  data:
+    dtype: null
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: indices
+    Constraint: "len(indices) >= 1"
+  2:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "len(data) == len(indices)"
+  3:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "all(data[i].shape[:len(indices[i].shape)] == indices[i].shape for i in range(len(indices)))"
+  4:
+    Parameter 1: data
+    Parameter 2: data
+    Constraint: "all(d.dtype == data[0].dtype for d in data)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ParallelDynamicStitch in a complex way */
+import tensorflow as tf

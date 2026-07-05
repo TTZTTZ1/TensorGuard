@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.sample_from_datasets` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.data.experimental.sample_from_datasets` function creates a dataset by randomly sampling elements from multiple input datasets according to specified probabilities. It is now deprecated; use `tf.data.Dataset.sample_from_datasets` instead.
+
+**Key functionality:**
+- Takes a list of datasets with compatible structures and interleaves their elements randomly.
+- Uses optional `weights` to define sampling probabilities for each dataset (uniform by default).
+- Sampling is performed without replacement.
+- Supports a `seed` for reproducible randomness and an option to stop or skip when a dataset becomes empty.
+
+**Example:**
+Given two datasets and equal weights, the output might interleave elements like: `[100, 0, 1, 101, 2, 102]`.
+
+**Arguments:**
+- `datasets`: Non-empty list of `tf.data.Dataset` objects.
+- `weights`: Optional list of probabilities corresponding to each dataset.
+- `seed`: Optional random seed.
+- `stop_on_empty_dataset`: If `True`, stops sampling when a dataset is empty (recommended).
+
+**Raises** `TypeError` or `ValueError` for invalid inputs, such as an empty dataset list or mismatched weights length.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  datasets:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  weights:
+    dtype: ["list", "tf.Tensor", "tf.data.Dataset"]
+    range: null
+    structure: ["list", "Tensor", "Dataset"]
+    shape: null
+    default: null
+  seed:
+    dtype: ["tf.int64"]
+    range: null
+    structure: ["scalar Tensor"]
+    shape: []
+    default: null
+  stop_on_empty_dataset:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "datasets"
+    Parameter 2: "None"
+    Constraint: "len(datasets) > 0"
+  2:
+    Parameter 1: "weights"
+    Parameter 2: "datasets"
+    Constraint: "weights is not None and isinstance(weights, (list, tf.Tensor)) and len(weights) == len(datasets)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.sample_from_datasets in a complex way */
+import tensorflow as tf

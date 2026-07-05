@@ -1,0 +1,121 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.QuantizedMatMulWithBiasAndRequantize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.QuantizedMatMulWithBiasAndRequantize` operation performs a quantized matrix multiplication of tensors `a` and `b`, adds a bias term, and then requantizes the result to a specified output range. It is designed for efficient inference in quantized neural networks.
+
+**Key Functionality:**
+- **Quantized MatMul with Bias:** Multiplies quantized input tensors `a` and `b`, adds a bias tensor, and produces a quantized output.
+- **Requantization:** Converts the result to a new quantization range defined by `min_freezed_output` and `max_freezed_output`.
+- **Flexible Quantization:** Supports various quantized data types (e.g., `qint8`, `quint8`) and quantization modes (`"MIN_FIRST"` or `"SCALED"`).
+
+**Inputs:**
+- **Quantized Tensors:** `a`, `b` (with associated min/max values `min_a`, `max_a`, `min_b`, `max_b`).
+- **Bias:** A float or quantized bias tensor.
+- **Output Range:** `min_freezed_output` and `max_freezed_output` define the requantization target range.
+
+**Outputs:**
+- **out:** The requantized result tensor.
+- **min_out, max_out:** The actual min/max values of the output (typically matching the provided freezed output range).
+
+**Optional Parameters:**
+- **Toutput:** Output data type (default: `quint8`).
+- **transpose_a/b:** Whether to transpose input matrices.
+- **input_quant_mode:** Quantization scheme for inputs (`"MIN_FIRST"` or `"SCALED"`).
+
+**Use Case:** Primarily used in quantized model inference to efficiently compute linear layers with bias, ensuring output values are requantized to a predetermined fixed range suitable for subsequent layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  b:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  bias:
+    dtype: ["float32", "qint32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  min_a:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  max_a:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  min_b:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  max_b:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  min_freezed_output:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  max_freezed_output:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  Toutput:
+    dtype: ["dtype"]
+    range: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "quint8"
+  transpose_a:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  input_quant_mode:
+    dtype: ["string"]
+    range: ["MIN_FIRST", "SCALED"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "MIN_FIRST"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.QuantizedMatMulWithBiasAndRequantize in a complex way */
+import tensorflow as tf

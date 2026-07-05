@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.sparse.segment_mean` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.segment_mean` computes the mean along segments of a tensor using sparse indexing. It operates similarly to `tf.math.segment_mean`, but allows selecting a subset of rows from the first dimension of `data` via the `indices` parameter. The function supports missing segment IDs (outputting zeros for those segments) and optionally returns a sparse gradient.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d0, d1, ...]"]
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[k]"]
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[k]"]
+    default: null
+  num_segments:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  sparse_gradient:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.shape(indices)[0] == tf.shape(segment_ids)[0]"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "data"
+    Constraint: "tf.reduce_max(indices) < tf.shape(data)[0]"
+  3:
+    Parameter 1: "segment_ids"
+    Parameter 2: null
+    Constraint: "tf.math.is_non_decreasing(segment_ids)"
+  4:
+    Parameter 1: "segment_ids"
+    Parameter 2: "num_segments"
+    Constraint: "num_segments is None or num_segments >= tf.reduce_max(segment_ids) + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.segment_mean in a complex way */
+import tensorflow as tf

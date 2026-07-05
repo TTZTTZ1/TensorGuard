@@ -1,0 +1,50 @@
+params:
+  shape:
+    dtype: ["int64", "int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  values:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  default_value:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  row_partition_tensors:
+    dtype: ["int64", "int32"]
+    range: null
+    structure: ["list"]
+    shape: [null]
+    default: null
+  row_partition_types:
+    dtype: ["string"]
+    range: [["ROW_SPLITS", "VALUE_ROWIDS", "FIRST_DIM_SIZE"]]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: default_value
+    Parameter 2: values
+    Constraint: "default_value.dtype == values.dtype"
+  2:
+    Parameter 1: default_value
+    Parameter 2: values
+    Constraint: "default_value.ndim < values.ndim"
+  3:
+    Parameter 1: row_partition_tensors
+    Parameter 2: row_partition_types
+    Constraint: "len(row_partition_tensors) == len(row_partition_types)"

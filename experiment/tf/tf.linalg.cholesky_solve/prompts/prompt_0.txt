@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.linalg.cholesky_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.cholesky_solve` efficiently solves linear systems **A X = RHS** when the Cholesky decomposition **A = L Lᵀ** is already available. It uses the provided lower-triangular Cholesky factor **L** (`chol`) and the right-hand side matrix **RHS** to compute the solution **X** without inverting **A** directly, which is numerically stable and faster for positive-definite systems.
+
+**Key features:**
+- **Inputs:** `chol` (Cholesky factor, shape `[..., M, M]`) and `rhs` (shape `[..., M, K]`).
+- **Output:** Solution **X** with shape `[..., M, K]`.
+- **Use case:** Ideal for solving multiple linear systems efficiently when **A** is positive-definite and its Cholesky factor has been precomputed (e.g., with `tf.linalg.cholesky`).
+- **Batch support:** Handles batches of matrices automatically (leading dimensions `...`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  chol:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, M]"]
+    default: null
+  rhs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "cholesky_solve"
+constraints:
+  1:
+    Parameter 1: "chol"
+    Parameter 2: "rhs"
+    Constraint: "chol.dtype == rhs.dtype"
+  2:
+    Parameter 1: "chol"
+    Parameter 2: "rhs"
+    Constraint: "chol.shape[:-2] == rhs.shape[:-2] and chol.shape[-1] == rhs.shape[-2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.cholesky_solve in a complex way */
+import tensorflow as tf

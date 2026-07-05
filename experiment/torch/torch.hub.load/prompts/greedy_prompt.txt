@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.hub.load` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**PyTorch Hub** is a centralized repository for sharing and loading pre-trained models, designed to enhance research reproducibility. It allows users to easily publish and access models via GitHub repositories.
+
+### **Key Features:**
+
+1. **Publishing Models**  
+   - Add a `hubconf.py` file to your GitHub repo.  
+   - Define **entrypoints** (Python functions) that return models or tools (e.g., tokenizers).  
+   - Specify dependencies in a `dependencies` list (e.g., `['torch']`).  
+   - Include docstrings for help messages and examples.  
+   - Models must be on a branch/tag (not a random commit).
+
+2. **Loading Models**  
+   - **`torch.hub.list()`**: List all available entrypoints in a repo.  
+   - **`torch.hub.help()`**: Show docstring for a specific model.  
+   - **`torch.hub.load()`**: Load a model (or other objects) from GitHub or a local directory.  
+   - Supports optional arguments (`*args`, `**kwargs`) for model instantiation.
+
+3. **Utilities**  
+   - **`torch.hub.load_state_dict_from_url()`**: Load weights from a URL.  
+   - **`torch.hub.download_url_to_file()`**: Download files with optional hash verification.  
+   - **`torch.hub.get_dir()` / `set_dir()`**: Manage cache directory for downloaded models.
+
+4. **Security & Caching**  
+   - **`trust_repo`**: Control repo trust via prompts or a trusted list (`"check"`, `True`, `False`).  
+   - Caching: Models are cached locally; use `force_reload=True` to refresh.  
+   - Cache path order: `hub.set_dir()` → `$TORCH_HOME/hub` → `$XDG_CACHE_HOME/torch/hub` → `~/.cache/torch/hub`.
+
+5. **Workflow Tips**  
+   - After loading, use `dir(model)` to explore methods and `help(model.method)` for details.  
+   - Repo owners should provide clear docstrings and minimal working examples.
+
+### **Limitations:**  
+- Import conflicts may occur if different repos use the same sub-package names.  
+- Loading two branches of the same repo in the same Python process is not supported.
+
+PyTorch Hub simplifies model sharing and reuse, promoting transparency and efficiency in machine learning workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  repo_or_dir:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  model:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  *args:
+    dtype: ["any"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  source:
+    dtype: ["string"]
+    range: [["github", "local"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "github"
+  trust_repo:
+    dtype: ["string", "boolean", "None"]
+    range: [["check", "True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  force_reload:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  verbose:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  skip_validation:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  **kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dictionary"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hub.load in a complex way */
+import torch

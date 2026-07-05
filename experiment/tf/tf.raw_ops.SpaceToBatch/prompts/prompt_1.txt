@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SpaceToBatch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SpaceToBatch` operation transforms a 4-D input tensor by first applying zero-padding and then rearranging spatial blocks into the batch dimension. It requires the padded height and width to be divisible by the specified `block_size`.
+
+**Key Functionality:**
+- **Input:** A 4-D tensor with shape `[batch, height, width, depth]`.
+- **Padding:** Defined by a 2x2 tensor `paddings` specifying top/bottom and left/right padding.
+- **Block Size:** An integer ≥ 2 that determines the block dimensions.
+- **Output:** A tensor where spatial data (height and width) is moved to the batch dimension, resulting in shape `[batch * block_size * block_size, height_pad/block_size, width_pad/block_size, depth]`.
+
+**Purpose:** Useful for converting atrous (dilated) convolutions into regular convolutions by reorganizing spatial data into batch entries.
+
+**Example:** For an input `[1, 2, 2, 1]` with `block_size=2`, the output becomes `[4, 1, 1, 1]`, where each spatial element becomes a separate batch entry.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  paddings:
+    dtype: ["int32", "int64"]
+    range: ["[0, inf)"]
+    structure: ["tensor"]
+    shape: [2, 2]
+    default: null
+  block_size:
+    dtype: ["int"]
+    range: ["[2, inf)"]
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: block_size
+    Constraint: "(input.shape[1] + paddings[0][0] + paddings[0][1]) % block_size == 0 and (input.shape[2] + paddings[1][0] + paddings[1][1]) % block_size == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SpaceToBatch in a complex way */
+import tensorflow as tf

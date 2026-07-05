@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.distributions.geometric.Geometric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key features include:
+
+## **Core Concepts**
+- **Two gradient estimation methods**:
+  - **Score function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+  - **Pathwise derivative (reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## **Main Components**
+1. **Distribution Base Class**: Abstract base class with methods like:
+   - `sample()`, `rsample()` - sampling
+   - `log_prob()` - log probability
+   - `cdf()`, `icdf()` - cumulative/inverse CDF
+   - `entropy()`, `mean`, `variance` - statistics
+
+2. **Available Distributions**: Includes common distributions (Bernoulli, Normal, Gamma, Beta, etc.) and specialized ones (LKJCholesky, VonMises, Wishart, etc.)
+
+3. **TransformedDistribution**: Chains transforms onto base distributions for complex distributions
+
+4. **KL Divergence**: Pre-registered KL computations between distribution pairs
+
+5. **Transforms**: Bijective transformations for constrained parameter spaces (e.g., `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform`)
+
+6. **Constraints**: Define valid parameter domains with registry system linking constraints to transforms
+
+## **Key Usage Patterns**
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+
+- **Reparameterization**:
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  ```
+
+- **Constraint handling** via `transform_to()` (optimization) and `biject_to()` (HMC sampling)
+
+## **Design Features**
+- Follows TensorFlow Distributions design
+- Supports batch and event shapes
+- Exponential family distributions with Bregman divergence entropy computation
+- Transforms enable sampling from complex distributions via simpler base distributions
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: 
+    Constraint: "probs > 0 and probs <= 1"
+  2:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.geometric.Geometric in a complex way */
+import torch

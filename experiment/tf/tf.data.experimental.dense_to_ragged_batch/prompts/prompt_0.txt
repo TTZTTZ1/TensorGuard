@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.dense_to_ragged_batch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.dense_to_ragged_batch` is a **deprecated** dataset transformation that batches elements of varying shapes into `tf.RaggedTensor` objects. It is recommended to use `tf.data.Dataset.ragged_batch` instead.
+
+### Key Features:
+- **Batches ragged elements**: Combines consecutive dataset elements into batches, adding an outer batch dimension.
+- **Handles varying shapes**:
+  - Fully defined tensors are batched normally.
+  - Tensors with unknown dimensions (`None`) are converted to ragged tensors along those axes.
+  - Existing ragged tensors are batched normally.
+- **Parameters**:
+  - `batch_size`: Number of elements per batch.
+  - `drop_remainder`: If `True`, drops the final batch if smaller than `batch_size`.
+  - `row_splits_dtype`: Data type for ragged tensor row splits (default: `tf.int64`).
+
+### Example:
+```python
+dataset = tf.data.Dataset.from_tensor_slices(np.arange(6))
+dataset = dataset.map(lambda x: tf.range(x))
+dataset = dataset.apply(tf.data.experimental.dense_to_ragged_batch(batch_size=2))
+# Output: Batches of ragged tensors with varying inner dimensions.
+```
+
+### Note:
+This function is **deprecated**; use `tf.data.Dataset.ragged_batch` for equivalent functionality.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  batch_size:
+    dtype: ["int64"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  drop_remainder:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  row_splits_dtype:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "tf.dtypes.int64"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.dense_to_ragged_batch in a complex way */
+import tensorflow as tf

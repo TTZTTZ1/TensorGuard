@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `torch.distributed.reduce_op` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It supports synchronous distributed training and is essential for scaling deep learning models.
+
+## Key Features
+
+### Backends
+- **Gloo**: Best for CPU training, supports Ethernet/InfiniBand
+- **NCCL**: Optimized for CUDA GPU training, supports InfiniBand/GPUDirect
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional backend requiring source build
+
+**Rule of thumb**: Use NCCL for CUDA GPU training, XCCL for XPU GPU training, and Gloo for CPU training.
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Concepts
+- **Process groups**: Default world group or custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts
+- **Collective operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-point**: `send`/`recv` (synchronous) and `isend`/`irecv` (asynchronous)
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Create DeviceMesh for multi-dimensional parallelism
+- `all_reduce()`: Reduce tensors across all processes
+- `broadcast()`: Broadcast tensor from one process to all others
+- `all_gather()`: Gather tensors from all processes
+- `barrier()`: Synchronize all processes
+
+### Synchronous vs Asynchronous
+- **Synchronous** (`async_op=False`): Block until operation completes
+- **Asynchronous** (`async_op=True`): Return `Work` object for non-blocking execution
+
+### Key-Value Stores
+- **TCPStore**: Network-based store for multi-machine coordination
+- **FileStore**: File-based store for shared file systems
+- **HashStore**: In-memory store for single-process multi-threaded use
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout detection
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `breakpoint()`: Debug single rank while others wait
+- Debug HTTP server for runtime inspection
+
+### Best Practices
+1. Use NCCL backend for GPU training with Ethernet/InfiniBand
+2. Ensure proper GPU device assignment with `torch.cuda.set_device()`
+3. Call `destroy_process_group()` for clean shutdown
+4. Use `DistributedDataParallel` wrapper for model parallelism
+5. Consider performance implications of object collectives (pickling overhead)
+
+The package enables efficient distributed training by allowing each process to maintain its own optimizer and Python interpreter, reducing communication overhead and GIL contention compared to other parallelism approaches.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  None
+
+constraints:
+  None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.reduce_op in a complex way */
+import torch

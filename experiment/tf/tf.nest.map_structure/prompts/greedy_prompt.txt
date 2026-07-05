@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.nest.map_structure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nest.map_structure` applies a given function to each corresponding element across one or more nested structures (like lists, tuples, dicts), returning a new structure with the same layout. It requires all input structures to have identical nesting shapes by default, though type checking can be disabled. The function is commonly used for parallel transformations of complex, hierarchical data in TensorFlow workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["callable"]
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "No mention"
+  structure:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["atom", "nested"]
+    shape: "No mention"
+    default: "No mention"
+  check_types:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  expand_composites:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "func"
+    Parameter 2: "None"
+    Constraint: "callable(func)"
+  2:
+    Parameter 1: "structure"
+    Parameter 2: "None"
+    Constraint: "len(structure) > 0"
+  3:
+    Parameter 1: "structure"
+    Parameter 2: "structure"
+    Constraint: "all(tf.nest.is_nested(s) == tf.nest.is_nested(structure[0]) for s in structure[1:]) and (all(not tf.nest.is_nested(s) for s in structure) or tf.nest.assert_same_structure(*structure, check_types=False) is None)"
+  4:
+    Parameter 1: "check_types"
+    Parameter 2: "structure"
+    Constraint: "not check_types or all(type(structure[i]) == type(structure[0]) for i in range(1, len(structure)))"
+  5:
+    Parameter 1: "kwargs"
+    Parameter 2: "None"
+    Constraint: "set(kwargs.keys()).issubset({'check_types', 'expand_composites'})"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nest.map_structure in a complex way */
+import tensorflow as tf

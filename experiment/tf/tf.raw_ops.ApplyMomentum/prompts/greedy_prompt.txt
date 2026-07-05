@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ApplyMomentum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ApplyMomentum` operator implements the momentum optimization algorithm for updating a variable (`var`) using gradient descent with momentum. It updates an accumulator (`accum`) by combining the previous accumulator value with the current gradient, scaled by a momentum factor. The variable is then adjusted by subtracting the learning rate (`lr`) multiplied by the updated accumulator.
+
+**Key Parameters:**
+- `var`: The variable to be updated.
+- `accum`: An accumulator tracking momentum-adjusted gradients.
+- `lr`: Learning rate (scalar).
+- `grad`: Current gradient.
+- `momentum`: Momentum coefficient (scalar).
+- `use_nesterov`: If `True`, enables Nesterov momentum for potentially faster convergence.
+
+**Update Rules:**
+- Standard momentum:  
+  `accum = accum * momentum + grad`  
+  `var -= lr * accum`
+- With Nesterov momentum (`use_nesterov=True`):  
+  The gradient is computed using an intermediate update, effectively adjusting `var` by `var - lr * momentum * accum`.
+
+**Optional Features:**
+- `use_locking`: Provides thread-safe updates via locks.
+- Supports various numeric data types (e.g., float32, int32, bfloat16).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  accum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  momentum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  use_nesterov:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "accum"
+    Parameter 2: "var"
+    Constraint: "accum.dtype == var.dtype"
+  2:
+    Parameter 1: "lr"
+    Parameter 2: "var"
+    Constraint: "lr.dtype == var.dtype and tf.rank(lr) == 0"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "var"
+    Constraint: "grad.dtype == var.dtype"
+  4:
+    Parameter 1: "momentum"
+    Parameter 2: "var"
+    Constraint: "momentum.dtype == var.dtype and tf.rank(momentum) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ApplyMomentum in a complex way */
+import tensorflow as tf

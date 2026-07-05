@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CropAndResize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.CropAndResize` operation extracts image crops from a batch of input images and resizes them to a specified output size. It takes normalized bounding box coordinates, allows flipping if coordinates are reversed, and supports bilinear or nearest-neighbor interpolation for resizing. The output is a 4-D tensor containing the cropped and resized image patches.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  image:
+    dtype: ["uint8", "uint16", "int8", "int16", "int32", "int64", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  boxes:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [2,4]
+    default: null
+  box_ind:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  crop_size:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  method:
+    dtype: ["string"]
+    range: [["bilinear", "nearest"]]
+    structure: ["scalar"]
+    shape: []
+    default: "bilinear"
+  extrapolation_value:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: box_ind
+    Constraint: "boxes.shape[0] == box_ind.shape[0]"
+  2:
+    Parameter 1: box_ind
+    Parameter 2: image
+    Constraint: "all(0 <= box_ind[i] < image.shape[0] for i in range(box_ind.shape[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CropAndResize in a complex way */
+import tensorflow as tf

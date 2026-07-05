@@ -1,0 +1,30 @@
+params:
+  condition:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: condition
+    Parameter 2: input
+    Constraint: "try: torch.broadcast_shapes(condition.shape if torch.is_tensor(condition) else (), input.shape if torch.is_tensor(input) else (), other.shape if torch.is_tensor(other) else ()); True; except ValueError: False"

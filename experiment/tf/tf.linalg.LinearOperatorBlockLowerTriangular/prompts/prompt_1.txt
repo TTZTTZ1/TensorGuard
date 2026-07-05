@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorBlockLowerTriangular` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorBlockLowerTriangular` constructs a block lower-triangular linear operator from a nested list of component linear operators. Each row of the block structure is defined by a list of operators, where row `i` must contain exactly `i+1` operators (so the last operator in each row lies on the diagonal). Diagonal operators must be square, while off‑diagonal operators must have compatible dimensions with their row and column neighbors.
+
+**Key Features:**
+- Combines operators into a single square operator with zeros above the diagonal.
+- Supports batch dimensions and broadcasting across batches.
+- Provides efficient implementations of operations like `matmul`, `solve`, `determinant`, and `log_abs_determinant` by leveraging the block‑triangular structure.
+- Allows matrix‑property hints (`is_non_singular`, `is_self_adjoint`, etc.) for performance and validation.
+
+**Example:**
+```python
+op = LinearOperatorBlockLowerTriangular([
+    [op_00],
+    [op_10, op_11],
+    [op_20, op_21, op_22]
+])
+```
+This creates a 3×3 block operator where `op_ij` are the individual linear operators.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operators:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: "null"
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  is_square:
+    dtype: ["bool", "None"]
+    range: [true, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'LinearOperatorBlockLowerTriangular'"
+constraints:
+  1:
+    Parameter 1: "operators"
+    Parameter 2: "operators"
+    Constraint: "all(op.dtype == operators[0][0].dtype for row in operators for op in row)"
+  2:
+    Parameter 1: "operators"
+    Parameter 2: "operators"
+    Constraint: "len(operators) > 0 and all(len(operators[i]) == i for i in range(len(operators)))"
+  3:
+    Parameter 1: "operators"
+    Parameter 2: "operators"
+    Constraint: "all(operators[i][i].is_square for i in range(len(operators)))"
+  4:
+    Parameter 1: "operators"
+    Parameter 2: "operators"
+    Constraint: "all(i > j implies (operators[i][j].domain_dimension == operators[j][j].domain_dimension and operators[i][j].range_dimension == operators[i][i].range_dimension) for i in range(len(operators)) for j in range(len(operators[i])) if i != j)"
+  5:
+    Parameter 1: "is_square"
+    Parameter 2: "is_square"
+    Constraint: "is_square is not False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorBlockLowerTriangular in a complex way */
+import tensorflow as tf

@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.QuantizeAndDequantizeV4` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.QuantizeAndDequantizeV4` performs quantization followed by dequantization on a tensor, similar to V2 but with a key difference in gradient behavior: it returns a gradient of 1 for inputs within the quantization range and 0 otherwise. This operation is useful for simulating quantization effects during training while providing a straight-through estimator gradient.
+
+**Key Parameters:**
+- **`input`**: Tensor to quantize/dequantize (float types).
+- **`input_min`/`input_max`**: Range boundaries for quantization (used if `range_given=True`).
+- **`signed_input`**: Whether quantization is signed (affects output range).
+- **`num_bits`**: Bitwidth for quantization (default 8).
+- **`range_given`**: If `False`, range is determined from input tensor min/max.
+- **`round_mode`**: Rounding method (`"HALF_TO_EVEN"` or `"HALF_UP"`).
+- **`narrow_range`**: If `True`, reduces quantized range by 1 (e.g., -127 to 127 for 8-bit signed).
+- **`axis`**: Channel/slice axis for per-channel quantization (default -1).
+
+**Returns:** A tensor of the same type as `input`, representing the quantized-then-dequantized values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  input_min:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  input_max:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  signed_input:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  num_bits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "8"
+  range_given:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  round_mode:
+    dtype: ["string"]
+    range: ["HALF_TO_EVEN", "HALF_UP"]
+    structure: ["scalar"]
+    shape: []
+    default: "HALF_TO_EVEN"
+  narrow_range:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "-1"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: input_min
+    Parameter 2: input
+    Constraint: "input_min.dtype == input.dtype"
+  2:
+    Parameter 1: input_max
+    Parameter 2: input
+    Constraint: "input_max.dtype == input.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.QuantizeAndDequantizeV4 in a complex way */
+import tensorflow as tf

@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.scatter_add_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`scatter_add_` adds elements from a source tensor (`src`) into a target tensor (`self`) at positions specified by an index tensor along a given dimension (`dim`). The indices determine where each element from `src` is accumulated in `self`. The tensors `self`, `index`, and `src` must have the same number of dimensions, and `index` must not be larger than `src` or `self` in any dimension. This operation is non‑deterministic on CUDA devices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  index:
+    dtype: ["long"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  src:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: self
+    Constraint: "0 <= dim < self.ndim"
+  2:
+    Parameter 1: index
+    Parameter 2: src
+    Constraint: "index.ndim == src.ndim"
+  3:
+    Parameter 1: index
+    Parameter 2: src
+    Constraint: "all(index.size(i) <= src.size(i) for i in range(index.ndim))"
+  4:
+    Parameter 1: index
+    Parameter 2: self
+    Constraint: "all(index.size(i) <= self.size(i) for i in range(index.ndim) if i != dim)"
+  5:
+    Parameter 1: src
+    Parameter 2: index
+    Constraint: "src.shape == index.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.scatter_add_ in a complex way */
+import torch

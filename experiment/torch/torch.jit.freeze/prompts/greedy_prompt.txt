@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `torch.jit.freeze` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.jit.freeze` converts a PyTorch `ScriptModule` into a frozen, optimized version by inlining submodules, parameters, and attributes as constants in the TorchScript IR graph. This process removes the module hierarchy and parameter storage, applying general optimizations to improve inference speed.
+
+**Key Features:**
+- Only works with ScriptModules in `eval` mode.
+- Preserves the `forward` method and any attributes listed in `preserved_attrs`.
+- Automatically preserves attributes modified within preserved methods.
+- After freezing, further device‑ or dtype‑specific operations (like `.to()`) are not supported.
+
+**Parameters:**
+- `mod`: The ScriptModule to freeze.
+- `preserved_attrs`: Optional list of attribute names (including submodule attributes) to keep mutable.
+- `optimize_numerics`: If `True`, runs additional optimizations that may affect numerical precision.
+
+**Use Case:**  
+Freezing is primarily used to optimize models for inference by eliminating runtime overhead of parameter handling and enabling subsequent optimizations via `torch.jit.optimize_for_inference`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mod:
+    dtype: ["torch.jit.ScriptModule"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  preserved_attrs:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  optimize_numerics:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.jit.freeze in a complex way */
+import torch

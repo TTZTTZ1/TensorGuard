@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.backward` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.Tensor.backward()` method computes gradients of the current tensor with respect to graph leaves using automatic differentiation.
+
+**Key points:**
+- It applies the chain rule to differentiate the computation graph.
+- For non‑scalar tensors, a `gradient` argument (matching shape/type) must be provided to specify the gradient of the function w.r.t. the tensor.
+- Gradients are accumulated in leaf tensors’ `.grad` attribute; you typically need to zero them before calling `backward()` again.
+
+**Parameters:**
+- `gradient` (optional): Gradient of the function w.r.t. the tensor. Required for non‑scalar tensors.
+- `retain_graph` (optional): If `False`, the computation graph is freed after use. Defaults to `None` (inferred from `create_graph`).
+- `create_graph` (optional): If `True`, builds a derivative graph for higher‑order gradients (default `False`).
+- `inputs` (optional): Specifies which leaf tensors to accumulate gradients into; others are ignored.
+
+**Notes:**
+- The method supports CUDA stream semantics for operations in custom streams.
+- Providing `inputs` that are non‑leaves may trigger unnecessary gradient computations (implementation detail).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  gradient:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: null
+    default: "None"
+  retain_graph:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  create_graph:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  inputs:
+    dtype: ["Sequence[torch.Tensor]", "None"]
+    range: null
+    structure: ["sequence", "None"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "retain_graph"
+    Parameter 2: "create_graph"
+    Constraint: "not (create_graph and retain_graph is False)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.backward in a complex way */
+import torch

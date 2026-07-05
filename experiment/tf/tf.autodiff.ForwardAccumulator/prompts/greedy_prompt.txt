@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.autodiff.ForwardAccumulator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.autodiff.ForwardAccumulator` is a TensorFlow tool for computing **Jacobian-vector products (JVPs)** using **forward-mode automatic differentiation**. It is particularly efficient for functions with many outputs and few inputs, as it avoids storing intermediate activations, making it memory-efficient compared to reverse-mode autodiff (backpropagation).
+
+### Key Features:
+- **Purpose**: Computes JVPs, where a vector multiplies the Jacobian matrix from the right.
+- **Comparison**: Unlike `tf.GradientTape` (which computes vector-Jacobian products via backprop), forward mode is better suited for many-output, few-input functions.
+- **Usage**: 
+  - Initialize with `primals` (tensors to watch) and `tangents` (the vector for the JVP).
+  - Use within a context manager to compute JVPs for operations inside.
+  - Retrieve JVPs via the `.jvp()` method without additional computation.
+- **Nesting**: Strictly nested; inner accumulators do not see JVPs from outer ones.
+- **Applications**: Efficient for Hessian-vector products, forward-over-backward differentiation, and scenarios where memory is a constraint.
+
+### Example Use Case:
+```python
+with tf.autodiff.ForwardAccumulator(primals, tangents) as acc:
+    # Perform operations
+    output = function(primals)
+jvp_result = acc.jvp(output)  # Fetch precomputed JVP
+```
+
+### Arguments:
+- `primals`: Tensor or nested structure to differentiate.
+- `tangents`: Tensor/structure with same nesting as `primals`, representing the JVP vector.
+
+### Methods:
+- `.jvp(primals)`: Retrieves precomputed JVPs for given primals.
+- Context manager methods (`__enter__`, `__exit__`) for scope-based computation.
+
+This tool is ideal for specialized differentiation tasks where forward-mode autodiff offers performance or memory advantages over traditional backpropagation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  primals_constructor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  tangents:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  primals_jvp:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "structure of tensors"]
+    shape: No mention
+    default: No mention
+  unconnected_gradients:
+    dtype: No mention
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "none"
+constraints:
+  1:
+    Parameter 1: primals_constructor
+    Parameter 2: tangents
+    Constraint: "tf.nest.is_nested(primals_constructor) == tf.nest.is_nested(tangents) and all(tf.size(t) == tf.size(p) for t, p in zip(tf.nest.flatten(tangents), tf.nest.flatten(primals_constructor)))"
+  2:
+    Parameter 1: primals_constructor
+    Parameter 2: primals_constructor
+    Constraint: "len(set(id(t) for t in tf.nest.flatten(primals_constructor))) == len(tf.nest.flatten(primals_constructor))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.autodiff.ForwardAccumulator in a complex way */
+import tensorflow as tf

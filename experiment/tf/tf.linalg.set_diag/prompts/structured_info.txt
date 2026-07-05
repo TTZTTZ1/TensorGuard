@@ -1,0 +1,40 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  diagonal:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "set_diag"
+  k:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "2"]
+    default: "0"
+  align:
+    dtype: ["string"]
+    range: ["RIGHT_LEFT", "LEFT_RIGHT", "LEFT_LEFT", "RIGHT_RIGHT"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "RIGHT_LEFT"
+constraints:
+  1:
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: "not (isinstance(k, (list, tuple)) and len(k) == 2 and k[0] > k[1])"
+  2:
+    Parameter 1: input
+    Parameter 2: diagonal
+    Constraint: "((isinstance(k, int) or (isinstance(k, (list, tuple)) and len(k) == 2 and k[0] == k[1])) and (tf.rank(diagonal) == tf.rank(input) - 1)) or (not (isinstance(k, int) or (isinstance(k, (list, tuple)) and len(k) == 2 and k[0] == k[1])) and (tf.rank(diagonal) == tf.rank(input)))"

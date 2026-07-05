@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.QInt32Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+- **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (Primary API)
+- **`torch.UntypedStorage`** is the modern, untyped storage class that holds raw bytes.
+- Multiple tensors can share the same underlying storage (e.g., tensor views).
+- Accessed via `tensor.untyped_storage()`.
+- Key attributes/methods:
+  - `data_ptr()`: Unique identifier for the storage memory address
+  - `device`, `is_cuda`, `is_pinned()`: Device and memory properties
+  - `clone()`, `copy_()`, `fill_()`: Copy and modification methods
+  - `share_memory_()`: Move to shared memory for multiprocessing
+  - `from_file()`: Create storage from memory-mapped files
+
+### Important Notes
+- **Warning**: Direct storage manipulation is low-level and risky. Use standard tensor methods when possible.
+- Tensors with gradients have separate storages for data and grad attributes.
+- Special tensors (meta device, FakeTensor) may not have typical storage.
+- Storage operations are generally not needed for most use cases.
+
+### Legacy Typed Storage (Deprecated)
+- **`torch.TypedStorage`** and type-specific classes (`FloatStorage`, `IntStorage`, etc.) are deprecated.
+- They provide typed interfaces but will be removed in future versions.
+- All new code should use `torch.UntypedStorage`.
+
+### Key Relationships
+- Storage is independent of tensor dtype/shape - different tensors can share the same storage.
+- Serialization preserves storage sharing relationships.
+- The storage size equals the tensor's total bytes (elements × element_size).
+
+The documentation emphasizes that while understanding storage is useful for advanced use cases, most applications should work at the tensor level rather than manipulating storage directly.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: [["True",
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QInt32Storage in a complex way */
+import torch

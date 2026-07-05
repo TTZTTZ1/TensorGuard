@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_rank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi‑process parallelism across multiple machines or GPUs. It supports synchronous distributed training, typically used via `DistributedDataParallel`, and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU/GPU communication.
+
+### Key Features:
+- **Backends**:  
+  - **Gloo** – Recommended for CPU‑based training.  
+  - **NCCL** – Optimized for multi‑GPU training (CUDA).  
+  - **XCCL** – For XPU GPU training.  
+  - **MPI** – Requires building from source with MPI support.
+
+- **Initialization**:  
+  Use `init_process_group()` or `init_device_mesh()` to set up the process group. Initialization methods include TCP, shared file‑system, or environment variables (`env://` default).
+
+- **Collective Operations**:  
+  Supports synchronous and asynchronous versions of operations like `broadcast`, `all_reduce`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, and `barrier`.
+
+- **Point‑to‑Point Communication**:  
+  `send`/`recv` (blocking) and `isend`/`irecv` (non‑blocking) for direct rank‑to‑rank communication.
+
+- **Groups**:  
+  Sub‑groups can be created with `new_group()` for finer‑grained communication.
+
+- **DeviceMesh**:  
+  Higher‑level abstraction for managing multi‑dimensional device layouts and process groups, simplifying setup for N‑D parallelism.
+
+- **Key‑Value Stores**:  
+  `TCPStore`, `FileStore`, and `HashStore` for exchanging connection/address information.
+
+- **Debugging & Profiling**:  
+  - `monitored_barrier()` for timeout‑aware synchronization.  
+  - `TORCH_DISTRIBUTED_DEBUG` environment variable for detailed logging.  
+  - `torch.distributed.breakpoint()` to debug a single rank.  
+  - Integration with `torch.profiler` for performance analysis.
+
+- **Launch Utilities**:  
+  `torch.distributed.launch` (deprecated in favor of `torchrun`) and `torch.multiprocessing.spawn` for starting multi‑process jobs.
+
+- **Third‑Party Backends**:  
+  Extensible via `Backend.register_backend()` for custom communication backends.
+
+### Typical Workflow:
+1. Initialize the process group with `init_process_group()`.
+2. Use collective or point‑to‑point communication APIs.
+3. Wrap models with `DistributedDataParallel` for data‑parallel training.
+4. Clean up with `destroy_process_group()`.
+
+The package is designed for SPMD (single‑program‑multiple‑data) execution, where the same script runs on all ranks, and it provides tools for efficient, scalable distributed training and debugging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_rank in a complex way */
+import torch

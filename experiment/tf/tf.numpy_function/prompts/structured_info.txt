@@ -1,0 +1,40 @@
+params:
+  func:
+    dtype: ["function"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  inp:
+    dtype: ["list"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  Tout:
+    dtype: ["tensorflow data type", "list of tensorflow data types", "tuple of tensorflow data types"]
+    range: ["No mention"]
+    structure: ["list", "tuple", "scalar"]
+    shape: ["No mention"]
+    default: "null"
+  stateful:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "func"
+    Parameter 2: "inp"
+    Constraint: "func is not None and inp is not None and len(inp) == func.__code__.co_argcount"
+  2:
+    Parameter 1: "func"
+    Parameter 2: "Tout"
+    Constraint: "func is not None and Tout is not None and ((isinstance(Tout, list) and len(func(*inp)) == len(Tout)) or (not isinstance(Tout, list) and isinstance(func(*inp), np.ndarray)))"

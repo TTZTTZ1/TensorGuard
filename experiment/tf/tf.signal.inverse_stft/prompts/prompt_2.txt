@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.signal.inverse_stft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.signal.inverse_stft` reconstructs a time-domain signal from its Short-Time Fourier Transform (STFT) representation. It requires the STFT input (`stfts`), frame length, and frame step, with optional parameters for FFT length and a window function. To ensure accurate reconstruction, the window function should be complementary to the one used in the forward STFT, which can be generated using `tf.signal.inverse_stft_window_fn`. The function supports gradients and is compatible with TPU/GPU operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  stfts:
+    dtype: ["complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["at least rank 2"]
+    default: "null"
+  frame_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "null"
+  frame_step:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "null"
+  fft_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "None"
+  window_fn:
+    dtype: "No mention"
+    range: ["callable", "None"]
+    structure: ["callable"]
+    shape: "No mention"
+    default: "tf.signal.hann_window"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "stfts"
+    Parameter 2: "stfts"
+    Constraint: "tf.rank(stfts) >= 2"
+  2:
+    Parameter 1: "frame_length"
+    Parameter 2: "frame_length"
+    Constraint: "tf.rank(frame_length) == 0"
+  3:
+    Parameter 1: "frame_step"
+    Parameter 2: "frame_step"
+    Constraint: "tf.rank(frame_step) == 0"
+  4:
+    Parameter 1: "fft_length"
+    Parameter 2: "fft_length"
+    Constraint: "fft_length is None or tf.rank(fft_length) == 0"
+  5:
+    Parameter 1: "stfts"
+    Parameter 2: "fft_length"
+    Constraint: "tf.shape(stfts)[-1] == fft_length // 2 + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.signal.inverse_stft in a complex way */
+import tensorflow as tf

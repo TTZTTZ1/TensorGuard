@@ -1,0 +1,70 @@
+params:
+  input:
+    dtype: ["complex"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2", "3"]
+    default: null
+  n_fft:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  hop_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "n_fft // 4"
+  win_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "n_fft"
+  window:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "torch.ones(win_length)"
+  center:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "True"
+  normalized:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+  onesided:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "inferred from input"
+  length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "derived from T and other parameters"
+  return_complex:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: window
+    Parameter 2: n_fft
+    Constraint: "window is None or window.shape[0] <= n_fft"
+  2:
+    Parameter 1: onesided
+    Parameter 2: return_complex
+    Constraint: "not (onesided == True and return_complex == True)"

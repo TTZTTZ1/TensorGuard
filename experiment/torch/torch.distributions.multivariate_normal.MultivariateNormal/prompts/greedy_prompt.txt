@@ -1,0 +1,134 @@
+
+# You are a Python code generation assistant for the `torch.distributions.multivariate_normal.MultivariateNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports two main gradient estimation methods:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` and `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Relaxed distributions
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` (but not both)
+- **Batch support**: All distributions support batched parameters
+- **Validation**: Optional argument validation via `validate_args`
+- **Exponential family**: Specialized class for distributions in exponential family form
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Define valid parameter ranges (Interval, GreaterThan, Simplex, etc.)
+- **Constraint registries**: `biject_to()` and `transform_to()` for unconstrained optimization
+
+### **5. KL Divergence**
+- `kl_divergence()` computes KL divergence between distributions
+- Extensive registry of implemented KL divergences between distribution pairs
+
+## **Common Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Various parameterizations
+m1 = Bernoulli(probs=torch.tensor([0.3]))
+m2 = Normal(loc=0.0, scale=1.0)
+m3 = Categorical(torch.tensor([0.25, 0.25, 0.25, 0.25]))
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions package design
+- Enables stochastic gradient estimation for optimization
+- Supports both discrete and continuous distributions
+- Provides efficient implementations for common operations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  covariance_matrix:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  precision_matrix:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  scale_tril:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: covariance_matrix
+    Parameter 2: precision_matrix
+    Parameter 3: scale_tril
+    Constraint: "sum([covariance_matrix is not None, precision_matrix is not None, scale_tril is not None]) == 1"
+  2:
+    Parameter 1: loc
+    Parameter 2: covariance_matrix
+    Constraint: "(covariance_matrix is None) or (covariance_matrix.shape[-2] == covariance_matrix.shape[-1] == loc.shape[-1])"
+  3:
+    Parameter 1: loc
+    Parameter 2: precision_matrix
+    Constraint: "(precision_matrix is None) or (precision_matrix.shape[-2] == precision_matrix.shape[-1] == loc.shape[-1])"
+  4:
+    Parameter 1: loc
+    Parameter 2: scale_tril
+    Constraint: "(scale_tril is None) or (scale_tril.shape[-2] == scale_tril.shape[-1] == loc.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.multivariate_normal.MultivariateNormal in a complex way */
+import torch

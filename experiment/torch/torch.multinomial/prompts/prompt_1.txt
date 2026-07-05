@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.multinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.multinomial` samples indices from a multinomial distribution defined by input probabilities or weights. Each row of the input tensor is treated as a probability distribution, and the function returns a tensor with `num_samples` indices per row, drawn according to those probabilities.
+
+**Key points:**
+- Input rows must be non‑negative, finite, and have a non‑zero sum (they don’t need to sum to 1).
+- If `replacement=False` (default), sampling is without replacement and `num_samples` must not exceed the number of non‑zero elements in the row.
+- If `replacement=True`, sampling is with replacement and any number of samples can be drawn.
+- Output shape:  
+  - Vector input → vector of length `num_samples`.  
+  - Matrix input with `m` rows → `(m, num_samples)`.
+
+**Example:**
+```python
+weights = torch.tensor([0, 10, 3, 0], dtype=torch.float)
+torch.multinomial(weights, 2)                     # e.g., tensor([1, 2])
+torch.multinomial(weights, 4, replacement=True)   # e.g., tensor([2, 1, 1, 1])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D", "2-D"]
+    default: null
+  num_samples:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  replacement:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  generator:
+    dtype: ["torch.Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "None"
+  out:
+    dtype: ["long"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D", "2-D"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: num_samples
+    Parameter 2: input
+    Constraint: "replacement or (num_samples < torch.sum(input > 0, dim=-1).min())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.multinomial in a complex way */
+import torch

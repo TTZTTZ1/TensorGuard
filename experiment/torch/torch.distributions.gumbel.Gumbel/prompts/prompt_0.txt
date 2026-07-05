@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.distributions.gumbel.Gumbel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. It enables the construction of stochastic computation graphs and supports gradient estimation for optimization through two primary methods: the score function estimator (REINFORCE) and the pathwise derivative estimator (reparameterization trick).
+
+## Key Components
+
+### Core Classes
+- **Distribution**: Abstract base class for all probability distributions, providing methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, and properties for mean, variance, and support.
+- **ExponentialFamily**: Base class for distributions belonging to an exponential family, facilitating entropy and KL divergence computations.
+
+### Available Distributions
+The package includes numerous distributions such as:
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- **Transformed**: Created via `TransformedDistribution` by applying transforms to base distributions (e.g., HalfNormal, Pareto, Weibull).
+- **Specialized**: MixtureSameFamily, RelaxedBernoulli, RelaxedOneHotCategorical, LKJCholesky, etc.
+
+### Gradient Estimation Methods
+1. **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods. Suitable for discrete distributions.
+   ```python
+   m = Categorical(probs)
+   action = m.sample()
+   loss = -m.log_prob(action) * reward
+   ```
+
+2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization. Requires `has_rsample == True`.
+   ```python
+   m = Normal(*params)
+   action = m.rsample()
+   loss = -reward
+   ```
+
+### Transforms and Constraints
+- **Transforms**: Bijective transformations (e.g., ExpTransform, SigmoidTransform, StickBreakingTransform) used to create complex distributions from simple ones.
+- **Constraints**: Define valid parameter ranges (e.g., `positive`, `simplex`, `interval`). Used for parameter validation and unconstrained optimization.
+
+### Utilities
+- **KL Divergence**: Computed via `kl_divergence(p, q)` with registered implementations for many distribution pairs.
+- **Constraint Registries**: `biject_to()` and `transform_to()` map constraints to transforms for unconstrained optimization and HMC sampling.
+
+## Common Use Cases
+- **Stochastic Gradient Estimation**: Building stochastic computation graphs for RL and variational inference.
+- **Probabilistic Modeling**: Defining and sampling from complex distributions.
+- **Unconstrained Optimization**: Using `transform_to()` to optimize constrained parameters.
+- **Hamiltonian Monte Carlo**: Using `biject_to()` to transform constrained samples to unconstrained space.
+
+The package follows a design similar to TensorFlow Distributions and integrates seamlessly with PyTorch's autograd system, making it suitable for both research and production applications in probabilistic machine learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.gumbel.Gumbel in a complex way */
+import torch

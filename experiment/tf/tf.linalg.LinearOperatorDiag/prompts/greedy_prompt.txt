@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorDiag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorDiag` is a TensorFlow class that represents a batch of square diagonal matrices without explicitly storing the full matrix. It is initialized with a vector (or batch of vectors) that defines the diagonal entries, enabling efficient linear algebra operations.
+
+**Key Features:**
+- **Efficiency:** Performs operations like matrix multiplication (`matmul`) and solving linear systems (`solve`) with O(N) complexity per diagonal element, avoiding full matrix materialization.
+- **Batch Support:** Handles batches of diagonal matrices, where the leading dimensions represent batch indices.
+- **Matrix Properties:** Allows hints (e.g., `is_non_singular`, `is_self_adjoint`) to enable optimizations and validations.
+- **Operator Overloading:** Supports common operations like `@` (`__matmul__`) for multiplication.
+
+**Common Use Cases:**
+- Representing diagonal matrices in large-scale linear algebra computations.
+- Efficiently applying diagonal transformations in neural networks or probabilistic models.
+- Solving linear systems with diagonal matrices (trivial division by diagonal entries).
+
+**Example:**
+```python
+diag = tf.constant([1.0, 2.0, 3.0])
+operator = tf.linalg.LinearOperatorDiag(diag)
+# operator acts like a 3x3 diagonal matrix with entries [1, 2, 3]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diag:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'LinearOperatorDiag'"
+constraints:
+  1:
+    Parameter 1: diag
+    Parameter 2: is_self_adjoint
+    Constraint: "(diag.dtype not in ['float16', 'float32', 'float64']) or (is_self_adjoint is True)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorDiag in a complex way */
+import tensorflow as tf

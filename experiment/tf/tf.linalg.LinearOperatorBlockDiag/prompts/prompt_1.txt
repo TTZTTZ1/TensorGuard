@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorBlockDiag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorBlockDiag` constructs a block diagonal linear operator by combining multiple `LinearOperator` instances. Each input operator forms a block along the main diagonal, with zeros elsewhere.
+
+**Key Features:**
+- **Shape Composition:** The combined operator's shape is the broadcast batch shape of all input operators, with total rows and columns equal to the sum of each block's dimensions.
+- **Blockwise Operations:** Methods like `matmul`, `solve`, and `matvec` can accept and return lists of tensors corresponding to each block, enabling efficient partitioned computations.
+- **Matrix Properties:** Supports hints (e.g., `is_square`, `is_non_singular`) to declare operator characteristics for optimized operations.
+- **Performance:** Operations on the combined operator have a cost equal to the sum of operations on individual blocks.
+
+**Common Use Cases:**
+- Building large structured operators from smaller ones.
+- Solving block-separable linear systems efficiently.
+- Representing block diagonal matrices without explicit dense storage.
+
+**Example:**
+```python
+op1 = LinearOperatorFullMatrix([[1., 2.], [3., 4.]])
+op2 = LinearOperatorFullMatrix([[5., 6.], [7., 8.]])
+block_op = LinearOperatorBlockDiag([op1, op2])
+# Resulting matrix: [[1, 2, 0, 0],
+#                    [3, 4, 0, 0],
+#                    [0, 0, 5, 6],
+#                    [0, 0, 7, 8]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operators:
+    dtype: ["LinearOperator"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  is_square:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "len(operators) > 0"
+  2:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "all(op.dtype == operators[0].dtype for op in operators)"
+  3:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "all(op.is_square for op in operators)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorBlockDiag in a complex way */
+import tensorflow as tf

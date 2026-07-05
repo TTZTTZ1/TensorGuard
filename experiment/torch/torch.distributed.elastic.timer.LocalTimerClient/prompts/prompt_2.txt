@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.LocalTimerClient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timer system provides a mechanism to detect and handle stuck workers in distributed training. It uses a client-server architecture where timers are set on worker processes and monitored by a timer server.
+
+## Key Components
+
+### Core Usage Pattern
+1. **Server Setup**: Start a timer server (e.g., `LocalTimerServer` or `FileTimerServer`) on each host
+2. **Client Configuration**: Configure timer clients in worker processes using `timer.configure()`
+3. **Timer Acquisition**: Use `with timer.expires(after=seconds):` to wrap code blocks that might get stuck
+
+### Built-in Implementations
+- **LocalTimerServer/Client**: Uses `multiprocessing.Queue` for communication
+- **FileTimerServer/Client**: Uses named pipes (FIFO) for communication
+
+### How It Works
+- When a worker enters a timed code block, it acquires a timer with an expiration deadline
+- The timer server monitors all active timers
+- If a worker doesn't release its timer before expiration (by exiting the context manager), the server kills the worker process
+- The elastic agent then retries the worker
+
+### Custom Implementation
+You can create custom timer servers/clients by extending:
+- `TimerServer` abstract class
+- `TimerClient` abstract class
+- Using `TimerRequest` objects for communication
+
+### Key Features
+- **Process Isolation**: Timer server runs separately from workers
+- **Host-local**: Each host manages timers for its local workers
+- **Fault Tolerance**: Stuck workers are automatically killed and retried
+- **Flexible Communication**: Supports both multiprocessing queues and named pipes
+
+This system ensures that distributed training jobs can recover from worker hangs without manual intervention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mp_queue:
+    dtype: ["multiprocessing.Queue"]
+    range: null
+    structure: ["object"]
+    shape: [null]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.LocalTimerClient in a complex way */
+import torch

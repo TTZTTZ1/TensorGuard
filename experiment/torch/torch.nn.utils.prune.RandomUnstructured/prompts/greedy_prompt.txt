@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.RandomUnstructured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RandomUnstructured** is a PyTorch pruning class that randomly removes a specified number or fraction of unpruned parameters from a tensor.
+
+**Key Features:**
+- **Random pruning**: Selects parameters to prune randomly without considering importance scores.
+- **Flexible amount**: Accepts either an integer (absolute number) or float (f.g., 0.2 for 20%) to specify pruning quantity.
+- **In-place application**: Modifies the module by adding pruning masks and forward hooks.
+
+**Main Methods:**
+1. **`apply(module, name, amount)`**: Attaches pruning to a specific parameter within a module.
+2. **`prune(t, ...)`**: Computes and returns a pruned version of the input tensor.
+3. **`apply_mask(module)`**: Applies the stored mask to prune the tensor during forward passes.
+4. **`remove(module)`**: Removes pruning hooks and reparameterization while keeping the tensor permanently pruned.
+
+**Usage Example:**
+```python
+prune.RandomUnstructured.apply(module, name="weight", amount=0.3)  # Prune 30% randomly
+```
+
+**Note**: Once applied, pruning is permanent even after `remove()` is called—only the reparameterization is removed, not the pruning effect.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  amount:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "amount"
+    Parameter 2: "amount"
+    Constraint: "(isinstance(amount, float) and 0.0 <= amount <= 1.0) or isinstance(amount, int)"
+  2:
+    Parameter 1: "importance_scores"
+    Parameter 2: "t"
+    Constraint: "importance_scores is None or importance_scores.shape == t.shape"
+  3:
+    Parameter 1: "default_mask"
+    Parameter 2: "t"
+    Constraint: "default_mask is None or default_mask.shape == t.shape"
+  4:
+    Parameter 1: "name"
+    Parameter 2: "module"
+    Constraint: "hasattr(module, name)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.RandomUnstructured in a complex way */
+import torch

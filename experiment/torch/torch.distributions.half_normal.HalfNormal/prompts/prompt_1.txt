@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.distributions.half_normal.HalfNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable Distributions**: Contains a wide range of distributions (Bernoulli, Normal, Beta, Gamma, etc.) that can be parameterized for different applications.
+- **Gradient Estimation**: Supports two main methods for backpropagation through random samples:
+  - **Score Function/REINFORCE**: Uses `sample()` and `log_prob()` for policy gradient methods
+  - **Pathwise Derivative/Reparameterization**: Uses `rsample()` for differentiable sampling (e.g., in VAEs)
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with essential methods:
+  - `sample()` / `rsample()`: Generate samples
+  - `log_prob()`: Compute log probability
+  - `cdf()` / `icdf()`: Cumulative distribution functions
+  - `entropy()`: Distribution entropy
+  - Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, HalfCauchy, Gumbel, Weibull
+- **Specialized**: MixtureSameFamily, Wishart, LKJCholesky, VonMises
+
+### **3. Transforms System**
+- **Transform**: Abstract class for invertible transformations with computable log determinants
+- **Common Transforms**: Affine, Exp, Sigmoid, Softmax, StickBreaking, Tanh, etc.
+- **TransformedDistribution**: Composes base distributions with transforms
+
+### **4. Constraints System**
+- **Constraint**: Abstract class defining valid parameter regions
+- **Common Constraints**: Real, Positive, Simplex, Interval, etc.
+- **Constraint Registry**: Links constraints to transforms for optimization
+
+### **5. KL Divergence**
+- `kl_divergence()`: Computes KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+## **Practical Usage Examples**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))
+
+# Beta distribution
+beta = Beta(concentration1=2.0, concentration0=2.0)
+
+# Multivariate normal
+mvn = MultivariateNormal(loc=torch.zeros(2), covariance_matrix=torch.eye(2))
+```
+
+## **Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **Validation**: Optional argument validation
+- **Exponential Family**: Specialized class for exponential family distributions
+- **Independent**: Reinterprets batch dimensions as event dimensions
+- **Numerical Stability**: Careful implementation of log probabilities and sampling
+
+The package is designed to be compatible with PyTorch's autograd system, making it suitable for variational inference, reinforcement learning, Bayesian deep learning, and other applications requiring probabilistic modeling with gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.half_normal.HalfNormal in a complex way */
+import torch

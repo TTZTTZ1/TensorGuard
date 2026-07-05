@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `torch.distributed.recv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- Enables synchronous distributed training with `DistributedDataParallel`
+- Supports multiple backends: **Gloo** (CPU), **NCCL** (CUDA GPU), **XCCL** (XPU GPU), **MPI**
+- Each process maintains its own optimizer and Python interpreter
+
+## **Initialization**
+```python
+dist.init_process_group(backend="nccl", init_method="env://")
+```
+**Initialization methods:**
+- `env://` (default) - Uses environment variables (`MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`)
+- `tcp://` - TCP-based initialization
+- `file://` - Shared file system initialization
+
+## **Key Functions**
+- **Process Management**: `get_rank()`, `get_world_size()`, `is_initialized()`
+- **Point-to-Point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: `all_reduce()`, `broadcast()`, `all_gather()`, `scatter()`, `barrier()`
+- **Groups**: `new_group()` for subgroup communication
+
+## **DeviceMesh (Higher-level Abstraction)**
+```python
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+Manages process groups for N-dimensional parallelism with automatic rank assignment.
+
+## **Best Practices**
+1. **Backend Selection**:
+   - Use **NCCL** for CUDA GPU training
+   - Use **Gloo** for CPU training
+   - Use **XCCL** for XPU GPU training
+
+2. **Environment Variables**:
+   - `NCCL_SOCKET_IFNAME`/`GLOO_SOCKET_IFNAME` - Network interface selection
+   - `NCCL_DEBUG=INFO` - NCCL debugging
+   - `TORCH_DISTRIBUTED_DEBUG` - Enhanced debugging
+
+3. **Cleanup**: Always call `destroy_process_group()` to release resources
+
+## **Debugging Tools**
+- `monitored_barrier()` - Timeout-aware barrier with rank reporting
+- `TORCH_DISTRIBUTED_DEBUG` - Additional logging and synchronization checks
+- Python breakpoint: `torch.distributed.breakpoint(rank=0)`
+- HTTP debug server: `start_debug_server()`
+
+## **Performance Features**
+- **Copy Engine Collectives** (NCCL 2.28+): Offload communication to GPU DMA engines
+- **Asynchronous operations**: Use `async_op=True` for overlap with computation
+- **Multiple process groups**: For fine-grained communication patterns
+
+## **Launch Utilities**
+- `torch.distributed.launch` (deprecated, use `torchrun`)
+- `torch.multiprocessing.spawn()` for single-node multi-process
+
+The package is essential for scaling PyTorch models across multiple devices/nodes while maintaining performance and providing robust debugging capabilities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+  group_src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.recv in a complex way */
+import torch

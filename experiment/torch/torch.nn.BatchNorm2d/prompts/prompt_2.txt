@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.nn.BatchNorm2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**BatchNorm2d** is a PyTorch module that applies batch normalization to 4D input tensors of shape `(N, C, H, W)`, where `N` is batch size, `C` is number of channels, and `H, W` are spatial dimensions. It normalizes each channel across the batch and spatial dimensions to stabilize and accelerate training.
+
+**Key Features:**
+- **Normalization Formula:**  
+  \( y = \frac{x - \mathrm{E}[x]}{\sqrt{\mathrm{Var}[x] + \epsilon}} \cdot \gamma + \beta \)
+- **Learnable Parameters:**  
+  Scale (\(\gamma\)) and shift (\(\beta\)) per channel (enabled by default via `affine=True`).
+- **Running Statistics:**  
+  During training, maintains exponential moving averages of mean and variance (momentum default: 0.1) for evaluation, unless `track_running_stats=False`.
+- **Usage:**  
+  Primarily used in convolutional neural networks (CNNs) to reduce internal covariate shift.
+
+**Parameters:**
+- `num_features`: Number of channels `C` in input.
+- `eps`: Small constant for numerical stability (default: 1e-5).
+- `momentum`: Weight for updating running statistics (default: 0.1).
+- `affine`: If `True`, enables learnable \(\gamma\) and \(\beta\).
+- `track_running_stats`: If `True`, tracks running statistics; if `False`, uses batch statistics in both training and eval modes.
+
+**Example:**
+```python
+m = nn.BatchNorm2d(100)  # With learnable parameters
+input = torch.randn(20, 100, 35, 45)
+output = m(input)  # Same shape as input
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1e-05"
+  momentum:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0.1"
+  affine:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  track_running_stats:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  device:
+    dtype: ["torch.device", "str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.BatchNorm2d in a complex way */
+import torch

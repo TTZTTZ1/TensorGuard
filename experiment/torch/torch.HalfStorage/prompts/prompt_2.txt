@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.HalfStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+- A **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (`torch.UntypedStorage`)
+- Primary storage class in modern PyTorch.
+- Represents raw bytes without type information.
+- Accessed via `tensor.untyped_storage()`.
+- Multiple tensors can share the same storage (e.g., tensor views).
+- Has methods for device management (`cpu()`, `cuda()`), copying (`clone()`, `copy_()`), and memory operations (`pin_memory()`, `share_memory_()`).
+- Can be memory-mapped from files using `from_file()`.
+
+### Key Points
+1. **Storage Sharing**: Views of a tensor share the same underlying storage.
+2. **Data Pointer**: `data_ptr()` returns a unique identifier for the storage's memory location.
+3. **Low-Level API**: Direct storage manipulation (e.g., `set_()`) is possible but discouraged; use tensor-level methods instead.
+4. **Special Cases**: 
+   - Tensors with gradients have separate storages for data and grad.
+   - "Meta" device tensors and FakeTensors have no actual storage.
+5. **Legacy Typed Storage**: Classes like `torch.FloatStorage` are deprecated; use `torch.UntypedStorage` instead.
+
+### Practical Guidance
+- Most users should operate at the tensor level, not the storage level.
+- Storage APIs are useful for advanced scenarios like memory-mapped files or low-level memory management.
+- Avoid deprecated typed storage classes (`torch.*Storage`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.float16"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.float16"
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: 
+    Constraint: "dtype == torch.float16"
+  2:
+    Parameter 1: wrap_storage
+    Parameter 2: *args
+    Constraint: "wrap_storage is not None implies len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.HalfStorage in a complex way */
+import torch

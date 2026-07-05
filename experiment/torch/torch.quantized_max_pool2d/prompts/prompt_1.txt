@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.quantized_max_pool2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.quantized_max_pool2d` applies 2D max pooling to a quantized input tensor. It slides a window over the input, outputting the maximum value within each window region while preserving the tensor's quantized format.
+
+**Key parameters:**
+- `input`: A quantized tensor.
+- `kernel_size`: Size of the pooling window.
+- `stride` (optional): Step size of the window; defaults to `kernel_size`.
+- `padding` (optional): Padding added to both sides of the input.
+- `dilation` (optional): Spacing between window elements; default is 1.
+- `ceil_mode` (optional): If `True`, uses ceil for output shape calculation; default is `False`.
+
+**Returns:** A new quantized tensor with the same scale and zero point as the input.
+
+**Example:**
+```python
+qx = torch.quantize_per_tensor(torch.rand(2, 2, 2, 2), 1.5, 3, torch.quint8)
+pooled = torch.quantized_max_pool2d(qx, [2, 2])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [2]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [2]
+    default: "[]"
+  padding:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [2]
+    default: "0"
+  dilation:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [2]
+    default: "1"
+  ceil_mode:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1.
+    Parameter 1: padding
+    Parameter 2: kernel_size
+    Constraint: "all(p >= 0 and p <= k // 2 for p, k in zip(padding, kernel_size))"
+  2.
+    Parameter 1: dilation
+    Parameter 2: dilation
+    Constraint: "all(d > 0 for d in dilation)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.quantized_max_pool2d in a complex way */
+import torch

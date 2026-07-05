@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.py_function` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.py_function` wraps a Python function into a TensorFlow operation, enabling eager execution within a `tf.function` graph. This allows integration of non-TensorFlow Python code and debugging tools (e.g., `pdb`, print statements) while maintaining differentiability.
+
+**Key Features:**
+- Runs Python code eagerly inside a TensorFlow graph.
+- Supports TensorFlow operations within the wrapped function.
+- Useful for debugging, prototyping, and incorporating Python control logic.
+
+**Usage Modes:**
+1. **As a Decorator:**  
+   - Set `Tout` (output type(s)) and optionally `name`.  
+   - Do not set `func` or `inp`.  
+   - Example:  
+     ```python
+     @tf.py_function(Tout=tf.float32)
+     def my_func(x):
+         return x**2
+     ```
+
+2. **In-Place Call:**  
+   - Provide `func`, `inp` (input tensors), and `Tout`.  
+   - Example:  
+     ```python
+     result = tf.py_function(func=my_func, inp=[x], Tout=tf.float32)
+     ```
+
+**Limitations:**
+- Acquires the Python Global Interpreter Lock (GIL), hindering parallelization.
+- Not serializable in `GraphDef` (unsuitable for model saving/restoration).
+- Must run in the same address space as the calling Python program.
+- Incompatible with XLA (`jit_compile=True`).
+
+**Alternatives:**  
+- Similar to `tf.numpy_function`, but supports TensorFlow ops and GPU execution.  
+- Replaces `tf.compat.v1.py_func`, which only works with NumPy arrays on CPUs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  inp:
+    dtype: ["Tensor", "CompositeTensor"]
+    range: null
+    structure: ["list", "scalar"]
+    shape: null
+    default: "None"
+  Tout:
+    dtype: ["tf.DType", "tf.TypeSpec", "list", "empty_list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: func
+    Parameter 2: inp
+    Constraint: "not (func is None) or (inp is None)"
+  2:
+    Parameter 1: func
+    Parameter 2: Tout
+    Constraint: "not (func is None) or (Tout is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.py_function in a complex way */
+import tensorflow as tf

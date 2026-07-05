@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.nn.softmax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.softmax` is a TensorFlow function that computes softmax activations, converting a vector of raw scores (logits) into a probability distribution where the sum of all outputs equals 1. It is commonly used for multi-class classification tasks.
+
+**Key features:**
+- **Input:** A non-empty tensor of type `half`, `float32`, or `float64`.
+- **Default axis:** `-1` (applies softmax to the last dimension).
+- **Output:** A tensor with the same shape and type as the input, where each value is transformed to a probability between 0 and 1, and the sum along the specified axis is 1.
+- **Mathematical equivalent:** `softmax = exp(logits) / sum(exp(logits), axis, keepdims=True)`.
+
+**Example:**
+```python
+>>> tf.nn.softmax([-1, 0., 1.])
+# Output: [0.09003057, 0.24472848, 0.66524094]  # Sum = 1.0
+```
+
+**Common use:** Multi-class prediction models in neural networks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  logits:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "logits"
+    Parameter 2: null
+    Constraint: "tf.size(logits) > 0"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "logits"
+    Constraint: "axis is None or (axis >= -tf.rank(logits) and axis < tf.rank(logits))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.softmax in a complex way */
+import tensorflow as tf

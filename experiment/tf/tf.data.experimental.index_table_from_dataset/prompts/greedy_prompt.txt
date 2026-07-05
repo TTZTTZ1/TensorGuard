@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.index_table_from_dataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.index_table_from_dataset` creates a lookup table that maps keys from a given dataset to integer indices. It assigns a unique index to each vocabulary item in the dataset and can handle out-of-vocabulary (OOV) keys by either assigning a default value or hashing them into OOV buckets.
+
+**Key features:**
+- **Vocabulary generation:** Automatically builds a vocabulary from the dataset keys.
+- **OOV handling:** Supports OOV keys via `num_oov_buckets` (hashed) or a `default_value`.
+- **Index range:** In-vocabulary indices are `[0, vocab_size-1]`; OOV buckets (if used) are `[vocab_size, vocab_size + num_oov_buckets - 1]`.
+- **Key types:** Supports integer or string keys.
+
+**Example:**
+```python
+ds = tf.data.Dataset.from_tensor_slices(["apple", "banana", "cherry"])
+table = tf.data.experimental.index_table_from_dataset(ds)
+# "apple" -> 0, "banana" -> 1, "cherry" -> 2
+```
+
+**Use case:** Useful for mapping categorical features (like words or IDs) to integer indices in TensorFlow data pipelines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["dataset"]
+    shape: ["No mention"]
+    default: "None"
+  num_oov_buckets
+    dtype: ["int"]
+    range: [">= 0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  vocab_size
+    dtype: ["int"]
+    range: ["None or positive integer"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  default_value
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  hasher_spec
+    dtype: ["HasherSpec"]
+    range: ["No mention"]
+    structure: ["object"]
+    shape: ["No mention"]
+    default: "lookup_ops.FastHashSpec"
+  key_dtype
+    dtype: ["int", "string"]
+    range: ["integer or string data types"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "tf.dtypes.string"
+  name
+    dtype: ["string"]
+    range: ["any string"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1
+    Parameter 1: "num_oov_buckets"
+    Parameter 2: "None"
+    Constraint: "num_oov_buckets >= 0"
+  2
+    Parameter 1: "vocab_size"
+    Parameter 2: "None"
+    Constraint: "vocab_size is None or vocab_size > 0"
+  3
+    Parameter 1: "key_dtype"
+    Parameter 2: "None"
+    Constraint: "tf.as_dtype(key_dtype).is_integer or tf.as_dtype(key_dtype).is_string"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.index_table_from_dataset in a complex way */
+import tensorflow as tf

@@ -1,0 +1,35 @@
+# tf.raw_ops.CreateSummaryFileWriter
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/CreateSummaryFileWriter](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/CreateSummaryFileWriter)
+
+---
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.CreateSummaryFileWriter`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/CreateSummaryFileWriter)
+
+```
+tf.raw_ops.CreateSummaryFileWriter(
+    writer, logdir, max_queue, flush_millis, filename_suffix, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `writer` | A `Tensor` of type `resource`. |
+| `logdir` | A `Tensor` of type `string`. |
+| `max_queue` | A `Tensor` of type `int32`. |
+| `flush_millis` | A `Tensor` of type `int32`. |
+| `filename_suffix` | A `Tensor` of type `string`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| The created Operation. | |

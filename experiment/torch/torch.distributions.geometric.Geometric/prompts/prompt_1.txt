@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `torch.distributions.geometric.Geometric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows design patterns similar to TensorFlow Distributions
+- Supports two main gradient estimation methods: Score Function (REINFORCE) and Pathwise Derivative (reparameterization trick)
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Wishart, LKJCholesky
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` parameters
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**:
+  - **Score Function**: Uses `sample()` + `log_prob()` (e.g., for REINFORCE)
+  - **Pathwise Derivative**: Uses `rsample()` (e.g., for reparameterization trick)
+- **Exponential Family**: Specialized base class for distributions in exponential family form
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Define valid parameter ranges (Interval, Simplex, PositiveDefinite, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for converting between constrained/unconstrained spaces
+
+### **5. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Working with Constraints**
+```python
+# Convert constrained parameters to unconstrained space
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Design Principles**
+1. **Separation of concerns**: Distributions separate sampling from gradient estimation
+2. **Composability**: Transforms can be chained via `TransformedDistribution`
+3. **Extensibility**: Users can register new distributions, transforms, and KL divergences
+4. **Performance**: Optimized for both forward passes and gradient computations
+
+The module is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: 
+    Constraint: "probs > 0 and probs <= 1"
+  2:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.geometric.Geometric in a complex way */
+import torch

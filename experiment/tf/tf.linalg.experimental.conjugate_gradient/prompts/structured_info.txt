@@ -1,0 +1,56 @@
+params:
+  operator:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["LinearOperator"]
+    shape: null
+    default: null
+  rhs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., N]"]
+    default: null
+  preconditioner:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["LinearOperator", "None"]
+    shape: null
+    default: "None"
+  x:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., N]"]
+    default: "None"
+  tol:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "1e-05"
+  max_iter:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "20"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'conjugate_gradient'"
+constraints:
+  1:
+    Parameter 1: operator
+    Parameter 2: rhs
+    Constraint: "operator.shape[-1] == rhs.shape[-1]"
+  2:
+    Parameter 1: x
+    Parameter 2: rhs
+    Constraint: "x is None or x.shape == rhs.shape"
+  3:
+    Parameter 1: preconditioner
+    Parameter 2: operator
+    Constraint: "preconditioner is None or preconditioner.shape == operator.shape"

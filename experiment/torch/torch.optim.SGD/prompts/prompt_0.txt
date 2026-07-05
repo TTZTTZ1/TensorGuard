@@ -1,0 +1,115 @@
+
+# You are a Python code generation assistant for the `torch.optim.SGD` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.SGD` class implements stochastic gradient descent (SGD), optionally with momentum, weight decay, and Nesterov acceleration.
+
+**Key Features:**
+- **Core Algorithm**: Updates parameters using gradients, with optional momentum to accelerate convergence and dampening to control momentum accumulation.
+- **Weight Decay**: Applies L2 regularization by adding λθ to the gradient.
+- **Nesterov Momentum**: An enhanced momentum variant that can improve convergence when enabled (requires momentum > 0).
+- **Maximization Support**: Can maximize the objective instead of minimizing via the `maximize` flag.
+- **Performance Options**: Offers `foreach` (vectorized) and `fused` (CUDA-optimized) implementations for faster execution, with automatic selection favoring `foreach` on CUDA when unspecified.
+
+**Important Implementation Notes:**
+- PyTorch’s momentum formulation differs from some other frameworks: the learning rate multiplies the velocity term in the parameter update, not during velocity accumulation.
+- The momentum buffer is initialized with the first gradient (not zeros), so dampening is applied starting from the second step.
+
+**Basic Usage:**
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9)
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+**Additional Methods:**
+- `step()`: Performs a single parameter update.
+- `zero_grad()`: Resets gradients (defaults to setting them to `None` for memory efficiency).
+- `state_dict()` / `load_state_dict()`: Save and restore optimizer state.
+- `add_param_group()`: Add new parameter groups dynamically.
+- Various hooks (pre/post hooks for `step`, `state_dict`, and `load_state_dict`) allow customization and debugging.
+
+**Parameters Overview:**
+- `lr`: Learning rate (required).
+- `momentum`, `dampening`, `nesterov`: Control momentum behavior.
+- `weight_decay`: L2 penalty coefficient.
+- `maximize`: If `True`, performs gradient ascent.
+- `foreach`, `fused`, `differentiable`: Implementation and autograd options.
+
+The optimizer is designed for flexibility and performance, supporting both simple SGD and advanced variants commonly used in deep learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: "1e-3"
+  momentum:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  dampening:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  nesterov:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  fused:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "nesterov"
+    Parameter 2: "momentum"
+    Constraint: "not nesterov or momentum != 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.SGD in a complex way */
+import torch

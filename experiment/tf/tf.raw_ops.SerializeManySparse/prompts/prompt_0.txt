@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SerializeManySparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SerializeManySparse` serializes a minibatch of sparse tensors into a dense tensor format. It takes a `SparseTensor` with rank `R > 1`, where the first dimension represents the minibatch, and converts it into an `[N, 3]` tensor. Each row corresponds to a serialized sparse tensor of rank `R-1`. Inputs include the sparse tensor's indices, values, and shape, with an optional output data type (`string` or `variant`). The sparse elements must be sorted by the minibatch dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sparse_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  sparse_values:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  sparse_shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  out_type:
+    dtype: ["string", "variant"]
+    range: [["string", "variant"]]
+    structure: ["scalar"]
+    shape: null
+    default: "string"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: sparse_shape
+    Parameter 2: sparse_shape
+    Constraint: "tf.size(sparse_shape) > 1"
+  2:
+    Parameter 1: sparse_indices
+    Parameter 2: sparse_shape
+    Constraint: "tf.shape(sparse_indices)[0] == sparse_shape[0]"
+  3:
+    Parameter 1: sparse_indices
+    Parameter 2: sparse_values
+    Constraint: "tf.shape(sparse_indices)[0] == tf.shape(sparse_values)[0]"
+  4:
+    Parameter 1: out_type
+    Parameter 2: out_type
+    Constraint: "out_type in [tf.string, tf.variant]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SerializeManySparse in a complex way */
+import tensorflow as tf

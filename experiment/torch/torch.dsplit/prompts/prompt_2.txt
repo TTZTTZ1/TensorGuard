@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `torch.dsplit` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.dsplit` splits a tensor **depthwise** (along the third dimension, `dim=2`) into multiple tensors, each as a view of the original. It requires the input tensor to have **three or more dimensions**.
+
+**Key points:**
+- Equivalent to `torch.tensor_split(input, indices_or_sections, dim=2)`.
+- If `indices_or_sections` is an integer, it must **evenly divide** the size of dimension 2.
+- Accepts either an integer (number of equal splits) or a list/tuple of split indices.
+- Based on NumPy’s `numpy.dsplit()`.
+
+**Example:**
+```python
+t = torch.arange(16.0).reshape(2, 2, 4)
+torch.dsplit(t, 2)  # Splits into 2 tensors along the last dimension
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["dim >= 3"]
+    default: "null"
+  indices_or_sections:
+    dtype: ["int", "list", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "list", "tuple"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "input"
+    Constraint: "input.dim() >= 3"
+  2:
+    Parameter 1: "indices_or_sections"
+    Parameter 2: "input"
+    Constraint: "(not isinstance(indices_or_sections, int)) or (input.shape[2] % indices_or_sections == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.dsplit in a complex way */
+import torch

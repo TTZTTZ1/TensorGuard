@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.optim.LBFGS` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.LBFGS` class implements the L-BFGS optimization algorithm, a memory-efficient quasi-Newton method suitable for smooth, unconstrained optimization problems.  
+
+**Key Features:**  
+- **Memory Intensive**: Requires additional memory proportional to `param_bytes × (history_size + 1)`.  
+- **Single Device**: All parameters must reside on one device (multi-device support may be added later).  
+- **No Per-Parameter Groups**: Does not support parameter-specific options; all parameters are optimized uniformly.  
+
+**Main Parameters:**  
+- `lr` (default 1): Learning rate.  
+- `max_iter` (default 20): Maximum iterations per optimization step.  
+- `max_eval` (default `max_iter × 1.25`): Maximum function evaluations per step.  
+- `tolerance_grad` (default 1e-7): Stopping tolerance on gradient norm.  
+- `tolerance_change` (default 1e-9): Tolerance on function/parameter changes.  
+- `history_size` (default 100): Number of past updates stored for Hessian approximation.  
+- `line_search_fn` (optional): Can be set to `'strong_wolfe'` for line search.  
+
+**Important Methods:**  
+- `step(closure)`: Performs a single optimization step; requires a **closure** that recomputes the loss and gradients.  
+- `zero_grad(set_to_none=True)`: Resets gradients (setting to `None` reduces memory usage).  
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state.  
+
+**Usage Notes:**  
+- Useful for small to medium-sized problems where memory is not a constraint.  
+- If memory is limited, reduce `history_size` or consider alternative optimizers.  
+- The closure in `step()` must call `backward()` to compute gradients within each iteration.  
+
+**Example:**  
+```python
+optimizer = torch.optim.LBFGS(model.parameters(), lr=0.1)
+def closure():
+    optimizer.zero_grad()
+    loss = loss_fn(model(input), target)
+    loss.backward()
+    return loss
+optimizer.step(closure)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  max_iter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "20"
+  max_eval:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "max_iter * 1.25"
+  tolerance_grad:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-7"
+  tolerance_change:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-9"
+  history_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "100"
+  line_search_fn:
+    dtype: ["str", "None"]
+    range: [["strong_wolfe"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.LBFGS in a complex way */
+import torch

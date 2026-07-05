@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.optim.Rprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Rprop` class implements the **Resilient Backpropagation (Rprop)** optimization algorithm, which adapts step sizes per parameter based on gradient sign changes rather than magnitude.
+
+### **Key Features:**
+- **Adaptive Step Sizes**: Adjusts individual learning rates for each parameter:
+  - **Increase** (`etaplus`, default 1.2) if gradient sign remains consistent.
+  - **Decrease** (`etaminus`, default 0.5) if gradient sign changes.
+  - **Reset gradient to zero** when sign changes to avoid oscillations.
+- **Step Size Bounds**: Constrained between `step_sizes` (default: `[1e-6, 50]`).
+- **Sign-Based Updates**: Uses `sign(gradient)` for parameter updates, ignoring gradient magnitude.
+
+### **Parameters:**
+- `params`: Model parameters to optimize.
+- `lr` (float, default 0.01): Initial learning rate.
+- `etas` (tuple, default (0.5, 1.2)): Multiplicative factors for decreasing/increasing step sizes.
+- `step_sizes` (tuple, default (1e-6, 50)): Min/max allowed step sizes.
+- `capturable`, `foreach`, `maximize`, `differentiable`: Advanced performance and autograd options.
+
+### **Algorithm Summary:**
+1. Compare current and previous gradient signs per parameter.
+2. Adjust step size:
+   - **Same sign**: Increase step size (capped at max).
+   - **Opposite sign**: Decrease step size (floored at min) and zero out gradient.
+   - **Zero gradient**: Keep step size unchanged.
+3. Update parameters: `θ = θ - step_size * sign(gradient)`.
+
+### **Use Cases:**
+- Suitable for full-batch training (not stochastic/mini-batch).
+- Effective for problems where gradient magnitudes vary widely.
+- Less common in deep learning compared to Adam/SGD but useful for specific optimization tasks.
+
+### **Common Methods:**
+- `step()`: Performs a single optimization step.
+- `zero_grad()`: Resets gradients.
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state.
+
+Rprop is a robust, gradient-sign-based optimizer that can converge quickly when appropriate, but may require tuning of `etas` and `step_sizes` for optimal performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.01"
+  etas
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.5, 1.2)"
+  step_sizes
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(1e-06, 50)"
+  capturable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Rprop in a complex way */
+import torch

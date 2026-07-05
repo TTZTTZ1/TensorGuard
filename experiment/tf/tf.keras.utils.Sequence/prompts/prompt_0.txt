@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.keras.utils.Sequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.utils.PyDataset` (formerly `Sequence`) is a base class for creating custom, parallelizable datasets in TensorFlow/Keras using Python. It ensures thread-safe data generation and efficient multi-processing during model training.
+
+**Key Features:**
+- **Required Methods:** Implement `__len__()` (returns number of batches) and `__getitem__()` (returns a complete batch).
+- **Optional:** `on_epoch_end()` for updating the dataset between epochs.
+- **Parallelism Support:** Configurable via `workers`, `use_multiprocessing`, and `max_queue_size` for `fit()`.
+- **Safety:** Guarantees each sample is used only once per epoch, unlike Python generators.
+
+**Usage Example:**
+```python
+class CustomPyDataset(keras.utils.PyDataset):
+    def __len__(self):
+        return math.ceil(total_samples / batch_size)
+    
+    def __getitem__(self, idx):
+        # Return batch at index idx
+        return batch_x, batch_y
+```
+
+**Note:** Parallelism settings only apply during `fit()`; manual iteration runs sequentially.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  workers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+  use_multiprocessing:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  max_queue_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "10"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.utils.Sequence in a complex way */
+import tensorflow as tf

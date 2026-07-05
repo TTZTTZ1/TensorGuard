@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FractionalMaxPool` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FractionalMaxPool` performs fractional max pooling on a 4-D input tensor, reducing its spatial dimensions by non-integer ratios. Unlike regular max pooling, it uses randomly generated pooling regions of size K or K+1 to achieve the specified reduction ratio.
+
+**Key Parameters:**
+- `value`: 4-D input tensor of shape `[batch, height, width, channels]`.
+- `pooling_ratio`: List of floats ≥ 4, where the first and last must be 1.0 (no pooling on batch/channels), and the middle values define height/width reduction ratios (e.g., `[1.0, 1.44, 1.73, 1.0]`).
+- `pseudo_random`: Controls randomness of pooling sequence generation.
+- `overlapping`: If `True`, boundary values can be reused in adjacent pools.
+- `deterministic`: Fixes pooling regions for reproducibility (e.g., in tests).
+
+**Returns:**  
+A tuple `(output, row_pooling_sequence, col_pooling_sequence)`, where:
+- `output`: The pooled tensor (same type as input).
+- `row/col_pooling_sequence`: Integer sequences defining pooling boundaries.
+
+**Use Case:**  
+Reduces spatial dimensions flexibly for tasks where preserving aspect ratios or avoiding integer downsampling constraints is important.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    value:
+        dtype: ["float32", "float64", "int32", "int64"]
+        range: null
+        structure: ["tensor"]
+        shape: [4]
+        default: null
+    pooling_ratio:
+        dtype: ["float"]
+        range: null
+        structure: ["list"]
+        shape: null
+        default: null
+    pseudo_random:
+        dtype: ["bool"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: "False"
+    overlapping:
+        dtype: ["bool"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: "False"
+    deterministic:
+        dtype: ["bool"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: "False"
+    seed:
+        dtype: ["int"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: "0"
+    seed2:
+        dtype: ["int"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: "0"
+    name:
+        dtype: ["string"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: "null"
+constraints:
+    1:
+        Parameter 1: pooling_ratio
+        Parameter 2: pooling_ratio
+        Constraint: "len(pooling_ratio) >= 4"
+    2:
+        Parameter 1: pooling_ratio
+        Parameter 2: pooling_ratio
+        Constraint: "pooling_ratio[0] == 1.0"
+    3:
+        Parameter 1: pooling_ratio
+        Parameter 2: pooling_ratio
+        Constraint: "pooling_ratio[-1] == 1.0"
+    4:
+        Parameter 1: pooling_ratio
+        Parameter 2: pooling_ratio
+        Constraint:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FractionalMaxPool in a complex way */
+import tensorflow as tf

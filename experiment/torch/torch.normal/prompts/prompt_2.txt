@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.normal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.normal` generates a tensor of random numbers drawn from normal distributions, with four main usage patterns:
+
+1. **Per-element parameters** – Provide separate tensors for `mean` and `std` (must have same total elements):
+   ```python
+   torch.normal(mean=tensor1, std=tensor2)
+   ```
+
+2. **Shared mean** – Use a single float for `mean` with per-element standard deviations:
+   ```python
+   torch.normal(mean=0.5, std=tensor)
+   ```
+
+3. **Shared std** – Use per-element means with a single float for standard deviation:
+   ```python
+   torch.normal(mean=tensor, std=1.0)
+   ```
+
+4. **Fully shared parameters** – Specify single `mean` and `std` values with an output `size`:
+   ```python
+   torch.normal(mean=2, std=3, size=(1,4))
+   ```
+
+**Key notes:**
+- When `mean` and `std` are both tensors, output shape matches `mean`'s shape
+- CUDA `std` tensors synchronize device with CPU
+- Optional `generator` for controlled randomness and `out` for output tensor
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mean:
+    dtype: ["tensor", "float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "0.0 (optional in one overload, otherwise required)"
+  std:
+    dtype: ["tensor", "float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "1.0 (optional in one overload, otherwise required)"
+  generator:
+    dtype: ["torch.Generator"]
+    range: ["No mention"]
+    structure: ["object"]
+    shape: ["No mention"]
+    default: "null"
+  out:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  size:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["any"]
+    default: "null"
+
+constraints:
+  1:
+    Parameter 1: mean
+    Parameter 2: std
+    Constraint: "isinstance(mean, torch.Tensor) and isinstance(std, torch.Tensor) and mean.numel() == std.numel()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.normal in a complex way */
+import torch

@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.AllToAll` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.AllToAll` is a TensorFlow operation for exchanging data across TPU replicas. It splits the input tensor along a specified dimension, sends the pieces to other replicas in a defined group, and concatenates received pieces along another dimension to form the output.
+
+**Key Parameters:**
+- `input`: The local tensor to exchange.
+- `group_assignment`: Specifies replica groupings for communication.
+- `concat_dimension`: Dimension for concatenating received blocks.
+- `split_dimension`: Dimension along which the input is split.
+- `split_count`: Number of splits, must match the group size.
+
+**Example:** With 2 replicas, input `[[A, B]]` on replica 0 and `[[C, D]]` on replica 1, using appropriate parameters produces outputs `[[A], [C]]` on replica 0 and `[[B], [D]]` on replica 1.
+
+This operation enables efficient collective data redistribution in TPU-based distributed training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64", "bool"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  group_assignment:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  concat_dimension:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  split_dimension:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  split_count:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: split_count
+    Parameter 2: group_assignment
+    Constraint: "split_count == group_assignment.get_shape()[1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.AllToAll in a complex way */
+import tensorflow as tf

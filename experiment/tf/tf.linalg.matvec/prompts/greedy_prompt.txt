@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.linalg.matvec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.matvec` performs matrix-vector multiplication between a matrix `a` and a vector `b`, returning `a * b`. It supports optional transposition or adjoint operations on `a`, sparse optimizations for efficiency, and broadcasting for higher-dimensional inputs. The function requires compatible shapes and matching data types (e.g., float32, int32, complex64).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["float16", "float32", "float64", "int32", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 2"]
+    default: "null"
+  b:
+    dtype: ["float16", "float32", "float64", "int32", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 1"]
+    default: "null"
+  transpose_a:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  adjoint_a:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  a_is_sparse:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  b_is_sparse:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.dtype == b.dtype"
+  2:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.shape[-1] == b.shape[-1]"
+  3:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "all(m == n or m == 1 or n == 1 for m, n in zip(reversed(a.shape[:-2]), reversed(b.shape[:-1]))) and len(a.shape[:-2]) >= len(b.shape[:-1])"
+  4:
+    Parameter 1: "transpose_a"
+    Parameter 2: "adjoint_a"
+    Constraint: "not (transpose_a and adjoint_a)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.matvec in a complex way */
+import tensorflow as tf

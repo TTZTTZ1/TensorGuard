@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.lerp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.lerp` performs a linear interpolation between two tensors, `input` (start) and `end`, using a specified `weight`. The result is computed as:  
+`output = start + weight × (end − start)`.  
+
+- `weight` can be a scalar or a tensor, and must be broadcastable with `start` and `end`.  
+- `start` and `end` must also be broadcastable if their shapes differ.  
+- An optional `out` tensor can be provided to store the result.  
+
+**Example**:  
+```python
+>>> torch.lerp(torch.arange(1., 5.), torch.full((4,), 10.), 0.5)
+tensor([5.5000, 6.0000, 6.5000, 7.0000])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  end:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: end
+    Constraint: "all(s1 == 1 or s2 == 1 or s1 == s2 for s1, s2 in zip( (1,)*(max(len(input.shape), len(end.shape)) - len(input.shape)) + tuple(input.shape), (1,)*(max(len(input.shape), len(end.shape)) - len(end.shape)) + tuple(end.shape) ))"
+  2:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "not isinstance(weight, torch.Tensor) or all(len(set(s)) == 1 or 1 in set(s) for s in zip( (1,)*(max(len(weight.shape), len(input.shape), len(end.shape)) - len(weight.shape)) + tuple(weight.shape), (1,)*(max(len(weight.shape), len(input.shape), len(end.shape)) - len(input.shape)) + tuple(input.shape), (1,)*(max(len(weight.shape), len(input.shape), len(end.shape)) - len(end.shape)) + tuple(end.shape) ))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.lerp in a complex way */
+import torch

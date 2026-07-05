@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_rank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.distributed` package enables distributed parallel training across multiple processes and machines. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional)
+- **Rule of thumb**: Use NCCL for CUDA GPU training, XCCL for XPU GPU, Gloo for CPU
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations
+
+## **Key Components**
+
+### **1. Process Groups**
+- Default group (world) and custom groups via `new_group()`
+- Groups enable fine-grained communication among subsets of processes
+
+### **2. DeviceMesh**
+- Higher-level abstraction for managing process groups
+- Represents multi-dimensional device layouts for N-dimensional parallelism
+- Created via `init_device_mesh()` or `DeviceMesh.from_group()`
+
+### **3. Communication Primitives**
+
+**Point-to-Point:**
+- `send()`/`recv()` (synchronous)
+- `isend()`/`irecv()` (asynchronous)
+- `batch_isend_irecv()` for batched operations
+
+**Collectives:**
+- `broadcast()` - send tensor to all processes
+- `all_reduce()` - reduce across all processes
+- `all_gather()` - gather tensors from all processes
+- `scatter()` - scatter list to all processes
+- `all_to_all()` - all-to-all communication
+- `barrier()` - synchronization point
+
+**Modes:**
+- Synchronous (`async_op=False`) - blocks until operation completes
+- Asynchronous (`async_op=True`) - returns `Work` object for non-blocking execution
+
+### **4. Key-Value Stores**
+- `TCPStore` - TCP-based distributed store
+- `FileStore` - file-based store
+- `HashStore` - in-memory store for single process
+- Used for process group initialization and information sharing
+
+## **Initialization Methods**
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+## **Best Practices**
+- Use NCCL backend for multi-GPU training
+- Set `torch.cuda.set_device()` before NCCL operations
+- Call `destroy_process_group()` for cleanup
+- Consider using `DistributedDataParallel` wrapper for model parallelism
+- Use `TORCH_DISTRIBUTED_DEBUG` for debugging hangs and synchronization issues
+
+## **Debugging Tools**
+- `monitored_barrier()` - timeout-aware barrier with error reporting
+- `TORCH_DISTRIBUTED_DEBUG` environment variable
+- Python breakpoint support via `torch.distributed.breakpoint()`
+- HTTP debug server via `start_debug_server()`
+
+## **Performance Features**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+- **Asynchronous operations**: Overlap communication and computation
+- **Multiple backends**: Choose backend based on hardware and network
+
+The package provides a comprehensive set of tools for scalable distributed training, with support for various network configurations, hardware accelerators, and debugging utilities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_rank in a complex way */
+import torch

@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.CUDAExtension` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides utilities for building and loading PyTorch C++/CUDA/SYCL extensions. It supports both ahead-of-time compilation via `setuptools` and just-in-time (JIT) compilation.
+
+**Key Classes and Functions:**
+
+1. **Extension Classes:**
+   - `CppExtension`: Creates a `setuptools.Extension` for C++.
+   - `CUDAExtension`: Creates a `setuptools.Extension` for CUDA/C++ (adds CUDA paths and libraries).
+   - `SyclExtension`: Creates a `setuptools.Extension` for SYCL/C++.
+
+2. **Build Extension:**
+   - `BuildExtension`: A custom `setuptools.build_ext` subclass that handles compiler flags and mixed C++/CUDA/SYCL compilation. It uses Ninja by default for faster builds.
+
+3. **JIT Loading Functions:**
+   - `load()`: Loads an extension from source files, compiling JIT into a dynamic library and importing it as a Python module.
+   - `load_inline()`: Similar to `load()`, but accepts source code as strings instead of files, automatically generating necessary headers and bindings.
+
+**Common Usage Patterns:**
+
+- **Ahead-of-time (setup.py):**
+  ```python
+  from setuptools import setup
+  from torch.utils.cpp_extension import BuildExtension, CppExtension/CUDAExtension
+
+  setup(
+      ext_modules=[CppExtension('name', ['src.cpp'], extra_compile_args=['-O2'])],
+      cmdclass={'build_ext': BuildExtension}
+  )
+  ```
+
+- **Just-in-time (JIT):**
+  ```python
+  from torch.utils.cpp_extension import load
+  module = load(name='ext', sources=['file.cpp', 'kernel.cu'], extra_cflags=['-O2'])
+  ```
+
+**Key Features and Notes:**
+
+- **Mixed Compilation:** Automatically detects and compiles `.cu`/`.cuh` (CUDA) and `.sycl` (SYCL) files with appropriate compilers (nvcc/SYCL compiler).
+- **Compiler Flags:** Use dictionaries (e.g., `{'cxx': [...], 'nvcc': [...]}`) to pass language-specific flags.
+- **CUDA Compute Capabilities:** Control target architectures via `TORCH_CUDA_ARCH_LIST` environment variable.
+- **Relocatable Device Code (RDC):** Supported for CUDA with `-rdc=true` and `dlink=True`; requires Ninja.
+- **Python Limited API:** PyTorch's Python API (`libtorch_python`) is incompatible with `py_limited_api=True`.
+- **Dependencies:** Ninja is recommended (and required for some features like RDC). Compiler toolchains (e.g., C++ compiler, CUDA toolkit) must be installed separately for JIT compilation.
+- **Environment Variables:** Useful ones include `TORCH_EXTENSIONS_DIR` (build location), `CUDA_HOME` (CUDA path), and `MAX_JOBS` (build parallelism).
+
+This module simplifies integrating custom C++/CUDA/SYCL code into PyTorch, enabling performance-critical operations and kernel development.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  sources:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  *args:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  **kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: py_limited_api
+    Parameter 2: libtorch_python
+    Constraint: "py_limited_api == True implies libtorch_python not in APIs"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.CUDAExtension in a complex way */
+import torch

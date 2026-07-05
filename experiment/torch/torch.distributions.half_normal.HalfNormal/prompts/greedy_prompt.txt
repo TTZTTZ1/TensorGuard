@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.distributions.half_normal.HalfNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Uniform, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Transformed**: LogNormal, HalfNormal, Gumbel, Weibull, etc.
+**Specialized**: MixtureSameFamily, LKJCholesky, Wishart, VonMises
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` parameters
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**:
+  - `sample()` + `log_prob()` for REINFORCE/score function estimator
+  - `rsample()` for reparameterization trick/pathwise derivative estimator
+- **Validation**: Optional argument validation via `validate_args`
+
+### **4. Supporting Infrastructure**
+- **Transforms**: Bijective transformations for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain constraints for distribution parameters (Interval, Simplex, PositiveDefinite, etc.)
+- **KL Divergence**: Pre-registered KL divergence computations between distribution pairs
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+## **Common Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Construction**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+
+# Bernoulli with probabilities
+bernoulli = Bernoulli(probs=torch.tensor([0.3]))
+
+# Multivariate normal
+mvn = MultivariateNormal(loc, covariance_matrix)
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions package design
+- Separates batch and event shapes for flexible broadcasting
+- Provides both exact and approximate sampling methods
+- Supports automatic differentiation through distribution operations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.half_normal.HalfNormal in a complex way */
+import torch

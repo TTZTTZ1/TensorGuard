@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.distributions.half_cauchy.HalfCauchy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling in variational autoencoders
+
+**Core Components:**
+1. **Distribution Base Class**: Abstract class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+2. **Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+3. **TransformedDistribution**: Applies transforms to base distributions (e.g., LogNormal from Normal via exponential transform)
+4. **KL Divergence**: Computes KL divergence between distributions with registered pairwise implementations
+5. **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) with log-det Jacobian computations
+6. **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+
+**Common Use Cases:**
+- **REINFORCE** (discrete actions):
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization** (continuous actions):
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  ```
+
+**Constraint Registry**: 
+- `transform_to()`: For unconstrained optimization of constrained parameters
+- `biject_to()`: For bijective transforms in HMC sampling
+
+The package follows TensorFlow Distributions design and supports automatic differentiation through stochastic nodes via surrogate loss functions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: []
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.half_cauchy.HalfCauchy in a complex way */
+import torch

@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.distributions.fishersnedecor.FisherSnedecor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key features include:
+
+## Core Concepts
+- **Two gradient estimation methods**: Score function estimator (REINFORCE) and pathwise derivative estimator (reparameterization trick)
+- **Distribution class hierarchy**: Base `Distribution` class with concrete implementations (Normal, Bernoulli, etc.) and `ExponentialFamily` subclass
+- **Key methods**: `sample()`, `log_prob()`, `rsample()` (reparameterized sampling), `entropy()`, `cdf()/icdf()`
+
+## Main Components
+
+### 1. **Distributions** (40+ implementations)
+- Univariate: `Normal`, `Bernoulli`, `Categorical`, `Exponential`, `Gamma`, `Beta`, etc.
+- Multivariate: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`
+- Specialized: `MixtureSameFamily`, `TransformedDistribution`, `LKJCholesky`
+
+### 2. **Transforms**
+- Bijective transformations for reparameterization: `AffineTransform`, `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform`
+- Used in `TransformedDistribution` to create new distributions via transformation
+
+### 3. **Constraints**
+- Define valid parameter domains: `real`, `positive`, `simplex`, `interval`, etc.
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+
+### 4. **KL Divergence**
+- Automatic computation between registered distribution pairs
+- Extensible via `register_kl()` decorator
+
+## Common Usage Patterns
+
+### REINFORCE (Score Function)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+loss.backward()
+```
+
+## Key Design Features
+- **Batch-aware**: All distributions support batch dimensions
+- **Validation**: Optional argument validation via `validate_args`
+- **Extensible**: Users can register new distributions, transforms, and KL divergences
+- **Efficient**: Specialized implementations for common operations
+
+The package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  df1:
+    dtype: ["float", "Tensor"]
+    range: ["(0, inf)"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  df2:
+    dtype: ["float", "Tensor"]
+    range: ["(0, inf)"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: df1
+    Parameter 2: df2
+    Constraint: df1 > 0.0 and df2 > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.fishersnedecor.FisherSnedecor in a complex way */
+import torch

@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.math.unsorted_segment_sum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.unsorted_segment_sum` computes the sum of tensor elements grouped by segment IDs, without requiring the IDs to be sorted or cover all values in a range.
+
+**Key features:**
+- **Inputs:** `data` (tensor to sum), `segment_ids` (matching prefix shape of `data`), `num_segments` (number of distinct segment IDs).
+- **Behavior:** For each segment ID `i`, it sums all elements in `data` where `segment_ids == i`. Empty segments return 0, and negative IDs are ignored.
+- **Difference from `SegmentSum`:** Segment IDs need not be sorted or cover all values.
+- **Platform caution:** On CPU, segment IDs are validated to be < `num_segments`; on GPU, out-of-bound indices may be ignored without error.
+
+**Example:**
+```python
+c = [[1,2,3,4], [5,6,7,8], [4,3,2,1]]
+tf.math.unsorted_segment_sum(c, [0, 1, 0], num_segments=2)
+# Result: [[5,5,5,5], [5,6,7,8]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  segment_ids:
+    dtype: ["int16", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "segment_ids"
+    Parameter 2: "data"
+    Constraint: "data.shape[:len(segment_ids.shape)] == segment_ids.shape"
+  2:
+    Parameter 1: "segment_ids"
+    Parameter 2: "num_segments"
+    Constraint: "tf.reduce_all(segment_ids < num_segments)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.unsorted_segment_sum in a complex way */
+import tensorflow as tf

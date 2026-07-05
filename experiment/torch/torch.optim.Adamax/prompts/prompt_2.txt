@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adamax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Adamax Optimizer (PyTorch)**  
+
+**Overview**  
+Adamax is a variant of the Adam optimizer that uses the infinity norm (max) instead of the L2 norm for gradient scaling. It is suitable for stochastic optimization and often provides stable updates.
+
+**Key Features**  
+- **Algorithm**: Uses exponentially weighted moving averages of gradients (`m_t`) and the infinity norm of gradients (`u_t`).  
+- **Update Rule**:  
+  \[
+  \theta_t = \theta_{t-1} - \frac{\gamma m_t}{(1-\beta_1^t) u_t}
+  \]
+  where \( u_t = \max(\beta_2 u_{t-1}, |g_t| + \epsilon) \).  
+- **Weight Decay**: Applied directly to gradients (L2 penalty).  
+
+**Parameters**  
+| Parameter | Description | Default |  
+|-----------|-------------|---------|  
+| `params` | Iterable of parameters to optimize | Required |  
+| `lr` | Learning rate | 2e-3 |  
+| `betas` | Coefficients for moving averages (`β1`, `β2`) | (0.9, 0.999) |  
+| `eps` | Added to denominator for numerical stability | 1e-8 |  
+| `weight_decay` | L2 penalty coefficient | 0 |  
+| `foreach` | Use foreach implementation (faster on CUDA) | None (auto) |  
+| `maximize` | Maximize objective instead of minimizing | False |  
+| `differentiable` | Allow autograd through optimizer step | False |  
+| `capturable` | Safe for CUDA graphs/torch.compile | False |  
+
+**Core Methods**  
+- `step(closure)`: Performs a single optimization step.  
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` to save memory).  
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state.  
+- `add_param_group()`: Add new parameter groups dynamically.  
+
+**Hooks**  
+- Pre/post hooks for `step()`, `state_dict()`, and `load_state_dict()` allow custom logic injection.  
+
+**Usage Example**  
+```python
+optimizer = torch.optim.Adamax(model.parameters(), lr=0.002, betas=(0.9, 0.999))
+loss.backward()
+optimizer.step()
+optimizer.zero_grad()
+```
+
+**Notes**  
+- Prefer `foreach=True` for CUDA performance (higher memory usage).  
+- Set `capturable=True` only when using CUDA graphs or `torch.compile`.  
+- Reference: [Adam: A Method for Stochastic Optimization](https://arxiv.org/abs/1412.6980).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: "No mention"
+    default: "0.002"
+  betas:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  foreach:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adamax in a complex way */
+import torch

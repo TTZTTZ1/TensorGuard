@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.IndependentTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and gradient estimators. Key features include:
+
+**Core Components:**
+- **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, and properties like `mean`, `variance`, `support`.
+- **ExponentialFamily**: Base class for exponential family distributions.
+- **TransformedDistribution**: Applies transforms to base distributions.
+
+**Key Distributions:**
+- Univariate: `Bernoulli`, `Beta`, `Binomial`, `Categorical`, `Normal`, `Gamma`, `Exponential`, `Uniform`, `Poisson`, etc.
+- Multivariate: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`, `Wishart`.
+- Specialized: `MixtureSameFamily`, `LKJCholesky`, `RelaxedBernoulli`, `RelaxedOneHotCategorical`.
+
+**Gradient Estimation Methods:**
+1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients.
+2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via transforms.
+
+**Supporting Infrastructure:**
+- **Transforms**: Bijective transformations (`ExpTransform`, `SigmoidTransform`, `AffineTransform`, etc.) for reparameterization.
+- **Constraints**: Domain constraints (`positive`, `simplex`, `interval`, etc.) with registries (`biject_to`, `transform_to`) for unconstrained optimization.
+- **KL Divergence**: Automatic computation via `kl_divergence()` with registered implementations for distribution pairs.
+
+**Common Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational inference (reparameterization trick)
+- Probabilistic modeling
+- Bayesian methods
+
+The package follows TensorFlow Distributions design and enables gradient-based optimization through surrogate functions when direct backpropagation through random samples isn't possible.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_transform:
+    dtype: ["Transform"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  reinterpreted_batch_ndims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: reinterpreted_batch_ndims
+    Parameter 2: reinterpreted_batch_ndims
+    Constraint: "reinterpreted_batch_ndims >= 0"
+  2:
+    Parameter 1: cache_size
+    Parameter 2: cache_size
+    Constraint: "cache_size == 0 or cache_size == 1"
+  3:
+    Parameter 1: base_transform
+    Parameter 2: base_transform
+    Constraint: "isinstance(base_transform, Transform)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.IndependentTransform in a complex way */
+import torch

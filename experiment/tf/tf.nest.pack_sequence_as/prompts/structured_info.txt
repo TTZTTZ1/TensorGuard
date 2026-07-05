@@ -1,0 +1,28 @@
+params:
+  structure:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "list", "tuple", "dict"]
+    shape: No mention
+    default: null
+  flat_sequence:
+    dtype: No mention
+    range: No mention
+    structure: ["list"]
+    shape: No mention
+    default: null
+  expand_composites:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: flat_sequence
+    Parameter 2: structure
+    Constraint: "len(flat_sequence) == len(tf.nest.flatten(structure, expand_composites=expand_composites))"
+  2:
+    Parameter 1: structure
+    Parameter 2: structure
+    Constraint: "def check_sortable(s): return (not isinstance(s, dict) or all(isinstance(k, (int, str, float, tuple)) for k in s.keys())) and all(check_sortable(sub) for sub in (s.values() if isinstance(s, dict) else s if isinstance(s, (list, tuple)) else [])); check_sortable(structure)"

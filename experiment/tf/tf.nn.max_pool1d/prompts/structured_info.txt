@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  ksize:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "list"]
+    shape: ["scalar", [1], [3]]
+    default: "null"
+  strides:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "list"]
+    shape: ["scalar", [1], [3]]
+    default: "null"
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID"]
+    structure: ["string", "list"]
+    shape: ["scalar", [3,2]]
+    default: "null"
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "NWC"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "padding"
+    Parameter 2: "data_format"
+    Constraint: "(padding in ['SAME', 'VALID']) or (isinstance(padding, list) and len(padding) == 3 and all(isinstance(p, list) and len(p) == 2 for p in padding) and ((data_format == 'NWC' and padding[0] == [0,0] and padding[2] == [0,0]) or (data_format == 'NCW' and padding[0] == [0,0] and padding[1] == [0,0])))"
+  2:
+    Parameter 1: "padding"
+    Parameter 2: "ksize"
+    Constraint: "(padding in ['SAME', 'VALID']) or (isinstance(padding, list) and all(p <= (ksize if isinstance(ksize, int) else (ksize[0] if len(ksize) == 1 else (ksize[1] if data_format == 'NWC' else ksize[2]))) for p in (padding[1] if data_format == 'NWC' else padding[2])))"

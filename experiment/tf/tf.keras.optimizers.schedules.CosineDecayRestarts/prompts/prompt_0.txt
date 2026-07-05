@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.keras.optimizers.schedules.CosineDecayRestarts` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`tf.keras.optimizers.schedules.CosineDecayRestarts`** is a learning rate scheduler that implements a cosine annealing schedule with periodic warm restarts. It gradually reduces the learning rate following a cosine curve, then resets it to a higher value at specified intervals to help escape local minima and improve convergence.
+
+**Key Features:**
+- **Cosine Decay with Restarts:** Combines cosine annealing (smooth reduction from initial LR to `alpha * initial_learning_rate`) with scheduled restarts.
+- **Configurable Restarts:** 
+  - `first_decay_steps`: Steps in the first decay cycle.
+  - `t_mul`: Multiplies cycle length after each restart (e.g., `t_mul=2.0` doubles cycle length each time).
+  - `m_mul`: Multiplies initial LR after each restart (e.g., `m_mul=0.5` halves starting LR each cycle).
+- **Minimum LR:** `alpha` sets the minimum LR as a fraction of the initial LR.
+
+**Usage:**
+```python
+schedule = CosineDecayRestarts(
+    initial_learning_rate=0.1,
+    first_decay_steps=1000,
+    t_mul=2.0,
+    m_mul=1.0,
+    alpha=0.01
+)
+optimizer = tf.keras.optimizers.Adam(learning_rate=schedule)
+```
+
+**Benefits:**
+- Helps models escape local optima via warm restarts.
+- Automatically adjusts LR during training without manual tuning.
+- Serializable for saving/loading model configurations.
+
+**Reference:** Based on the SGDR (Stochastic Gradient Descent with Warm Restarts) paper by Loshchilov & Hutter (ICLR 2016).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initial_learning_rate:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  first_decay_steps:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  t_mul:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "2.0"
+  m_mul:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'SGDRDecay'"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.optimizers.schedules.CosineDecayRestarts in a complex way */
+import tensorflow as tf

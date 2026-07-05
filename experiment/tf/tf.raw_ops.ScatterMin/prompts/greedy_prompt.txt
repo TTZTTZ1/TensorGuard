@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ScatterMin` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ScatterMin` performs an element-wise minimum operation between a mutable tensor (`ref`) and update values (`updates`) at specified positions (`indices`). It updates `ref` in-place by taking the minimum of its existing values and the corresponding updates for each index. Duplicate indices are correctly combined using the `min` operation. The function supports scalar, vector, and high-rank indices, requires shape compatibility between `updates` and `indices`, and optionally allows thread locking during the update. The updated `ref` is returned for operation chaining.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ref:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: ref
+    Parameter 2: updates
+    Constraint: "ref.dtype == updates.dtype"
+  2:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape + ref.shape[1:] or updates.shape == []"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ScatterMin in a complex way */
+import tensorflow as tf

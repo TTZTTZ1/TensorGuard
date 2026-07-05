@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.linalg.experimental.conjugate_gradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.experimental.conjugate_gradient` is an iterative solver for linear systems of the form **A*x = rhs**, where **A** must be self-adjoint and positive definite. It uses the conjugate gradient method, which is matrix-free and only requires the action of **A** via a `LinearOperator`.
+
+**Key features:**
+- Solves **A*x = rhs** iteratively without explicitly forming **A**.
+- Accepts an optional **preconditioner** to accelerate convergence.
+- Stops when the residual norm falls below `tol` or after `max_iter` steps.
+- Returns a namedtuple with the solution, residual, iteration count, and other algorithm state details.
+
+**Main parameters:**
+- `operator`: A `LinearOperator` representing **A**.
+- `rhs`: The right-hand side vector.
+- `preconditioner` (optional): A `LinearOperator` approximating **A⁻¹**.
+- `x` (optional): Initial guess for the solution.
+- `tol`: Convergence tolerance (default 1e-5).
+- `max_iter`: Maximum iterations (default 20).
+
+**Use case:** Efficiently solving large, sparse, or structured positive definite linear systems where only matrix-vector products are available.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operator:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["LinearOperator"]
+    shape: null
+    default: null
+  rhs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., N]"]
+    default: null
+  preconditioner:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["LinearOperator", "None"]
+    shape: null
+    default: "None"
+  x:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., N]"]
+    default: "None"
+  tol:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "1e-05"
+  max_iter:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "20"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'conjugate_gradient'"
+constraints:
+  1:
+    Parameter 1: operator
+    Parameter 2: rhs
+    Constraint: "operator.shape[-1] == rhs.shape[-1]"
+  2:
+    Parameter 1: x
+    Parameter 2: rhs
+    Constraint: "x is None or x.shape == rhs.shape"
+  3:
+    Parameter 1: preconditioner
+    Parameter 2: operator
+    Constraint: "preconditioner is None or preconditioner.shape == operator.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.experimental.conjugate_gradient in a complex way */
+import tensorflow as tf

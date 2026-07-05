@@ -1,0 +1,62 @@
+params:
+  labels:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "SparseTensor"]
+    shape: ["[batch_size, max_label_seq_length]", "No mention for SparseTensor"]
+    default: "null"
+  logits:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[frames, batch_size, num_labels]", "[batch_size, frames, num_labels]"]
+    default: "null"
+  label_length:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["[batch_size]"]
+    default: "null"
+  logit_length:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[batch_size]"]
+    default: "null"
+  logits_time_major:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  unique:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  blank_index:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "'ctc_loss_dense'"
+constraints:
+  1:
+    Parameter 1: "labels"
+    Parameter 2: "label_length"
+    Constraint: "not isinstance(labels, tf.SparseTensor) or label_length is None"
+  2:
+    Parameter 1: "labels"
+    Parameter 2: "blank_index"
+    Constraint: "not isinstance(labels, tf.SparseTensor) or blank_index is not None"
+  3:
+    Parameter 1: "blank_index"
+    Parameter 2: "logits"
+    Constraint: "blank_index is None or (blank_index >= -logits.shape[-1] and blank_index < logits.shape[-1])"

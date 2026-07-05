@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.addcdiv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.addcdiv` performs element-wise division of `tensor1` by `tensor2`, multiplies the result by a scalar `value`, and adds it to `input`. The operation is defined as:
+
+\[
+\text{out}_i = \text{input}_i + \text{value} \times \frac{\text{tensor1}_i}{\text{tensor2}_i}
+\]
+
+**Key points:**
+- The input tensors (`input`, `tensor1`, `tensor2`) must be broadcastable.
+- For integer inputs, note that future versions will perform true division instead of integer division. Current integer division behavior can be replicated using `torch.trunc`.
+- `value` is a scalar multiplier (real for float/double tensors, integer otherwise).
+
+**Example:**
+```python
+torch.addcdiv(t, t1, t2, value=0.1)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor1:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  value:
+    dtype: ["int", "float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: tensor1
+    Constraint: "all(a == b or a == 1 or b == 1 for a, b in zip(reversed(input.shape), reversed(tensor1.shape))) and all(a == b or a == 1 or b == 1 for a, b in zip(reversed(input.shape), reversed(tensor2.shape))) and all(a == b or a == 1 or b == 1 for a, b in zip(reversed(tensor1.shape), reversed(tensor2.shape)))"
+  2:
+    Parameter 1: input
+    Parameter 2: value
+    Constraint: "input.dtype in [torch.float32, torch.float64] or isinstance(value, int)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addcdiv in a complex way */
+import torch

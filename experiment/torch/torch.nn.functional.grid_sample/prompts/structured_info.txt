@@ -1,0 +1,44 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(N, C, H_in, W_in)", "(N, C, D_in, H_in, W_in)"]
+    default: null
+  grid:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(N, H_out, W_out, 2)", "(N, D_out, H_out, W_out, 3)"]
+    default: null
+  mode:
+    dtype: ["str"]
+    range: [["bilinear", "nearest", "bicubic"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'bilinear'"
+  padding_mode:
+    dtype: ["str"]
+    range: [["zeros", "border", "reflection"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'zeros'"
+  align_corners:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: grid
+    Constraint: "input.shape[0] == grid.shape[0]"
+  2:
+    Parameter 1: input
+    Parameter 2: mode
+    Constraint: "mode != 'bicubic' or input.dim() == 4"
+  3:
+    Parameter 1: input
+    Parameter 2: grid
+    Constraint: "(input.dim() == 4 and grid.shape[-1] == 2) or (input.dim() == 5 and grid.shape[-1] == 3)"

@@ -1,0 +1,56 @@
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  unique:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  range_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: "true_classes.shape[1] == num_true"
+  2:
+    Parameter 1: true_classes
+    Parameter 2: range_max
+    Constraint: "tf.reduce_all(tf.logical_and(true_classes >= 0, true_classes < range_max))"
+  3:
+    Parameter 1: num_sampled
+    Parameter 2: range_max
+    Constraint: "not unique or num_sampled <= range_max"

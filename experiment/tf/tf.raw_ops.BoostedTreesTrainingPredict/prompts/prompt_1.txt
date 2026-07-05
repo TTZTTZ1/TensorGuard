@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BoostedTreesTrainingPredict` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.BoostedTreesTrainingPredict` is a low-level TensorFlow operation used during the training of boosted tree ensembles. It performs predictions on input data while simultaneously updating cached traversal states (tree and node IDs) to reflect the latest model increments. This is designed for efficient incremental training, where the ensemble is built sequentially.
+
+**Key Functionality:**
+- Takes bucketized feature inputs and the current ensemble model.
+- Starts prediction from cached tree and node positions (from previous training iterations).
+- Outputs partial logits (predictions) and updates the cache with new tree and node IDs for the next training step.
+
+**Main Parameters:**
+- `tree_ensemble_handle`: Resource handle to the tree ensemble model.
+- `cached_tree_ids` / `cached_node_ids`: Starting points in the trees for prediction.
+- `bucketized_features`: List of bucketized input features (integer tensors).
+- `logits_dimension`: The output dimension of the logits.
+
+**Returns:**
+A tuple containing:
+1. `partial_logits`: The prediction outputs (`float32` tensor).
+2. `tree_ids` / `node_ids`: Updated cache IDs for the next iteration (`int32` tensors).
+
+This op optimizes training by reusing and incrementally updating cached traversal states rather than recomputing predictions from scratch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tree_ensemble_handle:
+    dtype: ["resource"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  cached_tree_ids:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  cached_node_ids:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  bucketized_features:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  logits_dimension:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "bucketized_features"
+    Parameter 2: "bucketized_features"
+    Constraint: "len(bucketized_features) >= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BoostedTreesTrainingPredict in a complex way */
+import tensorflow as tf

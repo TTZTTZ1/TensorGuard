@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.QUInt8Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous, one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like `dtype`, `shape`, `stride`, and `offset` to interpret that data.
+
+**Key Points:**
+- **Purpose:** Stores the actual tensor data as bytes, independent of data type or shape.
+- **Relationship with Tensors:** Multiple tensors (e.g., views created via `.view()` or slicing) can share the same storage. A tensor's storage can be accessed via `.untyped_storage()`.
+- **Identification:** Each storage has a unique `data_ptr()` identifier. Tensors with shared storage will have the same storage `data_ptr`.
+- **Manipulation:** Provides low-level methods like `clone()`, `fill_()`, `copy_()`, `pin_memory()`, and device transfer methods (e.g., `.cuda()`, `.cpu()`). Direct storage manipulation is possible but **not recommended**; use standard tensor methods instead.
+- **Special Cases:**
+  - Tensors with gradients have separate storages for `.data` and `.grad`.
+  - Tensors on `"meta"` device or `FakeTensor` have no actual storage.
+- **Legacy Note:** Typed storage classes (e.g., `torch.FloatStorage`) are deprecated. Use `torch.UntypedStorage` for all new code.
+
+**When to Use:** Most applications should operate at the tensor level. Storage-level APIs are for advanced, low-level memory management and are generally not needed for typical use cases.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "str", "int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QUInt8Storage in a complex way */
+import torch

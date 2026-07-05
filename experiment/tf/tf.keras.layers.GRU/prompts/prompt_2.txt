@@ -1,0 +1,208 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.GRU` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.GRU` is a gated recurrent unit (GRU) layer for sequence modeling, implementing the GRU architecture from Cho et al. (2014). It is a type of recurrent neural network (RNN) layer that processes sequential data and supports both CPU and GPU-accelerated (cuDNN) implementations for optimized performance.
+
+**Key Features:**
+- **CuDNN Optimization:** Automatically uses a faster cuDNN implementation on GPUs when specific conditions are met (e.g., `activation='tanh'`, `recurrent_activation='sigmoid'`, no dropout, `reset_after=True`).
+- **Two Variants:** Supports two GRU variants based on the order of operations (reset gate applied before or after matrix multiplication). The default (`reset_after=True`) is cuDNN-compatible and allows CPU inference.
+- **Flexible Outputs:** Can return either the last output step or the full sequence (`return_sequences`), and optionally the final state (`return_state`).
+- **Bidirectional Processing:** Supports processing sequences in reverse (`go_backwards=True`).
+- **Stateful Mode:** Allows carrying over states between batches for continuous sequences (`stateful=True`).
+
+**Main Parameters:**
+- `units`: Dimensionality of the output space.
+- `activation`/`recurrent_activation`: Activation functions for the output and recurrent steps (default: `tanh` and `sigmoid`).
+- `dropout`/`recurrent_dropout`: Fraction of units to drop for input and recurrent transformations.
+- `return_sequences`: Whether to return all time steps or just the last.
+- `return_state`: Whether to return the final state in addition to the output.
+- `reset_after`: GRU convention (reset gate before or after matrix multiplication; default `True` for cuDNN compatibility).
+
+**Input/Output:**
+- **Input:** 3D tensor of shape `(batch_size, timesteps, features)`.
+- **Output:** 
+  - If `return_sequences=False`: 2D tensor `(batch_size, units)`.
+  - If `return_sequences=True`: 3D tensor `(batch_size, timesteps, units)`.
+  - If `return_state=True`: Returns a tuple (output, final_state).
+
+**Common Use Cases:** Sequence modeling tasks such as machine translation, text generation, time series forecasting, and video classification.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  units:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'tanh'"
+  recurrent_activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'sigmoid'"
+  use_bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  kernel_initializer:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'glorot_uniform'"
+  recurrent_initializer:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'orthogonal'"
+  bias_initializer:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  recurrent_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  bias_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  activity_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  kernel_constraint:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  recurrent_constraint:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  bias_constraint:
+    dtype: ["callable", "NoneType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dropout:
+    dtype: ["float"]
+    range: ["[0, 1]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  recurrent_dropout:
+    dtype: ["float"]
+    range: ["[0, 1]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  seed:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  return_sequences:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  return_state:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  go_backwards:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  stateful:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  unroll:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  reset_after:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  use_cudnn:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'auto'"
+constraints:
+  1:
+    Parameter 1: "activation"
+    Parameter 2: "None"
+    Constraint: "activation == 'tanh'"
+  2:
+    Parameter 1: "recurrent_activation"
+    Parameter 2: "None"
+    Constraint: "recurrent_activation == 'sigmoid'"
+  3:
+    Parameter 1: "dropout"
+    Parameter 2: "recurrent_dropout"
+    Constraint: "dropout == 0.0 and recurrent_dropout == 0.0"
+  4:
+    Parameter 1: "unroll"
+    Parameter 2: "None"
+    Constraint: "unroll is False"
+  5:
+    Parameter 1: "use_bias"
+    Parameter 2: "None"
+    Constraint: "use_bias is True"
+  6:
+    Parameter 1: "reset_after"
+    Parameter 2: "None"
+    Constraint: "reset_after is True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.GRU in a complex way */
+import tensorflow as tf

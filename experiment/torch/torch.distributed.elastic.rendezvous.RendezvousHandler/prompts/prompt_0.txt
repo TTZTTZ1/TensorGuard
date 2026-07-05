@@ -1,0 +1,184 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.rendezvous.RendezvousHandler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Distributed Elastic Rendezvous is a mechanism for distributed synchronization and peer discovery used in multi-node training jobs. It ensures that all participating nodes agree on the same list of participants and their roles (ranks) before training begins or resumes.
+
+### Key Functionalities:
+- **Barrier**: Blocks nodes until a minimum number (`min_nodes`) join, with an optional wait time to allow latecomers. Completes immediately if `max_nodes` is reached.
+- **Exclusivity**: Prevents multiple independent groups from forming for the same job.
+- **Consistency**: All members agree on job membership and assigned ranks (0 to world size), though ranks are not stable across re-rendezvous.
+- **Fault-tolerance**: Handles node failures during rendezvous by automatically triggering re-rendezvous with healthy nodes.
+- **Shared Key-Value Store**: Provides a `torch.distributed.Store` for exchanging initialization data among members.
+
+### Main Components:
+1. **`RendezvousHandler`**: Main interface for participating in rendezvous. Users typically use built-in implementations rather than custom ones.
+2. **`DynamicRendezvousHandler`**: The primary handler, backend-agnostic and works with:
+   - **`C10dRendezvousBackend`**: Uses PyTorch's C10d store (TCPStore/FileStore), requiring no external dependencies.
+   - **`EtcdRendezvousBackend`**: Uses an etcd server for state management (legacy `EtcdRendezvousHandler` is deprecated).
+3. **`RendezvousParameters`**: Holds configuration like backend type, endpoint, run ID, and node limits.
+
+### Typical Usage:
+```python
+store = TCPStore("localhost")
+backend = C10dRendezvousBackend(store, "my_run_id")
+rdzv_handler = DynamicRendezvousHandler.from_backend(
+    run_id="my_run_id", store=store, backend=backend, min_nodes=2, max_nodes=4
+)
+store, rank, world_size = rdzv_handler.next_rendezvous()
+```
+
+### Additional Features:
+- **Waiting Workers**: Tracks late-arriving nodes for inclusion in next rendezvous.
+- **Graceful Exit**: Allows nodes to exit without failure if not included.
+- **Timeout Configuration**: Configurable timeouts for joining, last call, closing, and heartbeats.
+
+### Use Case:
+Essential for elastic training where nodes can dynamically join, leave, or fail, ensuring consistent group membership before distributed operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  backend:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  endpoint:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  run_id:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  min_nodes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  max_nodes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  local_addr:
+    dtype: ["string", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  store_type:
+    dtype: ["string"]
+    range: ["tcp", "file"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "tcp"
+  read_timeout:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "60"
+  is_host:
+    dtype: ["bool", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  protocol:
+    dtype: ["string"]
+    range: ["http", "https"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "http"
+  ssl_cert:
+    dtype: ["string", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  ssl_cert_key:
+    dtype: ["string", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  ca_cert:
+    dtype: ["string", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  join_timeout:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "600"
+  last_call_timeout:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "30"
+  close_timeout:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "30"
+  heartbeat:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  keep_alive_interval:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "5"
+  keep_alive_max_attempt:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "3"
+  key_prefix:
+    dtype: ["string", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  ttl:
+    dtype: ["int", "null"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  etcd_prefix:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "/torchelastic/p2p"
+constraints:
+  1:
+    Parameter 1: "min_nodes"
+    Parameter 2: "max_nodes"
+    Constraint: "min_nodes <= max_nodes"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.rendezvous.RendezvousHandler in a complex way */
+import torch

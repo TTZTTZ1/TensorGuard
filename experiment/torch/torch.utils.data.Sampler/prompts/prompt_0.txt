@@ -1,0 +1,153 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.Sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading in PyTorch, centered around the `DataLoader` class. It supports both **map-style** datasets (with `__getitem__` and `__len__`) and **iterable-style** datasets (with `__iter__`). Key features include:
+
+- **Customizable data loading order** via samplers (e.g., `RandomSampler`, `SequentialSampler`).
+- **Automatic batching** with configurable batch size and collation functions (`collate_fn`).
+- **Single- or multi-process loading** (`num_workers` > 0) for parallel data fetching.
+- **Memory pinning** (`pin_memory=True`) to accelerate GPU data transfers.
+
+The `DataLoader` constructor accepts parameters like `dataset`, `batch_size`, `shuffle`, `sampler`, `num_workers`, and `collate_fn` to tailor data loading. Additional utilities include dataset wrappers (`TensorDataset`, `ConcatDataset`, `Subset`), splitting (`random_split`), and distributed sampling (`DistributedSampler`). Proper configuration is needed to handle platform-specific multiprocessing behavior and avoid duplicate data in multi-worker scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  shuffle:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  batch_sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  num_workers:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  collate_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  pin_memory:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  drop_last:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  timeout:
+    dtype: ["numeric"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  worker_init_fn:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  multiprocessing_context:
+    dtype: ["string", "multiprocessing.context.BaseContext"]
+    range: [null]
+    structure: ["scalar", "object"]
+    shape: [null]
+    default: null
+  generator:
+    dtype: ["torch.Generator"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  prefetch_factor:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  persistent_workers:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  pin_memory_device:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "''"
+  in_order:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "shuffle"
+    Parameter 2: "sampler"
+    Constraint: "sampler is not None implies shuffle is not specified"
+  2:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "batch_size"
+    Constraint: "batch_sampler is not None implies batch_size is None"
+  3:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "shuffle"
+    Constraint: "batch_sampler is not None implies shuffle is not specified"
+  4:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "sampler"
+    Constraint: "batch_sampler is not None implies sampler is not specified"
+  5:
+    Parameter 1: "batch_sampler"
+    Parameter 2: "drop_last"
+    Constraint: "batch_sampler is not None implies drop_last is not specified"
+  6:
+    Parameter 1: "num_workers"
+    Parameter 2: "prefetch_factor"
+    Constraint: "num_workers == 0 implies prefetch_factor is None"
+  7:
+    Parameter 1: "num_workers"
+    Parameter 2: "in_order"
+    Constraint: "num_workers > 0 for in_order to be applicable"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.Sampler in a complex way */
+import torch

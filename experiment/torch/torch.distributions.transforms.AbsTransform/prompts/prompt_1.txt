@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.AbsTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and gradient estimators. Key features include:
+
+**Core Components:**
+- **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, and properties like `mean`, `variance`, `support`.
+- **ExponentialFamily**: Subclass for distributions belonging to exponential families.
+- **TransformedDistribution**: Chains transforms to create new distributions via change-of-variables.
+
+**Gradient Estimation Methods:**
+1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients (requires differentiable PDF).
+2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick.
+
+**Available Distributions:**
+- Univariate: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, Normal, Poisson, StudentT, Uniform, etc.
+- Multivariate: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- Specialized: MixtureSameFamily, TransformedDistribution, Independent, RelaxedBernoulli, LKJCholesky, etc.
+
+**Key Functionality:**
+- **KL Divergence**: `kl_divergence()` with registered implementations for distribution pairs.
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter spaces.
+- **Constraints**: Define valid parameter domains (simplex, positive definite, interval, etc.).
+- **Constraint Registry**: `biject_to()` and `transform_to()` for mapping constraints to transforms.
+
+**Usage Patterns:**
+- **REINFORCE** (discrete actions):
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization** (continuous actions):
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  ```
+
+The package supports automatic differentiation through stochastic nodes via these estimators, enabling applications in reinforcement learning, variational inference, and probabilistic modeling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.AbsTransform in a complex way */
+import torch

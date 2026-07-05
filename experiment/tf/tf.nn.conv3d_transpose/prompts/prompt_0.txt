@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `tf.nn.conv3d_transpose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.conv3d_transpose` performs a 3D transposed convolution (often called "deconvolution"), which is the gradient operation of `conv3d`. It upsamples input tensors by applying learned filters, commonly used in tasks like semantic segmentation or generative models.
+
+**Key parameters:**
+- **input**: 5D tensor (`[batch, depth, height, width, channels]` for `NDHWC` or `[batch, channels, depth, height, width]` for `NCDHW`).
+- **filters**: 5D kernel tensor with shape `[depth, height, width, output_channels, in_channels]`.
+- **output_shape**: 1D tensor specifying the desired output dimensions.
+- **strides**: Controls upsampling rate along spatial dimensions (D, H, W).
+- **padding**: `'VALID'` or `'SAME'` padding strategy.
+- **data_format**: Channel position (`'NDHWC'` or `'NCDHW'`).
+- **dilations**: Optional dilation rate for filters.
+
+**Note:** Despite the "deconvolution" name, this operation is mathematically a convolution transpose, not a true deconvolution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  filters:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  output_shape:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["1", "3", "5"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "SAME"
+  data_format:
+    dtype: ["string"]
+    range: ["NDHWC", "NCDHW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NDHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["1", "3", "5"]
+    default: "1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "filters"
+    Parameter 2: "input"
+    Constraint: "(data_format == 'NDHWC' and filters.shape[4] == input.shape[4]) or (data_format == 'NCDHW' and filters.shape[4] == input.shape[1])"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "not isinstance(dilations, list) or len(dilations) != 5 or ((data_format == 'NDHWC' and dilations[0] == 1 and dilations[4] == 1) or (data_format == 'NCDHW' and dilations[0] == 1 and dilations[1] == 1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.conv3d_transpose in a complex way */
+import tensorflow as tf

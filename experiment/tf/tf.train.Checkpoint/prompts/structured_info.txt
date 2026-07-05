@@ -1,0 +1,26 @@
+params:
+  root:
+    dtype: ["object"]
+    range: [null, "trackable_object", "WeakRef"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  kwargs:
+    dtype: ["dict"]
+    range: ["trackable_object", "list", "dict", "tuple"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "root"
+    Parameter 2: "None"
+    Constraint: "root is None or (hasattr(root, '__tf_trackable__') or (isinstance(root, weakref.ref) and hasattr(root(), '__tf_trackable__')))"
+  2:
+    Parameter 1: "kwargs"
+    Parameter 2: "None"
+    Constraint: "all(is_trackable_or_nested(v) for v in kwargs.values())"
+  3:
+    Parameter 1: "root"
+    Parameter 2: "kwargs"
+    Constraint: "root is None or all(not hasattr(root, key) or getattr(root, key) is kwargs[key] for key in kwargs)"

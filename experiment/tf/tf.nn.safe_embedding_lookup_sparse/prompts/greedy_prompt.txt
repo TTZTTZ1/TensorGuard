@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.nn.safe_embedding_lookup_sparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.safe_embedding_lookup_sparse` performs sparse embedding lookups while safely handling invalid IDs (e.g., negative values) and empty features. It is similar to `tf.nn.embedding_lookup_sparse`, but automatically filters out invalid IDs and non-positive weights. For entries with no valid features, it returns the embedding for a specified `default_id` or a zero vector if none is provided.
+
+**Key features:**
+- **Inputs:** Accepts sharded or single embedding tensors, sparse/ragged IDs, and optional sparse/ragged weights.
+- **Safety:** Prunes invalid IDs (< 0) and weights ≤ 0.
+- **Combination:** Supports combining embeddings via "mean", "sqrtn", or "sum" (default: "mean").
+- **Partitioning:** Uses "div" strategy for sharded embeddings, distributing IDs contiguously across partitions.
+- **Output:** Returns dense combined embeddings, with shape based on input IDs and embedding dimensions.
+
+**Use case:** Ideal for embedding lookups where input IDs may contain invalid values or missing features, ensuring robust operation without manual filtering.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  embedding_weights:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "list"]
+    shape: [null]
+    default: null
+  sparse_ids:
+    dtype: ["int"]
+    range: null
+    structure: ["SparseTensor", "RaggedTensor"]
+    shape: [null]
+    default: null
+  sparse_weights:
+    dtype: ["float"]
+    range: null
+    structure: ["SparseTensor", "RaggedTensor"]
+    shape: [null]
+    default: null
+  combiner:
+    dtype: ["string"]
+    range: [["mean", "sqrtn", "sum"]]
+    structure: ["scalar"]
+    shape: []
+    default: "mean"
+  default_id:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  max_norm:
+    dtype: ["float", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  allow_fast_lookup:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: []
+    default: false
+constraints:
+  1:
+    Parameter 1: embedding_weights
+    Parameter 2: embedding_weights
+    Constraint: isinstance(embedding_weights, list) and len(embedding_weights) > 0 or not isinstance(embedding_weights, list)
+  2:
+    Parameter 1: embedding_weights
+    Parameter 2: embedding_weights
+    Constraint: not isinstance(embedding_weights, list) or all(ew.shape[1:] == embedding_weights[0].shape[1:] for ew in embedding_weights)
+  3:
+    Parameter 1: sparse_ids
+    Parameter 2: sparse_weights
+    Constraint: sparse_weights is None or (type(sparse_ids) == type(sparse_weights) and sparse_ids.shape == sparse_weights.shape)
+  4:
+    Parameter 1: sparse_ids
+    Parameter 2: sparse_ids
+    Constraint: not isinstance(sparse_ids, tf.RaggedTensor) or sparse_ids.rank == 2
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.safe_embedding_lookup_sparse in a complex way */
+import tensorflow as tf

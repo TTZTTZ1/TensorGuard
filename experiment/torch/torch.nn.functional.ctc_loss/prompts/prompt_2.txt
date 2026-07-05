@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.ctc_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.ctc_loss` computes the Connectionist Temporal Classification (CTC) loss, which is used for sequence-to-sequence tasks like speech or handwriting recognition. It calculates the loss between a sequence of output probabilities and a target sequence, handling variable input and target lengths.
+
+**Key Parameters:**
+- `log_probs`: Log probabilities of shape `(T, N, C)` (sequence length, batch size, alphabet size including blank).
+- `targets`: Target sequences of shape `(N, S)` or concatenated as a 1D tensor.
+- `input_lengths`: Lengths of each input sequence in the batch.
+- `target_lengths`: Lengths of each target sequence in the batch.
+- `blank`: Index of the blank label (default 0).
+- `reduction`: Specifies loss reduction (`'none'`, `'mean'`, `'sum'`).
+- `zero_infinity`: Whether to zero infinite losses (occurs when inputs are too short).
+
+**Notes:**
+- May be nondeterministic on CUDA with CuDNN; set `torch.backends.cudnn.deterministic = True` for reproducibility.
+- Accepts both batched and unbatched inputs.
+- Infinite losses can arise if inputs are shorter than required for alignment.
+
+**Example:**
+```python
+loss = F.ctc_loss(log_probs, targets, input_lengths, target_lengths)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  log_probs:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(T, N, C)", "(T, C)"]
+    default: null
+  targets:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(N, S)", "(sum(target_lengths))"]
+    default: null
+  input_lengths:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(N)", "()"]
+    default: null
+  target_lengths:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(N)", "()"]
+    default: null
+  blank:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "0"
+  reduction:
+    dtype: ["string"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'mean'"
+  zero_infinity:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input_lengths
+    Parameter 2: log_probs
+    Constraint: "torch.all(input_lengths <= log_probs.size(0))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.ctc_loss in a complex way */
+import torch

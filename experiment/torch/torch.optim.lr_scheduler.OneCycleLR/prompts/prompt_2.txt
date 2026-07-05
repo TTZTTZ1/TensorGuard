@@ -1,0 +1,126 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.OneCycleLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `OneCycleLR` scheduler implements the 1cycle learning rate policy, which dynamically adjusts the learning rate and optionally momentum over a training cycle.  
+
+**Key features:**  
+- **Learning rate schedule**: Starts from `max_lr/div_factor`, increases to `max_lr`, then decreases to `min_lr = initial_lr/final_div_factor`.  
+- **Cycle phases**: By default uses two phases (ascent then descent), but can be set to three phases with `three_phase=True`.  
+- **Momentum cycling**: If `cycle_momentum=True`, momentum varies inversely to the learning rate between `base_momentum` and `max_momentum`.  
+- **Step-based updates**: Must call `scheduler.step()` after each batch, not each epoch.  
+
+**Required parameters:**  
+Provide either `total_steps` directly, or specify `epochs` and `steps_per_epoch` to infer total steps.  
+
+**Example usage:**  
+```python
+scheduler = OneCycleLR(optimizer, max_lr=0.01, 
+                       steps_per_epoch=len(data_loader), epochs=10)
+for epoch in range(10):
+    for batch in data_loader:
+        train_batch(...)
+        optimizer.step()
+        scheduler.step()
+```  
+
+**Note:** This scheduler is not chainable and is designed for single-cycle training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: "No mention"
+    structure: ["object"]
+    shape: "No mention"
+    default: null
+  max_lr:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: null
+  total_steps:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  epochs:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  steps_per_epoch:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  pct_start:
+    dtype: ["float"]
+    range: "[0.0, 1.0]"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.3"
+  anneal_strategy:
+    dtype: ["string"]
+    range: ["cos", "linear"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'cos'"
+  cycle_momentum:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  base_momentum:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "0.85"
+  max_momentum:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "0.95"
+  div_factor:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "25.0"
+  final_div_factor:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "10000.0"
+  three_phase:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  last_epoch:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: total_steps
+    Parameter 2: epochs
+    Constraint: "total_steps is not None or (epochs is not None and steps_per_epoch is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.OneCycleLR in a complex way */
+import torch

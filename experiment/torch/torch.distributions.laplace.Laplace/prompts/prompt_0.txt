@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.distributions.laplace.Laplace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive suite of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimation for optimization. It supports two primary gradient estimation methods: the score function estimator (REINFORCE) and the pathwise derivative estimator (reparameterization trick).
+
+**Key Features:**
+- **Distributions:** Includes a wide range of distributions (e.g., Bernoulli, Normal, Gamma, Dirichlet, MultivariateNormal) with methods for sampling, log probability, entropy, and statistics (mean, variance, etc.).
+- **Gradient Estimation:**
+  - **Score Function:** Uses `sample()` and `log_prob()` for REINFORCE (common in reinforcement learning).
+  - **Pathwise Derivative:** Uses `rsample()` for reparameterizable distributions (common in variational autoencoders).
+- **Transformed Distributions:** Allows creating complex distributions by applying a sequence of transforms to a base distribution.
+- **KL Divergence:** Computes Kullback-Leibler divergence between distributions, with registered implementations for many pairs.
+- **Constraints and Transforms:** Defines constraints on distribution parameters and provides transforms to map between constrained and unconstrained spaces (e.g., for optimization or MCMC).
+
+**Common Use Cases:**
+- **Reinforcement Learning:** Policy gradient methods using `Categorical` or other discrete distributions.
+- **Variational Inference:** Reparameterized sampling (e.g., with `Normal.rsample()`) for variational autoencoders.
+- **Probabilistic Modeling:** Building complex models via `TransformedDistribution` and mixture distributions.
+
+**Example Usage:**
+```python
+# REINFORCE with a categorical policy
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# Reparameterized sampling for a Normal distribution
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+The module is designed to integrate seamlessly with PyTorch's autograd, facilitating gradient-based optimization in stochastic environments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: [[0, inf]]
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: null
+    Constraint: scale > 0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.laplace.Laplace in a complex way */
+import torch

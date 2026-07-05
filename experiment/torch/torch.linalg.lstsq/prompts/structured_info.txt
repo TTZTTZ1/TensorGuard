@@ -1,0 +1,34 @@
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, k)"]
+    default: null
+  rcond:
+    dtype: ["float", "NoneType"]
+    range: null
+    structure: ["scalar", "NoneType"]
+    shape: null
+    default: "None"
+  driver:
+    dtype: ["string", "NoneType"]
+    range: [["gels", "gelsy", "gelsd", "gelss"]]
+    structure: ["string", "NoneType"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "A"
+    Parameter 2: "B"
+    Constraint: "A.shape[:-2] == B.shape[:-2] and A.shape[-2] == B.shape[-2]"
+  2:
+    Parameter 1: "driver"
+    Parameter 2: "A"
+    Constraint: "(A.device.type == 'cuda' and (driver is None or driver == 'gels')) or (A.device.type == 'cpu' and (driver is None or driver in ['gels', 'gelsy', 'gelsd', 'gelss']))"

@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.resnet.ResNet101` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.resnet.ResNet101` function instantiates the ResNet101 model, a deep convolutional neural network for image classification. It supports loading ImageNet-pretrained weights, custom input shapes, and optional top layers for transfer learning. Inputs must be preprocessed using `resnet.preprocess_input` to convert RGB to BGR and zero-center channels based on ImageNet.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["None", "str"]
+    range: [null, "imagenet", "any string for path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple", "None"]
+    range: ["width >= 32, height >= 32, channels == 3"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["str", "None"]
+    range: [null, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: ["positive integers"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable", "None"]
+    range: ["when weights='imagenet', only None or 'softmax'; otherwise any str or callable"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1.
+    Parameter 1: include_top
+    Parameter 2: input_shape
+    Constraint: "(include_top == False) or (input_shape is None) or (input_shape == (224, 224, 3)) or (input_shape == (3, 224, 224))"
+  2.
+    Parameter 1: include_top
+    Parameter 2: classes
+    Constraint: "include_top == True or classes == 1000"
+  3.
+    Parameter 1: weights
+    Parameter 2: classes
+    Constraint: "weights is None or classes == 1000"
+  4.
+    Parameter 1: weights
+    Parameter 2: classifier_activation
+    Constraint: "weights != 'imagenet' or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.resnet.ResNet101 in a complex way */
+import tensorflow as tf

@@ -1,0 +1,46 @@
+params:
+  t:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "indexed_slices"]
+    shape: ["any"]
+    default: "null"
+  clip_value_min:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["[]", "any"]
+    default: "null"
+  clip_value_max:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: ["[]", "any"]
+    default: "null"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "clip_value_min"
+    Parameter 2: "clip_value_max"
+    Constraint: "clip_value_min <= clip_value_max"
+  2:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_min"
+    Constraint: "tf.shape(clip_value_min).ndims <= tf.shape(t).ndims"
+  3:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_max"
+    Constraint: "tf.shape(clip_value_max).ndims <= tf.shape(t).ndims"
+  4:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_min"
+    Constraint: "not (t.dtype == tf.int32 and clip_value_min.dtype == tf.float32)"
+  5:
+    Parameter 1: "t"
+    Parameter 2: "clip_value_max"
+    Constraint: "not (t.dtype == tf.int32 and clip_value_max.dtype == tf.float32)"

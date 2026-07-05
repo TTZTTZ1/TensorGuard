@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.random.stateless_parameterized_truncated_normal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.stateless_parameterized_truncated_normal` generates random numbers from a truncated normal distribution, where values beyond two standard deviations from the mean are re-sampled. It allows flexible parameterization with broadcasting support for `means`, `stddevs`, `minvals`, and `maxvals`. The function is stateless, requiring an explicit `seed` for reproducible results, and outputs a tensor of the specified `shape`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tensor", "array"]
+    shape: ["1-D"]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  means:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "0.0"
+  stddevs:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "1.0"
+  minvals:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "-2.0"
+  maxvals:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "2.0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "seed"
+    Parameter 2: "seed"
+    Constraint: "seed.dtype == tf.int32 or seed.dtype == tf.int64"
+  2:
+    Parameter 1: "seed"
+    Parameter 2: "seed"
+    Constraint: "seed.shape.as_list() == [2]"
+  3:
+    Parameter 1: "means"
+    Parameter 2: "stddevs"
+    Constraint: "tf.broadcast_dynamic_shape(means, stddevs, minvals, maxvals) is not None"
+  4:
+    Parameter 1: "means"
+    Parameter 2: "shape"
+    Constraint: "bc = tf.broadcast_dynamic_shape(means, stddevs, minvals, maxvals); tf.reduce_all(tf.less_equal(bc, shape[-tf.size(bc):]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.stateless_parameterized_truncated_normal in a complex way */
+import tensorflow as tf

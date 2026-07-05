@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Attention` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.Attention` layer implements dot-product (Luong-style) attention. It takes a query and value (and optionally a separate key) as inputs, computes attention scores between the query and key, applies softmax to create a distribution, and outputs a weighted sum of the values.
+
+**Key Features:**
+- **Inputs:** Query (`[batch, Tq, dim]`), value (`[batch, Tv, dim]`), and an optional key (defaults to value if not provided).
+- **Scoring:** Supports `"dot"` product or `"concat"` score modes.
+- **Options:** Includes scaling, dropout, masking (both query/value masks and causal masking for autoregressive tasks), and the ability to return attention scores.
+- **Output:** Context vector of shape `[batch, Tq, dim]` (and optionally the attention scores).
+
+**Common Use:** Primarily for building attention mechanisms in sequence models, such as transformers or encoder-decoder architectures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  use_scale:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  score_mode:
+    dtype: ["string"]
+    range: ["dot", "concat"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'dot'"
+  dropout:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "0.0"
+  seed:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  inputs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  mask:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  return_attention_scores:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+  training:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+  use_causal_mask:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dropout
+    Parameter 2: dropout
+    Constraint: "0 <= dropout <= 1"
+  2:
+    Parameter 1: score_mode
+    Parameter 2: score_mode
+    Constraint: "score_mode in ['dot', 'concat']"
+  3:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "len(inputs) in [2, 3]"
+  4:
+    Parameter 1: inputs
+    Parameter 2: mask
+    Constraint: "(mask is None) or (len(mask) == 2 and mask[0].shape == inputs[0].shape[:2] and mask[1].shape == inputs[1].shape[:2])"
+  5:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "inputs[0].shape[-1] == inputs[1].shape[-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Attention in a complex way */
+import tensorflow as tf

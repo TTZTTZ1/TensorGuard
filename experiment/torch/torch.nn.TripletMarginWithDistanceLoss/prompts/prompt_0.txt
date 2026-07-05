@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.nn.TripletMarginWithDistanceLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`TripletMarginWithDistanceLoss` is a PyTorch loss function that learns embeddings by ensuring that anchor samples are closer to positive samples than to negative samples by a specified margin. It generalizes the standard triplet loss by allowing a custom distance function.
+
+**Key Features:**
+- **Inputs**: Three tensors (anchor, positive, negative) of shape `(N, *)`.
+- **Custom Distance**: Accepts any non-negative, real-valued function (default: `PairwiseDistance`).
+- **Margin**: Penalizes cases where negative distance ≤ positive distance + margin.
+- **Swap Option**: If enabled, uses the anchor-positive-negative distance swap from the Balntas et al. paper.
+- **Reduction**: Supports `'none'`, `'mean'`, or `'sum'`.
+
+**Formula**:  
+For each triplet `(a, p, n)` in the batch:  
+`loss = max(d(a, p) - d(a, n) + margin, 0)`  
+where `d` is the distance function.
+
+**Example Use**:
+```python
+triplet_loss = nn.TripletMarginWithDistanceLoss(
+    distance_function=lambda x, y: 1 - F.cosine_similarity(x, y),
+    margin=0.5
+)
+loss = triplet_loss(anchor, positive, negative)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  distance_function:
+    dtype: ["Callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  margin:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1.0"
+  swap:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: null
+    default: "mean"
+constraints:
+  1.
+    Parameter 1: margin
+    Parameter 2: margin
+    Constraint: "margin >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.TripletMarginWithDistanceLoss in a complex way */
+import torch

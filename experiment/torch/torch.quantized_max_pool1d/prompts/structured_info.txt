@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [1]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  padding:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "0"
+  dilation:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "1"
+  ceil_mode:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: padding
+    Parameter 2: kernel_size
+    Constraint: "all(p >= 0 and p <= k / 2 for p, k in zip(padding, kernel_size))"
+  2:
+    Parameter 1: dilation
+    Parameter 2: ""
+    Constraint: "all(d > 0 for d in dilation)"

@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `tf.debugging.assert_shapes` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.assert_shapes` is a TensorFlow operation that validates whether a set of tensors satisfies specified shape constraints. It checks both individual tensor dimensions and relationships between different tensors' shapes.
+
+**Key features:**
+- Validates shape tuples against actual tensor shapes
+- Supports symbolic dimension names (matched by hash) and explicit integer sizes
+- Allows wildcards (`.` or `None`) for arbitrary dimensions
+- Supports variable outer dimensions using `...` or `*` prefix
+- Raises `InvalidArgumentError` with detailed violation messages when constraints fail
+
+**Common use cases:**
+- Verifying neural network layer input/output shape compatibility
+- Ensuring batch dimensions match across tensors
+- Checking parameter tensor dimensions
+- Validating scalar and zero-dimensional tensors
+
+The function helps catch shape mismatches early during graph execution, making debugging easier by providing clear error messages with tensor values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shapes:
+    dtype: ["dict", "list"]
+    range: "No mention"
+    structure: ["dictionary", "list"]
+    shape: "No mention"
+    default: "null"
+  data:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  summarize:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  message:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "assert_shapes"
+constraints:
+  1:
+    Parameter 1: shapes
+    Parameter 2: shape entries
+    Constraint: "isinstance(shape_entry, iterable) for each shape in shapes"
+  2:
+    Parameter 1: size entries in shape
+    Parameter 2: other size entries
+    Constraint: "size_entry is int or size_entry in [None, '.'] or isinstance(size_entry, str)"
+  3:
+    Parameter 1: first entry of shape
+    Parameter 2: inner dimensions
+    Constraint: "first_entry in ['...', '*'] indicates variable outer dimensions, applying constraint to inner-most dimensions only"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.debugging.assert_shapes in a complex way */
+import tensorflow as tf

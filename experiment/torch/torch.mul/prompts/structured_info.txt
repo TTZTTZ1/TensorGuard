@@ -1,0 +1,32 @@
+params:
+  input:
+    dtype: ["int", "float", "complex"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  other:
+    dtype: ["int", "float", "complex"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "null"
+  out:
+    dtype: ["int", "float", "complex"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: all((input.shape[-i] if i <= input.ndim else 1) == (other.shape[-i] if i <= other.ndim else 1) or (input.shape[-i] if i <= input.ndim else 1) == 1 or (other.shape[-i] if i <= other.ndim else 1) == 1 for i in range(1, max(input.ndim, other.ndim)+1))
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: out is None or out.shape == torch.broadcast_shapes(input.shape, other.shape)
+  3:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: out is None or torch.can_cast(torch.result_type(input.dtype, other.dtype), out.dtype)

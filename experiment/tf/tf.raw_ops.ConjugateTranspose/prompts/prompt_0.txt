@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ConjugateTranspose` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ConjugateTranspose` operation performs two actions on a tensor: it permutes the dimensions according to a specified order and then applies complex conjugation to the result. This is useful for operations involving complex numbers where both dimension rearrangement and conjugation are needed.
+
+**Key Points:**
+- **Inputs:** 
+  - `x`: A tensor (can be complex or real).
+  - `perm`: A 1D tensor of type `int32` or `int64` defining the permutation of dimensions.
+- **Output:** A tensor of the same data type as `x`, with dimensions reordered as per `perm` and all elements conjugated (if complex; real values remain unchanged).
+- **Shape Relationship:** For each dimension `i`, `y.shape[i] = x.shape[perm[i]]`.
+- **Element Relationship:** Each element in `y` is the complex conjugate of the corresponding element in `x` after applying the permutation to indices.
+
+**Example Use Case:** Commonly used in linear algebra with complex matrices, such as computing the adjoint (conjugate transpose) of a matrix by setting `perm = [1, 0]` for a 2D tensor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: []
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  perm:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: perm
+    Constraint: "tf.rank(perm) == 1 and tf.shape(perm)[0] == tf.rank(x) and tf.reduce_all(tf.sort(perm) == tf.range(tf.rank(x)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ConjugateTranspose in a complex way */
+import tensorflow as tf

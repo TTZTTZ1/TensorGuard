@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ExpTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+**Core Components:**
+1. **Distribution Base Class**: Abstract base class with methods like `sample()`, `rsample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+2. **Distributions**: Includes Bernoulli, Beta, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+3. **TransformedDistribution**: Applies sequences of transforms to base distributions
+4. **KL Divergence**: Computes KL divergence between distributions with registered implementations
+5. **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter spaces
+6. **Constraints**: Define valid parameter ranges with registry system (`biject_to`, `transform_to`) for optimization
+
+**Common Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders (reparameterization)
+- Bayesian modeling
+- Probabilistic programming
+
+**Example Usage:**
+```python
+# REINFORCE example
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization example
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+```
+
+The package follows TensorFlow Distributions design and provides tools for both discrete and continuous distributions with batch support and automatic gradient computation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ExpTransform in a complex way */
+import torch

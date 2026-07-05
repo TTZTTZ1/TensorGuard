@@ -1,0 +1,146 @@
+
+# You are a Python code generation assistant for the `torch.profiler.profile` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool that collects metrics during model training and inference. It helps identify expensive operations, analyze input shapes and stack traces, study device kernel activity, and visualize execution traces.
+
+**Key Components:**
+
+1. **`torch.profiler.profile`** – Main context manager for profiling.
+   - **Activities**: Specify devices to profile (CPU, CUDA, XPU, etc.).
+   - **Schedule**: Control profiling cycles (`wait`, `warmup`, `active`, `repeat`).
+   - **Trace Handling**: Use `on_trace_ready` (e.g., with `tensorboard_trace_handler`) to process results.
+   - **Advanced Options**: Record shapes, memory usage, stack traces, FLOPs, and module hierarchies.
+
+2. **`_KinetoProfile`** – Lower-level profiler wrapper (experimental).
+
+3. **Output and Analysis**:
+   - Export traces in Chrome JSON format (`export_chrome_trace`).
+   - Generate memory timelines (deprecated; use `torch.cuda.memory` APIs instead).
+   - Aggregate results (`key_averages`) grouped by operator, shape, or stack.
+   - Save stack traces (`export_stacks`).
+
+4. **ITT APIs** – Intel Instrumentation and Tracing Technology for marking events and ranges.
+
+**Basic Usage Example:**
+```python
+with torch.profiler.profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+    model(input)
+print(prof.key_averages().table(sort_by="cuda_time_total"))
+```
+
+**Key Notes:**
+- Enabling shape/stack tracing adds overhead.
+- Legacy `torch.autograd.profiler` is deprecated.
+- Use `tensorboard_trace_handler` for TensorBoard visualization.
+- Supports dynamic toggling of activity collection during profiling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  activities:
+    dtype: ["iterable"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "ProfilerActivity.CPU and (when available) ProfilerActivity.CUDA or (when available) ProfilerActivity.XPU"
+  schedule:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+  on_trace_ready:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+  record_shapes:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  profile_memory:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_stack:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_flops:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_modules:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  experimental_config:
+    dtype: ["_ExperimentalConfig"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  execution_trace_observer:
+    dtype: ["ExecutionTraceObserver"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  acc_events:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  use_cuda:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  custom_trace_id_callback:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: "activities"
+    Parameter 2: null
+    Constraint: "activities must contain only values from torch.profiler.ProfilerActivity (CPU, CUDA, XPU, MTIA, HPU, PrivateUse1)"
+  2:
+    Parameter 1: "schedule"
+    Parameter 2: "on_trace_ready"
+    Constraint: "on_trace_ready is called when schedule returns ProfilerAction.RECORD_AND_SAVE"
+  3:
+    Parameter 1: "record_shapes"
+    Parameter 2: "profile_memory"
+    Constraint: "record_shapes=True may prevent certain optimizations and introduce extra tensor copies"
+  4:
+    Parameter 1: "with_modules"
+    Parameter 2: null
+    Constraint: "with_modules=True only works for TorchScript models, not eager mode models"
+  5:
+    Parameter 1: "use_cuda"
+    Parameter 2: "activities"
+    Constraint: "use_cuda is deprecated since version 1.8.1; use activities instead"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.profile in a complex way */
+import torch

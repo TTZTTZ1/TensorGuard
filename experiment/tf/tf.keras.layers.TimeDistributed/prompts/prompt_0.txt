@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.TimeDistributed` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.TimeDistributed` is a wrapper layer that applies a given layer independently to each temporal slice (timestep) of an input sequence. It is designed for inputs with at least three dimensions, where the second dimension (index 1) is treated as the time dimension.
+
+**Key Features:**
+- **Purpose**: Enables per-timestep processing of sequential data (e.g., video frames, time-series data).
+- **Input Shape**: Requires input shape `(batch_size, timesteps, ...)`. For example, a batch of 10 videos, each with 5 frames of 64x64 RGB images, would have shape `(10, 5, 64, 64, 3)`.
+- **Weight Sharing**: The same wrapped layer instance (and its weights) is reused across all timesteps, ensuring consistent transformation.
+- **Common Use Cases**: Applying convolutional layers to each frame of a video, or dense layers to each step of a sequence.
+
+**Example:**
+```python
+# Apply Conv2D to each frame in a video sequence
+inputs = Input(shape=(10, 128, 128, 3))  # 10 timesteps
+conv_layer = Conv2D(64, (3, 3))
+outputs = TimeDistributed(conv_layer)(inputs)  # Output shape: (batch, 10, 126, 126, 64)
+```
+
+**Arguments:**
+- `layer`: A Keras layer instance to be applied temporally.
+- `inputs`: Tensor of shape `(batch, time, ...)`.
+- `training`/`mask`: Optional arguments passed to the wrapped layer if supported.
+
+This wrapper is essential for handling sequential data where independent feature extraction per timestep is needed before potentially feeding into recurrent layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  layer:
+    dtype: ["Layer"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.TimeDistributed in a complex way */
+import tensorflow as tf

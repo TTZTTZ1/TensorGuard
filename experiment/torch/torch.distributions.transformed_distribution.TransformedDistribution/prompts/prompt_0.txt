@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transformed_distribution.TransformedDistribution` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) methods
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Univariate:**
+- Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric
+- Gumbel, Laplace, LogNormal, Normal, Pareto, Poisson, StudentT, Uniform, VonMises
+
+**Multivariate:**
+- Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- Wishart, LKJCholesky (for correlation matrices)
+
+**Special/Transformed:**
+- TransformedDistribution (for composing transforms)
+- MixtureSameFamily, Independent, RelaxedBernoulli, RelaxedOneHotCategorical
+- ContinuousBernoulli, Kumaraswamy, Weibull, HalfNormal, HalfCauchy
+
+### **3. Gradient Estimation Methods**
+
+**Score Function (REINFORCE):**
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization):**
+```python
+m = Normal(*params)
+action = m.rsample()  # Requires .has_rsample == True
+loss = -reward
+loss.backward()
+```
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Define valid parameter ranges (Interval, GreaterThan, Simplex, etc.)
+- **Constraint Registry**: `biject_to()` and `transform_to()` for mapping constraints to transforms
+
+### **5. KL Divergence**
+- `kl_divergence(p, q)` computes KL(p∥q)
+- Extensive registry of pairwise KL implementations
+- Automatic registration via `@register_kl` decorator
+
+## **Practical Usage**
+
+**Basic Distribution:**
+```python
+m = Normal(loc=0, scale=1)
+samples = m.sample([100])
+log_probs = m.log_prob(samples)
+```
+
+**Parameterized Distribution:**
+```python
+probs = torch.tensor([0.2, 0.3, 0.5])
+m = Categorical(probs)
+```
+
+**Transformed Distribution:**
+```python
+base = Normal(0, 1)
+transforms = [ExpTransform()]
+log_normal = TransformedDistribution(base, transforms)
+```
+
+## **Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Compatibility**: Designed for use with autograd
+- **Validation**: Optional argument validation
+- **Exponential Family**: Specialized base class for exponential family distributions
+- **Device & Dtype Aware**: Works seamlessly with CUDA and different data types
+
+The module is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_distribution:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  transforms:
+    dtype: ["list of Transform"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transformed_distribution.TransformedDistribution in a complex way */
+import torch

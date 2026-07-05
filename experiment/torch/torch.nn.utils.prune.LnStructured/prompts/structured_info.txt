@@ -1,0 +1,54 @@
+params:
+  amount:
+    dtype: ["int", "float"]
+    range: ["if float: [0.0, 1.0]", "if int: No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  n:
+    dtype: ["int", "float", "string"]
+    range: ["if string: ['fro', 'nuc']", "if int or float: No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  module:
+    dtype: ["torch.nn.Module"]
+    range: ["No mention"]
+    structure: ["module"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["same as parameter being pruned"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: amount
+    Parameter 2: amount
+    Constraint: "isinstance(amount, float) and 0.0 <= amount <= 1.0 or isinstance(amount, int)"
+  2:
+    Parameter 1: dim
+    Parameter 2: module
+    Constraint: "dim < len(module[name].shape)"
+  3:
+    Parameter 1: importance_scores
+    Parameter 2: module
+    Constraint: "importance_scores is None or importance_scores.shape == module[name].shape"
+  4:
+    Parameter 1: amount
+    Parameter 2: module
+    Constraint: "not isinstance(amount, int) or amount <= module[name].shape[dim]"

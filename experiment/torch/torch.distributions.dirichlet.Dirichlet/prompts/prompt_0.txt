@@ -1,0 +1,103 @@
+
+# You are a Python code generation assistant for the `torch.distributions.dirichlet.Dirichlet` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with methods like:
+  - `sample()`, `rsample()` (reparameterized sampling)
+  - `log_prob()`, `cdf()`, `icdf()`
+  - `entropy()`, `mean`, `variance`, `mode`
+  - `expand()` for batch operations
+
+- **Common Distributions**:
+  - **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+  - **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart
+  - **Transformed**: LogNormal, HalfNormal, HalfCauchy, Pareto, Weibull
+  - **Specialized**: LKJCholesky, MixtureSameFamily, RelaxedBernoulli, VonMises
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` with reparameterization trick for VAEs
+
+### **3. Transforms System**
+- **Transform Classes**: AffineTransform, ExpTransform, SigmoidTransform, SoftmaxTransform, etc.
+- **TransformedDistribution**: Composes base distributions with transform sequences
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+### **4. KL Divergence**
+- `kl_divergence()` computes KL(p∥q) between distributions
+- Extensive registry of implemented KL pairs between distribution types
+
+### **5. Constraints Framework**
+- Defines valid parameter/value domains for distributions
+- Supports constraints like: interval, simplex, positive definite, lower cholesky
+- Used for parameter validation and transformation
+
+## **Key Features**
+- **Batching**: Native support for batched parameters and samples
+- **Reparameterization**: `rsample()` enables gradient flow through sampling
+- **Exponential Family**: Specialized class for distributions with exponential family form
+- **Validation**: Optional argument validation with `validate_args`
+- **Extensibility**: Users can register custom distributions, transforms, and KL divergences
+
+## **Typical Usage Patterns**
+```python
+# 1. Basic distribution usage
+dist = Normal(loc, scale)
+samples = dist.sample([100])
+log_probs = dist.log_prob(samples)
+
+# 2. Stochastic gradients (REINFORCE)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# 3. Reparameterized gradients
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+
+# 4. Constrained parameters
+unconstrained = torch.randn(3)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2: concentration
+    Constraint: "torch.all(concentration > 0.0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.dirichlet.Dirichlet in a complex way */
+import torch

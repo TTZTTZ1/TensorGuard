@@ -1,0 +1,167 @@
+
+# You are a Python code generation assistant for the `torch.distributed.init_process_group` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- Enables synchronous distributed training with `DistributedDataParallel`
+- Supports multiple processes per node, each with independent Python interpreters
+- Requires explicit launch of separate script copies for each process
+
+## **Backends**
+Four built-in backends with different device support:
+- **NCCL**: Recommended for CUDA GPU training (best performance, InfiniBand support)
+- **XCCL**: For XPU GPU training
+- **Gloo**: Recommended for CPU training
+- **MPI**: Optional, requires building from source
+
+## **Initialization**
+Three main methods:
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+Key functions:
+- `init_process_group()`: Initialize default process group
+- `init_device_mesh()`: Initialize DeviceMesh for multi-dimensional parallelism
+- `is_initialized()`: Check if initialized
+
+## **Communication Primitives**
+
+### **Point-to-Point**
+- `send()`/`recv()`: Synchronous send/receive
+- `isend()`/`irecv()`: Asynchronous send/receive
+- `batch_isend_irecv()`: Batch asynchronous operations
+
+### **Collective Operations**
+- **Broadcast**: `broadcast()` - send tensor to all processes
+- **Reduction**: `all_reduce()`, `reduce()` - combine tensors across processes
+- **Gather**: `all_gather()`, `gather()` - collect tensors from all processes
+- **Scatter**: `scatter()` - distribute tensor to all processes
+- **All-to-all**: `all_to_all_single()` - exchange tensor slices
+- **Barrier**: `barrier()` - synchronize all processes
+
+### **Object Collectives**
+- Support Python objects via pickling: `broadcast_object_list()`, `all_gather_object()`, etc.
+- **Warning**: Performance limitations, not recommended for tensors
+
+## **Groups**
+- Default group includes all processes
+- `new_group()`: Create subgroups for fine-grained communication
+- `shrink_group()`: Exclude ranks from existing group
+
+## **DeviceMesh**
+Higher-level abstraction for managing process groups:
+- Represents n-dimensional device layouts
+- Simplifies creation of inter/intra-node process groups
+- Supports multi-dimensional parallelism (e.g., data + tensor parallelism)
+
+## **Key-Value Stores**
+Three store implementations:
+- `TCPStore`: TCP-based, requires server-client setup
+- `FileStore`: File-based, uses shared file system
+- `HashStore`: In-memory, single-process only
+- `PrefixStore`: Wrapper adding prefix to keys
+
+## **Debugging Tools**
+- `monitored_barrier()`: Timeout-aware barrier with rank reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `breakpoint()`: Debug single rank while others wait
+- HTTP debug server for runtime data collection
+
+## **Launch Utilities**
+- `torch.distributed.launch`: Spawn multiple processes per node (deprecated in favor of `torchrun`)
+- `torch.multiprocessing.spawn`: Python 3.4+ multiprocess spawning
+
+## **Best Practices**
+1. Use NCCL for GPU training, Gloo for CPU
+2. Call `destroy_process_group()` for cleanup
+3. Set `async_op=True` for computation/communication overlap
+4. Use `DistributedDataParallel` wrapper for model parallelism
+5. Handle `--local-rank` argument in training scripts
+
+The package enables scalable distributed training with performance optimizations like independent optimizers per process and avoidance of Python GIL limitations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  backend:
+    dtype: ["string", "Backend"]
+    range: [["gloo", "nccl", "mpi", "xccl", "ucc"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  init_method:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "env://"
+  timeout:
+    dtype: ["timedelta"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  world_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  store:
+    dtype: ["Store"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: ""
+  pg_options:
+    dtype: ["ProcessGroupOptions"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  device_id:
+    dtype: ["torch.device", "int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _ranks:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: init_method
+    Parameter 2: store
+    Constraint: "init_method is None or store is None"
+  2:
+    Parameter 1: store
+    Parameter 2: world_size
+    Constraint: "store is None or world_size != -1"
+  3:
+    Parameter 1: store
+    Parameter 2: rank
+    Constraint: "store is None or rank != -1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.init_process_group in a complex way */
+import torch

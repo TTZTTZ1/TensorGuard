@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `torch.distributed.broadcast_object_list` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a comprehensive suite of tools for distributed training across multiple processes and machines. Here's a concise summary of its key components and usage:
+
+## **Core Concepts**
+- **Backends**: Supports multiple communication backends (`gloo`, `nccl`, `mpi`, `xccl`, `ucc`) with different device compatibility
+- **Process Groups**: Manages communication between processes, with the default "world" group and custom subgroups
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups
+
+## **Key Functions**
+
+### **Initialization**
+```python
+# Basic initialization
+dist.init_process_group(backend="nccl")  # or "gloo", "mpi", etc.
+
+# DeviceMesh initialization
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+### **Collective Operations**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Broadcast**: `broadcast()`, `broadcast_object_list()`
+- **Reduction**: `all_reduce()`, `reduce()`
+- **Gather/Scatter**: `all_gather()`, `gather()`, `scatter()`
+- **All-to-all**: `all_to_all_single()`, `all_to_all()`
+- **Synchronization**: `barrier()`, `monitored_barrier()`
+
+### **Utility Functions**
+- **Group Management**: `new_group()`, `get_rank()`, `get_world_size()`
+- **Store Types**: `TCPStore`, `FileStore`, `HashStore` for distributed key-value storage
+- **Debugging**: `breakpoint()`, `monitored_barrier()`, debug server
+
+## **Best Practices**
+
+### **Backend Selection**
+- **GPU training**: Use `nccl` (CUDA) or `xccl` (XPU)
+- **CPU training**: Use `gloo`
+- **InfiniBand**: Use `nccl` for GPU, `gloo` or `mpi` for CPU
+
+### **Initialization Methods**
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: `init_method='tcp://10.1.1.20:23456'`
+3. **Shared file system**: `init_method='file:///mnt/nfs/sharedfile'`
+
+### **Performance Tips**
+- Use `async_op=True` for overlapping communication and computation
+- Configure NCCL environment variables for tuning (`NCCL_SOCKET_IFNAME`, `NCCL_DEBUG`, etc.)
+- Consider Copy Engine Collectives for GPU communication offloading (NCCL 2.28+)
+
+## **Debugging Support**
+- `TORCH_DISTRIBUTED_DEBUG` environment variable for detailed logging
+- `torch.distributed.breakpoint()` for rank-specific debugging
+- `monitored_barrier()` for timeout-aware synchronization
+- HTTP debug server for runtime diagnostics
+
+## **Important Notes**
+- Always call `destroy_process_group()` for cleanup
+- Ensure consistent mesh shapes across all ranks in DeviceMesh
+- Object collectives have performance limitations - prefer tensor operations
+- Windows supports all backends except NCCL
+- Third-party backends can be registered via `Backend.register_backend()`
+
+The package enables efficient distributed training with support for synchronous/asynchronous operations, flexible process grouping, and comprehensive debugging tools.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  object_list:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int", "None"]
+    range: [[0, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  group_src:
+    dtype: ["int", "None"]
+    range: [[0, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: src
+    Parameter 2: group_src
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.broadcast_object_list in a complex way */
+import torch

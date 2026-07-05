@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.linalg.svd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.svd` computes the singular value decomposition (SVD) of a matrix (or batch of matrices) into three components:  
+- **U** (left singular vectors)  
+- **S** (singular values, real and in descending order)  
+- **Vh** (conjugate transpose of right singular vectors)  
+
+**Key parameters:**  
+- `full_matrices` (default `True`): If `True`, returns full-sized U and Vh; if `False`, returns reduced versions.  
+- `driver` (CUDA only): Allows choosing cuSOLVER algorithm (`gesvd`, `gesvdj`, `gesvda`) for speed/accuracy trade-offs.  
+
+**Notes:**  
+- Always returns a tuple `(U, S, Vh)`; use `torch.linalg.svdvals()` for singular values only.  
+- Supports float/double and complex dtypes, and batched inputs.  
+- Gradients can be unstable for repeated or near-zero singular values.  
+- Outputs U and Vh are not unique due to sign/phase ambiguity.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(..., m, n)"]
+    default: null
+  full_matrices:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  driver:
+    dtype: ["str", "None"]
+    range: [["None", "gesvd", "gesvdj", "gesvda"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  out:
+    dtype: ["tuple", "None"]
+    range: null
+    structure: ["tuple"]
+    shape: ["tuple"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: driver
+    Constraint: "driver is None or A.device.type == 'cuda'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.svd in a complex way */
+import torch

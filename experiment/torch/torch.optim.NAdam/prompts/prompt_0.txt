@@ -1,0 +1,159 @@
+
+# You are a Python code generation assistant for the `torch.optim.NAdam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.NAdam` class implements the **NAdam (Nesterov-accelerated Adaptive Moment Estimation)** optimizer, which combines Nesterov momentum with the Adam algorithm.
+
+### **Key Features:**
+- **Algorithm**: Integrates Nesterov momentum into Adam for potentially faster convergence.
+- **Parameters**:
+  - `lr` (default: 2e-3): Learning rate.
+  - `betas` (default: (0.9, 0.999)): Coefficients for gradient and squared gradient moving averages.
+  - `eps` (default: 1e-8): Numerical stability term.
+  - `weight_decay` (default: 0): L2 penalty (weight decay).
+  - `momentum_decay` (default: 4e-3): Decay factor for Nesterov momentum.
+  - `decoupled_weight_decay` (default: False): If True, uses AdamW-style decoupled weight decay (NAdamW).
+  - `foreach` (default: None): Enables faster foreach implementation on CUDA (uses more memory).
+  - `maximize` (default: False): Maximizes the objective instead of minimizing.
+  - `capturable` (default: False): Safe for CUDA graphs/torch.compile (may reduce performance otherwise).
+  - `differentiable` (default: False): Allows autograd through the optimizer step (impairs performance).
+
+### **Core Functionality:**
+1. **Initialization**: Tracks first (`m`) and second (`v`) moment estimates (initially zero).
+2. **Update Steps**:
+   - Computes gradients (negated if `maximize=True`).
+   - Applies weight decay (either coupled or decoupled).
+   - Updates momentum with Nesterov acceleration using `momentum_decay`.
+   - Computes bias-corrected moment estimates.
+   - Updates parameters using the adaptive learning rate.
+
+### **Additional Methods:**
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` by default for memory efficiency).
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state.
+- `add_param_group()`: Add new parameter groups dynamically.
+- **Hooks**: Pre/post hooks for `step`, `state_dict`, and `load_state_dict` for custom processing.
+
+### **Use Case:**
+Suitable for training deep neural networks where adaptive learning rates and Nesterov momentum may improve convergence speed and stability. Choose `decoupled_weight_decay=True` for NAdamW (often better generalization). Use `foreach=True` on CUDA for performance (if memory permits).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: ["No mention"]
+    structure: ["iterable"]
+    shape: ["No mention"]
+    default: "null"
+  lr:
+    dtype: ["float", "Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: [1, "any"]
+    default: "2e-3"
+  betas:
+    dtype: ["Tuple[float, float]"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  momentum_decay:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "4e-3"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "params"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  2:
+    Parameter 1: "lr"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  3:
+    Parameter 1: "betas"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  4:
+    Parameter 1: "eps"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  5:
+    Parameter 1: "weight_decay"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  6:
+    Parameter 1: "momentum_decay"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  7:
+    Parameter 1: "decoupled_weight_decay"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  8:
+    Parameter 1: "foreach"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  9:
+    Parameter 1: "maximize"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  10:
+    Parameter 1: "capturable"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  11:
+    Parameter 1: "differentiable"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.NAdam in a complex way */
+import torch

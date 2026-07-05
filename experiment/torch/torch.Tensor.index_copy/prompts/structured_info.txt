@@ -1,0 +1,36 @@
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["int64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [1]
+    default: null
+  tensor2:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: self
+    Constraint: "0 <= dim < self.dim()"
+  2:
+    Parameter 1: index
+    Parameter 2: tensor2
+    Constraint: "index.size(0) == tensor2.size(dim)"
+  3:
+    Parameter 1: tensor2
+    Parameter 2: self
+    Constraint: "all(tensor2.size(i) == self.size(i) for i in range(self.dim()) if i != dim)"
+  4:
+    Parameter 1: index
+    Parameter 2: self
+    Constraint: "torch.all(index >= 0) and torch.all(index < self.size(dim))"

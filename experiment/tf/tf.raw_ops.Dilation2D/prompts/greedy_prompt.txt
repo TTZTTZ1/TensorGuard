@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Dilation2D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.Dilation2D` operation performs grayscale morphological dilation on a 4-D input tensor using a 3-D filter. It computes the maximum-sum correlation between the input and filter across spatial dimensions, with independent processing per channel.
+
+**Key Parameters:**
+- **input**: 4-D tensor of shape `[batch, in_height, in_width, depth]`
+- **filter**: 3-D tensor of shape `[filter_height, filter_width, depth]`
+- **strides**: List of 4 integers specifying sliding window stride `[1, stride_height, stride_width, 1]`
+- **rates**: List of 4 integers for atrous dilation rates `[1, rate_height, rate_width, 1]`
+- **padding**: Either `"SAME"` or `"VALID"` padding algorithm
+
+**Operation:**  
+For each position `(y, x)` in the output, the operation computes:
+```
+output[b, y, x, c] = max_{dy, dx} (input[b, strides[1]*y + rates[1]*dy, strides[2]*x + rates[2]*dx, c] + filter[dy, dx, c])
+```
+This is equivalent to unmirrored max-sum correlation. The output shape depends on the padding method.
+
+**Notes:**
+- Supports data types including float, integer, and half-precision variants
+- Max-pooling is a special case with zero-valued filters
+- Duality exists: dilation of `input` equals negation of erosion of `-input` by the reflected filter
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filter:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [4]
+    default: null
+  rates:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID"]]
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filter
+    Constraint: "input.dtype == filter.dtype"
+  2:
+    Parameter 1: input
+    Parameter 2: filter
+    Constraint: "input.shape[3] == filter.shape[2]"
+  3:
+    Parameter 1: strides
+    Parameter 2: strides
+    Constraint: "len(strides) == 4 and strides[0] == 1 and strides[3] == 1"
+  4:
+    Parameter 1: rates
+    Parameter 2: rates
+    Constraint: "len(rates) == 4 and rates[0] == 1 and rates[3] == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Dilation2D in a complex way */
+import tensorflow as tf

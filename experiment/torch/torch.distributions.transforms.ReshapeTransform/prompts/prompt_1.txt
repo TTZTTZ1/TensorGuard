@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ReshapeTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows design patterns similar to TensorFlow Distributions
+- Supports both discrete and continuous probability distributions
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (e.g., in VAEs)
+
+### **3. Available Distributions**
+**Univariate Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Gumbel  
+**Univariate Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial  
+**Multivariate**: MultivariateNormal, Dirichlet, Wishart, LowRankMultivariateNormal  
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, LKJCholesky
+
+### **4. Key Features**
+- **Parameterization**: Most distributions offer multiple parameterizations (e.g., `probs` vs `logits`)
+- **Batch Support**: All distributions support batched parameters
+- **Validation**: Optional argument validation with `validate_args`
+- **Exponential Family**: Specialized class for distributions in exponential family form
+
+### **5. Transforms & Constraints**
+- **Transforms**: Bijective transformations for reparameterization (Affine, Exp, Sigmoid, etc.)
+- **Constraints**: Define valid parameter ranges (simplex, positive definite, intervals, etc.)
+- **Registry System**: `transform_to()` and `biject_to()` for constrained optimization
+
+### **6. KL Divergence**
+- Automatic computation between compatible distributions
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients with categorical distributions
+2. **Variational Inference**: Reparameterization with normal distributions
+3. **Probabilistic Modeling**: Building complex hierarchical models
+4. **Bayesian Methods**: Prior/posterior distributions in neural networks
+
+## **Basic Usage Pattern**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sample and compute probabilities
+samples = dist.sample([100])
+log_probs = dist.log_prob(samples)
+
+# Reparameterized sampling (differentiable)
+reparam_samples = dist.rsample([100])
+```
+
+The module provides a flexible, GPU-accelerated foundation for probabilistic programming within PyTorch's autograd ecosystem.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  out_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "in_shape"
+    Parameter 2: "out_shape"
+    Constraint: "torch.Size(in_shape).numel() == torch.Size(out_shape).numel()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ReshapeTransform in a complex way */
+import torch

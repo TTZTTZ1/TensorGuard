@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.istft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.istft` performs the inverse short-time Fourier transform, reconstructing a time-domain signal from its complex STFT representation. It is designed to be the inverse of `torch.stft`, using least-squares estimation.
+
+**Key Parameters:**
+- **input**: Complex tensor of shape `(B?, N, T)` (batch, frequencies, frames).
+- **n_fft**: FFT size.
+- **hop_length**: Frame step (default: `n_fft // 4`).
+- **window**: Window function used in the original STFT (required from PyTorch 2.1 onward).
+- **center**: Whether the STFT input was padded (affects length handling).
+- **length**: Optional original signal length to control trimming/padding.
+- **return_complex**: Whether to return a complex output (default `False`, returns real-valued signal).
+
+**Important Notes:**
+- The function checks the nonzero overlap condition (NOLA) for valid reconstruction.
+- If `center=True`, padding is added; the result may be shorter than the original if `length` is not specified.
+- Providing the correct `window` is essential for accurate inversion.
+- The output shape is `(B?, length)`, reconstructing the original time-domain signal.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["complex"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2", "3"]
+    default: null
+  n_fft:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  hop_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "n_fft // 4"
+  win_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "n_fft"
+  window:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "torch.ones(win_length)"
+  center:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "True"
+  normalized:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+  onesided:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "inferred from input"
+  length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "derived from T and other parameters"
+  return_complex:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: window
+    Parameter 2: n_fft
+    Constraint: "window is None or window.shape[0] <= n_fft"
+  2:
+    Parameter 1: onesided
+    Parameter 2: return_complex
+    Constraint: "not (onesided == True and return_complex == True)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.istft in a complex way */
+import torch

@@ -1,0 +1,175 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.MultiHeadAttention` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.MultiHeadAttention` layer implements multi-headed attention as described in the "Attention Is All You Need" paper. It projects query, key, and value tensors into multiple heads, computes scaled dot-product attention, and combines the results.
+
+**Key Parameters:**
+- `num_heads`: Number of attention heads.
+- `key_dim`: Feature dimension for each head in query and key.
+- `value_dim`: Feature dimension for each head in value (defaults to `key_dim`).
+- `dropout`: Dropout rate applied to attention scores.
+- `use_bias`: Whether to use bias in dense projections.
+- `attention_axes`: Axes over which attention is applied (default is all except batch and heads).
+
+**Call Arguments:**
+- `query`, `key`, `value`: Input tensors (shape `[batch, sequence, features]`). If `key` is not provided, `value` is used for both.
+- `attention_mask`: Boolean mask to prevent attention to certain positions.
+- `return_attention_scores`: If `True`, returns both output and attention scores.
+- `use_causal_mask`: Applies a causal mask for autoregressive tasks (e.g., decoder).
+
+**Returns:**
+- `attention_output`: Tensor of shape `[batch, target_seq, features]` (or as specified by `output_shape`).
+- Optionally `attention_scores` if `return_attention_scores=True`.
+
+**Common Use Cases:**
+- Self-attention (when query, key, value are the same).
+- Cross-attention (e.g., in encoder-decoder architectures).
+- Transformer models for tasks like machine translation, image captioning, etc.
+
+The layer handles projection, attention computation, and output projection automatically, supporting both training and inference modes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_heads:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  key_dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  value_dim:
+    dtype: ["int", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  dropout:
+    dtype: ["float"]
+    range: ["[0, 1]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  use_bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  output_shape:
+    dtype: ["tuple", "None"]
+    range: ["No mention"]
+    structure: ["tuple", "None"]
+    shape: ["No mention"]
+    default: "None"
+  attention_axes:
+    dtype: ["tuple", "None"]
+    range: ["No mention"]
+    structure: ["tuple", "None"]
+    shape: ["No mention"]
+    default: "None"
+  kernel_initializer:
+    dtype: ["string", "initializer"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: ["string", "initializer"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: ["regularizer", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  bias_regularizer:
+    dtype: ["regularizer", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  activity_regularizer:
+    dtype: ["regularizer", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  kernel_constraint:
+    dtype: ["constraint", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  bias_constraint:
+    dtype: ["constraint", "None"]
+    range: ["No mention"]
+    structure: ["scalar", "None"]
+    shape: ["No mention"]
+    default: "None"
+  query:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B, T, dim)"]
+    default: null
+  value:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B, S, dim)"]
+    default: null
+  key:
+    dtype: ["tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(B, S, dim)"]
+    default: "None"
+  attention_mask:
+    dtype: ["bool", "tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(B, T, S)"]
+    default: "No mention"
+  return_attention_scores:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  training:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  use_causal_mask:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+constraints:
+  1.
+    Parameter 1: query
+    Parameter 2: value
+    Constraint: query.shape[-1] == value.shape[-1]
+  2.
+    Parameter 1: key
+    Parameter 2: query
+    Constraint: key is None or query.shape[-1] == key.shape[-1]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.MultiHeadAttention in a complex way */
+import tensorflow as tf

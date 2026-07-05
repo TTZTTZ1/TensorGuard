@@ -1,0 +1,138 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ApplyFtrlV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ApplyFtrlV2` is a low-level TensorFlow operation that updates a variable using the FTRL-Proximal optimization algorithm with L2 shrinkage. It is designed for training models with sparse features, commonly used in large-scale linear models.
+
+### Key Functionality:
+- **FTRL-Proximal Update**: Updates the input variable (`var`) based on the FTRL optimization scheme, which combines L1 and L2 regularization for efficient sparse updates.
+- **L2 Shrinkage Support**: Includes an additional L2 shrinkage term (via `l2_shrinkage`) to further regularize weights, enhancing generalization.
+- **Internal State Tracking**: Maintains auxiliary variables (`accum` and `linear`) to store gradient history and linear terms, crucial for the algorithm's adaptive behavior.
+
+### Main Parameters:
+- **`var`, `accum`, `linear`**: Mutable tensors representing the model weights and internal algorithm states.
+- **`grad`**: Gradient tensor for the current update step.
+- **`lr`, `l1`, `l2`, `l2_shrinkage`, `lr_power`**: Scalars controlling learning rate, regularization strengths, and adaptive scaling.
+- **`use_locking`**: Optional lock to prevent race conditions during concurrent updates.
+- **`multiply_linear_by_lr`**: Optional flag to adjust the linear term scaling (defaults to `False`).
+
+### Typical Use Case:
+Primarily used internally by high-level optimizers like `tf.keras.optimizers.Ftrl`. Direct usage is rare; it’s intended for custom optimization implementations or low-level TensorFlow graph construction.
+
+### Output:
+Returns an updated version of `var` (same data type), reflecting one step of FTRL optimization with the provided inputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  accum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  linear:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  l2_shrinkage:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  lr_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  multiply_linear_by_lr:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "accum"
+    Parameter 2: "var"
+    Constraint: "accum.dtype == var.dtype"
+  2:
+    Parameter 1: "linear"
+    Parameter 2: "var"
+    Constraint: "linear.dtype == var.dtype"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "var"
+    Constraint: "grad.dtype == var.dtype"
+  4:
+    Parameter 1: "lr"
+    Parameter 2: "var"
+    Constraint: "lr.dtype == var.dtype"
+  5:
+    Parameter 1: "l1"
+    Parameter 2: "var"
+    Constraint: "l1.dtype == var.dtype"
+  6:
+    Parameter 1: "l2"
+    Parameter 2: "var"
+    Constraint: "l2.dtype == var.dtype"
+  7:
+    Parameter 1: "l2_shrinkage"
+    Parameter 2: "var"
+    Constraint: "l2_shrinkage.dtype == var.dtype"
+  8:
+    Parameter 1: "lr_power"
+    Parameter 2: "var"
+    Constraint: "lr_power.dtype == var.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ApplyFtrlV2 in a complex way */
+import tensorflow as tf

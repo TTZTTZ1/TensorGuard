@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.nasnet.NASNetMobile` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.nasnet.NASNetMobile` is a lightweight convolutional neural network architecture designed for mobile and embedded vision applications. It is part of the NASNet family, which uses neural architecture search to optimize model structure.
+
+**Key Features:**
+- **Purpose:** Image classification, particularly on the ImageNet dataset.
+- **Input:** Expects input images of at least 32x32 pixels with 3 color channels (RGB). When using `include_top=True` and ImageNet weights, the required input shape is (224, 224, 3).
+- **Preprocessing:** Inputs should be preprocessed using `keras.applications.nasnet.preprocess_input`.
+
+**Main Parameters:**
+- `include_top`: Whether to include the final classification layer.
+- `weights`: Load pretrained ImageNet weights or initialize randomly.
+- `pooling`: Defines pooling method when `include_top=False` (`None`, `'avg'`, or `'max'`).
+- `classes`: Number of output classes (only relevant if `include_top=True` and no pretrained weights are used).
+- `classifier_activation`: Activation function for the top layer (default is `'softmax'`).
+
+**Use Cases:**
+- Transfer learning by removing the top layer (`include_top=False`) and adding custom layers.
+- Direct classification using pretrained ImageNet weights.
+
+**Reference:** Based on the paper ["Learning Transferable Architectures for Scalable Image Recognition"](https://arxiv.org/abs/1707.07012) (CVPR 2018).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_shape:
+    dtype: ["int"]
+    range: ["exactly 3 channels, width and height >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "None"]
+    range: ["imagenet", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  pooling:
+    dtype: ["string", "None"]
+    range: ["None", "'avg'", "'max'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: ["str or callable, but for weights='imagenet' only None or 'softmax'"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top or input_shape is None or input_shape == (224,224,3)"
+  2:
+    Parameter 1: "weights"
+    Parameter 2: "input_shape"
+    Constraint: "weights != 'imagenet' or input_shape == (224,224,3)"
+  3:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "include_top or classes == 1000"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights != 'imagenet' or classes == 1000"
+  5:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights != 'imagenet' or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.nasnet.NASNetMobile in a complex way */
+import tensorflow as tf

@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.types.experimental.GenericFunction` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.types.experimental.GenericFunction` is the base class for TensorFlow's polymorphic graph functions, which are Python callables that dispatch to one or more underlying TensorFlow graphs. These functions automatically select or create the appropriate graph specialization based on input types, enabling flexible and efficient execution.
+
+### Key Features:
+- **Polymorphism**: Can be backed by multiple TF graphs, choosing the right one for given inputs.
+- **Dynamic Specialization**: May create new graph specializations on-the-fly (e.g., via tracing).
+- **Primary Use**: Serves as the foundation for `tf.function`, which converts Python functions to graph functions.
+
+### Main Methods:
+1. **`__call__(*args, **kwargs)`**  
+   Executes the function, returning results in eager mode or symbolic tensors in graph mode.
+
+2. **`get_concrete_function(*args, **kwargs)`**  
+   Returns a `ConcreteFunction` specialized to specific input types or `TensorSpec`s. Useful for obtaining a fixed graph version.
+
+3. **`experimental_get_compiler_ir(*args, **kwargs)`**  
+   Returns compiler intermediate representations (e.g., HLO) for debugging, with options like `hlo`, `optimized_hlo`, or serialized/dot formats. Requires `jit_compile=True`.
+
+### Attributes:
+- **`function_type`**: Returns a `FunctionType` describing the callable's signature.
+
+### Notes:
+- Use `get_concrete_function` to lock in a specific input signature and retrieve a callable `ConcreteFunction`.
+- The `experimental_get_compiler_ir` method is intended for debugging and provides insights into the compiled graph stages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  stage
+    dtype: ["string"]
+    range: ["hlo", "hlo_serialized", "optimized_hlo", "optimized_hlo_serialized", "optimized_hlo_dot"]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: null
+  device_name
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "None"
+  args
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: null
+  kwargs
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1
+    Parameter 1: "stage"
+    Parameter 2: "stage"
+    Constraint: "stage in ['hlo', 'hlo_serialized', 'optimized_hlo', 'optimized_hlo_serialized', 'optimized_hlo_dot']"
+  2
+    Parameter 1: "args"
+    Parameter 2: "args"
+    Constraint: "all(isinstance(arg, tf.TensorSpec) for arg in args) or not any(isinstance(arg, tf.TensorSpec) for arg in args)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.types.experimental.GenericFunction in a complex way */
+import tensorflow as tf

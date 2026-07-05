@@ -1,0 +1,58 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["rank N+2"]
+    default: "null"
+  window_shape:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "null"
+  pooling_type:
+    dtype: ["string"]
+    range: ["AVG", "MAX"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  strides:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "[1]*N"
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "SAME"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dilations:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "[1]*N"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "data_format"
+    Parameter 2: "window_shape"
+    Constraint: "(data_format is None) or ((len(window_shape) == 1 and data_format in ['NWC', 'NCW']) or (len(window_shape) == 2 and data_format in ['NHWC', 'NCHW']) or (len(window_shape) == 3 and data_format in ['NDHWC', 'NCDHW']))"
+  2:
+    Parameter 1: "strides"
+    Parameter 2: "dilations"
+    Constraint: "not (any(s > 1 for s in strides) and any(d > 1 for d in dilations))"

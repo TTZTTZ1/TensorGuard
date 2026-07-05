@@ -1,0 +1,50 @@
+params:
+  data:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [0]
+    default: "null"
+  sparse_gradient:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.rank(indices) == tf.rank(segment_ids)"
+  2:
+    Parameter 1: "segment_ids"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.math.is_non_decreasing(segment_ids)"
+  3:
+    Parameter 1: "num_segments"
+    Parameter 2: "segment_ids"
+    Constraint: "num_segments == tf.size(tf.unique(segment_ids)[0])"

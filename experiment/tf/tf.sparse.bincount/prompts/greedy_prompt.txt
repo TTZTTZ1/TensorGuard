@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.sparse.bincount` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sparse.bincount` counts integer occurrences in a tensor, returning a sparse tensor where each slice (along a specified axis) tallies the frequency of each integer value. It supports optional weighting, binary outputs, and length constraints via `minlength` and `maxlength`. The function works with Tensor, RaggedTensor, or SparseTensor inputs, currently limited to 2D tensors when `axis=-1`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["Tensor", "RaggedTensor", "SparseTensor"]
+    shape: null
+    default: null
+  weights:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["Tensor", "RggedTensor", "SparseTensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: [[0, -1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  minlength:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  maxlength:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  binary_output:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "values"
+    Parameter 2: "axis"
+    Constraint: "axis == -1 and values is not None implies len(values.shape) == 2"
+  2:
+    Parameter 1: "weights"
+    Parameter 2: "values"
+    Constraint: "weights is not None implies weights.shape == values.shape"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "values"
+    Constraint: "isinstance(values, tf.SparseTensor) and weights is not None implies isinstance(weights, tf.SparseTensor) and weights.dense_shape == values.dense_shape and tf.reduce_all(tf.equal(weights.indices, values.indices))"
+  4:
+    Parameter 1: "minlength"
+    Parameter 2: "maxlength"
+    Constraint: "minlength is not None and maxlength is not None implies minlength <= maxlength"
+  5:
+    Parameter 1: "axis"
+    Parameter 2: null
+    Constraint: "axis is None or axis in [0, -1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sparse.bincount in a complex way */
+import tensorflow as tf

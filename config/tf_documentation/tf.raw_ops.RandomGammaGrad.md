@@ -1,0 +1,34 @@
+# tf.raw_ops.RandomGammaGrad
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/RandomGammaGrad](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/RandomGammaGrad)
+
+---
+
+Computes the derivative of a Gamma random sample w.r.t. `alpha`.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.RandomGammaGrad`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/RandomGammaGrad)
+
+```
+tf.raw_ops.RandomGammaGrad(
+    alpha, sample, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `alpha` | A `Tensor`. Must be one of the following types: `float32`, `float64`. |
+| `sample` | A `Tensor`. Must have the same type as `alpha`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `alpha`. | |

@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.TanhTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Features**
+
+### **1. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### **2. Core Components**
+- **Distribution**: Abstract base class with methods like:
+  - `sample()`, `rsample()`: Generate samples
+  - `log_prob()`: Compute log probability
+  - `entropy()`: Compute distribution entropy
+  - `cdf()`, `icdf()`: Cumulative/inverse cumulative distribution functions
+
+### **3. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- **Transformed**: LogNormal, HalfNormal, HalfCauchy, Pareto, Weibull, etc. (via `TransformedDistribution`)
+- **Specialized**: MixtureSameFamily, Independent, RelaxedBernoulli, LKJCholesky, etc.
+
+### **4. Key Functionality**
+- **Parameterization**: Most distributions support both `probs` and `logits` parameterizations
+- **Batch Support**: All distributions support batched parameters
+- **Validation**: Optional argument validation via `validate_args`
+- **KL Divergence**: Built-in KL divergence computation between distributions
+- **Transforms**: Library of bijective transforms for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: System for parameter validation (Interval, Simplex, PositiveDefinite, etc.)
+
+### **5. Practical Applications**
+- **Reinforcement Learning**: Policy gradients via REINFORCE
+- **Variational Inference**: Reparameterization trick for VAEs
+- **Probabilistic Modeling**: Building complex probabilistic models
+- **Bayesian Methods**: Prior/posterior distributions in Bayesian inference
+
+### **6. Constraint System**
+- `transform_to()`: For unconstrained optimization of constrained parameters
+- `biject_to()`: For bijective transformations (e.g., HMC sampling)
+- Automatic constraint handling for distribution parameters
+
+## **Example Usage Patterns**
+```python
+# Basic distribution usage
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.rsample((100,))  # Differentiable samples
+log_probs = normal.log_prob(samples)
+
+# REINFORCE example
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization example
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+```
+
+The package provides a unified interface for probabilistic modeling with automatic differentiation support, making it essential for modern machine learning applications involving uncertainty and stochasticity.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.TanhTransform in a complex way */
+import torch

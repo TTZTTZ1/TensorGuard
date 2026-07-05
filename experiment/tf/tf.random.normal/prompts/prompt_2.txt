@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.random.normal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.normal` generates random numbers from a normal (Gaussian) distribution. It requires specifying the output tensor's `shape`, and optionally allows setting the `mean` (default 0.0), `stddev` (default 1.0), `dtype` (default `float32`), and a `seed` for reproducibility. The function is commonly used for initializing weights in neural networks and generating synthetic data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor", "list", "tuple"]
+    shape: ["1-D"]
+    default: null
+  mean:
+    dtype: ["float16", "bfloat16", "float32", "float64"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "variable"]
+    default: "0.0"
+  stddev:
+    dtype: ["float16", "bfloat16", "float32", "float64"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "variable"]
+    default: "1.0"
+  dtype:
+    dtype: ["string"]
+    range: [["float16", "bfloat16", "float32", "float64"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.float32"
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: mean
+    Parameter 2: dtype
+    Constraint: "isinstance(mean, (int, float)) or (tf.is_tensor(mean) and mean.dtype == tf.dtypes.as_dtype(dtype))"
+  2:
+    Parameter 1: stddev
+    Parameter 2: dtype
+    Constraint: "isinstance(stddev, (int, float)) or (tf.is_tensor(stddev) and stddev.dtype == tf.dtypes.as_dtype(dtype))"
+  3:
+    Parameter 1: mean
+    Parameter 2: stddev
+    Constraint: "tf.broadcast_static_shape(tf.shape(mean), tf.shape(stddev)) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.normal in a complex way */
+import tensorflow as tf

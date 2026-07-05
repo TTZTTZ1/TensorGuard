@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorKronecker` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorKronecker` is a TensorFlow class that represents the **Kronecker product** of one or more linear operators. It efficiently constructs a composite linear operator without explicitly forming the full dense matrix, enabling scalable linear algebra operations.
+
+### Key Features:
+- **Kronecker Product Composition**: Combines multiple linear operators `[op1, op2, ..., opJ]` into a single operator representing `op1 ⊗ op2 ⊗ ... ⊗ opJ`.
+- **Shape Handling**: If each operator `opj` has shape `batch_shape_j + [M_j, N_j]`, the composite operator's shape is `broadcast_batch_shape + [∏ M_j, ∏ N_j]`.
+- **Efficiency**: Operations (e.g., `matmul`, `solve`, `determinant`) are performed using the underlying operators, avoiding explicit large matrix construction.
+- **Matrix Property Hints**: Supports flags like `is_square`, `is_non_singular`, etc., to enable optimizations and validations.
+
+### Common Use Cases:
+1. **Building Large Structured Operators**: Combine smaller operators to represent large structured matrices (e.g., block matrices, tensor products).
+2. **Batch Operations**: Efficiently handle batches of Kronecker products.
+3. **Linear Algebra Operations**: Perform `matmul`, `solve`, `determinant`, `trace`, etc., directly on the composite operator.
+
+### Example:
+```python
+import tensorflow as tf
+
+# Create two 2x2 linear operators
+op1 = tf.linalg.LinearOperatorFullMatrix([[1., 2.], [3., 4.]])
+op2 = tf.linalg.LinearOperatorFullMatrix([[1., 0.], [2., 1.]])
+
+# Kronecker product
+kron_op = tf.linalg.LinearOperatorKronecker([op1, op2])
+print(kron_op.to_dense())  # 4x4 matrix
+print(kron_op.matmul(x))   # Multiply with a vector/matrix
+```
+
+### Key Methods:
+- `matmul(x)`: Compute `A @ x`.
+- `solve(rhs)`: Solve linear systems `A X = rhs`.
+- `determinant()`, `log_abs_determinant()`: Compute determinants.
+- `trace()`, `diag_part()`: Extract trace or diagonal.
+- `to_dense()`: Explicitly construct the dense matrix (use cautiously for large operators).
+
+### Notes:
+- All operators must have the same `dtype`.
+- Performance scales with the sum of costs of the individual operators.
+- Useful for leveraging structure in large-scale linear algebra problems without explicit materialization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operators:
+    dtype: [null]
+    range: [null]
+    structure: ["iterable"]
+    shape: [null]
+    default: null
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  is_square:
+    dtype: ["bool", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "len(operators) > 0"
+  2:
+    Parameter 1: operators
+    Parameter 2: null
+    Constraint: "all(op.dtype == operators[0].dtype for op in operators)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorKronecker in a complex way */
+import tensorflow as tf

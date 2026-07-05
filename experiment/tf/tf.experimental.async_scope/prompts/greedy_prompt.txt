@@ -1,0 +1,33 @@
+
+# You are a Python code generation assistant for the `tf.experimental.async_scope` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.async_scope` is a context manager that groups asynchronous TensorFlow operations, allowing them to return before execution completes. Upon exiting the scope, it automatically synchronizes to ensure all async operations finish, and propagates any errors that occurred during execution.
+
+**Key Functionality:**
+- Enables asynchronous execution of ops/functions within the scope.
+- Automatically inserts a synchronization barrier when the scope exits.
+- Raises exceptions if errors occur in async operations.
+
+**Common Use Case:**  
+Asynchronously running training steps in a loop, with proper error handling for cases like dataset exhaustion (e.g., `OutOfRangeError`). After catching such errors, `tf.experimental.async_clear_error()` can be used to clear the error state before proceeding.
+
+**Example Pattern:**
+```python
+with tf.experimental.async_scope():
+    for _ in range(num_steps):
+        train_step_fn()  # May execute asynchronously
+# Synchronization happens here; errors are raised if any occurred.
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.async_scope in a complex way */
+import tensorflow as tf

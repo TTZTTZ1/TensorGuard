@@ -1,0 +1,135 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyFtrlV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceApplyFtrlV2` is a low-level TensorFlow operation that implements the **FTRL-Proximal optimization algorithm** with L2 shrinkage. It updates a given variable (`var`) and its associated accumulators (`accum` and `linear`) using the provided gradient (`grad`) and hyperparameters.
+
+### Key Functionality:
+- **Updates** `var` according to the FTRL-proximal scheme, which is effective for large-scale sparse linear models.
+- **Supports L2 shrinkage regularization** (unlike the V1 version), which helps prevent overfitting.
+- **Operates on resource tensors** (`var`, `accum`, `linear`), meaning they must be `tf.Variable`-like objects stored in a resource container (e.g., GPU memory).
+
+### Core Update Steps:
+1. **Accumulator Update**:  
+   `accum_new = accum + grad * grad`
+2. **Gradient Adjustment**:  
+   `grad_with_shrinkage = grad + 2 * l2_shrinkage * var`
+3. **Linear Term Update**:  
+   `linear += grad_with_shrinkage + (accum_new^(-lr_power) - accum^(-lr_power)) / lr * var`
+4. **Variable Update**:  
+   Computes a quadratic denominator and applies L1 regularization, setting `var` to zero if `|linear| ≤ l1`.
+
+### Parameters:
+- **Required Tensors**: `var`, `accum`, `linear` (resource handles), `grad` (gradient tensor).
+- **Hyperparameters**: `lr` (learning rate), `l1` (L1 regularization), `l2` (L2 regularization), `l2_shrinkage`, `lr_power` (scaling exponent).
+- **Options**: `use_locking` (thread safety), `multiply_linear_by_lr` (scales linear term by learning rate).
+
+### Typical Use:
+- Used internally by optimizers like `tf.keras.optimizers.Ftrl` for training sparse models.
+- Direct usage is rare; prefer high-level APIs unless implementing custom optimization logic.
+
+### Returns:
+- A `tf.Operation` that performs the update when executed in a TensorFlow graph.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  linear:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  l2_shrinkage:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  lr_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  multiply_linear_by_lr:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "grad"
+    Parameter 2: "lr"
+    Constraint: "grad.dtype == lr.dtype"
+  2:
+    Parameter 1: "grad"
+    Parameter 2: "l1"
+    Constraint: "grad.dtype == l1.dtype"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "l2"
+    Constraint: "grad.dtype == l2.dtype"
+  4:
+    Parameter 1: "grad"
+    Parameter 2: "l2_shrinkage"
+    Constraint: "grad.dtype == l2_shrinkage.dtype"
+  5:
+    Parameter 1: "grad"
+    Parameter 2: "lr_power"
+    Constraint: "grad.dtype == lr_power.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyFtrlV2 in a complex way */
+import tensorflow as tf

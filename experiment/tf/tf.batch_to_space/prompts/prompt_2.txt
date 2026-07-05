@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.batch_to_space` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.batch_to_space` reshapes and rearranges a batch of data into spatial dimensions by splitting the batch into blocks and interleaving them, then optionally cropping the result. It is the inverse of `tf.space_to_batch`.
+
+**Key Parameters:**
+- **`input`**: An N-D tensor with shape `[batch] + spatial_shape + remaining_shape`.
+- **`block_shape`**: A 1-D tensor specifying how to split the batch into spatial blocks (all values ≥ 1).
+- **`crops`**: A 2-D tensor defining cropping amounts for each spatial dimension (all values ≥ 0).
+
+**Operation Steps:**
+1. Reshape the batch dimension into `block_shape + [new_batch]`.
+2. Permute dimensions to interleave blocks into the spatial grid.
+3. Reshape to combine block and spatial dimensions.
+4. Crop the spatial dimensions as specified.
+
+**Example:**
+For an input of shape `[4, 1, 1, 1]` with `block_shape = [2, 2]` and no cropping, the output shape becomes `[1, 2, 2, 1]`, transforming a batch of 4 into a 2×2 spatial grid.
+
+**Use Case:**  
+Commonly used in convolutional networks to convert batch-processed data back into spatially organized formats, such as in transpose convolutions or certain upsampling operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  block_shape
+    dtype: ["int32", "int64"]
+    range: [">= 1"]
+    structure: ["tensor", "scalar"]
+    shape: ["1-D with length M"]
+    default: null
+  crops
+    dtype: ["int32", "int64"]
+    range: [">= 0"]
+    structure: ["tensor"]
+    shape: ["2-D with shape [M, 2]"]
+    default: null
+  name
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1
+    Parameter 1: block_shape
+    Parameter 2: input
+    Constraint: "len(input.shape) >= block_shape.shape[0] + 1"
+  2
+    Parameter 1: crops
+    Parameter 2: block_shape
+    Constraint: "crops.shape[0] == block_shape.shape[0]"
+  3
+    Parameter 1: crops
+    Parameter 2: block_shape
+    Constraint: "all(crops[i,0] + crops[i,1] <= block_shape[i] * input.shape[i+1] for i in range(block_shape.shape[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.batch_to_space in a complex way */
+import tensorflow as tf

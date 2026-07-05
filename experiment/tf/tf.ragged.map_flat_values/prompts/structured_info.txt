@@ -1,0 +1,32 @@
+params:
+  op:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["sequence"]
+    shape: ["variable"]
+    default: null
+  kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dict"]
+    shape: ["variable"]
+    default: null
+constraints:
+  1:
+    Parameter 1: args
+    Parameter 2: args
+    Constraint: "any(isinstance(arg, tf.RaggedTensor) for arg in args)"
+  2:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "len({rt.nested_row_splits for rt in [arg for arg in args if isinstance(arg, tf.RaggedTensor)] + [v for v in kwargs.values() if isinstance(v, tf.RaggedTensor)]}) <= 1"
+  3:
+    Parameter 1: op
+    Parameter 2: args
+    Constraint: "all(op(rt.flat_values).shape[0] == rt.flat_values.shape[0] for rt in [arg for arg in args if isinstance(arg, tf.RaggedTensor)] + [v for v in kwargs.values() if isinstance(v, tf.RaggedTensor)])"

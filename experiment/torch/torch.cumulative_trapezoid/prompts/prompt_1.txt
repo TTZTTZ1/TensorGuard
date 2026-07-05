@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.cumulative_trapezoid` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cumulative_trapezoid` computes the cumulative integral of a tensor along a specified dimension using the trapezoidal rule. It returns a cumulative value for each spacing interval, analogous to how `cumsum` relates to `sum`.
+
+**Key parameters:**
+- `y`: Input tensor of values.
+- `x` (optional): Tensor defining variable spacing between values.
+- `dx` (optional): Constant spacing (defaults to 1 if neither `x` nor `dx` is given).
+- `dim`: Dimension along which to integrate (default: last dimension).
+
+**Behavior:**
+- With constant spacing `dx`, each trapezoid area is scaled by `dx`.
+- With `x` provided, uses actual spacing between `x` values.
+- Output size along `dim` is one less than `y`'s size along that dimension.
+
+**Example:**
+```python
+y = torch.tensor([1, 5, 10])
+torch.cumulative_trapezoid(y)  # → tensor([3., 10.5])
+# First element: area of trapezoid between y[0] and y[1]
+# Second element: cumulative area up to y[2]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  x:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  dx:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1.0"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "x is None or x.size(dim) == y.size(dim)"
+  2:
+    Parameter 1: "dim"
+    Parameter 2: "y"
+    Constraint: "dim >= -y.ndim and dim < y.ndim"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cumulative_trapezoid in a complex way */
+import torch

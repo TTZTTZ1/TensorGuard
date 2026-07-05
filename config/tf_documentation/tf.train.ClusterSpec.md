@@ -1,0 +1,261 @@
+# tf.train.ClusterSpec
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/train/ClusterSpec](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterSpec)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L242-L492) |
+
+Represents a cluster as a set of "tasks", organized into "jobs".
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.train.ClusterSpec`](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterSpec)
+
+```
+tf.train.ClusterSpec(
+    cluster
+)
+```
+
+### Used in the notebooks
+
+| Used in the tutorials |
+| --- |
+| * [Custom training loop with Keras and MultiWorkerMirroredStrategy](https://tensorflow.google.cn/tutorials/distribute/multi_worker_with_ctl) * [Parameter server training with ParameterServerStrategy](https://tensorflow.google.cn/tutorials/distribute/parameter_server_training) |
+
+A [`tf.train.ClusterSpec`](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterSpec) represents the set of processes that
+participate in a distributed TensorFlow computation. Every
+[`tf.distribute.Server`](https://tensorflow.google.cn/api_docs/python/tf/distribute/Server) is constructed in a particular cluster.
+
+To create a cluster with two jobs and five tasks, you specify the
+mapping from job names to lists of network addresses (typically
+hostname-port pairs).
+
+```
+cluster = tf.train.ClusterSpec({"worker": ["worker0.example.com:2222",
+                                           "worker1.example.com:2222",
+                                           "worker2.example.com:2222"],
+                                "ps": ["ps0.example.com:2222",
+                                       "ps1.example.com:2222"]})
+```
+
+Each job may also be specified as a sparse mapping from task indices
+to network addresses. This enables a server to be configured without
+needing to know the identity of (for example) all other worker
+tasks:
+
+```
+cluster = tf.train.ClusterSpec({"worker": {1: "worker1.example.com:2222"},
+                                "ps": ["ps0.example.com:2222",
+                                       "ps1.example.com:2222"]})
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `cluster` | A dictionary mapping one or more job names to (i) a list of network addresses, or (ii) a dictionary mapping integer task indices to network addresses; or a [`tf.train.ClusterDef`](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterDef) protocol buffer. |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `TypeError` | If `cluster` is not a dictionary mapping strings to lists of strings, and not a [`tf.train.ClusterDef`](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterDef) protobuf. |
+
+| Attributes | |
+
+|  |  |
+| --- | --- |
+| `jobs` | Returns a list of job names in this cluster. |
+
+## Methods
+
+### `as_cluster_def`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L364-L366)
+
+```
+as_cluster_def()
+```
+
+Returns a [`tf.train.ClusterDef`](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterDef) protocol buffer based on this cluster.
+
+### `as_dict`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L337-L362)
+
+```
+as_dict()
+```
+
+Returns a dictionary from job names to their tasks.
+
+For each job, if the task index space is dense, the corresponding
+value will be a list of network addresses; otherwise it will be a
+dictionary mapping (sparse) task indices to the corresponding
+addresses.
+
+| Returns | |
+| A dictionary mapping job names to lists or dictionaries describing the tasks in those jobs. | |
+
+### `job_tasks`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L438-L465)
+
+```
+job_tasks(
+    job_name
+)
+```
+
+Returns a mapping from task ID to address in the given job.
+
+**Note:** For backwards compatibility, this method returns a list. If
+the given job was defined with a sparse set of task indices, the
+length of this list may not reflect the number of tasks defined in
+this job. Use the [`tf.train.ClusterSpec.num_tasks`](https://tensorflow.google.cn/api_docs/python/tf/train/ClusterSpec#num_tasks) method
+to find the number of tasks defined in a particular job.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `job_name` | The string name of a job in this cluster. |
+
+| Returns | |
+| A list of task addresses, where the index in the list corresponds to the task index of each task. The list may contain `None` if the job was defined with a sparse set of task indices. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `ValueError` | If `job_name` does not name a job in this cluster. |
+
+### `num_tasks`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L377-L393)
+
+```
+num_tasks(
+    job_name
+)
+```
+
+Returns the number of tasks defined in the given job.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `job_name` | The string name of a job in this cluster. |
+
+| Returns | |
+| The number of tasks defined in the given job. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `ValueError` | If `job_name` does not name a job in this cluster. |
+
+### `task_address`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L414-L436)
+
+```
+task_address(
+    job_name, task_index
+)
+```
+
+Returns the address of the given task in the given job.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `job_name` | The string name of a job in this cluster. |
+| `task_index` | A non-negative integer. |
+
+| Returns | |
+| The address of the given task in the given job. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `ValueError` | If `job_name` does not name a job in this cluster, or no task with index `task_index` is defined in that job. |
+
+### `task_indices`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L395-L412)
+
+```
+task_indices(
+    job_name
+)
+```
+
+Returns a list of valid task indices in the given job.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `job_name` | The string name of a job in this cluster. |
+
+| Returns | |
+| A list of valid task indices in the given job. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `ValueError` | If `job_name` does not name a job in this cluster, or no task with index `task_index` is defined in that job. |
+
+### `__bool__`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L318-L319)
+
+```
+__bool__()
+```
+
+### `__eq__`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L324-L325)
+
+```
+__eq__(
+    other
+)
+```
+
+Return self==value.
+
+### `__ne__`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L327-L328)
+
+```
+__ne__(
+    other
+)
+```
+
+Return self!=value.
+
+### `__nonzero__`
+
+[View source](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/training/server_lib.py#L318-L319)
+
+```
+__nonzero__()
+```

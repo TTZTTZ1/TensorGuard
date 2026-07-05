@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.Sum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.Sum` class computes the cumulative (weighted) sum of provided values across batches during training or evaluation. It inherits from `tf.keras.Metric` and maintains a state variable (`total`) to accumulate results.
+
+**Key Features:**
+- **Purpose:** Tracks the sum of values, optionally weighted by `sample_weight`.
+- **Stateful:** Uses an internal variable `total` to accumulate sums across multiple calls to `update_state()`.
+- **Usage Flow:**  
+  1. Initialize the metric.  
+  2. Repeatedly call `update_state(values, sample_weight)` to accumulate data.  
+  3. Call `result()` to get the current cumulative sum.  
+  4. Use `reset_state()` to clear the accumulation between epochs.
+
+**Example:**
+```python
+m = tf.keras.metrics.Sum()
+m.update_state([1, 3, 5, 7])          # total = 16
+m.update_state([2, 4], sample_weight=[0.5, 2])  # adds 1 + 8 = 9
+print(m.result().numpy())  # Output: 25.0
+m.reset_state()  # Resets total to 0
+```
+
+**Main Methods:**
+- `update_state(values, sample_weight=None)`: Accumulates sum.
+- `result()`: Returns the current total as a scalar tensor.
+- `reset_state()`: Clears the accumulated total.
+
+This metric is useful for tracking aggregated statistics (e.g., total loss, total samples) across batches in custom training loops or callbacks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'sum'"
+  dtype:
+    dtype: ["string", "dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  values:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: null
+    default: "null"
+  sample_weight:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor", "array", "scalar"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter1: "sample_weight"
+    Parameter2: "values"
+    Constraint: "sample
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.Sum in a complex way */
+import tensorflow as tf

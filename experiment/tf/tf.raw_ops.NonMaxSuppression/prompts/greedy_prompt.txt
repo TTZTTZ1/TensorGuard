@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.NonMaxSuppression` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.NonMaxSuppression` performs greedy non-maximum suppression (NMS) to select a subset of bounding boxes based on their scores and overlap. It takes as input:
+
+- **boxes**: A 2D float tensor of shape `[num_boxes, 4]` in `[y1, x1, y2, x2]` format (normalized or absolute coordinates).
+- **scores**: A 1D float tensor of shape `[num_boxes]` representing the confidence score for each box.
+- **max_output_size**: A scalar integer tensor specifying the maximum number of boxes to return.
+- **iou_threshold** (optional, default=0.5): A float threshold for Intersection-over-Union (IoU) overlap; boxes with IoU above this threshold are suppressed.
+
+The algorithm selects boxes in descending score order, removing those with high IoU overlap with previously selected boxes. It returns a 1D integer tensor of selected box indices, which can be used with `tf.gather` to retrieve the corresponding box coordinates.
+
+**Key points:**
+- Coordinate-system invariant (translation/reflection invariant).
+- Output indices are sorted by descending score.
+- Useful for filtering redundant detections in object detection pipelines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1, 4]]
+    default: null
+  scores:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1]]
+    default: null
+  max_output_size:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  iou_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "0.5"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: scores
+    Constraint: "boxes.shape[0] == scores.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.NonMaxSuppression in a complex way */
+import tensorflow as tf

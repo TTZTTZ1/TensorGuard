@@ -1,0 +1,54 @@
+params:
+  shape:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  counts:
+    dtype: ["half", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  probs:
+    dtype: ["half", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  dtype:
+    dtype: ["half", "float32", "float64", "int32", "int64"]
+    range: ["half", "float32", "float64", "int32", "int64"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.int64"
+  name:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "counts"
+    Parameter 2: "probs"
+    Constraint: "probs.dtype == counts.dtype"
+  2:
+    Parameter 1: "counts"
+    Parameter 2: "probs"
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip(reversed(counts.shape), reversed(probs.shape)))"
+  3:
+    Parameter 1: "counts"
+    Parameter 2: "shape"
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip(reversed(counts.shape), reversed(shape.shape[-len(counts.shape):])))"
+  4:
+    Parameter 1: "probs"
+    Parameter 2: "shape"
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip(reversed(probs.shape), reversed(shape.shape[-len(probs.shape):])))"

@@ -1,0 +1,38 @@
+params:
+  weight:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["matching batch size"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: ["none", "mean", "sum"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: "reduce"
+    Parameter 2: "size_average"
+    Constraint: "reduce == False implies size_average is ignored in loss computation"
+  2:
+    Parameter 1: "size_average"
+    Parameter 2: "reduction"
+    Constraint: "size_average is not None implies reduction is overridden"
+  3:
+    Parameter 1: "reduce"
+    Parameter 2: "reduction"
+    Constraint: "reduce is not None implies reduction is overridden"

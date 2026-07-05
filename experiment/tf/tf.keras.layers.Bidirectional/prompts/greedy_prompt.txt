@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Bidirectional` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.Bidirectional` wrapper enables a recurrent neural network (RNN) layer to process input sequences in both forward and backward directions, which can improve performance on tasks like text classification and machine translation.
+
+**Key Features:**
+- **Purpose:** Combines two RNN layers (forward and backward) to capture both past and future context in sequences.
+- **Compatible Layers:** Works with RNN layers (e.g., LSTM, GRU) or custom layers that meet specific RNN-like criteria (e.g., support `go_backwards`, `return_sequences`).
+- **Merge Modes:** Outputs can be combined via `"concat"` (default), `"sum"`, `"mul"`, `"ave"`, or returned as a list if `None`.
+- **Custom Backward Layer:** Optionally, a separate backward RNN layer can be provided (must have matching properties but opposite `go_backwards` setting).
+- **State Handling:** When using `initial_state`, the first half of states is passed to the forward RNN, the second half to the backward RNN.
+- **Weight Initialization:** Instantiating a `Bidirectional` wrapper does not reuse weights from the original RNN layer; weights are freshly initialized.
+
+**Example Usage:**
+```python
+model = Sequential([
+    Input(shape=(5, 10)),
+    Bidirectional(LSTM(10, return_sequences=True)),
+    Bidirectional(LSTM(10)),
+    Dense(5, activation="softmax")
+])
+```
+
+**Note:** Primarily used in sequence-processing tasks to enhance contextual understanding by analyzing data in both temporal directions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  layer:
+    dtype: ["Layer"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  merge_mode:
+    dtype: ["str", "None"]
+    range: [["sum", "mul", "concat", "ave", null]]
+    structure: ["scalar"]
+    shape: null
+    default: "concat"
+  weights:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list", "scalar"]
+    shape: null
+    default: "None"
+  backward_layer:
+    dtype: ["Layer"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter1: "layer"
+    Parameter2: "backward_layer"
+    Constraint: "backward_layer is None or (layer.stateful == backward_layer.stateful and layer.return_states == backward_layer.return_states and layer.return_sequences == backward_layer.return_sequences and layer.go_backwards != backward_layer.go_backwards)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Bidirectional in a complex way */
+import tensorflow as tf

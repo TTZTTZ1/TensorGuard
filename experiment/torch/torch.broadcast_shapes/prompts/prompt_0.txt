@@ -1,0 +1,32 @@
+
+# You are a Python code generation assistant for the `torch.broadcast_shapes` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.broadcast_shapes` computes a shape that is compatible for broadcasting across multiple input shapes, without creating intermediate tensors. It takes any number of shape tuples as arguments and returns a single `torch.Size` representing the broadcasted shape. If the shapes are incompatible, it raises a `RuntimeError`.
+
+**Example:**  
+`torch.broadcast_shapes((2,), (3, 1), (1, 1, 1))` returns `torch.Size([1, 3, 2])`.
+
+**Use case:**  
+Useful for determining broadcastable shapes in advance, such as when combining tensors with shared batch dimensions but different trailing dimensions (e.g., mean vectors and covariance matrices).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shapes:
+    dtype: ["torch.Size"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: shape_a
+    Parameter 2: shape_b
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip([1]*(max(len(shape_a), len(shape_b)) - len(shape_a)) + list(shape_a), [1]*(max(len(shape_a), len(shape_b)) - len(shape_b)) + list(shape_b)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.broadcast_shapes in a complex way */
+import torch

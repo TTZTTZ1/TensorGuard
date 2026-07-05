@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_gather_object` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables synchronous distributed training and communication primitives for exchanging data between processes.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training and as a fallback for GPU
+- **NCCL**: Optimized for multi-GPU CUDA training (supports InfiniBand/GPUDirect)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional backend requiring source build
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Default world group and custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device topologies
+- **Collective Operations**: 
+  - Point-to-point: `send`, `recv`, `isend`, `irecv`
+  - Collective: `broadcast`, `all_reduce`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`
+  - Object collectives: Support Python objects (with performance caveats)
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Create device mesh for multi-dimensional parallelism
+- `destroy_process_group()`: Clean up resources
+- `get_rank()`, `get_world_size()`: Query process information
+
+### Synchronization Modes
+- **Synchronous** (`async_op=False`): Block until operation completes
+- **Asynchronous** (`async_op=True`): Return `Work` object for non-blocking execution
+
+### Distributed Key-Value Store
+- **TCPStore**: Network-based store for multi-machine coordination
+- **FileStore**: File-based store
+- **HashStore**: In-memory store for single-process use
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout and rank reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `breakpoint()`: Rank-specific debugging with pdb
+- Debug HTTP server for runtime data collection
+
+### Launch Utilities
+- `torch.distributed.launch`: Spawn multiple processes per node (deprecated in favor of `torchrun`)
+- `torch.multiprocessing.spawn`: Python multiprocessing spawn utility
+
+## Typical Usage Pattern
+```python
+import torch.distributed as dist
+
+# Initialize
+dist.init_process_group(backend="nccl", init_method="env://")
+
+# Get process info
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+
+# Perform collective operations
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# Clean up
+dist.destroy_process_group()
+```
+
+The package supports both single-machine multi-GPU and multi-machine distributed training, with optimizations for different hardware configurations and network interconnects.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  object_list:
+    dtype: ["object"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  obj:
+    dtype: ["object"]
+    range: null
+    structure: ["scalar", "list", "tuple", "dict", "other"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: object_list
+    Parameter 2: group
+    Constraint: "len(object_list) == (group.size() if group is not None else torch.distributed.get_world_size())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_gather_object in a complex way */
+import torch

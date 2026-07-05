@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["bool", "int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  other:
+    dtype: ["bool", "int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  out:
+    dtype: ["bool"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "other"
+    Constraint: "torch.broadcast_shapes(input.shape, other.shape) is not None"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "input"
+    Constraint: "out is None or (out.dtype == torch.bool and out.shape == torch.broadcast_shapes(input.shape, other.shape))"

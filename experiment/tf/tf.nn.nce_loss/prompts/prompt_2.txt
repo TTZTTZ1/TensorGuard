@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `tf.nn.nce_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.nce_loss` computes the noise-contrastive estimation training loss, which is an efficient method for learning embeddings when the number of classes is large. It approximates the full softmax by sampling a subset of negative classes per batch, making it suitable for training tasks like word embedding models.
+
+**Key parameters:**
+- `weights` and `biases`: Embedding matrix and biases for all classes.
+- `labels`: Target classes for each batch example.
+- `inputs`: Forward activations from the network.
+- `num_sampled`: Number of negative samples per batch.
+- `num_classes`: Total number of possible classes.
+
+**Usage notes:**
+- Typically used during training, while full sigmoid cross-entropy may be used for evaluation.
+- By default, it uses a log-uniform (Zipfian) sampling distribution, so labels should be sorted by decreasing frequency for optimal results.
+- Supports removal of accidental hits (where a sampled class matches a target) via `remove_accidental_hits`.
+
+This loss is designed to scale efficiently with large vocabularies by avoiding computation over all classes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weights:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "list"]
+    shape: [2]
+    default: null
+  biases:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  labels:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  inputs:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  num_classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "1"
+  sampled_values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "None"
+  remove_accidental_hits:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "'nce_loss'"
+constraints:
+  1:
+    Parameter 1: weights
+    Parameter 2: inputs
+    Constraint: weights.shape[1] == inputs.shape[1]
+  2:
+    Parameter 1: labels
+    Parameter 2: inputs
+    Constraint: labels.shape[0] == inputs.shape[0]
+  3:
+    Parameter 1: labels
+    Parameter 2: num_true
+    Constraint: labels.shape[1] == num_true
+  4:
+    Parameter 1: num_sampled
+    Parameter 2: num_classes
+    Constraint: num_sampled < num_classes
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.nce_loss in a complex way */
+import tensorflow as tf

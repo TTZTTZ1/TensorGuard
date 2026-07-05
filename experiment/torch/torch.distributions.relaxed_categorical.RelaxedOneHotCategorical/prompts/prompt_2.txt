@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.distributions.relaxed_categorical.RelaxedOneHotCategorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient-based optimization. Here's a concise overview:
+
+## **Core Concepts**
+- **Parameterizable distributions**: Create distributions (e.g., Normal, Bernoulli, Categorical) parameterized by tensors
+- **Two gradient estimation methods**:
+  1. **Score function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  2. **Pathwise derivative (reparameterization)**: Uses `rsample()` for differentiable sampling (e.g., VAE reparameterization trick)
+
+## **Key Components**
+1. **Distribution Base Class**: Abstract class with methods like:
+   - `sample()`, `rsample()`: Generate samples
+   - `log_prob()`: Compute log probability
+   - `entropy()`, `mean`, `variance`: Distribution statistics
+   - `cdf()`, `icdf()`: Cumulative/inverse cumulative functions
+
+2. **Available Distributions**: Includes common distributions (Bernoulli, Beta, Binomial, Categorical, Cauchy, Dirichlet, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Multinomial, MultivariateNormal, Normal, Poisson, StudentT, Uniform, etc.) and specialized ones (LKJCholesky, VonMises, Wishart, etc.)
+
+3. **TransformedDistribution**: Apply sequences of transforms to base distributions (e.g., LogNormal = ExpTransform(Normal))
+
+4. **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, SoftmaxTransform, etc.) with computable log-determinant Jacobians
+
+5. **Constraints**: Define valid parameter domains (real, positive, simplex, interval, etc.)
+
+6. **KL Divergence**: Pre-registered KL computations between distribution pairs
+
+## **Common Use Cases**
+- **Reinforcement Learning**: Policy gradients with categorical distributions
+- **Variational Inference**: Reparameterized sampling with Normal distributions
+- **Probabilistic Modeling**: Building complex distributions via transformations
+- **Bayesian Methods**: Working with conjugate priors and exponential families
+
+## **Practical Examples**
+```python
+# REINFORCE with categorical policy
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization trick for VAE
+params = network(input)
+m = Normal(*params)
+z = m.rsample()  # Differentiable sample
+```
+
+The module follows TensorFlow Distributions design, supports batch dimensions, and integrates seamlessly with PyTorch's autograd system for gradient-based optimization of stochastic models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  temperature:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  probs:
+    dtype: ["Tensor"]
+    range: [["Simplex"]]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  logits:
+    dtype: ["Tensor"]
+    range: [["Real"]]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "probs is None or logits is None"
+  2:
+    Parameter 1: temperature
+    Parameter 2: null
+    Constraint: "temperature > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.relaxed_categorical.RelaxedOneHotCategorical in a complex way */
+import torch

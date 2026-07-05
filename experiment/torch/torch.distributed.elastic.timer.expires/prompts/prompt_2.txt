@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.expires` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers system provides a mechanism to detect and handle stuck workers in distributed training. Here's a concise summary:
+
+## Purpose
+- Detect stuck workers using countdown timers
+- Automatically terminate workers that exceed specified time limits
+- Enable automatic retry of failed worker groups
+
+## Core Components
+
+### **Timer Client** (Worker-side)
+- `configure()`: Set up timer client before use
+- `expires()`: Context manager to wrap code blocks that might get stuck
+  ```python
+  with timer.expires(after=60):  # 60-second timeout
+      # Potentially stuck operations
+  ```
+
+### **Timer Server** (Agent-side)
+- Monitors active timers and expires them
+- Terminates workers with expired timers
+- Runs as a daemon process alongside the agent
+
+## Provided Implementations
+
+1. **LocalTimerServer/LocalTimerClient**
+   - Uses `multiprocessing.Queue` for communication
+   - Designed for subprocess workers on same host
+
+2. **FileTimerServer/FileTimerClient**
+   - Uses named pipes (FIFO) for communication
+   - Multiple clients can connect to same server
+
+## Key Features
+- **Automatic cleanup**: Stuck workers are killed and retried
+- **Flexible timeouts**: Specify timeout duration per code block
+- **Process isolation**: Timer server runs separately from workers
+- **Customizable**: Can implement custom server/client pairs
+- **Localized**: Each host manages its own workers' timers
+
+## Typical Usage Pattern
+1. Start timer server alongside elastic agent
+2. Configure timer client in worker processes
+3. Wrap potentially stuck operations with `expires()` context
+4. Server monitors and kills workers exceeding time limits
+5. Agent automatically retries failed worker groups
+
+This system ensures distributed training jobs can recover from worker hangs without manual intervention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  after:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  scope:
+    dtype: ["str", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  client:
+    dtype: ["TimerClient", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.expires in a complex way */
+import torch

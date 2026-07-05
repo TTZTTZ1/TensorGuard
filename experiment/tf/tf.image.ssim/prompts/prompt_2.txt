@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.image.ssim` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.ssim` computes the Structural Similarity Index (SSIM) between two batches of images, measuring perceptual image quality based on luminance, contrast, and structure. It requires 4-D input tensors of shape `[batch, height, width, channels]` with positive pixel values. Key parameters include `max_val` (the image dynamic range), Gaussian filter settings (`filter_size`, `filter_sigma`), and stability constants `k1`, `k2`. By default, it returns a single SSIM score per image in the batch (range: -1 to 1), but can also output a local SSIM map per pixel if `return_index_map=True`. The function assumes inputs are in a compatible colorspace (e.g., grayscale or YUV) and images must be at least 11×11 due to the default filter size.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  img1:
+    dtype: No mention
+    range: ["positive"]
+    structure: ["tensor"]
+    shape: ["[batch, height, width, channels]"]
+    default: null
+  img2:
+    dtype: No mention
+    range: ["positive"]
+    structure: ["tensor"]
+    shape: ["[batch, height, width, channels]"]
+    default: null
+  max_val:
+    dtype: No mention
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  filter_size:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: "11"
+  filter_sigma:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.5"
+  k1:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.01"
+  k2:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.03"
+  return_index_map:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: img1
+    Parameter 2: filter_size
+    Constraint: "img1.shape[1] >= filter_size and img1.shape[2] >= filter_size"
+  2:
+    Parameter 1: img2
+    Parameter 2: filter_size
+    Constraint: "img2.shape[1] >= filter_size and img2.shape[2] >= filter_size"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.ssim in a complex way */
+import tensorflow as tf

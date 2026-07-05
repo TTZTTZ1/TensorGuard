@@ -1,0 +1,56 @@
+params:
+  gradients:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[d]", "[b, d]", "[b, h, w, d]"]
+    default: null
+  inputs:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[d]", "[b, d]", "[b, h, w, d]"]
+    default: null
+  min:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[d]"]
+    default: null
+  max:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[d]"]
+    default: null
+  num_bits:
+    dtype: ["int"]
+    range: [2, 16]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: ["False", "True"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: gradients
+    Parameter 2: inputs
+    Constraint: "gradients.shape == inputs.shape"
+  2:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min.shape == max.shape"
+  3:
+    Parameter 1: min
+    Parameter 2: gradients
+    Constraint: "min.shape[0] == gradients.shape[-1]"

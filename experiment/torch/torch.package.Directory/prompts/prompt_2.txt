@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.package.Directory` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle both model artifacts (e.g., pickled objects, tensors) and the Python source code they depend on. These packages can be saved, shared, and later loaded in isolated environments, ensuring reproducibility and enabling deployment (e.g., via `torch::deploy`).
+
+### **Key Features**
+- **Packaging**: Capture code, data, and dependencies into a single `.pt` (ZIP) file.
+- **Isolation**: Loaded packages run in hermetic environments, preventing conflicts with the system’s Python installation.
+- **Dependency Management**: Control how dependencies are handled (`intern`, `extern`, `mock`, `deny`).
+- **Resource Inclusion**: Save and load arbitrary pickled objects, text, and binary data alongside code.
+- **Custom Serialization**: Define `__reduce_package__` for fine-grained control over packaging/depackaging.
+
+### **Core Components**
+1. **`PackageExporter`**: Creates packages.
+   - `save_pickle()`, `save_text()`, `save_binary()`: Add resources.
+   - `save_module()`: Include Python modules.
+   - `intern()`/`extern()`/`mock()`/`deny()`: Manage dependency resolution.
+
+2. **`PackageImporter`**: Loads packages.
+   - `load_pickle()`, `load_text()`, `load_binary()`: Retrieve resources.
+   - `import_module()`: Import packaged modules.
+   - `file_structure()`: Inspect package contents.
+
+### **Common Use Cases**
+- **Model Deployment**: Package a trained model with its custom code for inference elsewhere.
+- **Reproducibility**: Ensure code and dependencies are frozen together.
+- **Code Sharing**: Distribute research code without requiring specific environments.
+- **Patching**: Modify packaged code via `save_source_string()` without altering original sources.
+
+### **Important Notes**
+- **Security**: Uses `pickle`; only load trusted packages.
+- **Dependency Detection**: Relies on static analysis (AST parsing), so dynamic imports may not be captured.
+- **Type Isolation**: Classes from packages are distinct from system versions (e.g., `isinstance` checks may fail).
+- **Global State**: Avoid mutable global state in modules, as each `PackageImporter` creates separate environments.
+
+### **Quick Example**
+```python
+# Export
+with PackageExporter('model.pt') as e:
+    e.save_pickle('model', 'weights.pkl', trained_model)
+    e.save_module('my_code')
+
+# Import
+importer = PackageImporter('model.pt')
+loaded_model = importer.load_pickle('model', 'weights.pkl')
+```
+
+`torch.package` is ideal for creating portable, versioned artifacts that encapsulate both data and logic, simplifying deployment and collaboration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  is_dir:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  filename:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: name
+    Parameter 2: is_dir
+    Constraint: "True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.Directory in a complex way */
+import torch

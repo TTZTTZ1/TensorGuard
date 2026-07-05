@@ -1,0 +1,149 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Conv1D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.layers.Conv1D` layer performs 1D convolution, commonly used for temporal or sequential data. It applies a convolution kernel over a single spatial/temporal dimension to extract features, optionally adding bias and applying an activation function.
+
+**Key parameters:**
+- `filters`: Number of output channels.
+- `kernel_size`: Size of the convolution window.
+- `strides`: Step size of the convolution.
+- `padding`: `"valid"` (no padding), `"same"` (output size matches input when strides=1), or `"causal"` (for temporal order preservation).
+- `data_format`: `"channels_last"` (default, shape: `[batch, steps, channels]`) or `"channels_first"` (shape: `[batch, channels, steps]`).
+- `dilation_rate`: Spacing between kernel elements for dilated convolution.
+- `activation`: Activation function applied to outputs.
+
+**Input shape:**  
+3D tensor: `(batch, steps, channels)` for `"channels_last"`, or `(batch, channels, steps)` for `"channels_first"`.
+
+**Output shape:**  
+3D tensor with `steps` dimension adjusted based on convolution parameters, and channels replaced by `filters`.
+
+**Example:**
+```python
+x = np.random.rand(4, 10, 128)  # 4 samples, 10 timesteps, 128 features
+y = Conv1D(32, 3, activation='relu')(x)  # Output shape: (4, 8, 32)
+```
+
+**Note:** Incompatible to set both `strides > 1` and `dilation_rate > 1`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filters:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar", "tuple", "list"]
+    shape: [1]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar", "tuple", "list"]
+    shape: [1]
+    default: "1"
+  padding:
+    dtype: ["string"]
+    range: [["valid", "same", "causal"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'valid'"
+  data_format:
+    dtype: ["string"]
+    range: [["channels_last", "channels_first"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dilation_rate:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar", "tuple", "list"]
+    shape: [1]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  activation:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  use_bias:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  kernel_initializer:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  bias_regularizer:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  activity_regularizer:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_constraint:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  bias_constraint:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  **kwargs:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "dilation_rate"
+    Constraint: "not (strides > 1 and dilation_rate > 1)"
+  2:
+    Parameter 1: "filters"
+    Parameter 2: "groups"
+    Constraint: "filters % groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Conv1D in a complex way */
+import tensorflow as tf

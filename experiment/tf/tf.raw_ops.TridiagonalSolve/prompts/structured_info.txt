@@ -1,0 +1,40 @@
+params:
+  diagonals:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., 3, M]"]
+    default: null
+  rhs:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  partial_pivoting:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  perturb_singular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "diagonals.dtype == rhs.dtype"
+  2:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "diagonals.shape[:-2] == rhs.shape[:-2] and diagonals.shape[-1] == rhs.shape[-2]"

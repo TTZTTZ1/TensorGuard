@@ -1,0 +1,40 @@
+params:
+  tensor:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  paddings:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n,2]"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["CONSTANT", "REFLECT", "SYMMETRIC"]]
+    structure: ["scalar"]
+    shape: null
+    default: "CONSTANT"
+  constant_values:
+    dtype: ["same as tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: mode
+    Parameter 2: paddings
+    Constraint: (mode.upper() == 'REFLECT') -> (all(paddings[i, 0] <= tensor.shape[i] - 1 and paddings[i, 1] <= tensor.shape[i] - 1 for i in range(len(tensor.shape))))
+  2:
+    Parameter 1: mode
+    Parameter 2: paddings
+    Constraint: (mode.upper() == 'SYMMETRIC') -> (all(paddings[i, 0] <= tensor.shape[i] and paddings[i, 1] <= tensor.shape[i] for i in range(len(tensor.shape))))

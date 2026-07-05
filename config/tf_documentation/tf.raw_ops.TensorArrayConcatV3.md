@@ -1,0 +1,52 @@
+# tf.raw_ops.TensorArrayConcatV3
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayConcatV3](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayConcatV3)
+
+---
+
+Concat the elements from the TensorArray into value `value`.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.TensorArrayConcatV3`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayConcatV3)
+
+```
+tf.raw_ops.TensorArrayConcatV3(
+    handle, flow_in, dtype, element_shape_except0=None, name=None
+)
+```
+
+Takes `T` elements of shapes
+
+```
+  (n0 x d0 x d1 x ...), (n1 x d0 x d1 x ...), ..., (n(T-1) x d0 x d1 x ...)
+```
+
+and concatenates them into a Tensor of shape:
+
+```
+  (n0 + n1 + ... + n(T-1) x d0 x d1 x ...)
+```
+
+All elements must have the same shape (excepting the first dimension).
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `handle` | A `Tensor` of type `resource`. The handle to a TensorArray. |
+| `flow_in` | A `Tensor` of type `float32`. A float scalar that enforces proper chaining of operations. |
+| `dtype` | A [`tf.DType`](https://tensorflow.google.cn/api_docs/python/tf/dtypes/DType). The type of the elem that is returned. |
+| `element_shape_except0` | An optional [`tf.TensorShape`](https://tensorflow.google.cn/api_docs/python/tf/TensorShape) or list of `ints`. Defaults to `None`. The expected shape of an element, if known, excluding the first dimension. Used to validate the shapes of TensorArray elements. If this shape is not fully specified, concatenating zero-size TensorArrays is an error. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A tuple of `Tensor` objects (value, lengths). | |
+| `value` | A `Tensor` of type `dtype`. |
+| `lengths` | A `Tensor` of type `int64`. |

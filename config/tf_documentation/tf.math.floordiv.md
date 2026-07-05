@@ -1,0 +1,50 @@
+# tf.math.floordiv
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/math/floordiv](https://tensorflow.google.cn/api_docs/python/tf/math/floordiv)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/ops/math_ops.py#L1628-L1655) |
+
+Divides `x / y` elementwise, rounding toward the most negative integer.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.floordiv`](https://tensorflow.google.cn/api_docs/python/tf/math/floordiv), [`tf.compat.v1.math.floordiv`](https://tensorflow.google.cn/api_docs/python/tf/math/floordiv)
+
+```
+tf.math.floordiv(
+    x, y, name=None
+)
+```
+
+Mathematically, this is equivalent to floor(x / y). For example:
+floor(8.4 / 4.0) = floor(2.1) = 2.0
+floor(-8.4 / 4.0) = floor(-2.1) = -3.0
+This is equivalent to the '//' operator in Python 3.0 and above.
+
+**Note:** `x` and `y` must have the same type, and the result will have the same
+type as well.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `x` | `Tensor` numerator of real numeric type. |
+| `y` | `Tensor` denominator of real numeric type. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| `x / y` rounded toward -infinity. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `TypeError` | If the inputs are complex. |

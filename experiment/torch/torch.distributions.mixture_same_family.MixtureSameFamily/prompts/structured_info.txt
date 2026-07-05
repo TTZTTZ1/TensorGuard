@@ -1,0 +1,30 @@
+params:
+  mixture_distribution:
+    dtype: ["Categorical"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+  component_distribution:
+    dtype: ["Distribution"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: mixture_distribution
+    Parameter 2: null
+    Constraint: "isinstance(mixture_distribution, Categorical)"
+  2:
+    Parameter 1: component_distribution
+    Parameter 2: null
+    Constraint: "isinstance(component_distribution, Distribution)"
+  3:
+    Parameter 1: mixture_distribution
+    Parameter 2: component_distribution
+    Constraint: "mixture_distribution.event_shape == torch.Size([]) and mixture_distribution.param_shape[-1] == component_distribution.batch_shape[-1]"
+  4:
+    Parameter 1: mixture_distribution
+    Parameter 2: component_distribution
+    Constraint: "mixture_distribution.batch_shape == torch.Size([]) or mixture_distribution.batch_shape == component_distribution.batch_shape[:-1]"

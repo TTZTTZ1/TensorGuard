@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `tf.nn.embedding_lookup_sparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.embedding_lookup_sparse` performs sparse embedding lookups by gathering rows from an embedding tensor (`params`) based on indices in a sparse or ragged tensor (`sp_ids`), optionally applying weights (`sp_weights`), and combining the results per row using a specified reduction method (`combiner`).
+
+**Key Features:**
+- **Inputs:**  
+  - `params`: A dense tensor or list of sharded tensors representing embeddings.  
+  - `sp_ids`: A 2D `SparseTensor` or `RaggedTensor` of integer indices.  
+  - `sp_weights` (optional): A tensor of the same shape as `sp_ids` containing weights; defaults to 1.0.  
+- **Combining:** Supports `"sum"`, `"mean"`, or `"sqrtn"` to aggregate weighted embeddings per row.  
+- **Output:** A dense tensor with shape `[d0, p1, ..., pm]`, where `d0` is the number of rows in `sp_ids` and `[p1, ..., pm]` are the trailing dimensions of `params`.  
+- **Use Cases:** Efficiently handles variable-length sparse features in embedding models (e.g., recommendation systems).  
+
+**Example:**  
+For `params` of shape `(4, 2)` and `sp_ids` with 3 rows, the output is `(3, 2)`, where each row combines selected embeddings based on the `combiner`. Weights scale embeddings before combination.  
+
+**Notes:**  
+- Assumes all indices are valid (≥0 and <`params.shape[0]`).  
+- For safe handling of invalid IDs, use `tf.nn.safe_embedding_lookup_sparse`.  
+- Supports `max_norm` for embedding normalization and fast lookup optimizations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    params:
+        dtype: No mention
+        range: No mention
+        structure: ["tensor", "list"]
+        shape: ["any"]
+        default: null
+    sp_ids:
+        dtype: ["int64"]
+        range: No mention
+        structure: ["SparseTensor", "RaggedTensor"]
+        shape: ["rank 2"]
+        default: null
+    sp_weights:
+        dtype: ["float", "double"]
+        range: No mention
+        structure: ["SparseTensor", "RaggedTensor", "None"]
+        shape: ["rank 2"]
+        default: None
+    combiner:
+        dtype: ["string"]
+        range: ["mean", "sqrtn", "sum"]
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: "mean"
+    max_norm:
+        dtype: No mention
+        range: No mention
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: None
+    name:
+        dtype: ["string"]
+        range: No mention
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: None
+    allow_fast_lookup:
+        dtype: ["boolean"]
+        range: ["True", "False"]
+        structure: ["scalar"]
+        shape: ["scalar"]
+        default: No mention
+constraints:
+    1:
+        Parameter 1: sp_weights
+        Parameter 2: sp_ids
+        Constraint: (sp_weights is None) or (isinstance(sp_weights, type(sp_ids)) and sp_weights.shape == sp_ids.shape)
+    2:
+        Parameter 1: sp_ids
+        Parameter 2: params
+        Constraint: tf.reduce_all(tf.logical_and(sp_ids.values >= 0, sp_ids.values < tf.shape(params)[0]))
+    3:
+        Parameter 1: combiner
+        Parameter 2: combiner
+        Constraint: combiner in {"mean", "sqrtn", "sum"}
+    4:
+        Parameter 1: params
+        Parameter 2: params
+        Constraint: not isinstance(params, list) or all(p.shape[1:] == params[0].shape[1:] for p in params)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.embedding_lookup_sparse in a complex way */
+import tensorflow as tf

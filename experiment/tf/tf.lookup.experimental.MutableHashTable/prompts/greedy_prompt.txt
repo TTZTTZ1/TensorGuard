@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `tf.lookup.experimental.MutableHashTable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.experimental.MutableHashTable` is a mutable key-value lookup table in TensorFlow that supports dynamic insertion and removal of entries. It maps keys of a specified `key_dtype` to values of `value_dtype`, returning a `default_value` for missing keys.
+
+**Key Features:**
+- **Mutable Operations:** Insert (`insert`) and remove (`remove`) key-value pairs after creation.
+- **Lookup:** Retrieve values via `lookup` or `__getitem__` (e.g., `table[keys]`), with customizable default values.
+- **Export & Size:** Export all keys/values (`export`) and get the table size (`size`).
+- **Checkpointing:** Supports saving/restoring table state if `checkpoint=True` (requires a `name`).
+- **Anonymous Mode:** Optional anonymous resource management for automatic deletion.
+
+**Example:**
+```python
+table = tf.lookup.experimental.MutableHashTable(
+    key_dtype=tf.string, value_dtype=tf.int64, default_value=-1
+)
+table.insert(keys, values)      # Insert entries
+result = table.lookup(queries)  # Lookup with default -1 for missing keys
+table.remove(keys_to_delete)    # Remove entries
+keys, values = table.export()   # Get all stored data
+```
+
+**Use Cases:** Dynamic feature mapping, vocabulary lookups, or any scenario requiring updatable key-value storage within a TensorFlow graph.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  key_dtype
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  value_dtype
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  default_value
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+  name
+    dtype: No mention
+    range: No mention
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "'MutableHashTable'"
+  checkpoint
+    dtype: No mention
+    range: No mention
+    structure: ["boolean"]
+    shape: ["scalar"]
+    default: "True"
+  experimental_is_anonymous
+    dtype: No mention
+    range: No mention
+    structure: ["boolean"]
+    shape: ["scalar"]
+    default: "False"
+  keys
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  values
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dynamic_default_values
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "None"]
+    shape: ["variable"]
+    default: "None"
+  name_op
+    dtype: No mention
+    range: No mention
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1
+    Parameter 1: checkpoint
+    Parameter 2: name
+    Constraint: "checkpoint == True and name is None"
+  2
+    Parameter 1: keys
+    Parameter 2: key_dtype
+    Constraint: "keys.dtype == key_dtype"
+  3
+    Parameter 1: values
+    Parameter 2: value_dtype
+    Constraint: "values.dtype == value_dtype"
+  4
+    Parameter 1: values
+    Parameter 2: keys
+    Constraint: "values.shape == keys.shape"
+  5
+    Parameter 1: dynamic_default_values
+    Parameter 2: value_dtype
+    Constraint: "dynamic_default_values is None or dynamic_default_values.dtype == value_dtype"
+  6
+    Parameter 1: dynamic_default_values
+    Parameter 2: default_value
+    Constraint: "dynamic_default_values is None or dynamic_default_values.shape == default_value.shape"
+  7
+    Parameter 1: dynamic_default_values
+    Parameter 2: keys
+    Constraint: "dynamic_default_values is None or dynamic_default_values.shape == keys.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.experimental.MutableHashTable in a complex way */
+import tensorflow as tf

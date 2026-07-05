@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.StickBreakingTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods: the score function estimator (REINFORCE) and the pathwise derivative estimator (reparameterization trick).
+
+### Key Components:
+- **Distributions**: Includes a wide range of distributions (e.g., `Bernoulli`, `Normal`, `Categorical`, `MultivariateNormal`) with methods like `sample()`, `log_prob()`, `rsample()`, and `entropy()`.
+- **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) for reparameterization, used with `TransformedDistribution`.
+- **Constraints**: Define valid parameter ranges (e.g., `simplex`, `positive`) and link to transforms via registries (`biject_to`, `transform_to`).
+- **KL Divergence**: Computes KL divergence between distributions via `kl_divergence()`.
+
+### Main Use Cases:
+1. **REINFORCE (Policy Gradients)**: Use `sample()` and `log_prob()` for gradient estimation in reinforcement learning.
+2. **Reparameterization Trick**: Use `rsample()` for differentiable sampling in variational autoencoders.
+3. **Constrained Optimization**: Use `transform_to()` to map unconstrained parameters to constrained ones for optimization.
+
+### Example Workflow:
+```python
+# Create a distribution
+m = Normal(loc=0.0, scale=1.0)
+# Sample and compute log probability
+sample = m.rsample()  # Differentiable sample
+log_prob = m.log_prob(sample)
+# Transform constrained parameters
+unconstrained = torch.tensor([0.5], requires_grad=True)
+scale = transform_to(Normal.arg_constraints['scale'])(unconstrained)
+```
+
+This package is essential for probabilistic modeling, Bayesian inference, and stochastic optimization in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+constraints:
+  1:
+    Parameter 1: cache_size
+    Parameter 2: None
+    Constraint: "cache_size in (0, 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.StickBreakingTransform in a complex way */
+import torch

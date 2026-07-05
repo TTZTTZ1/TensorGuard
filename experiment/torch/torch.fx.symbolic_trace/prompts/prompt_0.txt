@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.fx.symbolic_trace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch, enabling programmatic modification of `nn.Module` instances. It operates through a three-step pipeline:
+
+1. **Symbolic Tracing**: Executes the module with proxy values to capture operations into a graph.
+2. **Intermediate Representation (IR)**: Represents the traced code as a `Graph` of `Node` objects (e.g., placeholders, call functions, outputs).
+3. **Python Code Generation**: Converts the `Graph` back into executable Python code within a `GraphModule`.
+
+### Key Features:
+- **Transformations**: Modify `Graph`s directly (e.g., node substitution) or via proxies/retracing.
+- **Interpreter Pattern**: Execute or transform graphs node-by-node using `Interpreter` or `Transformer`.
+- **Subgraph Rewriting**: Use `replace_pattern()` for pattern-based graph edits.
+- **Customization**: Subclass `Tracer` to control tracing behavior (e.g., leaf modules, dynamic control flow).
+
+### Limitations:
+- **Dynamic Control Flow**: Cannot trace conditionals/loops dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Wrap builtins (e.g., `len`, `math.sqrt`) with `torch.fx.wrap()`.
+- **Tensor Constructors**: `torch.rand`/`torch.randn` embed constant values; use workarounds for dynamic behavior.
+
+### Common Use Cases:
+- Graph optimizations (e.g., fusion, quantization).
+- Analysis passes (e.g., shape propagation).
+- Model instrumentation and debugging.
+
+### API Highlights:
+- `symbolic_trace()`: Entry point for tracing modules/functions.
+- `GraphModule`: Container for a `Graph` with generated `forward()` code.
+- `Proxy`: Wraps nodes to record operations during transformations.
+
+torch.fx is designed for composable, module-to-module transformations while maintaining standard PyTorch semantics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  root:
+    dtype: ["torch.nn.Module", "Callable"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  concrete_args:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "root"
+    Parameter 2: "concrete_args"
+    Constraint: "concrete_args is None or isinstance(concrete_args, dict)"
+  2:
+    Parameter 1: "concrete_args"
+    Parameter 2: "concrete_args"
+    Constraint: "all(isinstance(key, str) for key in concrete_args.keys()) if concrete_args else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.symbolic_trace in a complex way */
+import torch

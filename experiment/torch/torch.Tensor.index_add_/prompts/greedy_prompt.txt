@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.index_add_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`index_add_` accumulates elements from a source tensor into the target tensor at specified indices along a given dimension.  
+
+**Key behavior:**  
+- Adds `alpha * source` to `self` at positions defined by `index` along dimension `dim`.  
+- The size of `source` along `dim` must match the length of `index`; other dimensions must match `self`.  
+- `index` should be a 1D tensor of type `int64` or `int32`.  
+- Works in-place (modifies `self`).  
+
+**Example pattern (for 3D tensor):**  
+If `dim = 0`:  
+`self[index[i], :, :] += alpha * source[i, :, :]`  
+
+**Note:** Operation can be nondeterministic on CUDA devices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  index:
+    dtype: ["torch.int64", "torch.int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  source:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  alpha:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: self
+    Constraint: "0 <= dim < self.dim()"
+  2:
+    Parameter 1: source
+    Parameter 2: index
+    Constraint: "source.size(dim) == index.size(0) and index.ndim == 1"
+  3:
+    Parameter 1: source
+    Parameter 2: self
+    Constraint: "source.dim() == self.dim() and all(source.size(i) == self.size(i) for i in range(source.dim()) if i != dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.index_add_ in a complex way */
+import torch

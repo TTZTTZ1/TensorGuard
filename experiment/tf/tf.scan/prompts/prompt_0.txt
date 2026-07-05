@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `tf.scan` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.scan` sequentially applies a function `fn` across elements of `elems` along their first dimension, accumulating results. It is similar to a fold/reduce operation but returns all intermediate accumulator values rather than just the final one.
+
+**Key behavior:**
+- **Inputs:** `fn` takes two arguments: the accumulated value (initially `initializer`) and the current element from `elems`.
+- **Output:** Returns a sequence of accumulated values, one for each step.
+- **Without `initializer`:** The first element of `elems` is used as the starting accumulator.
+- **With `initializer`:** Specifies the starting accumulator and determines the output structure/dtype.
+- **Multi-arity support:** Both `elems` and `initializer` can be nested structures (lists/tuples of tensors), requiring matching structures in `fn`.
+- **Reverse option:** If `reverse=True`, scanning proceeds from last to first element.
+
+**Example:**
+```python
+import tensorflow as tf
+elems = tf.constant([1, 2, 3, 4, 5])
+scan_result = tf.scan(lambda a, x: a + x, elems)  # Result: [1, 3, 6, 10, 15]
+```
+
+**Common use cases:** Running sums, sequences like Fibonacci, or any cumulative operation across a sequence.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  elems:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "sequence"]
+    shape: ["any"]
+    default: "null"
+  initializer:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "sequence"]
+    shape: ["any"]
+    default: "None"
+  parallel_iterations:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "10"
+  back_prop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  swap_memory:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  infer_shape:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  reverse:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "fn"
+    Parameter 2: "None"
+    Constraint: "callable(fn)"
+  2:
+    Parameter 1: "initializer"
+    Parameter 2: "elems"
+    Constraint: "initializer is not None or tf.shape(elems)[0] > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.scan in a complex way */
+import tensorflow as tf

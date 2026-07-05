@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.distributed.broadcast` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables distributed training across multiple processes and machines. It supports multiple backends (GLOO, NCCL, MPI, XCCL) with different capabilities for CPU/GPU operations. Key features include:
+
+**Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up communication. Methods include TCP, shared file-system, or environment variables.
+
+**Collective Operations**: Synchronous/asynchronous operations like `broadcast`, `all_reduce`, `all_gather`, `scatter`, etc., for data exchange across processes.
+
+**Point-to-Point Communication**: `send`/`recv` and asynchronous `isend`/`irecv` for direct rank-to-rank communication.
+
+**Process Groups**: Create sub-groups with `new_group()` for fine-grained communication.
+
+**DeviceMesh**: Higher-level abstraction for managing multi-dimensional device topologies and process groups.
+
+**Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for sharing information and initialization.
+
+**Utilities**: Launch scripts (`torch.distributed.launch`), spawn functions, and debugging tools like `monitored_barrier`, `TORCH_DISTRIBUTED_DEBUG`, and `breakpoint()`.
+
+**Best Practices**: Use NCCL for GPU training, Gloo for CPU, and ensure proper cleanup with `destroy_process_group()`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["object"]
+    shape: [1]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+  group_src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "(src is None) != (group_src is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.broadcast in a complex way */
+import torch

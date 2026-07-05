@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.stack` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.stack` combines a list of tensors of identical shape and type into a single tensor with one higher rank, stacking them along a specified axis.  
+
+**Key points:**  
+- **Input:** A list of tensors with the same shape and type.  
+- **Axis:** Determines the stacking dimension (default is 0). Negative axis values wrap within the valid range `[-(R+1), R+1)`.  
+- **Output:** A new tensor with rank increased by 1, where the stacked dimension corresponds to the input list length.  
+- **Example:** Stacking three 1D tensors of length 2 along axis 0 produces a `(3, 2)` tensor; along axis 1 produces a `(2, 3)` tensor.  
+- **Opposite operation:** `tf.unstack`.  
+- **Common errors:** Raises `ValueError` if the axis is out of range.  
+
+This function is useful for assembling tensors along a new dimension, analogous to `np.stack` in NumPy.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'stack'"
+constraints:
+  1:
+    Parameter 1: "values"
+    Parameter 2: "axis"
+    Constraint: "all(len(t.shape) == len(values[0].shape) for t in values) and axis in range(-(len(values[0].shape) + 1), len(values[0].shape) + 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.stack in a complex way */
+import tensorflow as tf

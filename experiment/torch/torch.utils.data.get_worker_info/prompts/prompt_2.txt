@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.get_worker_info` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and processing in PyTorch. Its core component is the `DataLoader` class, which creates an iterable over a dataset with features like automatic batching, multi-process loading, and memory pinning.
+
+**Key Concepts:**
+
+1. **Dataset Types:**
+   - **Map-style:** Implements `__getitem__()` and `__len__()`, allowing random access via indices (e.g., `dataset[idx]`).
+   - **Iterable-style:** Implements `__iter__()`, suitable for streaming data (e.g., from databases or real-time logs).
+
+2. **Data Loading Order:**
+   - For map-style datasets, a `Sampler` (e.g., `RandomSampler`, `SequentialSampler`) defines the index sequence.
+   - For iterable-style datasets, order is controlled by the user-defined iterator.
+
+3. **Batching:**
+   - Automatic batching (default) collates samples into batches using `batch_size` and `collate_fn`.
+   - Can be disabled for manual batching by setting `batch_size` and `batch_sampler` to `None`.
+
+4. **Multi-process Loading:**
+   - Set `num_workers > 0` to enable parallel data loading, reducing I/O bottlenecks.
+   - Requires careful handling for iterable-style datasets to avoid duplicate data across workers.
+
+5. **Memory Pinning:**
+   - Set `pin_memory=True` to speed up data transfer to CUDA devices by using page-locked memory.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self):
+        return len(data)
+    def __getitem__(self, idx):
+        return data[idx]
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+**Important Notes:**
+- Use `worker_init_fn` and `get_worker_info()` to configure worker processes.
+- Customize `collate_fn` for non-standard batching needs (e.g., padding sequences).
+- For Windows/macOS multi-processing, wrap main script code in `if __name__ == '__main__':`.
+
+The module also includes utility classes like `TensorDataset`, `ConcatDataset`, `Subset`, and samplers (`WeightedRandomSampler`, `DistributedSampler`) for specialized data handling scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.get_worker_info in a complex way */
+import torch

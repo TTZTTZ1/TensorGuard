@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `tf.linalg.tridiagonal_matmul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.linalg.tridiagonal_matmul` function multiplies a tridiagonal matrix by another matrix. It supports three input formats for the tridiagonal matrix: `'compact'` (default), `'sequence'`, and `'matrix'`. The function efficiently performs the multiplication using the specified diagonal representation, with the `'sequence'` format recommended for best performance. Inputs must be floating-point or complex tensors, and the output matches the shape of the right-hand side matrix.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonals:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor", "list", "tuple"]
+    shape: ["[..., M, M] for matrix format", "[..., M] for each tensor in sequence format", "[..., 3, M] for compact format"]
+    default: null
+  rhs:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["[..., M, N]"]
+    default: null
+  diagonals_format:
+    dtype: ["string"]
+    range: ["sequence", "compact"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "compact"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "all(tensor.dtype == rhs.dtype for tensor in (diagonals if isinstance(diagonals, (list, tuple)) else [diagonals]))"
+  2:
+    Parameter 1: diagonals
+    Parameter 2: diagonals_format
+    Constraint: "not (diagonals_format == 'sequence') or (isinstance(diagonals, (list, tuple)) and len(diagonals) == 3)"
+  3:
+    Parameter 1: diagonals
+    Parameter 2: rhs
+    Constraint: "(diagonals_format == 'compact' and diagonals.shape[-1] == rhs.shape[-2]) or (diagonals_format == 'sequence' and all(d.shape[-1] == rhs.shape[-2] for d in diagonals))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.tridiagonal_matmul in a complex way */
+import tensorflow as tf

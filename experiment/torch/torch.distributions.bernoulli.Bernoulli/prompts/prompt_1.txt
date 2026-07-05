@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `torch.distributions.bernoulli.Bernoulli` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable Distributions**: Includes common distributions (Normal, Bernoulli, Categorical, etc.) with parameterization via `probs`/`logits` or location/scale parameters.
+- **Gradient Estimation**: Supports two main methods for backpropagation through random samples:
+  1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  2. **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling
+
+## Main Components
+
+### 1. **Distribution Base Class**
+Abstract base class with essential methods:
+- `sample()` / `rsample()`: Generate samples (with/without reparameterization)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Calculate distribution entropy
+- `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution functions
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### 2. **Key Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull (via `TransformedDistribution`)
+- **Specialized**: LKJCholesky (correlation matrices), MixtureSameFamily, Wishart
+
+### 3. **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.) for reparameterization
+- **Constraints**: Define valid parameter ranges (simplex, positive definite, interval, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for mapping constraints to transforms
+
+### 4. **KL Divergence**
+- `kl_divergence()`: Computes KL divergence between distributions
+- Extensible via `register_kl()` decorator for custom distribution pairs
+
+## Common Usage Patterns
+
+### REINFORCE (Policy Gradient)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick (VAEs)
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### Distribution Construction
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.rsample((100,))  # 100 reparameterized samples
+
+# Categorical distribution
+categorical = Categorical(probs=torch.tensor([0.2, 0.3, 0.5]))
+```
+
+## Key Features
+- **Batch Support**: All distributions support batched parameters
+- **Validation**: Optional argument validation via `validate_args`
+- **Exponential Family**: Specialized class for distributions in exponential family form
+- **Independent Wrapper**: Reinterprets batch dimensions as event dimensions
+- **Transformed Distributions**: Compose base distributions with transforms
+
+The package is designed for both reinforcement learning (policy gradients) and variational inference (reparameterization), providing the necessary tools for probabilistic modeling and stochastic optimization in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: probs
+    Parameter 2: None
+    Constraint: "probs is None or (torch.all(probs >= 0) and torch.all(probs <= 1))"
+  2:
+    Parameter 1: logits
+    Parameter 2: None
+    Constraint: "logits is None or torch.all(torch.isfinite(logits))"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "((probs is None) and (logits is not None)) or ((probs is not None) and (logits is None))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.bernoulli.Bernoulli in a complex way */
+import torch

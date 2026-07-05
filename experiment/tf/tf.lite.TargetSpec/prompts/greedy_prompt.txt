@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.lite.TargetSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.lite.TargetSpec` class defines the target device specifications for optimizing a TensorFlow Lite model. It allows you to specify:
+
+- **Supported operators** (`supported_ops`): Which sets of operations the target device can run (default is TensorFlow Lite built-in ops).
+- **Supported data types** (`supported_types`): The data types the device supports, which can guide optimization toward smaller types.
+- **Custom TensorFlow operators** (`experimental_select_user_tf_ops`): Allows including specific TensorFlow ops that are not part of the default set, requiring manual runtime linking.
+- **Supported backends** (`experimental_supported_backends`): Specifies compatible backends like "GPU" for hardware acceleration.
+
+This class is used to tailor model conversion and optimization to the capabilities of the target deployment device, ensuring compatibility and performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  supported_ops:
+    dtype: ["tf.lite.OpsSet"]
+    range: [["TFLITE_BUILTINS", "SELECT_TF_OPS"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "{tf.lite.OpsSet.TFLITE_BUILTINS}"
+  supported_types:
+    dtype: ["tf.dtypes.DType"]
+    range: [["float32", "float16", "int32", "int8", "uint8"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "set()"
+  experimental_select_user_tf_ops:
+    dtype: ["string"]
+    range: [["any"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "None"
+  experimental_supported_backends:
+    dtype: ["string"]
+    range: [["GPU"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: experimental_select_user_tf_ops
+    Parameter 2: supported_ops
+    Constraint: "not experimental_select_user_tf_ops or tf.lite.OpsSet.SELECT_TF_OPS in supported_ops"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lite.TargetSpec in a complex way */
+import tensorflow as tf

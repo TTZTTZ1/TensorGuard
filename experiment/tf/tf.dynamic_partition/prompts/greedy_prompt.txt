@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.dynamic_partition` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.dynamic_partition` splits a tensor into multiple sub-tensors based on partition indices. It uses the `partitions` tensor to assign each slice of `data` to one of `num_partitions` output tensors. The first dimension of `data` must match the shape of `partitions`. Each output tensor contains the slices of `data` corresponding to a specific partition index, preserving their order.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  partitions:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_partitions:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: partitions
+    Parameter 2: num_partitions
+    Constraint: "tf.reduce_all(tf.logical_and(partitions >= 0, partitions < num_partitions))"
+  2:
+    Parameter 1: partitions
+    Parameter 2: data
+    Constraint: "data.shape[:len(partitions.shape)] == partitions.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.dynamic_partition in a complex way */
+import tensorflow as tf

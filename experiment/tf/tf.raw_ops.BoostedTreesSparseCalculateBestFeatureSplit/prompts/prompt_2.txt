@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BoostedTreesSparseCalculateBestFeatureSplit` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.BoostedTreesSparseCalculateBestFeatureSplit` operation computes the optimal split for each feature in a boosted tree model using sparse statistics. It evaluates potential splits within a specified node range, considering regularization and constraints, to identify the best feature thresholds that maximize gain. The output includes node IDs, gains, feature dimensions, thresholds, and contributions for left and right child nodes, enabling efficient tree construction during training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  node_id_range:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  stats_summary_indices:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any", 4]
+    default: null
+  stats_summary_values:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  stats_summary_shape:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  l1:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: []
+    default: null
+  l2:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: []
+    default: null
+  tree_complexity:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: []
+    default: null
+  min_node_weight:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: []
+    default: null
+  logits_dimension:
+    dtype: ["int"]
+    range: "[1, inf]"
+    structure: ["scalar"]
+    shape: []
+    default: null
+  split_type:
+    dtype: ["string"]
+    range: ["inequality"]
+    structure: ["scalar"]
+    shape: []
+    default: "inequality"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: "stats_summary_indices"
+    Parameter 2: "stats_summary_values"
+    Constraint: "tf.shape(stats_summary_indices)[0] == tf.shape(stats_summary_values)[0]"
+  2:
+    Parameter 1: "stats_summary_indices"
+    Parameter 2: "stats_summary_shape"
+    Constraint: "tf.reduce_all(tf.less(tf.reduce_max(stats_summary_indices, axis=0), stats_summary_shape))"
+  3:
+    Parameter 1: "node_id_range"
+    Parameter 2: "stats_summary_shape"
+    Constraint: "tf.logical_and(tf.greater_equal(node_id_range[0], 0), tf.less_equal(node_id_range[1], stats_summary_shape[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BoostedTreesSparseCalculateBestFeatureSplit in a complex way */
+import tensorflow as tf

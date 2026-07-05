@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.einsum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.einsum` computes tensor operations using Einstein summation notation. It multiplies input tensors element-wise along aligned dimensions and sums over dimensions not in the output.
+
+**Key features:**
+- **Equation format:** Uses subscript labels (e.g., `'ij,jk->ik'` for matrix multiplication).
+- **Automatic summation:** Dimensions with repeated subscripts are summed out unless included in the output.
+- **Ellipsis support:** `'...'` handles batch or broadcasting dimensions.
+- **Sublist format:** Alternative input using integer lists instead of string equations.
+- **Optimization:** Integrates with `opt-einsum` for performance gains with three or more operands.
+
+**Common operations:** Trace, diagonal extraction, outer products, batch matrix multiplication, permutations, and bilinear operations.
+
+**Example:**  
+`torch.einsum('bij,bjk->bik', A, B)` performs batch matrix multiplication on 3D tensors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  equation:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  operands:
+    dtype: ["tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: equation
+    Parameter 2: operands
+    Constraint: "len([s for s in (equation.split('->')[0] if '->' in equation else equation).strip().split(',') if s]) == len(operands) or (equation == '' and len(operands) == 1)"
+  2:
+    Parameter 1: equation
+    Parameter 2: operands
+    Constraint: "all(operand.dim() == (len(subscript_group.replace('...', '')) + (1 if '...' in subscript_group else 0)) for operand, subscript_group in zip(operands, [s for s in (equation.split('->')[0] if '->' in equation else equation).strip().split(',') if s])) if equation != '' else True"
+  3:
+    Parameter 1: equation
+    Parameter 2: operands
+    Constraint: "all(operand.shape[i] == operand.shape[j] for operand, subscript_group in zip(operands, [s for s in (equation.split('->')[0] if '->' in equation else equation).strip().split(',') if s]) for i, char_i in enumerate(subscript_group.replace('...', '')) for j, char_j in enumerate(subscript_group.replace('...', '')) if i < j and char_i == char_j) if equation != '' else True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.einsum in a complex way */
+import torch

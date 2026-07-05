@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Concat` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.Concat` concatenates multiple tensors along a specified dimension. The input tensors must have matching ranks and types, and their sizes must be identical in all dimensions except the concatenation axis. The `concat_dim` argument is a 0-D integer tensor indicating the axis to join (must be within `[0, rank(values))`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concat_dim:
+    dtype: ["int32"]
+    range: ["[0, rank(values))"]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: concat_dim
+    Parameter 2: values
+    Constraint: "concat_dim >= 0 and concat_dim < len(tf.shape(values[0]))"
+  2:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "len(values) >= 2"
+  3:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "all(len(tf.shape(t)) == len(tf.shape(values[0])) for t in values)"
+  4:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "all(t.dtype == values[0].dtype for t in values)"
+  5:
+    Parameter 1: values
+    Parameter 2: concat_dim
+    Constraint: "all(all(tf.shape(t)[d] == tf.shape(values[0])[d] for d in range(len(tf.shape(t))) if d != concat_dim) for t in values)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Concat in a complex way */
+import tensorflow as tf

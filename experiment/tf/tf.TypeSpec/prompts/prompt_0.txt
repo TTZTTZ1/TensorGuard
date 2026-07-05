@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.TypeSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TypeSpec` is a TensorFlow base class that defines metadata for value types accepted or returned by TensorFlow APIs. It implements the `TraceType` interface for type tracing in TensorFlow's function caching and dispatch system.
+
+### Key Points:
+
+- **Purpose**: Describes TensorFlow value types (e.g., tensors, ragged tensors) for API compatibility and `tf.function` input signatures.
+- **Subclasses**: Concrete implementations like `tf.TensorSpec` and `tf.RaggedTensorSpec` represent specific value types.
+- **Attributes**: 
+  - `value_type`: The Python type for compatible values.
+- **Core Methods**:
+  - `is_subtype_of()`: Checks if the current TypeSpec is a subtype of another (implements `TraceType`).
+  - `most_specific_common_supertype()`: Finds the most specific common supertype among multiple TypeSpecs (implements `TraceType`).
+  - `is_compatible_with()`: Determines compatibility with another TypeSpec or value.
+- **Serialization**: 
+  - `experimental_as_proto()` and `experimental_from_proto()` enable proto-based serialization/deserialization.
+- **Deprecated**: `most_specific_compatible_type()` is deprecated in favor of `most_specific_common_supertype()`.
+- **Custom Subclasses**: Currently unsupported outside TensorFlow core; private methods may change.
+
+### Example Usage:
+Used in `tf.function` input signatures to define expected input types, enabling graph tracing and optimization.
+
+```python
+spec = tf.TensorSpec(shape=[None], dtype=tf.float32)
+@tf.function(input_signature=[spec])
+def process(x):
+    return x * 2
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value_type:
+    dtype: ["type"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  No constraints.
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TypeSpec in a complex way */
+import tensorflow as tf

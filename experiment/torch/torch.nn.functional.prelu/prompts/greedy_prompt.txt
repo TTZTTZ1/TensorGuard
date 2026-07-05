@@ -1,0 +1,39 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.prelu` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.prelu` applies the Parametric Rectified Linear Unit (PReLU) activation function element-wise. It is defined as `PReLU(x) = max(0, x) + weight * min(0, x)`, where `weight` is a learnable parameter.
+
+**Key points:**
+- `weight` can be a scalar (shared across all channels) or a 1‑D tensor (one weight per input channel).
+- For a 1‑D `weight`, its length must equal the number of input channels (`input.size(1)` when `input.dim() >= 2`, otherwise 1).
+- When `input` has more than 2 dimensions and `weight` is 1‑D, it is expanded to match the input shape using channel‑wise broadcasting beyond standard rules.
+
+This function provides a learnable negative slope for the activation, allowing the model to adaptively control the leakage on negative inputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["scalar", "1-D tensor"]
+    shape: ["scalar", "1-D"]
+    default: null
+constraints:
+  1:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight.ndim in [0, 1] and (weight.ndim == 0 or (weight.ndim == 1 and weight.shape[0] == (input.shape[1] if input.ndim >= 2 else 1)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.prelu in a complex way */
+import torch

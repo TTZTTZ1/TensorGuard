@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.densenet.DenseNet201` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.densenet.DenseNet201` function instantiates the DenseNet201 architecture, a convolutional neural network known for dense connectivity between layers, as introduced in the research paper "Densely Connected Convolutional Networks."
+
+**Key Features:**
+- **Pre-trained Weights:** Optionally loads weights pre-trained on ImageNet.
+- **Input Preprocessing:** Requires using `keras.applications.densenet.preprocess_input` on inputs.
+- **Flexible Configuration:** Allows customization through parameters like including the top classification layer, specifying input shapes, and setting pooling modes.
+
+**Main Parameters:**
+- `include_top`: Boolean to include the final fully-connected classification layer.
+- `weights`: Set to `'imagenet'` for pre-trained weights, `None` for random initialization, or a file path.
+- `input_shape`: Required if `include_top=False`; must have at least 32x32 dimensions with 3 channels.
+- `pooling`: Defines pooling when `include_top=False` (`None`, `'avg'`, or `'max'`).
+- `classes`: Number of output classes (only if `include_top=True` and no weights are specified).
+- `classifier_activation`: Activation function for the top layer (default is `'softmax'`).
+
+**Output:** Returns a Keras model instance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["None", "str"]
+    range: [None, "imagenet"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["None", "tensor"]
+    range: [None]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 elements, channels=3, height>=32, width>=32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["str"]
+    range: [None, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable"]
+    range: [None, "softmax"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == True implies input_shape is None"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "(include_top == True) and (weights is not None) implies classes == 1000"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights == 'imagenet' implies classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.densenet.DenseNet201 in a complex way */
+import tensorflow as tf

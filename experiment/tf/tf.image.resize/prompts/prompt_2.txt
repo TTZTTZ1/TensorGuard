@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.image.resize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.resize` is a TensorFlow function used to resize images to a specified target size. It supports various interpolation methods, aspect ratio preservation, and anti-aliasing options.
+
+**Key Features:**
+- **Input:** Accepts 3-D (`[height, width, channels]`) or 4-D (`[batch, height, width, channels]`) image tensors.
+- **Output:** Returns a resized tensor of type `float32`, except when using `method='nearest'`, which retains the input dtype.
+- **Size Argument:** Requires a 1-D tensor with two elements: `[new_height, new_width]`.
+- **Methods:** Supports multiple resizing algorithms (e.g., `bilinear`, `nearest`, `bicubic`, `lanczos3`, `area`), each with different quality and performance trade-offs.
+- **Aspect Ratio:** If `preserve_aspect_ratio=True`, images are scaled to fit within the target size while maintaining their original aspect ratio.
+- **Anti-aliasing:** The `antialias` option reduces aliasing artifacts when downsampling (has no effect when upsampling).
+
+**Common Use Cases:** Image preprocessing in computer vision pipelines, data augmentation, and generative models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  images:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: [3, 4]
+    default: null
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  method:
+    dtype: ["string"]
+    range: [["bilinear", "lanczos3", "lanczos5", "bicubic", "gaussian", "nearest", "area", "mitchellcubic"]]
+    structure: ["scalar"]
+    shape: []
+    default: "bilinear"
+  preserve_aspect_ratio:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  antialias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: images
+    Parameter 2: 
+    Constraint: "images.ndim in [3, 4]"
+  2:
+    Parameter 1: size
+    Parameter 2: 
+    Constraint: "size.ndim == 1 and size.shape[0] == 2 and size.dtype == tf.int32"
+  3:
+    Parameter 1: method
+    Parameter 2: 
+    Constraint: "method in ['bilinear', 'lanczos3', 'lanczos5', 'bicubic', 'gaussian', 'nearest', 'area', 'mitchellcubic']"
+  4:
+    Parameter 1: preserve_aspect_ratio
+    Parameter 2: 
+    Constraint: "isinstance(preserve_aspect_ratio, bool)"
+  5:
+    Parameter 1: antialias
+    Parameter 2: 
+    Constraint: "isinstance(antialias, bool)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.resize in a complex way */
+import tensorflow as tf

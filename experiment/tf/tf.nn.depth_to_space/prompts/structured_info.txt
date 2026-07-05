@@ -1,0 +1,30 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  block_size:
+    dtype: ["int"]
+    range: ["[2, infinity)"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NCHW_VECT_C"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "NHWC"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: block_size
+    Constraint: "(data_format == 'NHWC' and input.shape[3] % (block_size * block_size) == 0) or (data_format == 'NCHW' and input.shape[1] % (block_size * block_size) == 0) or (data_format == 'NCHW_VECT_C' and (input.shape[1] * input.shape[4]) % (block_size * block_size) == 0)"

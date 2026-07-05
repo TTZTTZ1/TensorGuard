@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `torch.frombuffer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.frombuffer` creates a 1D tensor from a Python buffer object (like `array.array` or `bytes`), sharing the same memory. It requires specifying the `dtype` and can skip bytes via `offset`. The `count` parameter determines how many elements to read (negative means read all remaining bytes). The tensor and buffer are linked—changes to one affect the other. Note: the buffer must be on CPU, and the dtype must match the data layout to avoid unexpected behavior.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  buffer:
+    dtype: ["object"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  count:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  offset:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  requires_grad:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "count"
+    Parameter 2: "buffer"
+    Constraint: "(count > 0 and memoryview(buffer).nbytes > offset + count * torch.tensor(0, dtype=dtype).element_size()) or (count < 0 and (memoryview(buffer).nbytes - offset) % torch.tensor(0, dtype=dtype).element_size() == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.frombuffer in a complex way */
+import torch

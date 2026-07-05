@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `torch.distributions.beta.Beta` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling functions
+- Supports gradient estimation via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()` for differentiable sampling
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class `Distribution` with common methods:
+  - `sample()`, `rsample()`: Generate samples
+  - `log_prob()`: Compute log probability
+  - `entropy()`, `mean`, `variance`, `mode`: Distribution properties
+  - `cdf()`, `icdf()`: Cumulative distribution functions
+  - `expand()`: Batch dimension manipulation
+
+### **2. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Pareto, Poisson, StudentT, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Specialized**: MixtureSameFamily, TransformedDistribution, Independent, LKJCholesky
+
+### **3. Key Features**
+- **Batch/Event shapes**: Separate batch dimensions from event dimensions
+- **Parameter validation**: Automatic constraint checking via `arg_constraints`
+- **Exponential family**: Specialized base class for exponential family distributions
+- **KL Divergence**: Pre-implemented KL divergences between distribution pairs
+- **Transforms**: Bijective transformations for reparameterization (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain constraints with registry system (`biject_to`, `transform_to`)
+
+## **Common Usage Patterns**
+
+### **REINFORCE (Score Function)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Various parameterizations
+Normal(loc=0, scale=1)
+Bernoulli(probs=0.5)
+Bernoulli(logits=0.0)  # Alternative
+Dirichlet(concentration=[1.0, 1.0])
+```
+
+## **Advanced Functionality**
+- **Transformed distributions**: Apply transforms to base distributions
+- **Independent distributions**: Reinterpret batch dims as event dims
+- **Mixture models**: MixtureSameFamily for Gaussian mixture models
+- **KL divergence computation**: `kl_divergence(p, q)` for registered distribution pairs
+- **Constraint handling**: Automatic transformation to unconstrained space for optimization
+
+## **Design Principles**
+- Follows TensorFlow Distributions design
+- Enables stochastic computation graphs
+- Supports both discrete and continuous distributions
+- Provides efficient batched operations
+- Integrates seamlessly with PyTorch autograd
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions within PyTorch's computational graph.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration1:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  concentration0:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration1
+    Parameter 2: None
+    Constraint: "concentration1 > 0"
+  2:
+    Parameter 1: concentration0
+    Parameter 2: None
+    Constraint: "concentration0 > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.beta.Beta in a complex way */
+import torch

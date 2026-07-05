@@ -1,0 +1,36 @@
+params:
+  output:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  input_list:
+    dtype: ["list[Tensor]"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM"]]
+    structure: ["scalar"]
+    shape: null
+    default: "ReduceOp.SUM"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input_list
+    Parameter 2: output
+    Constraint: "len(input_list) == (group.size() if group is not None else torch.distributed.get_world_size()) and all(tensor.shape == output.shape for tensor in input_list)"

@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `torch.lu` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.lu` computes the LU decomposition with partial pivoting for a matrix or batch of matrices. It returns the combined LU factor matrix and pivot indices. However, this function is deprecated and should be replaced with `torch.linalg.lu_factor` (or `torch.linalg.lu_factor_ex` for additional error info). Key points include:
+
+- **Output**: Returns `(LU, pivots)` or `(LU, pivots, info)` if `get_infos=True`.
+- **Pivots**: Represented as a 1-indexed vector; `pivots[i] = j` indicates row `i` was swapped with row `j-1`.
+- **Limitations**: Pivoting cannot be disabled on CPU (CUDA only). Gradients are only stable for full-rank inputs.
+- **Replacement**: Use `torch.linalg.lu_factor` for standard cases or `torch.linalg.lu_factor_ex` to include error information.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  pivot:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  get_infos:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "get_infos"
+    Parameter 2: "out"
+    Constraint: "out is None or (get_infos and len(out) == 3) or (not get_infos and len(out) == 2)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.lu in a complex way */
+import torch

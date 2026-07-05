@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.image.non_max_suppression` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.non_max_suppression` is a function that performs greedy non-maximum suppression (NMS) to filter overlapping bounding boxes based on their scores and Intersection-over-Union (IoU).  
+
+**Key functionality:**  
+- **Input:**  
+  - `boxes`: 2D tensor `[num_boxes, 4]` in `[y1, x1, y2, x2]` format (normalized or absolute coordinates).  
+  - `scores`: 1D tensor `[num_boxes]` with confidence scores for each box.  
+  - `max_output_size`: Maximum number of boxes to return.  
+  - `iou_threshold`: IoU threshold for overlap suppression (default 0.5).  
+  - `score_threshold`: Minimum score to consider a box (default `-inf`).  
+
+- **Process:**  
+  Selects boxes in descending score order, removing boxes with IoU > `iou_threshold` relative to higher-scoring selections.  
+
+- **Output:**  
+  A 1D integer tensor of selected box indices (length ≤ `max_output_size`).  
+
+**Usage example:**  
+```python
+selected_indices = tf.image.non_max_suppression(boxes, scores, 10, iou_threshold=0.5)
+selected_boxes = tf.gather(boxes, selected_indices)
+```  
+
+**Note:** The algorithm is coordinate-invariant (robust to translations/reflections).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_boxes, 4]"]
+    default: null
+  scores:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[num_boxes]"]
+    default: null
+  max_output_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  iou_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "0.5"
+  score_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "float('-inf')"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "boxes"
+    Parameter 2: "scores"
+    Constraint: "boxes.shape[0] == scores.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.non_max_suppression in a complex way */
+import tensorflow as tf

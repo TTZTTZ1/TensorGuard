@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.fft.hfft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.hfft` computes the 1D discrete Fourier transform of a **Hermitian-symmetric input** (time-domain) into a **real-valued output** (frequency-domain). It is the inverse counterpart to `ihfft`, analogous to the `rfft`/`irfft` pair for real signals.
+
+**Key points:**
+- **Input:** A half-Hermitian signal (typically the positive frequencies from a complex FFT).
+- **Output:** A real-valued tensor.
+- **Parameter `n`:** Specifies the output length. If omitted, defaults to `2*(input.size(dim)-1)` (even-length output). Providing `n` is recommended to ensure correct odd/even signal handling.
+- **Usage:** Commonly used to reconstruct a real signal from its half-Hermitian frequency representation.
+
+**Example:**
+```python
+# Hermitian-symmetric input (first 3 points from an ifft result)
+T = torch.tensor([0.5+0j, -0.125-0.172j, -0.125-0.0406j])
+real_signal = torch.fft.hfft(T, n=5)  # Reconstruct original real signal
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "2*(input.size(dim)-1)"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  norm:
+    dtype: ["string"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'backward'"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+  2:
+    Parameter 1: n
+    Parameter 2: null
+    Constraint: "n is None or n > 0"
+  3:
+    Parameter 1: norm
+    Parameter 2: null
+    Constraint: "norm in ['forward', 'backward', 'ortho']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.hfft in a complex way */
+import torch

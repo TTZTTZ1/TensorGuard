@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.debugging.assert_less_equal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.assert_less_equal` is a TensorFlow debugging operation that asserts the element-wise condition `x <= y`. It validates that every pair of elements in tensors `x` and `y` (after broadcasting) satisfies the inequality. If the condition fails, it raises an `InvalidArgumentError` with an optional custom message and a summary of the tensor values.
+
+**Key Points:**
+- **Purpose:** Used for runtime validation of tensor comparisons.
+- **Behavior in `tf.function`:** Requires `tf.control_dependencies` to ensure proper execution order.
+- **Output:** Returns an op that triggers the check; in eager mode, it returns `None`.
+- **Error Handling:** Raises `InvalidArgumentError` immediately if the condition is false and tensors are statically known or in eager execution.
+
+**Example Use Case:**  
+Enforcing tensor size limits or validating numerical constraints during model execution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  message:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  summarize:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "x.dtype == y.dtype"
+  2:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "tf.broadcast_static_shape(x.shape, y.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.debugging.assert_less_equal in a complex way */
+import tensorflow as tf

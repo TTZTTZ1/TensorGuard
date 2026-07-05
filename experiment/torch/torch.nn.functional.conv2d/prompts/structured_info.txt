@@ -1,0 +1,56 @@
+params:
+  input:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  weight:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  bias:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: "None"
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding:
+    dtype: ["string", "int"]
+    range: [["valid", "same"], null]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "0"
+  dilation:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.size(1) == weight.size(1) * groups"
+  2:
+    Parameter 1: bias
+    Parameter 2: weight
+    Constraint: "bias is None or bias.size(0) == weight.size(0)"
+  3:
+    Parameter 1: padding
+    Parameter 2: stride
+    Constraint: "not (isinstance(padding, str) and padding == 'same') or (stride == 1 or (isinstance(stride, tuple) and stride[0] == 1 and stride[1] == 1))"

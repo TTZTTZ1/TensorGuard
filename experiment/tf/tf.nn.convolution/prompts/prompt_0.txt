@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.nn.convolution` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.convolution` computes N‑D cross‑correlation (commonly called convolution) between an input tensor and filters, supporting striding, dilation, and different padding schemes. It works for 1‑D, 2‑D, or 3‑D spatial data and allows channel‑first (`NC*`) or channel‑last data layouts. The function returns a tensor with shape depending on `padding` (`"VALID"` or `"SAME"`), strides, and dilation rates. Strides > 1 and dilation rates > 1 cannot be used simultaneously.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(N+2)-D"]
+    default: null
+  filters:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(N+2)-D"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: ["ints >= 1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "[1]*N"
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "VALID"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  dilations:
+    dtype: ["int"]
+    range: ["ints >= 1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "[1]*N"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "input.ndim == filters.ndim and 1 <= input.ndim - 2 <= 3"
+  2:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "(input.shape[-1] if data_format is None or not data_format.startswith('NC') else input.shape[1]) == filters.shape[-2]"
+  3:
+    Parameter 1: strides
+    Parameter 2: dilations
+    Constraint: "not (any(s > 1 for s in (strides if strides is not None else [1]*(input.ndim-2))) and any(d > 1 for d in (dilations if dilations is not None else [1]*(input.ndim-2))))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.convolution in a complex way */
+import tensorflow as tf

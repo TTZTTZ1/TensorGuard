@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BatchMatMul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.BatchMatMul` function performs batched matrix multiplication on two input tensors. It multiplies corresponding matrix slices from `x` and `y` (where each slice is treated as a batch element) and returns a single output tensor with the same batch dimensions.
+
+**Key Features:**
+- **Inputs:** Tensors `x` and `y` must be 2-D or higher with shapes `[..., r_x, c_x]` and `[..., r_y, c_y]`, respectively, and share the same data type.
+- **Adjoint Option:** Optional flags `adj_x` and `adj_y` allow transposing (and conjugating for complex types) the respective matrix slices before multiplication.
+- **Output Shape:** The output shape is `[..., r_o, c_o]`, where:
+  - `r_o = c_x` if `adj_x=True`, else `r_x`
+  - `c_o = r_y` if `adj_y=True`, else `c_y`
+- **Additional Parameters:** Includes optional `grad_x` and `grad_y` flags (typically used for gradient computation) and a `name` for the operation.
+
+This operation is useful for efficiently handling batches of matrix multiplications, such as in neural network layers that process multiple samples simultaneously.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["bfloat16", "half", "float32", "float64", "int32", "int64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2-D or higher"]
+    default: null
+  y:
+    dtype: ["bfloat16", "half", "float32", "float64", "int32", "int64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2-D or higher"]
+    default: null
+  adj_x:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  adj_y:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  grad_x:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  grad_y:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: "y"
+    Constraint: "(not adj_x and not adj_y and x.shape[-1] == y.shape[-2]) or (adj_x and not adj_y and x.shape[-2] == y.shape[-2]) or (not adj_x and adj_y and x.shape[-1] == y.shape[-1]) or (adj_x and adj_y and x.shape[-2] == y.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BatchMatMul in a complex way */
+import tensorflow as tf

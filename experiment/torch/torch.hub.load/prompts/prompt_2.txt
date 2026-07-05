@@ -1,0 +1,102 @@
+
+# You are a Python code generation assistant for the `torch.hub.load` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**PyTorch Hub** is a centralized repository for sharing and loading pre-trained models, designed to enhance research reproducibility. It allows users to easily publish and access models via GitHub repositories.
+
+### **Key Features**
+
+- **Publishing Models**: Add a `hubconf.py` file to a GitHub repo to define entrypoints (functions) for models. Each entrypoint can return a model (e.g., `nn.Module`) or auxiliary tools.
+- **Loading Models**: Use `torch.hub.load()` to fetch models from GitHub or local directories. Other functions like `list()` and `help()` explore available models and their documentation.
+- **Caching**: Downloaded models are cached locally (default path: `~/.cache/torch/hub`). Use `force_reload=True` to refresh.
+- **Security**: The `trust_repo` parameter controls whether to trust a repository, with options to prompt, auto-trust, or check against a trusted list.
+
+### **Basic Workflow**
+
+1. **List Models**:  
+   `torch.hub.list("pytorch/vision")`  
+   Returns all callable entrypoints in a repo.
+
+2. **Get Help**:  
+   `torch.hub.help("pytorch/vision", "resnet18")`  
+   Shows the docstring and usage examples for a model.
+
+3. **Load a Model**:  
+   `model = torch.hub.load("pytorch/vision", "resnet18", pretrained=True)`  
+   Downloads and instantiates the model with pre-trained weights.
+
+4. **Run the Model**:  
+   Use `dir(model)` to see available methods and `help(model.method)` for details.
+
+### **Important Notes**
+
+- Models must be published on a specific branch or tag (not a random commit).
+- Pretrained weights can be stored locally or loaded via URL using `torch.hub.load_state_dict_from_url()`.
+- Avoid loading two different branches of the same repo in the same Python process to prevent import conflicts.
+
+PyTorch Hub simplifies model sharing and reuse, promoting reproducibility and collaboration in the machine learning community.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  repo_or_dir:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  model:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  *args:
+    dtype: ["any"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  source:
+    dtype: ["string"]
+    range: [["github", "local"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "github"
+  trust_repo:
+    dtype: ["string", "boolean", "None"]
+    range: [["check", "True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  force_reload:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  verbose:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  skip_validation:
+    dtype: ["boolean"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  **kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dictionary"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hub.load in a complex way */
+import torch

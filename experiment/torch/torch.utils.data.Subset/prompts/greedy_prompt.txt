@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.Subset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and batching in PyTorch, centered around the `DataLoader` class.
+
+**Core Components:**
+- **`DataLoader`**: An iterable that combines a dataset with a sampler, supporting automatic batching, multi-process loading, and memory pinning.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., `Dataset`).
+  - **Iterable-style**: Implements `__iter__()` (e.g., `IterableDataset`), suitable for streaming data.
+- **Samplers**: Control data loading order (e.g., `RandomSampler`, `SequentialSampler`).
+
+**Key Features:**
+- **Automatic Batching**: Enabled via `batch_size`, collates samples using `collate_fn`.
+- **Multi-process Loading**: Set `num_workers > 0` to parallelize data loading (with platform-specific considerations for Windows/macOS).
+- **Memory Pinning**: Use `pin_memory=True` to speed up GPU data transfers.
+- **Customization**: Supports custom samplers, collation functions, and worker initialization.
+
+**Common Dataset Utilities:**
+- `TensorDataset`: Wraps tensors.
+- `ConcatDataset`: Concatenates multiple datasets.
+- `Subset`: Creates a subset of a dataset.
+- `random_split`: Randomly splits a dataset.
+
+**Usage Example:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+This module is fundamental for handling large-scale datasets efficiently in PyTorch workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["sequence"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dataset
+    Parameter 2: indices
+    Constraint: "all(0 <= i < len(dataset) for i in indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.Subset in a complex way */
+import torch

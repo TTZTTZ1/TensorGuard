@@ -1,0 +1,40 @@
+params:
+  input:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [3, 4, 5]
+    default: null
+  size:
+    dtype: ["int", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "tuple of 1 to 3 elements"]
+    default: "None"
+  scale_factor:
+    dtype: ["float", "tuple"]
+    range: "No mention"
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "tuple"]
+    default: "None"
+  mode:
+    dtype: ["str"]
+    range: ["nearest", "linear", "bilinear", "bicubic", "trilinear"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "'nearest'"
+  align_corners:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "scale_factor"
+    Parameter 2: "input"
+    Constraint: "not isinstance(scale_factor, tuple) or len(scale_factor) == input.ndim - 2"
+  2:
+    Parameter 1: "mode"
+    Parameter 2: "input"
+    Constraint: "mode == 'nearest' or (mode == 'linear' and input.ndim == 3) or (mode in ['bilinear', 'bicubic'] and input.ndim == 4) or (mode == 'trilinear' and input.ndim == 5)"

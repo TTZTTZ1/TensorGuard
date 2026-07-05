@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.nn.learned_unigram_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.nn.learned_unigram_candidate_sampler` function samples candidate classes from a dynamically learned unigram distribution based on training data. It is used in candidate sampling algorithms for tasks like negative sampling in language models or recommendation systems.
+
+**Key Features:**
+- Samples `num_sampled` candidate classes from the range `[0, range_max)`.
+- The sampling distribution is a unigram model updated during training, where each class's probability is proportional to how frequently it appears as a target.
+- Returns sampled candidates and expected counts for both true and sampled classes, which are used to compute sampling probabilities in algorithms like NCE or sampled softmax.
+
+**Parameters:**
+- `true_classes`: Target classes for each batch example.
+- `num_true`: Number of target classes per example.
+- `num_sampled`: Number of candidates to sample.
+- `unique`: Whether sampled candidates should be unique per batch.
+- `range_max`: Total number of possible classes.
+- `seed` and `name`: Optional seed and operation name.
+
+**Returns:**
+- `sampled_candidates`: The sampled class IDs.
+- `true_expected_count`: Expected frequency of each true class under the sampling distribution.
+- `sampled_expected_count`: Expected frequency of each sampled class.
+
+**Note:** This function only provides the sampling components; you must implement the specific candidate sampling algorithm (e.g., NCE, sampled logistic) yourself.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: "No mention"
+  num_true:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  num_sampled:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  unique:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  range_max:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "true_classes"
+    Parameter 2: "num_true"
+    Constraint: "true_classes.shape[1] == num_true"
+  2:
+    Parameter 1: "true_classes"
+    Parameter 2: "range_max"
+    Constraint: "tf.reduce_all(true_classes >= 0) and tf.reduce_all(true_classes < range_max)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.learned_unigram_candidate_sampler in a complex way */
+import tensorflow as tf

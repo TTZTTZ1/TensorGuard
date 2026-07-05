@@ -1,0 +1,37 @@
+# tf.raw_ops.DestroyResourceOp
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/DestroyResourceOp](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/DestroyResourceOp)
+
+---
+
+Deletes the resource specified by the handle.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.DestroyResourceOp`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/DestroyResourceOp)
+
+```
+tf.raw_ops.DestroyResourceOp(
+    resource, ignore_lookup_error=True, name=None
+)
+```
+
+All subsequent operations using the resource will result in a NotFound
+error status.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `resource` | A `Tensor` of type `resource`. handle to the resource to delete. |
+| `ignore_lookup_error` | An optional `bool`. Defaults to `True`. whether to ignore the error when the resource doesn't exist. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| The created Operation. | |

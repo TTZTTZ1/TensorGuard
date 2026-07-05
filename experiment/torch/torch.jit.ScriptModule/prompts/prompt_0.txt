@@ -1,0 +1,242 @@
+
+# You are a Python code generation assistant for the `torch.jit.ScriptModule` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.jit.ScriptModule` is a wrapper around PyTorch's C++ JIT module, providing a Python interface for TorchScript modules. It encapsulates methods, attributes, parameters, and constants, and behaves similarly to a standard `nn.Module`.
+
+### Key Features:
+- **Compatibility**: Inherits from `nn.Module`, so it supports all standard module operations (e.g., parameter access, device movement, hooks).
+- **TorchScript Integration**: Enables JIT compilation for optimized execution and serialization.
+- **Graph Inspection**: Provides properties like `graph`, `code`, and `inlined_graph` to examine the internal computational graph.
+
+### Common Use Cases:
+- **Model Serialization**: Save and load models using `save()` and `torch.jit.load`.
+- **Optimization**: Use `torch.jit.script` or `torch.jit.trace` to convert PyTorch models to `ScriptModule` for performance gains.
+- **Cross-Platform Deployment**: Export models to run in non-Python environments (e.g., C++).
+
+### Important Methods:
+- **`save(f)`**: Serializes the module to a file-like object.
+- **`code` / `graph`**: Inspect the TorchScript representation.
+- **`apply(fn)`**, **`to(device)`**, **`state_dict()`**: Inherited from `nn.Module` for module management.
+
+### Note:
+While `ScriptModule` mimics `nn.Module`, it is less flexible for dynamic Python operations. Use it when you need JIT compilation, optimization, or deployment outside Python.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  state_dict:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+  strict:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  assign:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  target:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  recurse:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  prefix:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "''"
+  remove_duplicate:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  memo:
+    dtype: ["set", "None"]
+    range: null
+    structure: ["set"]
+    shape: []
+    default: "None"
+  device:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  tensor:
+    dtype: ["torch.Tensor", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  persistent:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  param:
+    dtype: ["torch.nn.Parameter", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  hook:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  prepend:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  with_kwargs:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  always_call:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  destination:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["dict"]
+    shape: []
+    default: "None"
+  keep_vars:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  non_blocking:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  memory_format:
+    dtype: ["torch.memory_format"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "torch.channels_last"
+  mode:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  dst_type:
+    dtype: ["type", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  set_to_none:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  requires_grad:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  state:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: []
+    default: null
+  f:
+    dtype: ["file-like"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  args:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: []
+    default: null
+  kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: "strict"
+    Parameter 2: "assign"
+    Constraint: "type(strict) == bool and type(assign) == bool"
+  2:
+    Parameter 1: "recurse"
+    Parameter 2: "remove_duplicate"
+    Constraint: "type(recurse) == bool and type(remove_duplicate) == bool"
+  3:
+    Parameter 1: "device"
+    Parameter 2: "dtype"
+    Constraint: "device is None or isinstance(device, (int, torch.device))"
+  4:
+    Parameter 1: "tensor"
+    Parameter 2: "persistent"
+    Constraint: "tensor is None or isinstance(t
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.jit.ScriptModule in a complex way */
+import torch

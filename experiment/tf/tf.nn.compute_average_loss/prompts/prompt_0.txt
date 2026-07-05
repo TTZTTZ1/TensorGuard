@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `tf.nn.compute_average_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.compute_average_loss` scales per-example losses by optional sample weights and computes their average across a global batch, primarily for use in distributed training with custom training loops.
+
+**Key functionality:**
+- Takes per-example losses (with reduction set to `NONE` if using a Keras Loss class)
+- Optionally applies `sample_weight` to each loss
+- Averages the scaled losses by dividing by the `global_batch_size` (total examples across all replicas)
+- Returns a scalar loss value
+
+**Main use case:**  
+Integrating loss calculation with `tf.distribute.Strategy` in custom training loops, ensuring proper scaling across multiple devices or workers.
+
+**Important parameter:**  
+`global_batch_size` should typically be set to `batch_size * strategy.num_replicas_in_sync` for correct distributed training behavior.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  per_example_loss:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, ...]"]
+    default: null
+  sample_weight:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as per_example_loss", "[]"]
+    default: "None"
+  global_batch_size:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "sample_weight"
+    Parameter 2: "per_example_loss"
+    Constraint: "sample_weight is None or sample_weight.shape.ndims == 0 or sample_weight.shape == per_example_loss.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.compute_average_loss in a complex way */
+import tensorflow as tf

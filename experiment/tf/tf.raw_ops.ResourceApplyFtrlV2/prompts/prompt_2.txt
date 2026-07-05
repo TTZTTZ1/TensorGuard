@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyFtrlV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ResourceApplyFtrlV2` operator implements the **FTRL-Proximal optimization algorithm** with L2 shrinkage support for sparse updates. It updates variables using gradient-based optimization with L1 and L2 regularization.
+
+**Key functionality:**
+- Updates variable (`var`), accumulator (`accum`), and linear terms (`linear`) using FTRL-proximal rules
+- Supports **L2 shrinkage regularization** (unlike the original FTRL)
+- Designed for **resource variables** (efficient for distributed training)
+- Optional locking for thread-safe updates
+
+**Core update rules:**
+1. `accum_new = accum + grad²`
+2. Adjusts gradient with L2 shrinkage: `grad_with_shrinkage = grad + 2 * l2_shrinkage * var`
+3. Updates linear term with adaptive learning rate component
+4. Computes quadratic denominator for proximal step
+5. Applies L1 regularization: zeros out small weights where |linear| ≤ l1
+
+**Typical use:** Efficient sparse weight updates in large-scale linear models with L1/L2 regularization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  linear:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  l2_shrinkage:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  lr_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  multiply_linear_by_lr:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "grad"
+    Parameter 2: "lr"
+    Constraint: "grad.dtype == lr.dtype"
+  2:
+    Parameter 1: "grad"
+    Parameter 2: "l1"
+    Constraint: "grad.dtype == l1.dtype"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "l2"
+    Constraint: "grad.dtype == l2.dtype"
+  4:
+    Parameter 1: "grad"
+    Parameter 2: "l2_shrinkage"
+    Constraint: "grad.dtype == l2_shrinkage.dtype"
+  5:
+    Parameter 1: "grad"
+    Parameter 2: "lr_power"
+    Constraint: "grad.dtype == lr_power.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyFtrlV2 in a complex way */
+import tensorflow as tf

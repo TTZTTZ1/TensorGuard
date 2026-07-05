@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.custom_from_mask` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.prune.custom_from_mask` applies a predefined binary mask to prune a specified parameter in a PyTorch module. It modifies the module in place by:
+
+- Storing the mask as a buffer named `name + '_mask'`
+- Replacing the original parameter with its pruned version, while preserving the unpruned version in a new parameter named `name + '_orig'`
+
+**Parameters:**
+- `module`: The module containing the parameter to prune
+- `name`: Name of the parameter to prune
+- `mask`: Binary mask tensor to apply (0 = prune, 1 = keep)
+
+**Returns:** The modified module with the pruning mask applied.
+
+**Example:**
+```python
+import torch
+import torch.nn as nn
+from torch.nn.utils import prune
+
+# Apply custom mask to prune bias of Linear layer
+mask = torch.tensor([0, 1, 0])  # Keep only the second element
+m = prune.custom_from_mask(nn.Linear(5, 3), name="bias", mask=mask)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: name
+    Parameter 2: module
+    Constraint: "hasattr(module, name) and isinstance(getattr(module, name), torch.nn.Parameter)"
+  2:
+    Parameter 1: mask
+    Parameter 2: mask
+    Constraint: "torch.all((mask == 0) | (mask == 1))"
+  3:
+    Parameter 1: mask
+    Parameter 2: module
+    Constraint: "mask.shape == getattr(module, name).shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.custom_from_mask in a complex way */
+import torch

@@ -1,0 +1,24 @@
+params:
+  ReduceOp:
+    dtype: ["string"]
+    range: ["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM", "AVG"]
+    structure: ["enum"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "ReduceOp"
+    Parameter 2: "backend"
+    Constraint: "BAND, BOR, BXOR not available when backend == 'NCCL'"
+  2:
+    Parameter 1: "ReduceOp"
+    Parameter 2: "backend"
+    Constraint: "AVG only available when backend == 'NCCL' and NCCL version >= 2.10"
+  3:
+    Parameter 1: "ReduceOp"
+    Parameter 2: "backend"
+    Constraint: "PREMUL_SUM only available when backend == 'NCCL' and NCCL version >= 2.11"
+  4:
+    Parameter 1: "ReduceOp"
+    Parameter 2: "tensor"
+    Constraint: "MAX, MIN, PRODUCT not supported for complex tensors"

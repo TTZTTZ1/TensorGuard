@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.py_function` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.py_function` wraps a Python function into a TensorFlow operation that executes eagerly, even when called within a `tf.function` or graph context. It enables the use of arbitrary Python code (including non-TensorFlow operations, debugging tools like `pdb`, and Python control flow) while still supporting TensorFlow operations and gradients.
+
+**Key Features:**
+- Allows Python code to run inside TensorFlow graphs.
+- Supports TensorFlow operations within the wrapped function.
+- Remains differentiable (gradients can be computed).
+- Useful for debugging, prototyping, or integrating non-TensorFlow libraries.
+
+**Usage Modes:**
+1. **As a Decorator:**  
+   - Set `Tout` (output type(s)) and optionally `name`.  
+   - Do not set `func` or `inp`.  
+   - Ensures the decorated function always runs eagerly.
+
+2. **In-place Call:**  
+   - Pass `func`, `inp` (input tensors), and `Tout` explicitly.
+
+**Important Limitations:**
+- **Performance:** Acquires the Python Global Interpreter Lock (GIL), hindering parallelization.
+- **Serialization:** The function body is not serialized in `GraphDef`, so saved models cannot be restored in different environments.
+- **Distribution:** Must run in the same process as the calling program; requires careful device placement in distributed settings.
+- **XLA Incompatibility:** Cannot be used inside `tf.function(jit_compile=True)`.
+
+**Example (Decorator):**
+```python
+@tf.py_function(Tout=tf.float32)
+def custom_func(x):
+    return x ** 2  # Can include Python logic
+```
+
+**Alternatives:**  
+- Similar to `tf.numpy_function`, but supports TensorFlow ops and GPU execution.  
+- Replaces the deprecated `tf.compat.v1.py_func`.
+
+**Use Case:** Primarily for debugging, experimentation, or when integrating Python-only code, but not recommended for production due to performance and portability constraints.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  inp:
+    dtype: ["Tensor", "CompositeTensor"]
+    range: null
+    structure: ["list", "scalar"]
+    shape: null
+    default: "None"
+  Tout:
+    dtype: ["tf.DType", "tf.TypeSpec", "list", "empty_list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: func
+    Parameter 2: inp
+    Constraint: "not (func is None) or (inp is None)"
+  2:
+    Parameter 1: func
+    Parameter 2: Tout
+    Constraint: "not (func is None) or (Tout is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.py_function in a complex way */
+import tensorflow as tf

@@ -1,0 +1,181 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.WorkerSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in PyTorch's torchelastic framework, responsible for launching, managing, and supervising worker processes in distributed PyTorch jobs. It ensures fault tolerance by monitoring workers and restarting them upon failures, and supports elasticity by adapting to membership changes.
+
+### Key Responsibilities:
+- **Distributed Coordination**: Provides workers with necessary information to initialize `torch.distributed.init_process_group()`.
+- **Fault Tolerance**: Detects worker failures/unhealthiness, tears down all workers, and restarts the group.
+- **Elasticity**: Reacts to membership changes and restarts workers with updated members.
+
+### Core Components:
+1. **`ElasticAgent`** (Abstract Base Class):
+   - Manages one or more worker processes.
+   - Supports retrying worker groups up to `max_restarts`.
+   - Returns a `RunResult` containing worker outcomes or failure details.
+
+2. **`WorkerSpec`**:
+   - Blueprint for a homogeneous set of workers (same role, same number per node).
+   - Defines entrypoint (function or binary), arguments, rendezvous handler, and restart/monitoring settings.
+
+3. **`WorkerGroup`**:
+   - A set of `Worker` instances managed by an agent.
+   - Workers share a common `WorkerSpec`.
+
+4. **`Worker`**:
+   - Represents an individual worker process with ranks (local, global, role) and world sizes.
+
+5. **`WorkerState`**:
+   - Tracks the state of a worker group (e.g., `INIT`, `HEALTHY`, `FAILED`, `SUCCEEDED`).
+
+### Provided Implementation:
+- **`LocalElasticAgent`**:
+  - Manages host-local workers (e.g., one per GPU on a node).
+  - Starts workers using Python multiprocessing (`spawn` by default).
+  - Handles logging, named pipe watchdogs (optional), and exit barriers.
+
+### Extending the Agent:
+- Extend **`SimpleElasticAgent`** for custom implementations.
+  - Implement abstract methods: `_start_workers`, `_stop_workers`, `_monitor_workers`, `_shutdown`.
+  - Leverages scaffolding for rendezvous, worker rank assignment, and restart logic.
+
+### Additional Features:
+- **Watchdog**: Optional named pipe timer (`TORCHELASTIC_ENABLE_FILE_TIMER`) for liveness detection.
+- **Health Check Server**: Optional TCP/HTTP server (`TORCHELASTIC_HEALTH_CHECK_PORT`) for external monitoring.
+
+### Usage Example:
+```python
+spec = WorkerSpec(
+    role="trainer",
+    local_world_size=4,
+    entrypoint=trainer_function,
+    args=("args",),
+    max_restarts=3
+)
+agent = LocalElasticAgent(spec)
+result = agent.run()
+if result.is_failed():
+    # Handle failure
+else:
+    # Access results (e.g., result.return_values[0])
+```
+
+The Elastic Agent abstracts the complexity of distributed process management, enabling resilient and scalable PyTorch training jobs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  role:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  local_world_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  rdzv_handler:
+    dtype: ["RendezvousHandler"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  fn:
+    dtype: ["Callable", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  entrypoint:
+    dtype: ["Callable", "string", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  args:
+    dtype: ["tuple"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "()"
+  max_restarts:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "3"
+  monitor_interval:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0.1"
+  master_port:
+    dtype: ["int", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  master_addr:
+    dtype: ["string", "NoneType"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  redirects:
+    dtype: ["dict", "NoneType"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  tee:
+    dtype: ["dict", "NoneType"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  event_log_handler:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'null'"
+  numa_options:
+    dtype: ["object", "NoneType"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  duplicate_stdout_filters:
+    dtype: ["list", "NoneType"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  duplicate_stderr_filters:
+    dtype: ["list", "NoneType"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  virtual_local_rank:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: tee
+    Parameter 2: redirects
+    Constraint: "tee is not None and redirects is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.WorkerSpec in a complex way */
+import torch

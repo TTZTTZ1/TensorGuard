@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.PrecisionAtRecall` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`tf.keras.metrics.PrecisionAtRecall`** is a metric that calculates the **highest precision achievable when recall is at least a specified target value**. It’s useful when you want to ensure a minimum recall level while optimizing for precision.
+
+---
+
+### **Key Parameters**
+- **`recall`** (float, 0–1): Target recall threshold. The metric finds the best precision where recall ≥ this value.
+- **`num_thresholds`** (int, default=200): Number of prediction thresholds to evaluate.
+- **`class_id`** (int, optional): If provided, computes the metric for a specific class in multi-class settings.
+- **`name`** / **`dtype`**: Optional name and data type for the metric.
+
+---
+
+### **How It Works**
+1. Internally tracks **true positives, false positives, true negatives, false negatives** across thresholds.
+2. Identifies the threshold where recall meets or exceeds the target.
+3. Returns the **precision** at that threshold.
+
+---
+
+### **Example Usage**
+```python
+import tensorflow as tf
+
+# Initialize metric with target recall = 0.5
+metric = tf.keras.metrics.PrecisionAtRecall(recall=0.5)
+
+# Update with true labels and predicted probabilities
+y_true = [0, 0, 0, 1, 1]
+y_pred = [0, 0.3, 0.8, 0.3, 0.8]
+metric.update_state(y_true, y_pred)
+
+print(metric.result().numpy())  # Output: 0.5
+```
+
+---
+
+### **Integration with `compile()`**
+```python
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=[tf.keras.metrics.PrecisionAtRecall(recall=0.8)]
+)
+```
+
+---
+
+### **Notes**
+- Supports **sample weights** (e.g., to mask certain examples).
+- Use **`reset_state()`** to clear accumulated statistics between epochs.
+- For multi-class problems, set `class_id` to evaluate a specific class.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  recall:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  num_thresholds:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "200"
+  class_id:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  dtype:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: recall
+    Parameter 2: recall
+    Constraint: "0 <= recall <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.PrecisionAtRecall in a complex way */
+import tensorflow as tf

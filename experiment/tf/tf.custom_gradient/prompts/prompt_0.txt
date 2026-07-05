@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.custom_gradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.custom_gradient` is a decorator that allows you to define a custom gradient for a sequence of operations in TensorFlow. It is useful for improving numerical stability, efficiency, or implementing gradients that are not automatically differentiable.
+
+### Key Features:
+- **Custom Gradient Definition**: You can override the default gradient computation with your own logic.
+- **Handles Multiple Inputs**: The gradient function must return gradients for each input tensor.
+- **Supports Variables**: If the forward function uses trainable variables, the gradient function must accept an additional `variables` argument and return gradients for those variables.
+- **Chain Rule Integration**: The custom gradient automatically integrates with TensorFlow's automatic differentiation system via the chain rule.
+
+### Basic Usage:
+```python
+@tf.custom_gradient
+def custom_function(x):
+    # Forward pass computation
+    y = ...  # some operations on x
+    
+    def grad(upstream):
+        # Custom gradient computation
+        return upstream * ...  # gradient w.r.t x
+    
+    return y, grad
+```
+
+### Important Notes:
+- The gradient function receives an `upstream` gradient (from later layers) and should return the gradient with respect to each input.
+- For functions using variables, the gradient function signature should be `grad(upstream, variables=None)` and must return a tuple `(grad_xs, grad_vars)`.
+- Nested custom gradients require careful handling as they don't automatically compute higher-order derivatives.
+- Use `tf.stop_gradient` when operations without registered gradients are used within the function to avoid `LookupError`.
+
+### Example Use Case:
+Numerically stable version of `log(1 + exp(x))`:
+```python
+@tf.custom_gradient
+def log1pexp(x):
+    e = tf.exp(x)
+    def grad(upstream):
+        return upstream * (1 - 1 / (1 + e))
+    return tf.math.log(1 + e), grad
+```
+
+This decorator provides fine-grained control over gradient computation while maintaining compatibility with TensorFlow's automatic differentiation system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  f:
+    dtype: ["function"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.custom_gradient in a complex way */
+import tensorflow as tf

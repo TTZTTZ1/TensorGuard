@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.ragged.stack_dynamic_partitions` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.ragged.stack_dynamic_partitions` groups and stacks elements from a `data` tensor (or RaggedTensor) based on corresponding partition indices, producing a RaggedTensor where each row contains all elements assigned to that partition.
+
+**Key points:**
+- **Inputs:** `data` (values to partition), `partitions` (indices assigning each slice of `data` to a partition), and `num_partitions` (total number of output rows).
+- **Output:** A RaggedTensor with `num_partitions` rows, where row `i` contains all `data` slices whose `partitions` index equals `i`, stacked in row-major order.
+- **Note:** If `num_partitions` is a Python integer, this is equivalent to `tf.ragged.stack(tf.dynamic_partition(...))`.
+
+**Example:**
+```python
+data = ['a', 'b', 'c', 'd', 'e']
+partitions = [3, 0, 2, 2, 3]
+num_partitions = 5
+# Output: RaggedTensor with rows: [['b'], [], ['c', 'd'], ['a', 'e'], []]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: No mention
+    range: No mention
+    structure: ["Tensor", "RaggedTensor"]
+    shape: ["any"]
+    default: null
+  partitions:
+    dtype: ["int32", "int64"]
+    range: ["greater than or equal to 0", "less than num_partitions"]
+    structure: ["Tensor", "RaggedTensor"]
+    shape: ["any"]
+    default: null
+  num_partitions:
+    dtype: ["int32", "int64"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: partitions
+    Parameter 2: data
+    Constraint: data.shape[:len(partitions.shape)] == partitions.shape
+  2:
+    Parameter 1: partitions
+    Parameter 2: num_partitions
+    Constraint: tf.reduce_all(tf.logical_and(partitions >= 0, partitions < num_partitions))
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.ragged.stack_dynamic_partitions in a complex way */
+import tensorflow as tf

@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.distributions.constraints.Constraint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+## Key Features
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## Core Components
+
+### 1. **Distribution Base Class**
+Abstract base class with essential methods:
+- `sample()` / `rsample()`: Generate samples
+- `log_prob()`: Compute log probability
+- `entropy()`: Calculate distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+- `support`: Valid value constraints
+
+### 2. **Available Distributions**
+Includes both continuous and discrete distributions:
+- **Continuous**: Normal, Beta, Gamma, Dirichlet, Exponential, etc.
+- **Discrete**: Bernoulli, Binomial, Categorical, Poisson, etc.
+- **Multivariate**: MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, Gumbel, etc.
+
+### 3. **Specialized Classes**
+- `ExponentialFamily`: Base for exponential family distributions
+- `TransformedDistribution`: Applies transforms to base distributions
+- `Independent`: Reinterprets batch dims as event dims
+- `MixtureSameFamily`: Mixture distributions with same component type
+
+### 4. **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, etc.)
+- **Constraints**: Define valid parameter ranges (simplex, positive definite, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for constraint handling
+
+### 5. **KL Divergence**
+- `kl_divergence()`: Computes KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+## Common Use Cases
+1. **Reinforcement Learning**: Policy gradients with categorical distributions
+2. **Variational Inference**: Reparameterization with normal distributions
+3. **Probabilistic Modeling**: Building complex distributions via transforms
+4. **Bayesian Methods**: Prior/posterior distributions with constraints
+
+The package follows TensorFlow Distributions design and provides a comprehensive toolkit for probabilistic modeling with automatic differentiation support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  is_discrete:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  event_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "event_dim"
+    Parameter 2: "None"
+    Constraint: "event_dim >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.constraints.Constraint in a complex way */
+import torch

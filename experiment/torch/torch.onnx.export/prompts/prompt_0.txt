@@ -1,0 +1,265 @@
+
+# You are a Python code generation assistant for the `torch.onnx.export` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.export`-based ONNX exporter converts PyTorch models to ONNX format using the modern `torch.export` engine, which traces the model's tensor computation into a normalized, static graph. This exporter is now the default (`dynamo=True`) and is recommended over the legacy TorchScript-based approach.
+
+### Key Features:
+- **AOT Graph Capture**: Eliminates Python control flow, producing a functional ATen operator graph with shape constraints.
+- **Reduced Memory Usage**: Optimized export process.
+- **Dynamic Shapes**: Supports dynamic dimensions via `dynamic_shapes`.
+- **Rich Metadata**: Each ONNX node includes debugging info like stack traces, FX node details, and class hierarchies.
+- **Flexible Serialization**: Control over including model weights and treating them as inputs via `ONNXProgram.save()`.
+
+### Basic Usage:
+```python
+import torch
+import torch.onnx
+
+# Export model
+onnx_program = torch.onnx.export(
+    model,
+    example_args,
+    dynamo=True,
+    input_names=["input"],
+    output_names=["output"],
+    dynamic_shapes={...}  # Optional
+)
+
+# Save to file
+onnx_program.save("model.onnx")
+```
+
+### Dependencies:
+- `onnx` and `onnxscript` packages (install via `pip`).
+- Optional: `onnxruntime` for execution.
+
+### Error Handling:
+If export fails, rerun with `report=True` to generate a detailed markdown report for debugging.
+
+### Output:
+Returns an `ONNXProgram` object containing:
+- `model_proto`: The ONNX model (`onnx.ModelProto`).
+- Methods to save, optimize, run inference, and inspect the model.
+
+This exporter is designed for modern PyTorch models, offering better performance, flexibility, and debugging support compared to the legacy exporter.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  model:
+    dtype: ["torch.nn.Module", "torch.export.ExportedProgram", "torch.jit.ScriptModule", "torch.jit.ScriptFunction"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "()"
+  f:
+    dtype: ["string", "os.PathLike"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  kwargs:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  verbose:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  input_names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["sequence"]
+    shape: [null]
+    default: null
+  output_names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["sequence"]
+    shape: [null]
+    default: null
+  opset_version:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  dynamo:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  external_data:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  dynamic_shapes:
+    dtype: ["dict", "tuple", "list"]
+    range: [null]
+    structure: ["dict", "tuple", "list"]
+    shape: [null]
+    default: null
+  custom_translation_table:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  report:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  optimize:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  verify:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  profile:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  dump_exported_program:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  artifacts_dir:
+    dtype: ["string", "os.PathLike"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'.'"
+  fallback:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  export_params:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  keep_initializers_as_inputs:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  dynamic_axes:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  training:
+    dtype: ["_C_onnx.TrainingMode"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "<TrainingMode.EVAL: 0>"
+  operator_export_type:
+    dtype: ["_C_onnx.OperatorExportTypes"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "<OperatorExportTypes.ONNX: 0>"
+  do_constant_folding:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  custom_opsets:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+  export_modules_as_functions:
+    dtype: ["bool", "Collection"]
+    range: [null]
+    structure: ["scalar", "collection"]
+    shape: [null]
+    default: "False"
+  autograd_inlining:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: dynamo
+    Parameter 2: dynamic_shapes
+    Constraint: "dynamic_shapes is not None implies dynamo == True"
+  2:
+    Parameter 1: dynamo
+    Parameter 2: custom_translation_table
+    Constraint: "custom_translation_table is not None implies dynamo == True"
+  3:
+    Parameter 1: dynamo
+    Parameter 2: report
+    Constraint: "report == True implies dynamo == True"
+  4:
+    Parameter 1: dynamo
+    Parameter 2: optimize
+    Constraint: "optimize == True implies dynamo == True"
+  5:
+    Parameter 1: dynamo
+    Parameter 2: verify
+    Constraint: "verify == True implies dynamo == True"
+  6:
+    Parameter 1: dynamo
+    Parameter 2: profile
+    Constraint: "profile == True implies dynamo == True"
+  7:
+    Parameter 1: dynamo
+    Parameter 2: dump_exported_program
+    Constraint: "dump_exported_program == True implies dynamo == True"
+  8:
+    Parameter 1: dynamo
+    Parameter 2: artifacts_dir
+    Constraint: "artifacts_dir != '.' implies dynamo == True"
+  9:
+    Parameter 1: dynamo
+    Parameter 2: fallback
+    Constraint: "fallback == True implies dynamo == True"
+  10:
+    Parameter 1: fallback
+    Parameter 2: dynamic_shapes
+    Parameter 3: dynamic_axes
+    Constraint: "fallback == True and dynamic_shapes is not None implies dynamic_axes is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.onnx.export in a complex way */
+import torch

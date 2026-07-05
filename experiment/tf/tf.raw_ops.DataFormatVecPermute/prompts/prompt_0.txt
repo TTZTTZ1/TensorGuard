@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DataFormatVecPermute` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.DataFormatVecPermute` operation permutes an input tensor from a source data format (`src_format`) to a destination data format (`dst_format`). It is commonly used to reorder dimensions in data format vectors, such as converting between `NHWC` and `NCHW` layouts.
+
+**Key Points:**
+- **Input Tensor (`x`):** Must be a 1D or 2D tensor of type `int32` or `int64`. Supported shapes include vectors of size `n` or `n-2`, or 2D tensors with shape `(n, 2)` or `(n-2, 2)`, where `n` is the length of the format strings (4 or 5).
+- **Formats (`src_format`, `dst_format`):** Strings like `"NHWC"` or `"NCHW"` (for 4D) or `"NDHWC"` or `"NCDHW"` (for 5D). Defaults are `"NHWC"` and `"NCHW"`.
+- **Behavior:** Reorders elements based on the mapping between source and destination formats. If the input size is `n-2`, non-spatial dimensions (e.g., batch `N` and channel `C`) are assumed omitted.
+- **Examples:** 
+  - Input `[1, 2, 3, 4]` with `src_format="NHWC"` and `dst_format="NCHW"` outputs `[1, 4, 2, 3]`.
+  - For 2D input `[[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]` with `"NDHWC"` to `"NCDHW"`, output is `[[1, 6], [5, 10], [2, 7], [3, 8], [4, 9]]`.
+
+This operation is useful for adapting tensor layouts in neural network operations, particularly in convolutional layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1, 2]
+    default: null
+  src_format:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "NHWC"
+  dst_format:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "NCHW"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: src_format
+    Constraint: "len(x.shape) in [1, 2] and ( (len(x.shape) == 1 and x.shape[0] in [len(src_format), len(src_format)-2]) or (len(x.shape) == 2 and x.shape[0] in [len(src_format), len(src_format)-2] and x.shape[1] == 2) )"
+  2:
+    Parameter 1: src_format
+    Parameter 2: dst_format
+    Constraint: "len(src_format) == len(dst_format) and len(src_format) in [4, 5]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DataFormatVecPermute in a complex way */
+import tensorflow as tf

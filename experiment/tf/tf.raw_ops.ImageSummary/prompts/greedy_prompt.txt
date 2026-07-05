@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ImageSummary` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ImageSummary` generates a TensorFlow Summary protocol buffer containing image data for visualization in tools like TensorBoard. It accepts a 4-D input tensor with shape `[batch_size, height, width, channels]` (where `channels` is 1, 3, or 4) and converts up to `max_images` batch elements into normalized image summaries. The `tag` parameter defines the naming prefix for the summary entries. Float inputs are automatically normalized per image to the range `[0, 255]`, while `uint8` values remain unchanged. Non-finite values in the input are replaced with the specified `bad_color` (default red). The output is a scalar string tensor representing the serialized summary.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tag:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  tensor:
+    dtype: ["uint8", "float32", "half", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  max_images:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "3"
+  bad_color:
+    dtype: ["uint8"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "dtype: DT_UINT8 tensor_shape { dim { size: 4 } } int_val: 255 int_val: 0 int_val: 0 int_val: 255"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "tensor"
+    Parameter 2: "null"
+    Constraint: "len(tensor.shape) == 4 and tensor.shape[-1] in [1, 3, 4]"
+  2:
+    Parameter 1: "max_images"
+    Parameter 2: "null"
+    Constraint: "max_images >= 1"
+  3:
+    Parameter 1: "bad_color"
+    Parameter 2: "tensor"
+    Constraint: "tf.rank(bad_color) == 1 and tf.shape(bad_color)[0] == tensor.shape[-1] and tf.reduce_min(bad_color) >= 0 and tf.reduce_max(bad_color) <= 255"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ImageSummary in a complex way */
+import tensorflow as tf

@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ComposeTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+**Core Components:**
+1. **Distribution Base Class**: Abstract base class with methods like:
+   - `sample()` / `rsample()`: Generate samples
+   - `log_prob()`: Compute log probability
+   - `entropy()`: Calculate distribution entropy
+   - `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution functions
+
+2. **Available Distributions**: Includes common distributions like:
+   - Continuous: Normal, Beta, Gamma, Exponential, Dirichlet, etc.
+   - Discrete: Bernoulli, Binomial, Categorical, Poisson, etc.
+   - Multivariate: MultivariateNormal, LowRankMultivariateNormal
+   - Specialized: Gumbel, Laplace, StudentT, VonMises, Wishart
+
+3. **Transforms & Constraints**: 
+   - `Transform`: Bijective transformations for reparameterization
+   - `Constraint`: Define valid parameter ranges
+   - `biject_to()` / `transform_to()`: Registry for constraint transformations
+
+4. **KL Divergence**: `kl_divergence()` computes Kullback-Leibler divergence between distributions
+
+**Common Use Cases:**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders (reparameterization trick)
+- Bayesian modeling
+- Probabilistic deep learning
+
+**Example Usage:**
+```python
+# Normal distribution
+normal = Normal(loc=0, scale=1)
+samples = normal.rsample()  # Differentiable samples
+log_prob = normal.log_prob(samples)
+
+# Categorical distribution (REINFORCE)
+probs = torch.tensor([0.2, 0.3, 0.5])
+categorical = Categorical(probs)
+action = categorical.sample()
+loss = -categorical.log_prob(action) * reward
+```
+
+The package follows TensorFlow Distributions design and integrates seamlessly with PyTorch's autograd system for gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  parts:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: cache_size
+    Parameter 2: cache_size
+    Constraint: "cache_size == 0 or cache_size == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ComposeTransform in a complex way */
+import torch

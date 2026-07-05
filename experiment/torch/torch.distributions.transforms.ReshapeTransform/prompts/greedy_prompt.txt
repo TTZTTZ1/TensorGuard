@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ReshapeTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Wishart, LKJCholesky
+
+### **3. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (VAEs)
+
+### **4. Transforms System**
+- Transform distributions via invertible mappings (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- Used in `TransformedDistribution` to create new distributions
+- Supports composition, reshaping, and constraint handling
+
+### **5. Constraints System**
+- Defines valid parameter domains for distributions
+- Registry system (`biject_to`, `transform_to`) maps constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients using categorical distributions
+2. **Variational Inference**: Reparameterization with Normal/Beta distributions
+3. **Probabilistic Modeling**: Building complex distributions via transforms
+4. **Bayesian Methods**: Prior/posterior distributions with KL divergence
+
+## **Key Features**
+- **Batching**: Native support for batched parameters
+- **Gradient Support**: Integration with PyTorch autograd
+- **Numerical Stability**: Careful implementations for log-probabilities
+- **Extensibility**: Easy to add new distributions and transforms
+
+The package follows TensorFlow Distributions design and provides essential tools for probabilistic deep learning, enabling both flexible modeling and efficient gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  out_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "in_shape"
+    Parameter 2: "out_shape"
+    Constraint: "torch.Size(in_shape).numel() == torch.Size(out_shape).numel()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ReshapeTransform in a complex way */
+import torch

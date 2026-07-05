@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.train.Example` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.Example` is a TensorFlow protocol buffer (proto) designed for efficiently storing structured data, commonly used in training and inference pipelines. It represents data as a dictionary-like structure where each string key maps to a `tf.train.Feature` containing a list of values of a fixed type (bytes, int64, or float).
+
+**Key Points:**
+- **Purpose:** Provides a compact, typed format for serializing data, often used with TFRecord files.
+- **Structure:** Consists of `features`, a key-value store where values are `Feature` messages with lists of uniform data types.
+- **Usage:** Data must conform to a schema where each feature key has a consistent data type across examples, though the number of values per feature can vary. Missing features may use defaults if configured.
+- **Processing:** Use `tf.io.parse_example` to deserialize and extract tensors from `Example` protos, requiring a predefined feature specification.
+
+**Example Workflow:**
+1. Create an `Example` proto with features (e.g., integer lists).
+2. Serialize and store it (e.g., in TFRecord files).
+3. Read and parse it back using `tf.io.parse_example` with a feature description.
+
+This format is integral to TensorFlow data pipelines, enabling efficient storage and retrieval of large datasets.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  features:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: "No mention"
+    default: null
+constraints:
+  1.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "data_type_T"
+    Constraint: "all(type(ex.features[K].value[0]) == T for ex in examples if K in ex.features and ex.features[K].value) and len({type(ex.features[K].value[0]) for ex in examples if K in ex.features and ex.features[K].value}) <= 1"
+  2.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "list_size"
+    Constraint: "len(ex1.features[K].value) != len(ex2.features[K].value) is allowed for any examples ex1, ex2"
+  3.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "default_value"
+    Constraint: "if K not in ex.features, default_value is used if configured"
+  4.
+    Parameter 1: "feature_key_K"
+    Parameter 2: "empty_list"
+    Constraint: "if K in ex.features and not ex.features[K].value, then no default is used and it represents an empty tensor"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.Example in a complex way */
+import tensorflow as tf

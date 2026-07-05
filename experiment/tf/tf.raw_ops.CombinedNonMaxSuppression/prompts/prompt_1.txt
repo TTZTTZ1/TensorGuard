@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CombinedNonMaxSuppression` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.CombinedNonMaxSuppression` performs batched, multi-class non-maximum suppression (NMS) to greedily select high-scoring bounding boxes while pruning those with high overlap (based on IOU). It processes inputs per batch across all classes, returning the top boxes, scores, and class labels after suppression.
+
+**Key Parameters:**
+- **Inputs**: 
+  - `boxes`: 4D tensor `[batch_size, num_boxes, q, 4]` (q=1 for shared boxes across classes, or q=num_classes for class-specific boxes).
+  - `scores`: 3D tensor `[batch_size, num_boxes, num_classes]` (score per box per class).
+- **Constraints**:
+  - `max_output_size_per_class`: Max boxes to keep per class.
+  - `max_total_size`: Total max boxes retained across all classes (clipped/padded accordingly).
+  - `iou_threshold` & `score_threshold`: For filtering overlapping and low-confidence boxes.
+- **Options**:
+  - `pad_per_class`: If `True`, pads output per class; otherwise clips/pads to `max_total_size`.
+  - `clip_boxes`: If `True`, clips box coordinates to [0, 1].
+
+**Outputs**: A tuple of four tensors:
+- `nmsed_boxes`, `nmsed_scores`, `nmsed_classes`: Selected boxes, scores, and classes.
+- `valid_detections`: Number of valid detections per batch item.
+
+This operation is coordinate-agnostic (invariant to translation/reflection) and handles normalized or absolute box coordinates.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[null, null, null, 4]]
+    default: null
+  scores:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [[null, null, null]]
+    default: null
+  max_output_size_per_class:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [[]]
+    default: null
+  max_total_size:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [[]]
+    default: null
+  iou_threshold:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [[]]
+    default: null
+  score_threshold:
+    dtype: ["float32"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [[]]
+    default: null
+  pad_per_class:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  clip_boxes:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+constraints:
+  1:
+    Parameter 1: "boxes"
+    Parameter 2: "scores"
+    Constraint: "boxes.shape[0] == scores.shape[0] and boxes.shape[1] == scores.shape[1]"
+  2:
+    Parameter 1: "boxes"
+    Parameter 2: "scores"
+    Constraint: "boxes.shape[2] == 1 or boxes.shape[2] == scores.shape[2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CombinedNonMaxSuppression in a complex way */
+import tensorflow as tf

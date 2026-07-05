@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.debugging.enable_check_numerics` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.enable_check_numerics` enables runtime detection of invalid numerical values (Infinity or NaN) in TensorFlow tensors during both eager execution and graph execution. When enabled, any operation that produces such values will immediately raise an `InvalidArgumentError` with detailed debugging information, including the operation type, tensor details, and relevant stack traces.
+
+**Key Features:**
+- **Automatic Detection:** Catches `Inf` and `NaN` values as soon as they appear in any float-type tensor output.
+- **Unified Support:** Works for both eager execution and graph execution (including `tf.function`).
+- **Thread-Specific:** Only affects the thread where it is called.
+- **Idempotent:** Multiple calls have the same effect as a single call.
+- **Disable Option:** Can be turned off using `tf.debugging.disable_check_numerics()`.
+
+**Parameters:**
+- `stack_height_limit` (default: 30): Limits stack trace height for graph ops.
+- `path_length_limit` (default: 50): Limits file path length in stack traces for graph ops.
+
+**Usage Example:**
+```python
+import tensorflow as tf
+tf.debugging.enable_check_numerics()
+
+# Any operation producing Inf/NaN will now error immediately
+x = tf.constant([0.0, -1.0])
+y = tf.math.sqrt(x)  # Raises InvalidArgumentError due to NaN from sqrt(-1)
+```
+
+**Note for TPU Users:** Call `tf.config.set_soft_device_placement(True)` before enabling this feature to ensure compatibility with TPU outside compilation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  stack_height_limit:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "30"
+  path_length_limit:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "50"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.debugging.enable_check_numerics in a complex way */
+import tensorflow as tf

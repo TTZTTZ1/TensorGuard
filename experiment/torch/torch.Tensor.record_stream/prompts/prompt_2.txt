@@ -1,0 +1,34 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.record_stream` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.Tensor.record_stream(stream)` informs PyTorch's CUDA caching allocator that a tensor has been used by a specified stream. This prevents the tensor's memory from being reused until all operations queued on that stream at the time of deallocation are complete.
+
+**Purpose:**  
+Ensures memory safety when tensors are shared across multiple CUDA streams, preventing premature memory reuse that could corrupt data.
+
+**Key Points:**
+- **Default behavior:** The allocator only tracks the stream where a tensor was created. Using a tensor on another stream without `record_stream` can lead to unsafe memory reuse.
+- **Use case:** Ideal for library functions that create tensors on side streams and return them to users, simplifying stream-safety.
+- **Performance trade-off:** Adds overhead by requiring the allocator to poll streams, which may cause non-deterministic memory reuse.
+- **Alternative:** Manual synchronization using `stream.wait_stream()` and CUDA events for fine-grained control, avoiding `record_stream` overhead.
+- **Example pattern:** Synchronize the creation stream with side streams before deallocating tensors used across streams to overlap computation and communication safely.
+
+**In summary:** Use `record_stream` to automatically manage cross-stream tensor dependencies at a performance cost, or manually synchronize streams for optimal control.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    stream:
+        dtype: ["torch.cuda.Stream"]
+        range: null
+        structure: ["object"]
+        shape: null
+        default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.record_stream in a complex way */
+import torch

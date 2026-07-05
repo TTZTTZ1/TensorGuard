@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.BasePruningMethod` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `BasePruningMethod` is an abstract base class in PyTorch for implementing custom pruning techniques. It provides a framework for creating pruning methods by requiring subclasses to override key methods like `compute_mask()` (which defines the pruning rule) and `apply()` (which attaches pruning logic to a module).
+
+**Key Functionality:**
+- **`apply()`**: Attaches pruning to a specific parameter in a module, adding a forward pre-hook and reparameterizing the tensor into an original version and a mask.
+- **`compute_mask()`**: Abstract method to generate a pruning mask based on importance scores and any existing mask.
+- **`prune()`**: Applies the pruning rule to a tensor, returning a pruned version.
+- **`apply_mask()`**: Multiplies a parameter by its mask to produce the pruned tensor.
+- **`remove()`**: Removes the pruning reparameterization, leaving the parameter permanently pruned.
+
+**Usage:**
+Pruning is applied to a module's parameter using `apply()`, which requires the module, parameter name, and optional importance scores. Once applied, the mask is stored as a buffer, and the original parameter is replaced with a pruned version. The `remove()` method can clean up the reparameterization without reversing the pruning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: "None"
+  t:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: "None"
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: default_mask
+    Parameter 2: t
+    Constraint: "default_mask is None or default_mask.shape == t.shape"
+  2:
+    Parameter 1: importance_scores
+    Parameter 2: t
+    Constraint: "importance_scores is None or importance_scores.shape == t.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.BasePruningMethod in a complex way */
+import torch

@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorLowerTriangular` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorLowerTriangular` is a TensorFlow class that represents a batch of square lower triangular matrices, where the strictly upper triangular part is ignored. It provides efficient linear algebra operations (like matrix multiplication, solving linear systems, computing determinants) by leveraging the lower triangular structure for performance benefits.
+
+**Key Features:**
+- **Initialization:** Constructed from a tensor `tril` with shape `[B1,...,Bb, N, N]`, where only the lower triangular part (including the diagonal) is used.
+- **Matrix Properties:** Supports hints like `is_non_singular`, `is_self_adjoint`, `is_positive_definite`, and `is_square` to enable optimizations.
+- **Core Operations:** Includes methods for:
+  - `matmul`: Matrix multiplication.
+  - `solve`: Solving linear systems (using back-substitution for efficiency).
+  - `determinant` and `log_abs_determinant`: Computed as the product of diagonal elements.
+  - `diag_part`, `trace`, `inverse`, `cholesky` (if applicable), and more.
+- **Performance:** Operations are optimized for lower triangular structure (e.g., `solve` costs O(N²) vs. O(N³) for dense matrices).
+- **Shape Compatibility:** Acts on batch matrices with compatible shapes for operations like `matmul` and `solve`.
+
+**Common Use Cases:**
+- Representing covariance matrices in probabilistic models.
+- Efficiently solving linear systems with triangular matrices.
+- Batch linear algebra operations where matrices are lower triangular.
+
+**Example:**
+```python
+tril = [[1., 0.], [2., 3.]]  # Lower triangular part
+operator = tf.linalg.LinearOperatorLowerTriangular(tril)
+operator.to_dense()  # Returns [[1., 0.], [2., 3.]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tril:
+    dtype: ["float", "int", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N, N] with b>=0, N>=0"]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "'LinearOperatorLowerTriangular'"
+constraints:
+  1:
+    Parameter 1: is_square
+    Parameter 2: is_square
+    Constraint: "is_square is not False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorLowerTriangular in a complex way */
+import tensorflow as tf

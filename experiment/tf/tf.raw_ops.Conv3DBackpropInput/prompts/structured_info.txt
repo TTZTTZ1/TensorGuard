@@ -1,0 +1,52 @@
+params:
+  input:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch, depth, rows, cols, in_channels]"]
+    default: null
+  filter:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[depth, rows, cols, in_channels, out_channels]"]
+    default: null
+  out_backprop:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch, out_depth, out_rows, out_cols, out_channels]"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["length >= 5"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dilations:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["length 5"]
+    default: "[1, 1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filter
+    Constraint: "input.shape[4] == filter.shape[3]"
+  2:
+    Parameter 1: strides
+    Parameter 2: strides
+    Constraint: "len(strides) >= 5 and strides[0] == 1 and strides[4] == 1"

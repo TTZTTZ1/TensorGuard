@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.nn.top_k` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.top_k` (also accessible as `tf.math.top_k`) finds the largest `k` values and their corresponding indices along the last dimension of a tensor.
+
+**Key features:**
+- **Input:** 1-D or higher tensor with last dimension ≥ `k`.
+- **Output:** A tuple of `values` and `indices`, both shaped as `input.shape[:-1] + [k]`.
+- **Behavior:** For vectors, returns top `k` entries; for matrices/higher ranks, computes top `k` per row (along last dimension).
+- **Sorting:** Results are sorted descending by default (`sorted=True`).
+- **Tie-breaking:** If values are equal, the element with the lower original index appears first.
+- **Index type:** Indices are returned as `int32` by default, customizable via `index_type`.
+
+**Common use:** Retrieving top predictions in classification or selecting largest elements for operations like `tf.gather`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  k:
+    dtype: ["int16", "int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1"
+  sorted:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  index_type:
+    dtype: ["int16", "int32", "int64"]
+    range: [["int16", "int32", "int64"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.int32"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: k
+    Constraint: "input.shape[-1] >= k"
+  2:
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: "k >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.top_k in a complex way */
+import tensorflow as tf

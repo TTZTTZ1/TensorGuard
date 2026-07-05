@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.EnqueueTPUEmbeddingRaggedTensorBatch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.EnqueueTPUEmbeddingRaggedTensorBatch` is a low-level TensorFlow operation that enqueues ragged tensor inputs for TPU embedding lookups, facilitating the migration of code using `tf.nn.embedding_lookup()`. It processes multiple embedding features, each defined by ragged tensor components, and maps them to specified embedding tables on a TPU device.
+
+**Key Parameters:**
+- **`sample_splits`**: List of rank-1 tensors defining row splits for each feature (analogous to `row_splits` in ragged tensors).
+- **`embedding_indices`**: List of rank-1 tensors containing indices into embedding tables (like `values` in ragged tensors).
+- **`aggregation_weights`**: List of rank-1 tensors with per-example weights for aggregation.
+- **`mode_override`**: String to override the TPU embedding mode (e.g., 'training', 'inference').
+- **`table_ids`**: List of integers mapping each feature to an embedding table.
+- **`device_ordinal`**: Specifies the TPU device to use.
+- **`combiners`**: List of aggregation methods ('sum', 'mean', 'sqrtn') per table.
+
+**Functionality:**  
+It batches ragged tensor data for efficient TPU embedding computations, supporting dynamic aggregation and device placement. The operation returns a `tf.Operation` that enqueues the data for processing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sample_splits:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  embedding_indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  aggregation_weights:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  mode_override:
+    dtype: ["string"]
+    range: [["unspecified", "inference", "training", "backward_pass_only"]]
+    structure: ["tensor"]
+    shape: null
+    default: null
+  table_ids:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  device_ordinal:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  combiners:
+    dtype: ["string"]
+    range: [["mean", "sum", "sqrtn"]]
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  max_sequence_lengths:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  num_features:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "sample_splits"
+    Parameter 2: "sample_splits"
+    Constraint: "len(sample_splits) >= 1"
+  2:
+    Parameter 1: "embedding_indices"
+    Parameter 2: "sample_splits"
+    Constraint: "len(embedding_indices) == len(sample_splits)"
+  3:
+    Parameter 1: "aggregation_weights"
+    Parameter 2: "sample_splits"
+    Constraint: "len(aggregation_weights) == len(sample_splits)"
+  4:
+    Parameter 1: "embedding_indices"
+    Parameter 2: "aggregation_weights"
+    Constraint: "all(embedding_indices[i].shape == aggregation_weights[i].shape for
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.EnqueueTPUEmbeddingRaggedTensorBatch in a complex way */
+import tensorflow as tf

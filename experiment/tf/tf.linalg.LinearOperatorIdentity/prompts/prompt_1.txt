@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorIdentity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorIdentity` represents a batch of identity matrices, providing an efficient, lazy representation without explicitly storing the full matrix. It supports common linear algebra operations like matrix multiplication (`matmul`), solving linear systems (`solve`), and computing determinants, all optimized to exploit the identity structure.
+
+**Key Features:**
+- Acts as a batch of square identity matrices with shape `[B1,...,Bb, N, N]`.
+- Operations are O(1) when `batch_shape=None` (no broadcasting needed).
+- Supports broadcasting with batch dimensions if `batch_shape` is provided.
+- Inherits from `LinearOperator`, offering properties like `is_square`, `is_non_singular`, etc.
+
+**Common Use Cases:**
+- Efficiently applying identity transformations (e.g., `matmul(x)` returns `x`).
+- Solving systems where the matrix is identity (e.g., `solve(y)` returns `y`).
+- Use in algorithms requiring placeholder or trivial linear operators.
+
+**Initialization Example:**
+```python
+operator = tf.linalg.LinearOperatorIdentity(num_rows=2, batch_shape=[3], dtype=tf.float32)
+# Represents 3 independent 2x2 identity matrices.
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_rows:
+    dtype: ["int"]
+    range: [[0, "inf"]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  batch_shape:
+    dtype: ["int"]
+    range: [[0, "inf"]]
+    structure: ["tuple"]
+    shape: ["variable"]
+    default: null
+  dtype:
+    dtype: ["string"]
+    range: [["tf.float16", "tf.float32", "tf.float64", "tf.bfloat16", "tf.complex64", "tf.complex128", "tf.int8", "tf.int16", "tf.int32", "tf.int64", "tf.uint8", "tf.uint16", "tf.uint32", "tf.uint64", "tf.bool"]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  is_non_singular:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  is_square:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  assert_proper_shapes:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [["any"]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "'LinearOperatorIdentity'"
+constraints:
+  1:
+    Parameter 1: "num_rows"
+    Parameter 2: "null"
+    Constraint: "num_rows >= 0"
+  2:
+    Parameter 1: "num_rows"
+    Parameter 2: "null"
+    Constraint: "tf.rank(num_rows) == 0"
+  3:
+    Parameter 1: "batch_shape"
+    Parameter 2: "null"
+    Constraint: "batch_shape is None or (tf.rank(batch_shape) == 1 and tf.math.reduce_all(batch_shape >= 0))"
+  4:
+    Parameter 1: "is_self_adjoint"
+    Parameter 2: "null"
+    Constraint: "is_self_adjoint == True"
+  5:
+    Parameter 1: "is_non_singular"
+    Parameter 2: "null"
+    Constraint: "is_non_singular == True"
+  6:
+    Parameter 1: "is_positive_definite"
+    Parameter 2: "null"
+    Constraint: "is_positive_definite == True"
+  7:
+    Parameter 1: "num_rows"
+    Parameter 2: "null"
+    Constraint: "not isinstance(num_rows, tf.Variable)"
+  8:
+    Parameter 1: "batch_shape"
+    Parameter 2: "null"
+    Constraint: "batch_shape is None or not isinstance(batch_shape, tf.Variable)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorIdentity in a complex way */
+import tensorflow as tf

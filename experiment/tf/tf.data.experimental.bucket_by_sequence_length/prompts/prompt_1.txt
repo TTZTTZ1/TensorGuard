@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.bucket_by_sequence_length` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.bucket_by_sequence_length` is a TensorFlow dataset transformation that groups variable-length sequences into buckets of similar lengths, then pads and batches them. This reduces padding waste and improves training efficiency for sequence data.
+
+**Key parameters:**
+- `element_length_func`: Function to compute each element's length.
+- `bucket_boundaries`: List defining bucket upper limits (e.g., `[3, 5]` creates buckets: `<3`, `3-5`, `>5`).
+- `bucket_batch_sizes`: Batch sizes per bucket (must have `len(bucket_boundaries) + 1` values).
+- `padded_shapes` / `padding_values`: Control padding shape and fill values.
+- `pad_to_bucket_boundary`: If `True`, pads sequences to the bucket's maximum length.
+- `drop_remainder`: Drops incomplete batches.
+
+**Example workflow:**
+1. Compute each sequence's length.
+2. Assign it to a bucket based on `bucket_boundaries`.
+3. Pad sequences within each bucket to the same length.
+4. Batch them using the corresponding `bucket_batch_sizes`.
+
+**Note:** This function is deprecated; use `tf.data.Dataset.bucket_by_sequence_length()` instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_length_func:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  bucket_boundaries:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: []
+    default: null
+  bucket_batch_sizes:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: []
+    default: null
+  padded_shapes:
+    dtype: ["TensorShape", "None"]
+    range: null
+    structure: ["nested"]
+    shape: []
+    default: "None"
+  padding_values:
+    dtype: ["scalar", "nested"]
+    range: null
+    structure: ["scalar", "nested"]
+    shape: []
+    default: "None"
+  pad_to_bucket_boundary:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  no_padding:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  drop_remainder:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "bucket_batch_sizes"
+    Parameter 2: "bucket_boundaries"
+    Constraint: "len(bucket_batch_sizes) == len(bucket_boundaries) + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.bucket_by_sequence_length in a complex way */
+import tensorflow as tf

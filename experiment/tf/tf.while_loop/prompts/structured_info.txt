@@ -1,0 +1,88 @@
+params:
+  cond:
+    dtype: No mention
+    range: No mention
+    structure: ["callable"]
+    shape: No mention
+    default: null
+  body:
+    dtype: No mention
+    range: No mention
+    structure: ["callable"]
+    shape: No mention
+    default: null
+  loop_vars:
+    dtype: No mention
+    range: No mention
+    structure: ["tuple", "namedtuple", "list"]
+    shape: No mention
+    default: null
+  shape_invariants:
+    dtype: No mention
+    range: No mention
+    structure: ["list", "tuple"]
+    shape: No mention
+    default: "None"
+  parallel_iterations:
+    dtype: ["int"]
+    range: ["[1, inf]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "10"
+  back_prop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  swap_memory:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  maximum_iterations:
+    dtype: ["int", "None"]
+    range: ["None", "[1, inf]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cond
+    Parameter 2: cond
+    Constraint: "callable(cond)"
+  2:
+    Parameter 1: body
+    Parameter 2: body
+    Constraint: "callable(body)"
+  3:
+    Parameter 1: loop_vars
+    Parameter 2: loop_vars
+    Constraint: "len(loop_vars) > 0"
+  4:
+    Parameter 1: cond
+    Parameter 2: loop_vars
+    Constraint: "cond.__code__.co_argcount == len(loop_vars)"
+  5:
+    Parameter 1: body
+    Parameter 2: loop_vars
+    Constraint: "body.__code__.co_argcount == len(loop_vars)"
+  6:
+    Parameter 1: parallel_iterations
+    Parameter 2: parallel_iterations
+    Constraint: "parallel_iterations > 0"
+  7:
+    Parameter 1: shape_invariants
+    Parameter 2: loop_vars
+    Constraint: "shape_invariants is None or (isinstance(shape_invariants, (list, tuple)) and len(shape_invariants) == len(loop_vars))"
+  8:
+    Parameter 1: maximum_iterations
+    Parameter 2: maximum_iterations
+    Constraint: "maximum_iterations is None or maximum_iterations > 0"

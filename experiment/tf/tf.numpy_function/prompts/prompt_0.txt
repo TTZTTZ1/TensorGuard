@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.numpy_function` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.numpy_function` wraps a Python function that operates on NumPy arrays and integrates it as a TensorFlow operation, enabling execution within TensorFlow graphs. It supports two usage patterns: as a decorator (where `Tout` must be specified) or as an in-place call with explicit arguments.  
+
+Key points:  
+- The wrapped function must accept and return NumPy arrays, matching the types specified in `Tout`.  
+- It runs eagerly, even inside `tf.function`, but has significant limitations:  
+  - Not serializable in `SavedModel`.  
+  - Incompatible with XLA (`jit_compile=True`).  
+  - Acquires the Python GIL, hindering parallelism.  
+  - Operations are non-differentiable (use `tf.py_function` for gradients).  
+- Useful for prototyping or integrating existing NumPy code, but discouraged for production due to performance and portability constraints.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  func:
+    dtype: ["function"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  inp:
+    dtype: ["list"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "null"
+  Tout:
+    dtype: ["tensorflow data type", "list of tensorflow data types", "tuple of tensorflow data types"]
+    range: ["No mention"]
+    structure: ["list", "tuple", "scalar"]
+    shape: ["No mention"]
+    default: "null"
+  stateful:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "func"
+    Parameter 2: "inp"
+    Constraint: "func is not None and inp is not None and len(inp) == func.__code__.co_argcount"
+  2:
+    Parameter 1: "func"
+    Parameter 2: "Tout"
+    Constraint: "func is not None and Tout is not None and ((isinstance(Tout, list) and len(func(*inp)) == len(Tout)) or (not isinstance(Tout, list) and isinstance(func(*inp), np.ndarray)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.numpy_function in a complex way */
+import tensorflow as tf

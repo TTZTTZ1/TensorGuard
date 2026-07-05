@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.train.Coordinator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.Coordinator` is a thread coordination tool in TensorFlow designed to manage the graceful termination of multiple threads. It provides a simple mechanism for threads to signal when they should stop and handles exception propagation across threads.
+
+**Key Features:**
+- **Stop Signaling:** Threads can call `coord.request_stop()` to request all threads to stop. Other threads should regularly check `coord.should_stop()` to cooperate.
+- **Exception Handling:** Exceptions can be reported via `request_stop(ex)` and are re-raised when `coord.join()` is called.
+- **Graceful Shutdown:** Allows a configurable grace period (`stop_grace_period_secs`) for threads to terminate after a stop is requested.
+- **Context Manager:** `coord.stop_on_exception()` simplifies exception handling by automatically requesting a stop if an exception occurs within its block.
+
+**Basic Usage:**
+1. Create a coordinator: `coord = Coordinator()`
+2. Start threads, passing the coordinator to each.
+3. Threads run a loop checking `coord.should_stop()`.
+4. Call `coord.join(threads)` to wait for all threads to finish, handling any propagated exceptions.
+
+**Common Patterns:**
+- **Thread Code:**  
+  ```python
+  with coord.stop_on_exception():
+      while not coord.should_stop():
+          # Do work
+  ```
+- **Main Code:**  
+  ```python
+  try:
+      coord.join(threads)
+  except Exception as e:
+      # Handle exception from threads
+  ```
+
+**Parameters:**
+- `clean_stop_exception_types`: Tuple of exception types (e.g., `tf.errors.OutOfRangeError`, `StopIteration`) that trigger a clean stop without being treated as errors.
+
+**Key Methods:**
+- `request_stop(ex=None)`: Signals threads to stop, optionally with an exception.
+- `should_stop()`: Returns `True` if a stop has been requested.
+- `join(threads, stop_grace_period_secs=120)`: Waits for threads to terminate, raising exceptions or errors if threads exceed the grace period.
+- `stop_on_exception()`: Context manager for automatic stop on exception.
+
+This coordinator is essential for managing multi-threaded data input pipelines and training loops in TensorFlow, ensuring orderly shutdown and error propagation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  clean_stop_exception_types:
+    dtype: ["tuple"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "(tf.errors.OutOfRangeError,)"
+  threads:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  stop_grace_period_secs:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "120"
+  ignore_live_threads:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  thread:
+    dtype: ["threading.Thread"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: "null"
+  ex:
+    dtype: ["Exception", "tuple"]
+    range: [null]
+    structure: ["scalar", "tuple"]
+    shape: [null]
+    default: "None"
+  timeout:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.Coordinator in a complex way */
+import tensorflow as tf

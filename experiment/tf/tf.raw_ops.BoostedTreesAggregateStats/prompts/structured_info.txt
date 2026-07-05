@@ -1,0 +1,64 @@
+params:
+  node_ids:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size]"]
+    default: null
+  gradients:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, logits_dimension]"]
+    default: null
+  hessians:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, hessian_dimension]"]
+    default: null
+  feature:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, feature_dimension]"]
+    default: null
+  max_splits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  num_buckets:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: max_splits
+    Parameter 2: max_splits
+    Constraint: "max_splits >= 1"
+  2:
+    Parameter 1: num_buckets
+    Parameter 2: num_buckets
+    Constraint: "num_buckets >= 1"
+  3:
+    Parameter 1: node_ids
+    Parameter 2: gradients
+    Constraint: "tf.shape(node_ids)[0] == tf.shape(gradients)[0]"
+  4:
+    Parameter 1: node_ids
+    Parameter 2: hessians
+    Constraint: "tf.shape(node_ids)[0] == tf.shape(hessians)[0]"
+  5:
+    Parameter 1: node_ids
+    Parameter 2: feature
+    Constraint: "tf.shape(node_ids)[0] == tf.shape(feature)[0]"

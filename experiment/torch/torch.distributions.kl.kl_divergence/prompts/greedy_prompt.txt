@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `torch.distributions.kl.kl_divergence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable Distributions**: Includes common distributions (Normal, Bernoulli, Categorical, etc.) with parameter validation via constraints.
+- **Gradient Estimation**: Supports two main methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods.
+  - **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick.
+
+## **Main Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with essential methods:
+  - `sample()` / `rsample()`: Generate samples (with/without reparameterization)
+  - `log_prob()`: Compute log probability density/mass
+  - `entropy()`: Compute distribution entropy
+  - `mean`, `variance`, `mode`: Distribution statistics
+  - `support`: Defines valid sample space
+
+### **2. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Pareto, Weibull (via `TransformedDistribution`)
+- **Specialized**: MixtureSameFamily, RelaxedBernoulli, LKJCholesky, VonMises
+
+### **3. Key Features**
+- **Batch/Event Shapes**: Supports batched parameters and multi-dimensional events
+- **Exponential Family**: Specialized class for distributions with exponential family form
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Transforms**: Bijective transformations for reparameterization (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Domain validation (real, positive, simplex, interval, etc.)
+
+## **Common Use Cases**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Constraint Handling**
+```python
+# Transform constrained parameters for unconstrained optimization
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Utilities**
+- **Constraint Registry**: `biject_to()` and `transform_to()` for mapping between constrained and unconstrained spaces
+- **KL Divergence**: `kl_divergence(p, q)` with pre-registered implementations
+- **Transformed Distributions**: Compose base distributions with transforms for complex distributions
+
+The package is designed for both research and production use, particularly in reinforcement learning, variational inference, and probabilistic modeling, providing efficient, GPU-accelerated implementations with automatic differentiation support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  p:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  q:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: p
+    Parameter 2: q
+    Constraint: "isinstance(p, torch.distributions.Distribution) and isinstance(q, torch.distributions.Distribution)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.kl.kl_divergence in a complex way */
+import torch

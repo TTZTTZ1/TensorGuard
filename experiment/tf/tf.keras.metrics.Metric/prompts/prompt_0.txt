@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.Metric` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.Metric` is a base class for implementing custom evaluation metrics in Keras. It encapsulates metric logic and state management, allowing metrics to track and compute performance over batches of data.
+
+### **Key Features:**
+- **Stateful**: Maintains internal variables (e.g., accumulators) across batches via `add_variable()`.
+- **Batch-wise Computation**: Use `update_state()` to accumulate statistics per batch, and `result()` to compute the final metric value.
+- **Integration**: Works seamlessly with `model.compile()` and Keras training loops.
+
+### **Core Methods to Implement (for subclasses):**
+1. **`__init__()`**: Define state variables using `self.add_variable()`.
+2. **`update_state(*args, **kwargs)`**: Update state variables with new data.
+3. **`result()`**: Compute and return the metric value from state variables.
+
+### **Example Workflow:**
+```python
+metric = CustomMetric()
+for batch in data:
+    metric.update_state(y_true, y_pred)  # Accumulate batch statistics
+final_value = metric.result()  # Compute final metric
+metric.reset_state()  # Reset for next evaluation
+```
+
+### **Use with `model.compile()`:**
+```python
+model.compile(metrics=[CustomMetric()])
+```
+
+### **Stateless Support**:  
+Provides `stateless_update_state()` and `stateless_result()` for use in contexts where maintaining internal state is not feasible (e.g., JAX).
+
+### **Inheritance Note**:  
+Subclasses must handle `sample_weight` in `update_state()` for correctness with weighted data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.Metric in a complex way */
+import tensorflow as tf

@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.affine_grid` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.affine_grid` generates a 2D or 3D sampling grid (flow field) from a batch of affine transformation matrices. It is primarily used with `grid_sample()` to implement Spatial Transformer Networks.
+
+**Key Parameters:**
+- `theta`: Affine matrices of shape `(N, 2, 3)` for 2D or `(N, 3, 4)` for 3D.
+- `size`: Target output size (e.g., `(N, C, H, W)` for 2D).
+- `align_corners`: If `True`, grid coordinates align to pixel centers; default is `False`.
+
+**Returns:** A tensor of shape `(N, H, W, 2)` for 2D, representing the sampling grid.
+
+**Important Notes:**
+- Ensure `align_corners` matches between `affine_grid` and `grid_sample`.
+- The default `align_corners=False` avoids resolution-dependent sampling inconsistencies.
+- Avoid using `align_corners=True` when spatial dimensions have unit size (e.g., 1D data in 2D transforms).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  theta:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [[null, 2, 3], [null, 3, 4]]
+    default: null
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple"]
+    shape: [4, 5]
+    default: null
+  align_corners:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+constraints:
+  1:
+    Parameter 1: theta
+    Parameter 2: size
+    Constraint: "theta.shape[0] == size[0] and ((len(size) == 4 and theta.shape[1:] == (2, 3)) or (len(size) == 5 and theta.shape[1:] == (3, 4)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.affine_grid in a complex way */
+import torch

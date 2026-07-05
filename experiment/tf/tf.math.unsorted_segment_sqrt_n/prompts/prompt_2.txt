@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.math.unsorted_segment_sqrt_n` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.unsorted_segment_sqrt_n` computes the sum of values in a tensor grouped by segment IDs, then divides each segment's sum by the square root of the number of entries in that segment. It is similar to `unsorted_segment_sum` but applies a normalization by √N.
+
+**Key points:**
+- **Purpose:** Performs segmented summation with normalization by √(segment count).
+- **Inputs:** 
+  - `data`: Floating-point or complex tensor.
+  - `segment_ids`: Integer tensor mapping each element in `data` to a segment.
+  - `num_segments`: Total number of distinct segments.
+- **Output:** Tensor where each segment's result is `sum(data in segment) / sqrt(N_i)`, where `N_i` is the count of entries in segment `i`. Missing segments output 0.
+- **Notes:** 
+  - Only supports floating-point/complex dtypes.
+  - CPU validates segment IDs; GPU may ignore out-of-bounds indices.
+  - Negative segment IDs are dropped.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  segment_ids:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  num_segments:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.math.reduce_all(tf.math.logical_and(segment_ids >= 0, segment_ids < num_segments))"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: data
+    Constraint: "tf.math.reduce_all(tf.math.equal(tf.shape(data)[:tf.rank(segment_ids)], tf.shape(segment_ids)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.unsorted_segment_sqrt_n in a complex way */
+import tensorflow as tf

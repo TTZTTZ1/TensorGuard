@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.optim.Optimizer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim` module provides a comprehensive suite of optimization algorithms for training neural networks in PyTorch. Here is a concise overview of its key features and usage:
+
+### **Core Components**
+- **Optimizers**: Implements popular algorithms like SGD, Adam, AdamW, RMSprop, Adagrad, LBFGS, and others. Each optimizer updates model parameters based on computed gradients.
+- **Learning Rate Schedulers**: Allows dynamic adjustment of the learning rate during training (e.g., `StepLR`, `CosineAnnealingLR`, `ReduceLROnPlateau`).
+- **Stochastic Weight Averaging (SWA) & Exponential Moving Average (EMA)**: Utilities (`AveragedModel`, `SWALR`, `update_bn`) to compute and manage weight averages for improved generalization and training stability.
+
+### **Basic Usage**
+1. **Construct an Optimizer**:
+   - Pass model parameters (as an iterable) and set hyperparameters (e.g., learning rate, weight decay).
+   - Example:  
+     ```python
+     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+     ```
+
+2. **Per-Parameter Configuration**:
+   - Specify different options (e.g., learning rates) for distinct parameter groups using dictionaries.
+   - Example:  
+     ```python
+     optim.SGD([
+         {'params': model.base.parameters(), 'lr': 1e-2},
+         {'params': model.classifier.parameters()}
+     ], lr=1e-3)
+     ```
+
+3. **Optimization Loop**:
+   - Clear gradients, compute loss, backpropagate, and call `optimizer.step()`.
+   - Example:  
+     ```python
+     for input, target in dataset:
+         optimizer.zero_grad()
+         loss = loss_fn(model(input), target)
+         loss.backward()
+         optimizer.step()
+     ```
+
+### **Advanced Features**
+- **Implementation Variants**: Optimizers may offer for-loop, foreach (multi-tensor), or fused implementations for performance. Foreach is typically the default where available.
+- **State Management**: Save and load optimizer states via `state_dict()` and `load_state_dict()`. Custom hooks allow adapting states when model architectures change.
+- **Closure-Based Optimization**: Required for algorithms like LBFGS; a closure function recomputes loss and gradients.
+- **Learning Rate Scheduling**: Apply schedulers after optimizer updates (post `optimizer.step()`) to adjust rates per epoch or based on metrics.
+
+### **Weight Averaging (SWA/EMA)**
+- **AveragedModel**: Maintains running averages of model weights (equal for SWA, exponential for EMA).
+- **SWALR**: Special scheduler for SWA that anneals the learning rate to a fixed value.
+- **Batch Norm Update**: Use `update_bn()` to recalculate batch normalization statistics for averaged models.
+
+### **Key Notes**
+- Parameters must be provided in a deterministic order (e.g., list of tensors, not sets).
+- For schedulers, call `scheduler.step()` after `optimizer.step()` (post-PyTorch 1.1.0).
+- Fused implementations (e.g., for Adam, AdamW) offer optimal performance but may be in beta for some devices.
+
+This module is designed for flexibility, supporting custom optimization strategies, efficient updates, and seamless integration with PyTorch’s autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["torch.Tensor", "dict"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  defaults:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Optimizer in a complex way */
+import torch

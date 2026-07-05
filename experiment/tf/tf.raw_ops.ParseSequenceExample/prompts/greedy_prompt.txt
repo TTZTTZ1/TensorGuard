@@ -1,0 +1,183 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ParseSequenceExample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ParseSequenceExample` is a low-level TensorFlow operation that parses a batch of serialized `SequenceExample` protobufs into structured tensors. It handles both context features (static per-example data) and feature lists (time-series or sequential data) with support for sparse and dense representations.
+
+**Key functionality:**
+- **Input:** A vector of serialized `SequenceExample` protos (strings).
+- **Output:** Extracted context features and feature lists as typed tensors, with separate outputs for sparse indices/values/shapes and dense values.
+
+**Main parameters:**
+- `serialized` and `debug_name`: Input protos and optional debug names.
+- `context_*_keys` and `feature_list_*_keys`: Specify expected keys for sparse/dense features.
+- `context_dense_defaults`: Provides default values for missing dense context features.
+- `feature_list_dense_missing_assumed_empty`: Lists feature lists that may be missing (treated as empty).
+- Type and shape parameters (`*_types`, `*_shapes`) define the expected data format.
+
+**Returns:** A tuple containing:
+- Context sparse features (indices, values, shapes)
+- Context dense values
+- Feature list sparse features (indices, values, shapes)
+- Feature list dense values and lengths
+
+This op is essential for reading sequential data (e.g., time-series, videos, text sequences) stored in `SequenceExample` format within TensorFlow pipelines.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  debug_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  context_dense_defaults:
+    dtype: ["float32", "int64", "string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  feature_list_dense_missing_assumed_empty:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  context_sparse_keys:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  context_dense_keys:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  feature_list_sparse_keys:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  feature_list_dense_keys:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  Ncontext_sparse:
+    dtype: ["int"]
+    range: "[0, infinity)"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  Ncontext_dense:
+    dtype: ["int"]
+    range: "[0, infinity)"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  Nfeature_list_sparse:
+    dtype: ["int"]
+    range: "[0, infinity)"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  Nfeature_list_dense:
+    dtype: ["int"]
+    range: "[0, infinity)"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  context_sparse_types:
+    dtype: ["float32", "int64", "string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  feature_list_dense_types:
+    dtype: ["float32", "int64", "string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  context_dense_shapes:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  feature_list_sparse_types:
+    dtype: ["float32", "int64", "string"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  feature_list_dense_shapes:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "context_sparse_keys"
+    Parameter 2: "Ncontext_sparse"
+    Constraint: "len(context_sparse_keys) == Ncontext_sparse"
+  2:
+    Parameter 1: "context_dense_keys"
+    Parameter 2: "Ncontext_dense"
+    Constraint: "len(context_dense_keys) == Ncontext_dense"
+  3:
+    Parameter 1: "feature_list_sparse_keys"
+    Parameter 2: "Nfeature_list_sparse"
+    Constraint: "len(feature_list_sparse_keys) == Nfeature_list_sparse"
+  4:
+    Parameter 1: "feature_list_dense_keys"
+    Parameter 2: "Nfeature_list_dense"
+    Constraint: "len(feature_list_dense_keys) == Nfeature_list_dense"
+  5:
+    Parameter 1: "context_sparse_types"
+    Parameter 2: "Ncontext_sparse"
+    Constraint: "len(context_sparse_types) == Ncontext_sparse"
+  6:
+    Parameter 1: "context_dense_shapes"
+    Parameter 2: "Ncontext_dense"
+    Constraint: "len(context_dense_shapes) == Ncontext_dense"
+  7:
+    Parameter 1: "feature_list_sparse_types"
+    Parameter 2: "Nfeature_list_sparse"
+    Constraint: "len(feature_list_sparse_types) == Nfeature_list_sparse"
+  8:
+    Parameter 1: "feature_list_dense_types"
+    Parameter 2: "Nfeature_list_dense"
+    Constraint: "len(feature_list_dense_types) == Nfeature_list_dense"
+  9:
+    Parameter 1: "feature_list_dense_shapes"
+    Parameter 2: "Nfeature_list_dense"
+    Constraint: "len(feature_list_dense_shapes) == Nfeature_list_dense"
+  10:
+    Parameter 1: "context_dense_defaults"
+    Parameter 2: "context_dense_shapes"
+    Constraint: "all(tf.shape(context_dense_defaults[j]) == context_dense_shapes[j] for j in range(len(context_dense_defaults)) if context_dense_defaults[j] is not None and tf.size(context_dense_defaults[j]) > 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ParseSequenceExample in a complex way */
+import tensorflow as tf

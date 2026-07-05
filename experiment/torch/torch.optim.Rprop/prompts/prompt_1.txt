@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `torch.optim.Rprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Rprop` class implements the **Resilient Backpropagation (Rprop)** algorithm, which adapts learning rates per parameter based on the sign consistency of gradients over time.
+
+### **Key Features:**
+- **Adaptive Step Sizes**: Adjusts individual learning rates for each parameter:
+  - **Increase** (`etaplus`, default 1.2) if consecutive gradients have the same sign.
+  - **Decrease** (`etaminus`, default 0.5) if signs differ, with gradient set to zero for that step.
+  - **No change** if a gradient is zero.
+- **Step Size Bounds**: Constrained between `step_sizes` (default: `[1e-6, 50]`).
+- **Sign-Based Updates**: Parameters are updated using `-η * sign(gradient)`, ignoring magnitude.
+
+### **Parameters:**
+- `params`: Parameters to optimize.
+- `lr`: Initial learning rate (default: 0.01).
+- `etas`: Tuple `(etaminus, etaplus)` for multiplicative adjustment factors.
+- `step_sizes`: Tuple `(min_step, max_step)` for step size limits.
+- Additional flags: `capturable`, `foreach`, `maximize`, `differentiable`.
+
+### **Algorithm Summary:**
+1. Compare current and previous gradient signs per parameter.
+2. Adjust step size:
+   - Increase if signs agree (bounded by max).
+   - Decrease if signs disagree (bounded by min) and zero out gradient.
+   - Keep unchanged if gradient is zero.
+3. Update parameters: `θ = θ - η * sign(gradient)`.
+4. Store current gradient for next iteration.
+
+### **Typical Use Case:**
+Suitable for full-batch or large-batch training where gradient signs are stable; less common for stochastic/mini-batch settings due to noise sensitivity.
+
+### **Common Methods:**
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad()`: Clears gradients.
+- `state_dict()` / `load_state_dict()`: Saves/loads optimizer state.
+
+Rprop is a simple, adaptive method that can converge quickly when gradient directions are consistent, but may struggle with noisy or small-batch gradients.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.01"
+  etas
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.5, 1.2)"
+  step_sizes
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(1e-06, 50)"
+  capturable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Rprop in a complex way */
+import torch

@@ -1,0 +1,62 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(C)", "(N,C)", "(N,C,d1,...,dK) with K>=1"]
+    default: "null"
+  target:
+    dtype: ["int", "float"]
+    range: ["[0,C] for indices", "[0,1] for probabilities"]
+    structure: ["tensor"]
+    shape: ["()", "(N)", "(N,d1,...,dK) for indices", "same as input for probabilities"]
+    default: "null"
+  weight:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(C)"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  ignore_index:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-100"
+  reduce:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  label_smoothing:
+    dtype: ["float"]
+    range: ["[0.0, 1.0]"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.0"
+constraints:
+  1:
+    Parameter 1: "weight"
+    Parameter 2: "input"
+    Constraint: "weight is None or weight.size(0) == (input.size(1) if input.dim() >= 2 else input.size(0))"
+  2:
+    Parameter 1: "target"
+    Parameter 2: "input"
+    Constraint: "target.is_floating_point() or (target.min() >= 0 and target.max() < (input.size(1) if input.dim() >= 2 else input.size(0)))"
+  3:
+    Parameter 1: "target"
+    Parameter 2: "input"
+    Constraint: "not target.is_floating_point() or target.shape == input.shape"

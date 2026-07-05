@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.linear` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.linear` applies a linear transformation to input data using the formula \( y = xA^T + b \). It supports standard dense tensors and beta-level sparse tensor layouts for the weight matrix.
+
+**Key details:**
+- **Input shape:** `(*, in_features)`
+- **Weight shape:** `(out_features, in_features)` or `(in_features)`
+- **Bias shape (optional):** `(out_features)` or scalar `()`
+- **Output shape:** `(*, out_features)` or `(*)`, matching the weight dimensions
+
+**Notes:**
+- Sparse weight support is experimental and may have limitations in layout/dtype/device compatibility or autograd.
+- The function also supports TensorFloat32 (TF32) on Ampere CUDA devices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, in_features)"]
+    default: null
+  weight:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(out_features, in_features)", "(in_features)"]
+    default: null
+  bias:
+    dtype: ["float32", "float64", "None"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: ["(out_features)", "()"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.shape[-1] == weight.shape[-1]"
+  2:
+    Parameter 1: weight
+    Parameter 2: bias
+    Constraint: "bias is None or bias.shape == () or (len(weight.shape) == 2 and bias.shape == (weight.shape[0],))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.linear in a complex way */
+import torch

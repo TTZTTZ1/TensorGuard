@@ -1,0 +1,38 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.JoinHook` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `Join` context manager enables distributed training with uneven inputs across processes by preventing hangs and ensuring algorithmic correctness. It works by coordinating multiple `Joinable` objects (e.g., `DistributedDataParallel`, `ZeroRedundancyOptimizer`) that implement required methods (`join_hook`, `join_device`, `join_process_group`).
+
+**Key Components:**
+- **`Join`**: The main context manager that detects uneven inputs and calls hooks.
+- **`Joinable`**: Abstract base class for modules that participate in the join process.
+- **`JoinHook`**: Defines `main_hook` (shadows collective communications for joined processes) and `post_hook` (executes after all processes join).
+
+**Usage:**
+1. Wrap training loops with `Join([joinable1, joinable2])`.
+2. Each `Joinable` must call `Join.notify_join_context()` before per-iteration collective communications.
+3. Hooks automatically handle shadow communications for early-joined processes.
+
+**Parameters:**
+- `enable`: Enables/disables uneven input detection.
+- `throw_on_early_termination`: Throws exception if uneven inputs detected.
+
+**Example:** Allows ranks with different input sizes (e.g., 10 vs. 11 samples) to complete training without hanging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  is_last_joiner:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.JoinHook in a complex way */
+import torch

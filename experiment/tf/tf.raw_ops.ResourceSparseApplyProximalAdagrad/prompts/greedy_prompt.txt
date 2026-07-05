@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceSparseApplyProximalAdagrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceSparseApplyProximalAdagrad` is a low-level TensorFlow operation that performs a sparse update on two resource variables (`var` and `accum`) using the FOBOS (Forward-Backward Splitting) algorithm with proximal Adagrad. It applies gradient updates only to rows specified by `indices`, incorporating both L1 and L2 regularization. This is useful for training models with large, sparse embeddings efficiently.
+
+**Key Parameters:**
+- `var`, `accum`: Resource variables (trainable weights and accumulator for squared gradients).
+- `lr`, `l1`, `l2`: Scalar learning rate and regularization strengths.
+- `grad`, `indices`: Sparse gradient values and their corresponding row indices.
+- `use_locking`: Optional lock to prevent contention during updates.
+
+**Update Rule (for rows in `indices`):**
+1. `accum += grad * grad`
+2. Compute proximal step with adaptive learning rate and regularization.
+3. Update `var` using soft-thresholding to enforce sparsity (L1) and shrinkage (L2).
+
+**Returns:** A TensorFlow operation that applies the updates.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["vector"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "l1"
+    Parameter 2: "lr"
+    Constraint: "l1.dtype == lr.dtype"
+  2:
+    Parameter 1: "l2"
+    Parameter 2: "lr"
+    Constraint: "l2.dtype == lr.dtype"
+  3:
+    Parameter 1: "grad"
+    Parameter 2: "lr"
+    Constraint: "grad.dtype == lr.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceSparseApplyProximalAdagrad in a complex way */
+import tensorflow as tf

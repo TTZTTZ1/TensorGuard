@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.SubsetRandomSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for loading and processing data in PyTorch. Its core component is the `DataLoader` class, which creates an iterable over a dataset with features like automatic batching, multi-process loading, and memory pinning.
+
+**Key Concepts:**
+
+1. **Dataset Types:**
+   - **Map-style datasets:** Implement `__getitem__()` and `__len__()` (e.g., `Dataset`). Access samples via indices.
+   - **Iterable-style datasets:** Implement `__iter__()` (e.g., `IterableDataset`). Suitable for streaming data.
+
+2. **Data Loading Order:**
+   - Controlled by `Sampler` objects for map-style datasets (e.g., `RandomSampler`, `SequentialSampler`).
+   - For iterable datasets, order is defined by the user-defined iterator.
+
+3. **Batching:**
+   - Automatic batching is enabled via `batch_size`. Custom batching logic can be implemented with `collate_fn`.
+   - Disable batching by setting `batch_size` and `batch_sampler` to `None`.
+
+4. **Single- vs. Multi-process Loading:**
+   - Default is single-process (`num_workers=0`).
+   - Multi-process loading (`num_workers>0`) speeds up data loading but requires careful handling of dataset replication and randomness.
+
+5. **Memory Pinning:**
+   - Set `pin_memory=True` to speed up data transfer to GPU by using pinned memory.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+for batch in loader:
+    # Training loop
+```
+
+**Additional Utilities:**
+- **Dataset wrappers:** `TensorDataset`, `ConcatDataset`, `Subset`, `ChainDataset`.
+- **Samplers:** `RandomSampler`, `WeightedRandomSampler`, `BatchSampler`, `DistributedSampler`.
+- **Collation functions:** `default_collate`, `default_convert` for converting data formats.
+
+**Important Considerations:**
+- Use `worker_init_fn` and `get_worker_info()` to configure worker processes.
+- For Windows/macOS multi-processing, avoid lambda functions in `worker_init_fn` and wrap main script code in `if __name__ == '__main__':`.
+- Custom data types require a `pin_memory()` method to enable memory pinning.
+
+This module enables efficient, flexible data loading, which is critical for training machine learning models with PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int"]
+    range: null
+    structure: ["sequence"]
+    shape: []
+    default: null
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "len(indices) > 0"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: null
+    Constraint: "all(isinstance(i, int) for i in indices)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.SubsetRandomSampler in a complex way */
+import torch

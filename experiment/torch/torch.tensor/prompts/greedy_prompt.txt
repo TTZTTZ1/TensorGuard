@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `torch.tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.tensor` creates a new tensor by copying the provided data, resulting in a leaf tensor with no autograd history. It supports various input types (lists, tuples, NumPy arrays, scalars) and allows specifying data type, device, gradient tracking, and pinned memory. For clarity, consider using `t.detach().clone()` or `t.detach().clone().requires_grad_(True)` instead when converting existing tensors.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["list", "tuple", "ndarray", "scalar", "tensor"]
+    range: null
+    structure: ["scalar", "list", "tuple", "ndarray"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  requires_grad:
+    dtype: ["bool"]
+    range: [["False", "True"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  pin_memory:
+    dtype: ["bool"]
+    range: [["False", "True"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: pin_memory
+    Parameter 2: device
+    Constraint: "not pin_memory or device is None or (hasattr(device, 'type') and device.type == 'cpu')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.tensor in a complex way */
+import torch

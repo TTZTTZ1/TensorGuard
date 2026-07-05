@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.LambdaLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**LambdaLR** is a PyTorch learning rate scheduler that multiplies the initial learning rate by a user-defined function (or list of functions) based on the current epoch number.
+
+**Key Features:**
+- **Custom Scheduling**: Allows arbitrary learning rate adjustments via `lr_lambda` functions that take the epoch index as input and return a multiplicative factor.
+- **Per-Group Control**: Supports different scheduling functions for each parameter group in the optimizer.
+- **Initial LR Scaling**: Learning rate = `initial_lr × lr_lambda(epoch)`.
+
+**Usage:**
+```python
+scheduler = LambdaLR(optimizer, lr_lambda=lambda epoch: 0.95**epoch)
+for epoch in range(num_epochs):
+    train(...)
+    validate(...)
+    scheduler.step()  # Update after each epoch
+```
+
+**Important Notes:**
+- Call `scheduler.step()` after each epoch (typically after optimizer.step()).
+- Use `get_last_lr()` to inspect current learning rates.
+- Lambda functions may not be saved in `state_dict()` (only callable objects are preserved).
+- The `epoch` parameter in `step()` is deprecated; call without arguments.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  lr_lambda:
+    dtype: ["function", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: lr_lambda
+    Parameter 2: optimizer
+    Constraint: not isinstance(lr_lambda, list) or len(lr_lambda) == len(optimizer.param_groups)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.LambdaLR in a complex way */
+import torch

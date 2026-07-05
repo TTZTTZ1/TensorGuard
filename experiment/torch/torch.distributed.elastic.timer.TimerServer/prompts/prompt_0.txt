@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerServer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers provide a mechanism to monitor and automatically terminate ("reap") worker processes that become stuck or exceed a specified time limit. This is essential for fault-tolerant distributed training.
+
+### **Core Concept**
+- **Purpose**: Detect and handle stuck workers by setting time limits on code blocks.
+- **Mechanism**: A timer server runs alongside the agent, and workers acquire timers for critical sections. If a worker fails to release a timer before its deadline, the server kills it, and the agent can restart it.
+
+### **Basic Usage**
+1. **Setup**: Start a timer server (e.g., `LocalTimerServer`) and configure workers with a corresponding client.
+2. **In Worker Code**: Wrap potentially stuck operations with `timer.expires(after=seconds)`.
+3. **Example**:
+   ```python
+   timer.configure(LocalTimerClient(message_queue))
+   with timer.expires(after=60):  # 60-second deadline
+       # Long-running or risky operation
+   ```
+
+### **Key Components**
+- **TimerClient** (e.g., `LocalTimerClient`, `FileTimerClient`): Used by workers to acquire/release timers.
+- **TimerServer** (e.g., `LocalTimerServer`, `FileTimerServer`): Monitors timers and terminates expired workers.
+- **TimerRequest**: Message object for client-server communication.
+
+### **Provided Implementations**
+1. **LocalTimerServer/Client**: Uses a `multiprocessing.Queue` for communication.
+2. **FileTimerServer/Client**: Uses a named pipe (FIFO file) for communication.
+
+### **Customization**
+You can implement custom servers/clients by extending the abstract `TimerServer` and `TimerClient` base classes.
+
+### **Important Notes**
+- Timers are not guaranteed to expire exactly at the deadline; the server decides when to reap workers.
+- Timer servers are typically run per host, managing local workers.
+- The client must be configured (`timer.configure()`) before using `expires()`.
+
+This system enhances robustness in distributed PyTorch applications by automatically recovering from worker hangs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  request_queue:
+    dtype: ["object"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  max_interval:
+    dtype: ["float", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  daemon:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerServer in a complex way */
+import torch

@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.CudnnRNNV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.CudnnRNNV3` is a low-level TensorFlow operation that implements a Recurrent Neural Network (RNN) using NVIDIA's cuDNN library for GPU acceleration. It supports multiple RNN types (LSTM, GRU, RNN with tanh/ReLU), bidirectional models, and variable-length sequences via `sequence_lengths`.
+
+**Key Features:**
+- **Inputs:** Takes input tensors (`input`, `input_h`, `input_c`), parameters (`params`), and sequence lengths.
+- **Flexibility:** Configurable via `rnn_mode`, `direction` (unidirectional/bidirectional), `input_mode`, and dropout.
+- **Outputs:** Returns output tensors (`output`, `output_h`, `output_c`), a `reserve_space` tensor for training backprop, and a `host_reserved` tensor.
+- **Training/Inference:** Controlled by `is_training`; `reserve_space` is only produced during training.
+- **Layout:** Supports both time-major and batch-major formats (`time_major`).
+
+**Use Case:** Efficient GPU-based RNN computation for sequences, commonly used internally by higher-level TensorFlow RNN APIs. Requires pre-initialized `params` from `CudnnRNNParamsSize`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["3-D tensor"]
+    default: "null"
+  input_h:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["3-D tensor"]
+    default: "null"
+  input_c:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["3-D tensor"]
+    default: "null"
+  params:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D tensor"]
+    default: "null"
+  sequence_lengths:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D tensor"]
+    default: "null"
+  rnn_mode:
+    dtype: ["string"]
+    range: ["rnn_relu", "rnn_tanh", "lstm", "gru"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "lstm"
+  input_mode:
+    dtype: ["string"]
+    range: ["linear_input", "skip_input", "auto_select"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "linear_input"
+  direction:
+    dtype: ["string"]
+    range: ["unidirectional", "bidirectional"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "unidirectional"
+  dropout:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  num_proj:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  is_training:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  time_major:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input_mode"
+    Parameter 2: "input"
+    Constraint: "input_mode == 'skip_input' implies input.shape[-1] == input_h.shape[-1]"
+  2:
+    Parameter 1: "sequence_lengths"
+    Parameter 2: "input"
+    Constraint: "sequence_lengths.shape[0] == (input.shape[1] if time_major else input.shape[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.CudnnRNNV3 in a complex way */
+import tensorflow as tf

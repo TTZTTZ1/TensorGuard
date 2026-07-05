@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.CategoricalHinge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.CategoricalHinge` is a metric that computes the categorical hinge loss between true labels (`y_true`) and predictions (`y_pred`). It is typically used for multi-class classification tasks where labels are one-hot encoded.
+
+**Key Features:**
+- **Inheritance**: Extends `MeanMetricWrapper`, which tracks the mean of the hinge loss over batches.
+- **Formula**: The metric calculates `maximum(neg - pos + 1, 0)`, where `pos` is the predicted score for the true class, and `neg` is the maximum predicted score for other classes.
+- **Usage**: Suitable for evaluating models trained with hinge-like loss functions (e.g., SVM-style classifiers).
+
+**Example:**
+```python
+m = keras.metrics.CategoricalHinge()
+m.update_state([[0, 1], [0, 0]], [[0.6, 0.4], [0.4, 0.6]])
+print(m.result().numpy())  # Output: 1.4000001
+```
+
+**Main Methods:**
+- `update_state(y_true, y_pred, sample_weight)`: Accumulates metric statistics.
+- `result()`: Returns the current mean metric value.
+- `reset_state()`: Clears accumulated state (e.g., between epochs).
+
+**Notes:**
+- Supports `sample_weight` for weighted batch calculations.
+- Automatically handles state persistence across batches via `MeanMetricWrapper`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'categorical_hinge'"
+  dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+  y_true:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "null"
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "null"
+  sample_weight:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "null"
+constraints:
+  1.
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "y_true.shape == y_pred.shape"
+  2.
+    Parameter 1: "sample_weight"
+    Parameter 2: "y_true"
+    Constraint: "sample_weight is None or tf.shape(sample_weight) == tf.shape(y_true) or tf.rank(sample_weight) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.CategoricalHinge in a complex way */
+import tensorflow as tf

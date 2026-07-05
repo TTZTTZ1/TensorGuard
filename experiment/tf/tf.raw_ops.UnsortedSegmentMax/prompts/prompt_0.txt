@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.UnsortedSegmentMax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.UnsortedSegmentMax` computes the element-wise maximum across segments of a tensor, using `segment_ids` to group elements. For each segment ID `i`, the output is the maximum of all `data` values where `segment_ids` equals `i`. If a segment is empty, it returns the smallest possible value for the data type. Negative segment IDs are ignored.
+
+**Key Points:**
+- **Inputs:** `data` (numeric tensor), `segment_ids` (integer tensor with shape matching a prefix of `data.shape`), `num_segments` (integer scalar).
+- **Behavior:** 
+  - On CPU, `segment_ids` are validated to be `< num_segments`; out-of-bounds indices cause an error.
+  - On GPU, out-of-bounds indices lead to undefined but safe behavior.
+- **Example:** For `data = [[1,2,3,4], [5,6,7,8], [4,3,2,1]]` and `segment_ids = [0, 1, 0]` with `num_segments=2`, output is `[[4,3,3,4], [5,6,7,8]]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.reduce_all(tf.less(segment_ids, num_segments))"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: data
+    Constraint: "tf.reduce_all(tf.equal(tf.shape(segment_ids), tf.strided_slice(tf.shape(data), [0], [tf.rank(segment_ids)], [1])))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.UnsortedSegmentMax in a complex way */
+import tensorflow as tf

@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.to_sparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.Tensor.to_sparse` method converts a dense tensor into a sparse representation. It supports two main usage patterns:
+
+1. **Basic conversion to COO format** (coordinate format):  
+   - Optionally specify `sparseDims` to control the number of sparse dimensions.
+   - Non-zero elements are stored as indices and values.
+
+2. **Conversion to a specified sparse layout**:  
+   - Allows choosing layouts like `torch.sparse_coo`, `torch.sparse_csr`, `torch.sparse_csc`, `torch.sparse_bsr`, or `torch.sparse_bsc`.
+   - For block sparse layouts (BSR/BSC), a `blocksize` must be provided that evenly divides the sparse dimensions.
+   - For strided tensors, `dense_dim` can be set to create a hybrid sparse tensor with dense dimensions.
+
+**Key notes**:
+- If the tensor already matches the requested layout and block size, it returns itself; otherwise, a sparse copy is created.
+- Block size is only applicable for BSR/BSC layouts.
+- `dense_dim` is only applicable when converting from strided tensors to CSR, CSC, BSR, or BSC formats.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sparseDims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  layout:
+    dtype: ["string"]
+    range: [["torch.sparse_coo", "torch.sparse_csr", "torch.sparse_csc", "torch.sparse_bsr", "torch.sparse_bsc"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.sparse_coo"
+  blocksize:
+    dtype: ["None", "tuple", "list", "torch.Size"]
+    range: null
+    structure: ["scalar", "tuple", "list", "torch.Size"]
+    shape: [null, 2]
+    default: null
+  dense_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "layout"
+    Parameter 2: "blocksize"
+    Constraint: "blocksize is None or layout in [torch.sparse_bsr, torch.sparse_bsc]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.to_sparse in a complex way */
+import torch

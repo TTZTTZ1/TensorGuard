@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.pca_lowrank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.pca_lowrank` performs linear Principal Component Analysis (PCA) on a low‑rank matrix, batches of matrices, or a sparse matrix. It returns a namedtuple `(U, S, V)` that approximates the singular value decomposition of a (centered) data matrix \( A \), where:
+
+- **V** contains the principal directions.
+- **S** relates to the eigenvalues of the covariance matrix when `center=True`.
+- **U** and **V** are sized according to the parameter `q` (an overestimated rank), not the full dimensions of \( A \).
+
+**Key parameters:**
+- `A`: input tensor of shape `(*, m, n)`.
+- `q`: optional overestimated rank (default `min(6, m, n)`).
+- `center`: if `True`, centers the data before decomposition (default).
+- `niter`: number of subspace iterations (default 2).
+
+**Use case:**  
+Project data to the first \( k \) principal components via `matmul(A, V[:, :k])`.  
+
+**Note:** For reproducible results, set the random seed. The algorithm is based on randomized linear algebra methods (see Halko et al., 2009).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [["*", "m", "n"]]
+    default: null
+  q:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "min(6, m, n)"
+  center:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  niter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "2"
+constraints:
+  1:
+    Parameter 1: "q"
+    Parameter 2: "A"
+    Constraint: "1 <= q <= min(A.size(-2), A.size(-1))"
+  2:
+    Parameter 1: "niter"
+    Parameter 2: "niter"
+    Constraint: "niter >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.pca_lowrank in a complex way */
+import torch

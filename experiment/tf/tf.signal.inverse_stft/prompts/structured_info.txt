@@ -1,0 +1,58 @@
+params:
+  stfts:
+    dtype: ["complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["at least rank 2"]
+    default: "null"
+  frame_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "null"
+  frame_step:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "null"
+  fft_length:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "None"
+  window_fn:
+    dtype: "No mention"
+    range: ["callable", "None"]
+    structure: ["callable"]
+    shape: "No mention"
+    default: "tf.signal.hann_window"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "stfts"
+    Parameter 2: "stfts"
+    Constraint: "tf.rank(stfts) >= 2"
+  2:
+    Parameter 1: "frame_length"
+    Parameter 2: "frame_length"
+    Constraint: "tf.rank(frame_length) == 0"
+  3:
+    Parameter 1: "frame_step"
+    Parameter 2: "frame_step"
+    Constraint: "tf.rank(frame_step) == 0"
+  4:
+    Parameter 1: "fft_length"
+    Parameter 2: "fft_length"
+    Constraint: "fft_length is None or tf.rank(fft_length) == 0"
+  5:
+    Parameter 1: "stfts"
+    Parameter 2: "fft_length"
+    Constraint: "tf.shape(stfts)[-1] == fft_length // 2 + 1"

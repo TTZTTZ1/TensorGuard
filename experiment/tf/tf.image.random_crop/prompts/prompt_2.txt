@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `tf.image.random_crop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.random_crop` randomly crops a tensor to a specified size by selecting a starting position uniformly at random. The cropped section has the dimensions given by `size`, and the input tensor must be at least as large as the target size in every dimension.
+
+**Key points:**
+- **Input:** A tensor (`value`) and a 1-D tensor (`size`) specifying the crop dimensions.
+- **Output:** A cropped tensor with shape `size`.
+- **Requirements:** `value.shape >= size` (each dimension of the input must be greater than or equal to the corresponding crop size).
+- **Seed behavior:** Using `seed` provides reproducibility but may be affected by global random seed settings. For fully deterministic results, use `tf.image.stateless_random_crop` instead.
+- **Common use:** Often applied to images (e.g., `size = [crop_height, crop_width, channels]`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: value
+    Parameter 2: size
+    Constraint: "tf.rank(value) == tf.size(size)"
+  2:
+    Parameter 1: value
+    Parameter 2: size
+    Constraint: "tf.reduce_all(tf.greater_equal(tf.shape(value), size))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.random_crop in a complex way */
+import tensorflow as tf

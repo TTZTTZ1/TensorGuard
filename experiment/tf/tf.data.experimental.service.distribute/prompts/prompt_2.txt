@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.service.distribute` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.service.distribute` is a TensorFlow transformation that offloads dataset processing to a distributed tf.data service cluster. It enables scalable data preprocessing by leveraging multiple workers, improving performance for large-scale training.
+
+**Key Features:**
+- **Processing Modes:**  
+  - `"distributed_epoch"`: Splits dataset across workers (requires splittable sources).  
+  - `"parallel_epochs"`: Each worker processes the full dataset independently.  
+- **Job Sharing:** Use `job_name` to allow multiple datasets or consumers to share the same job.  
+- **Coordinated Consumption:** Optional `consumer_index` and `num_consumers` enable round-robin reads for synchronized training steps.  
+- **Integration:** Compatible with Keras `fit()` and Distribution Strategies.  
+
+**Typical Workflow:**
+1. Start a dispatcher and workers (via `tf.data.experimental.service`).  
+2. Apply `distribute()` to a dataset, specifying the service address and processing mode.  
+3. Operations before `distribute()` run on the service; subsequent transformations run locally.  
+
+**Use Cases:**  
+- Distributed preprocessing for multi-worker training.  
+- Sharing data pipelines across trainers (e.g., with `cross_trainer_cache`).  
+- Balancing data dynamically across workers to improve utilization.  
+
+**Example:**
+```python
+dataset = tf.data.Dataset.range(100)
+dataset = dataset.apply(tf.data.experimental.service.distribute(
+    processing_mode="distributed_epoch",
+    service="grpc://dispatcher:5000",
+    job_name="shared_job"
+))
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  processing_mode:
+    dtype: ["string", "ShardingPolicy"]
+    range: [["parallel_epochs", "distributed_epoch"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  service:
+    dtype: ["string", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: null
+  job_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  consumer_index:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  num_consumers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  max_outstanding_requests:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  data_transfer_protocol:
+    dtype: ["string"]
+    range: null
+    structure:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.service.distribute in a complex way */
+import tensorflow as tf

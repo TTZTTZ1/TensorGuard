@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.RandomZoom` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.RandomZoom` is a preprocessing layer that randomly zooms images during training. It can independently zoom in or out on the height and width axes, filling empty areas based on a specified `fill_mode`.
+
+**Key Parameters:**
+- `height_factor`: Range for vertical zoom (positive = zoom out, negative = zoom in).
+- `width_factor`: Range for horizontal zoom; if `None`, aspect ratio is preserved.
+- `fill_mode`: How to fill new pixels (`"reflect"`, `"constant"`, `"wrap"`, `"nearest"`).
+- `interpolation`: Method for resizing (`"nearest"` or `"bilinear"`).
+- `data_format`: `"channels_last"` (default) or `"channels_first"`.
+
+**Input/Output:**  
+Accepts 3D (unbatched) or 4D (batched) image tensors. Output shape matches input shape except for adjusted height and width.
+
+**Example:**
+```python
+layer = keras.layers.RandomZoom(height_factor=0.5, width_factor=0.2)
+augmented_image = layer(original_image)
+```
+
+This layer is safe to use within `tf.data` pipelines and supports both integer and float input values.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  height_factor:
+    dtype: ["float", "tuple"]
+    range: ["any real number"]
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "2"]
+    default: null
+  width_factor:
+    dtype: ["float", "tuple", "None"]
+    range: ["any real number"]
+    structure: ["scalar", "tuple", "None"]
+    shape: ["scalar", "2", "null"]
+    default: "None"
+  fill_mode:
+    dtype: ["string"]
+    range: ["constant", "nearest", "wrap", "reflect"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "reflect"
+  interpolation:
+    dtype: ["string"]
+    range: ["nearest", "bilinear"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "bilinear"
+  seed:
+    dtype: ["int", "None"]
+    range: ["any integer"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  fill_value:
+    dtype: ["float"]
+    range: ["any float"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.0"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["channels_last", "channels_first"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  **kwargs:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: height_factor
+    Parameter 2: None
+    Constraint: (isinstance(height_factor, float) or (isinstance(height_factor, tuple) and len(height_factor) == 2 and all(isinstance(x, float) for x in height_factor)))
+  2:
+    Parameter 1: width_factor
+    Parameter 2: None
+    Constraint: (width_factor is None) or (isinstance(width_factor, float) or (isinstance(width_factor, tuple) and len(width_factor) == 2 and all(isinstance(x, float) for x in width_factor)))
+  3:
+    Parameter 1: fill_mode
+    Parameter 2: None
+    Constraint: fill_mode in ['constant', 'nearest', 'wrap', 'reflect']
+  4:
+    Parameter 1: interpolation
+    Parameter 2: None
+    Constraint: interpolation in ['nearest', 'bilinear']
+  5:
+    Parameter 1: seed
+    Parameter 2: None
+    Constraint: (seed is None) or isinstance(seed, int)
+  6:
+    Parameter 1: fill_value
+    Parameter 2: None
+    Constraint: isinstance(fill_value, float)
+  7:
+    Parameter 1: data_format
+    Parameter 2: None
+    Constraint: (data_format is None) or (data_format in ['channels_last', 'channels_first'])
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.RandomZoom in a complex way */
+import tensorflow as tf

@@ -1,0 +1,46 @@
+params:
+  model:
+    dtype: ["tf.keras.Model"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+  input_tensors:
+    dtype: ["list", "null"]
+    range: [null]
+    structure: ["list", "null"]
+    shape: ["any"]
+    default: "null"
+  clone_function:
+    dtype: ["callable", "null"]
+    range: [null]
+    structure: ["callable", "null"]
+    shape: [null]
+    default: "null"
+  call_function:
+    dtype: ["callable", "null"]
+    range: [null]
+    structure: ["callable", "null"]
+    shape: [null]
+    default: "null"
+  recursive:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  kwargs:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: call_function
+    Parameter 2: model
+    Constraint: call_function is not None implies (hasattr(model, '_is_graph_network') and model._is_graph_network and not isinstance(model, tf.keras.Sequential))
+  2:
+    Parameter 1: clone_function
+    Parameter 2: model
+    Constraint: clone_function is not None implies (hasattr(model, '_is_graph_network') and model._is_graph_network)

@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `torch.utils.checkpoint.checkpoint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.checkpoint` module provides **activation checkpointing**, a technique that trades compute for memory by recomputing intermediate activations during the backward pass instead of storing them.
+
+### Key Functions
+
+- **`checkpoint(function, *args, use_reentrant=False, **kwargs)`**  
+  Runs `function` in a memory-efficient way. Use `use_reentrant=False` (recommended) for better flexibility and support for `torch.autograd.grad`, keyword arguments, and nested structures. The reentrant variant (`use_reentrant=True`) has several limitations and is being deprecated.
+
+- **`checkpoint_sequential(functions, segments, input, use_reentrant=False, **kwargs)`**  
+  Splits a sequential model into segments and checkpoints each, saving memory across long chains.
+
+### Important Parameters
+
+- **`preserve_rng_state`** (default `True`): Ensures deterministic RNG behavior (e.g., for dropout) but adds overhead. Set to `False` if determinism is not required.
+- **`context_fn`**: Allows custom control over which operations are recomputed (via `create_selective_checkpoint_contexts`).
+- **`determinism_check`**: Validates recomputed tensors match saved ones (default `"default"`).
+- **`debug`**: Enables detailed error tracing.
+- **`early_stop`**: Stops recomputation once needed tensors are available (non-reentrant only).
+
+### Selective Checkpointing
+
+Use `create_selective_checkpoint_contexts` with a policy function to specify which operations should be saved (not recomputed) and which should be recomputed, offering finer control over the memory-compute trade-off.
+
+### Warnings
+
+- Always explicitly pass `use_reentrant`.
+- Ensure the forward pass is deterministic; otherwise, gradients may be incorrect.
+- The reentrant variant does not support detached tensors or `torch.autograd.grad`.
+
+### Summary
+
+Activation checkpointing reduces memory usage at the cost of recomputation time. The non-reentrant implementation (`use_reentrant=False`) is preferred for its broader compatibility and features. Use selective checkpointing for optimized control over which operations are recomputed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  function:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  use_reentrant:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  context_fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "noop_context_fn"
+  determinism_check:
+    dtype: ["str"]
+    range: [["default", "none"]]
+    structure: ["scalar"]
+    shape: null
+    default: "default"
+  debug:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  early_stop:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  preserve_rng_state:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: "context_fn"
+    Parameter 2: "use_reentrant"
+    Constraint: "use_reentrant is False"
+  2:
+    Parameter 1: "determinism_check"
+    Parameter 2: "use_reentrant"
+    Constraint: "use_reentrant is False"
+  3:
+    Parameter 1: "debug"
+    Parameter 2: "use_reentrant"
+    Constraint: "use_reentrant is False"
+  4:
+    Parameter 1: "early_stop"
+    Parameter 2: "use_reentrant"
+    Constraint: "use_reentrant is False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.checkpoint.checkpoint in a complex way */
+import torch

@@ -1,0 +1,76 @@
+params:
+  in_tensors:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  num_batch_threads:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_batch_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  batch_timeout_micros:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  grad_timeout_micros:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_enqueued_batches:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "10"
+  allowed_batch_sizes:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  container:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"\""
+  shared_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"\""
+  batching_queue:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"\""
+  name:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: allowed_batch_sizes
+    Parameter 2: max_batch_size
+    Constraint: "len(allowed_batch_sizes) == 0 or (all(allowed_batch_sizes[i] < allowed_batch_sizes[i+1] for i in range(len(allowed_batch_sizes)-1)) and allowed_batch_sizes[-1] == max_batch_size)"
+  2:
+    Parameter 1: in_tensors
+    Parameter 2: in_tensors
+    Constraint: "len(in_tensors) > 0 and all(tensor.shape[0] == in_tensors[0].shape[0] for tensor in in_tensors)"

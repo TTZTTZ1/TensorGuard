@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.math.unsorted_segment_sum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.unsorted_segment_sum` computes the sum of a tensor's elements grouped by segment IDs, without requiring the IDs to be sorted or cover all values. It outputs a tensor where each element at index `i` is the sum of all data entries whose corresponding `segment_ids` equals `i`. If no data corresponds to a segment, the output is 0. Negative segment IDs are ignored. The `num_segments` parameter must match the number of distinct segment IDs. Note: On CPU, segment IDs are validated to be within range; on GPU, out-of-range IDs may lead to undefined behavior.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  segment_ids:
+    dtype: ["int16", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "segment_ids"
+    Parameter 2: "data"
+    Constraint: "data.shape[:len(segment_ids.shape)] == segment_ids.shape"
+  2:
+    Parameter 1: "segment_ids"
+    Parameter 2: "num_segments"
+    Constraint: "tf.reduce_all(segment_ids < num_segments)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.unsorted_segment_sum in a complex way */
+import tensorflow as tf

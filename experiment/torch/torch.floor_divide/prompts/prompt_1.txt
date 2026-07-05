@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.floor_divide` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.floor_divide` performs elementwise division of `input` by `other` and then applies the floor function to the result. It supports broadcasting, type promotion, and both integer and float inputs. 
+
+**Note:** Before PyTorch 1.13, this function performed truncation division; for that behavior now use `torch.div(..., rounding_mode='trunc')`.
+
+**Parameters:**
+- `input` (Tensor or Number): Dividend.
+- `other` (Tensor or Number): Divisor.
+
+**Keyword argument:**
+- `out` (Tensor, optional): Output tensor.
+
+**Example:**
+```python
+>>> torch.floor_divide(torch.tensor([4.0, 3.0]), torch.tensor([2.0, 2.0]))
+tensor([2.0, 1.0])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  other
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: null
+  out
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "isinstance(input, (torch.Tensor, int, float)) and isinstance(other, (torch.Tensor, int, float))"
+  2
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or out.shape == torch.broadcast_shapes(getattr(input, 'shape', ()), getattr(other, 'shape', ()))"
+  3
+    Parameter 1: out
+    Parameter 2: other
+    Constraint: "out is None or out.dtype in (torch.int32, torch.int64, torch.float32, torch.float64)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.floor_divide in a complex way */
+import torch

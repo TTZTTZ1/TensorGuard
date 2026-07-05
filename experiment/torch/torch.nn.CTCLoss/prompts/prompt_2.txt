@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.nn.CTCLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`CTCLoss` is a PyTorch loss function for sequence-to-sequence tasks, commonly used in speech recognition or handwriting recognition. It computes the loss between an unsegmented time series (input) and a target sequence, allowing for variable-length inputs and targets by summing over all possible alignments.
+
+**Key Parameters:**
+- `blank`: Label index for the blank class (default 0).
+- `reduction`: Specifies loss reduction (`'none'`, `'mean'`, or `'sum'`).
+- `zero_infinity`: Whether to zero infinite losses (occurs when inputs are too short).
+
+**Input Shapes:**
+- `log_probs`: `(T, N, C)` or `(T, C)` — Log-softmax probabilities over classes (including blank).
+- `targets`: `(N, S)` or concatenated 1D tensor — Target class indices (blank excluded).
+- `input_lengths`: Lengths of each input sequence (`≤ T`).
+- `target_lengths`: Lengths of each target sequence (`≤ S`).
+
+**Usage Notes:**
+- Supports both padded and unpadded target formats.
+- For CuDNN acceleration: use concatenated targets, `input_lengths = T`, `target_lengths ≤ 256`, and data types `torch.int32` for lengths and `torch.float32` for log probabilities.
+- Enables gradient flow through input log probabilities.
+
+**Example Use Case:**  
+Training a model for speech recognition where input audio frames (variable length) are aligned to text transcripts (shorter length).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  blank:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  reduction:
+    dtype: ["string"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  zero_infinity:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  log_probs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(T, N, C)", "(T, C)"]
+    default: "null"
+  targets:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(N, S)", "(sum(target_lengths))"]
+    default: "null"
+  input_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple", "tensor"]
+    shape: ["(N)", "()"]
+    default: "null"
+  target_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tuple", "tensor"]
+    shape: ["(N)", "()"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input_lengths"
+    Parameter 2: "log_probs"
+    Constraint: "torch.all(input_lengths <= log_probs.size(0))"
+  2:
+    Parameter 1: "target_lengths"
+    Parameter 2: "input_lengths"
+    Constraint: "torch.all(target_lengths <= input_lengths)"
+  3:
+    Parameter 1: "targets"
+    Parameter 2: "blank"
+    Constraint: "torch.all(targets != blank)"
+  4:
+    Parameter 1: "target_lengths"
+    Parameter 2: "targets"
+    Constraint: "if targets.dim() == 2: torch.all(target_lengths <= targets.size(1))"
+  5:
+    Parameter 1: "target_lengths"
+    Parameter 2: "targets"
+    Constraint: "if targets.dim() == 1: torch.sum(target_lengths) == targets.size(0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.CTCLoss in a complex way */
+import torch

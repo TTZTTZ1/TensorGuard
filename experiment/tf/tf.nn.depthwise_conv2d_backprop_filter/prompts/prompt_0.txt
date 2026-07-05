@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `tf.nn.depthwise_conv2d_backprop_filter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.nn.depthwise_conv2d_backprop_filter` function computes the gradient of the depthwise convolution operation with respect to the filter (kernel). It is used during backpropagation in neural networks to update the filter weights based on the error gradient from the output.
+
+**Key Parameters:**
+- `input`: The original input tensor to the convolution.
+- `filter_sizes`: The shape of the filter tensor.
+- `out_backprop`: Gradient of the loss with respect to the convolution output.
+- `strides`: Sliding window stride for each dimension.
+- `padding`: Padding strategy ("SAME", "VALID", or explicit padding).
+- `data_format`: Specifies the data layout ("NHWC" or "NCHW").
+- `dilations`: Dilation rates for each dimension (default is 1).
+
+**Returns:** A tensor representing the gradient with respect to the filter, matching the shape specified by `filter_sizes`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4-D"]
+    default: null
+  filter_sizes:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4-D"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID", "list of explicit paddings"]
+    structure: ["string", "list"]
+    shape: ["scalar", "[4,2]"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [4]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["string"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: out_backprop
+    Constraint: "input.dtype == out_backprop.dtype"
+  2:
+    Parameter 1: padding
+    Parameter 2: data_format
+    Constraint: "(not isinstance(padding, list)) or (len(padding) == 4 and all(isinstance(p, list) and len(p) == 2 for p in padding) and ((data_format == 'NHWC' and padding[0] == [0,0] and padding[3] == [0,0]) or (data_format == 'NCHW' and padding[0] == [0,0] and padding[1] == [0,0])))"
+  3:
+    Parameter 1: dilations
+    Parameter 2: data_format
+    Constraint: "len(dilations) == 4 and ((data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.depthwise_conv2d_backprop_filter in a complex way */
+import tensorflow as tf

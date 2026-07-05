@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FixedUnigramCandidateSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.FixedUnigramCandidateSampler` operation performs candidate sampling using a fixed unigram distribution, which can be provided either via a file or an in-memory list. It is commonly used in training tasks like noise-contrastive estimation (NCE) or sampled softmax.
+
+**Key Features:**
+- Samples a set of candidate labels per batch from a predefined unigram distribution.
+- Supports skewing the distribution via a `distortion` parameter (1.0 for exact unigram, 0.0 for uniform).
+- Can operate in parallel using sharding (`num_shards` and `shard`).
+- Ensures uniqueness of sampled candidates if `unique=True`.
+
+**Main Parameters:**
+- `true_classes`: True label IDs for the batch.
+- `num_sampled`: Number of candidates to sample.
+- `range_max`: Sampling range [0, range_max).
+- `vocab_file` or `unigrams`: Source of the unigram distribution (mutually exclusive).
+- `distortion`: Adjusts probability skew.
+
+**Outputs:**
+- `sampled_candidates`: Sampled candidate IDs.
+- `true_expected_count`: Expected counts for true classes.
+- `sampled_expected_count`: Expected counts for sampled candidates.
+
+This op is efficient for batch-wise sampling but assumes independence between sampled candidates and true labels.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: [">= 1"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: [">= 1"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  unique:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  range_max:
+    dtype: ["int"]
+    range: [">= 1"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  vocab_file:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: ""
+  distortion:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "1"
+  num_reserved_ids:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0"
+  num_shards:
+    dtype: ["int"]
+    range: [">= 1"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "1"
+  shard:
+    dtype: ["int"]
+    range: [">= 0"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0"
+  unigrams:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "vocab_file"
+    Parameter 2: "unigrams"
+    Constraint: "(vocab_file != '') != (unigrams != [])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FixedUnigramCandidateSampler in a complex way */
+import tensorflow as tf

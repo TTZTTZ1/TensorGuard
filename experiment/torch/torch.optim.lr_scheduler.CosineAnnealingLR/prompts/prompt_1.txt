@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.CosineAnnealingLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `CosineAnnealingLR` scheduler in PyTorch gradually reduces the learning rate following a cosine curve over a specified number of epochs, without restarts.
+
+**Key Features:**
+- **Purpose**: Implements cosine annealing to smoothly decrease the learning rate from its initial value to a minimum.
+- **Formula**:  
+  \[
+  \eta_t = \eta_{\min} + \frac{1}{2}(\eta_{\max} - \eta_{\min})\left(1 + \cos\left(\frac{T_{\text{cur}} \pi}{T_{\max}}\right)\right)
+  \]
+  where \( \eta_t \) is the learning rate at step \( t \), \( T_{\text{cur}} \) is the current epoch, and \( T_{\max} \) is the total cycle length.
+- **Parameters**:
+  - `optimizer`: The optimizer to adjust.
+  - `T_max`: Maximum number of epochs in one cycle.
+  - `eta_min`: Minimum learning rate (default: 0).
+  - `last_epoch`: Index of the last epoch (default: -1).
+
+**Usage Example:**
+```python
+scheduler = CosineAnnealingLR(optimizer, T_max=num_epochs)
+for epoch in range(num_epochs):
+    train(...)
+    validate(...)
+    scheduler.step()  # Update learning rate after each epoch
+```
+
+**Important Notes:**
+- This implementation **does not include restarts** (unlike SGDR).
+- Call `scheduler.step()` after each epoch (or optimizer update) to adjust the learning rate.
+- Use `get_last_lr()` to retrieve the current learning rate(s).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  T_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  eta_min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: T_max
+    Parameter 2: T_max
+    Constraint: "T_max > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.CosineAnnealingLR in a complex way */
+import torch

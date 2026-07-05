@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.Join` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Generic Join Context Manager** in PyTorch enables distributed training with uneven inputs across processes, preventing hangs or errors when some processes finish earlier than others.
+
+### **Core Components:**
+1. **`Join`** – The main context manager that coordinates the join process.
+2. **`Joinable`** – An abstract base class for objects that can participate in the join (e.g., `DistributedDataParallel`, `ZeroRedundancyOptimizer`).
+3. **`JoinHook`** – Defines hooks to shadow collective communications for joined processes.
+
+### **Key Usage:**
+- Wrap training loops with `Join([joinable1, joinable2, ...])`.
+- Each `Joinable` must call `Join.notify_join_context()` before per-iteration collective communications.
+- The context manager ensures that processes that finish early continue to participate in collective operations via hooks until all processes join.
+
+### **Parameters:**
+- `joinables`: List of `Joinable` objects.
+- `enable`: Enables/disables uneven input detection.
+- `throw_on_early_termination`: If `True`, throws an exception when uneven inputs are detected.
+
+### **Example Workflow:**
+```python
+with Join([model, optimizer]):
+    for input in data:
+        Join.notify_join_context(model)  # Called before collective ops
+        loss = model(input)
+        loss.backward()
+        optimizer.step()
+```
+
+### **Purpose:**
+- Ensures **correctness** and **prevents hanging** in distributed training with variable-length inputs.
+- Allows custom synchronization logic through `JoinHook` implementations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  joinables:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  enable:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  throw_on_early_termination:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.Join in a complex way */
+import torch

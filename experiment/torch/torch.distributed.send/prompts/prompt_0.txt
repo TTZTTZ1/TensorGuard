@@ -1,0 +1,129 @@
+
+# You are a Python code generation assistant for the `torch.distributed.send` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.distributed` package enables distributed training across multiple processes and machines. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- Supports multi-process parallelism across nodes/machines
+- Provides communication primitives for synchronous distributed training
+- Each process maintains its own optimizer and Python interpreter
+
+## **Backends**
+Four built-in backends with different capabilities:
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training
+- **Gloo**: Recommended for CPU training
+- **MPI**: Optional, requires building from source
+
+## **Initialization**
+Must call `init_process_group()` or `init_device_mesh()` before any other operations:
+- **TCP initialization**: `tcp://IP:PORT`
+- **Shared file-system**: `file:///path/to/file`
+- **Environment variables**: Default method using `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+
+## **Key Components**
+
+### **Process Groups**
+- Default group (world) and custom groups via `new_group()`
+- Groups enable fine-grained communication subsets
+
+### **DeviceMesh**
+- Higher-level abstraction managing process groups
+- Creates N-dimensional device layouts for parallelisms
+- Simplifies inter/intra-node process group setup
+
+### **Communication Operations**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: `broadcast()`, `all_reduce()`, `all_gather()`, `scatter()`, etc.
+- **Object collectives**: Work with Python objects (with performance limitations)
+- Support both synchronous (`async_op=False`) and asynchronous (`async_op=True`) modes
+
+### **Key-Value Stores**
+- `TCPStore`: TCP-based distributed store
+- `FileStore`: File-based store
+- `HashStore`: In-process thread-safe store
+- `PrefixStore`: Wrapper adding prefixes to keys
+
+## **Common Patterns**
+
+### **Basic Setup**
+```python
+import torch.distributed as dist
+
+dist.init_process_group(backend='nccl', init_method='env://')
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+```
+
+### **Distributed Data Parallel**
+```python
+model = torch.nn.parallel.DistributedDataParallel(
+    model, device_ids=[rank], output_device=rank
+)
+```
+
+## **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `breakpoint()`: Debug single rank while others wait
+- HTTP debug server for runtime diagnostics
+
+## **Launch Utilities**
+- `torch.distributed.launch`: Spawn multiple processes per node
+- `torch.multiprocessing.spawn`: Alternative spawning utility
+- Being deprecated in favor of `torchrun`
+
+## **Best Practices**
+1. Use NCCL for GPU training, Gloo for CPU
+2. Ensure proper cleanup with `destroy_process_group()`
+3. Set `CUDA_VISIBLE_DEVICES` or use `torch.cuda.set_device()`
+4. Handle `--local-rank` argument in training scripts
+5. Use `async_op=True` for computation/communication overlap
+
+The package provides a comprehensive framework for distributed training with support for various network configurations, collective operations, and debugging tools.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["ProcessGroup", "None"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  group_dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is not None and group_dst is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.send in a complex way */
+import torch

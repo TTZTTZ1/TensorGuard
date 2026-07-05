@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.bmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.bmm` performs a **batch matrix-matrix multiplication** between two 3D tensors.  
+
+**Key details:**
+- **Inputs:** Both tensors must be 3D with the same batch size:  
+  - `input`: shape `(b, n, m)`  
+  - `mat2`: shape `(b, m, p)`  
+- **Output:** Shape `(b, n, p)`, where each output `i` is `input[i] @ mat2[i]`.  
+- **No broadcasting** — for broadcasting, use `torch.matmul` instead.  
+- **Optional:** `out_dtype` (CUDA only) to specify output dtype for float16/bfloat16 inputs.  
+
+**Example:**
+```python
+>>> input = torch.randn(10, 3, 4)
+>>> mat2 = torch.randn(10, 4, 5)
+>>> res = torch.bmm(input, mat2)  # shape: (10, 3, 5)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["3-D"]
+    default: null
+  mat2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["3-D"]
+    default: null
+  out_dtype:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: mat2
+    Constraint: "input.dim() == 3 and mat2.dim() == 3 and input.size(0) == mat2.size(0) and input.size(2) == mat2.size(1)"
+  2:
+    Parameter 1: out_dtype
+    Parameter 2: input
+    Constraint: "out_dtype is None or (torch.cuda.is_available() and input.dtype in [torch.float16, torch.bfloat16] and out_dtype == torch.float32)"
+  3:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (out.dim() == 3 and out.size(0) == input.size(0) and out.size(1) == input.size(1) and out.size(2)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.bmm in a complex way */
+import torch

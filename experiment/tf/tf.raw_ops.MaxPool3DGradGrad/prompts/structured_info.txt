@@ -1,0 +1,66 @@
+params:
+  orig_input:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  orig_output:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  ksize:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [5]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: [5]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NDHWC", "NCDHW"]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "NDHWC"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["string"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: orig_output
+    Parameter 2: orig_input
+    Constraint: "orig_output.dtype == orig_input.dtype"
+  2:
+    Parameter 1: grad
+    Parameter 2: orig_input
+    Constraint: "grad.dtype == orig_input.dtype"
+  3:
+    Parameter 1: ksize
+    Parameter 2: ksize
+    Constraint: "len(ksize) == 5 and ksize[0] == 1 and ksize[4] == 1"
+  4:
+    Parameter 1: strides
+    Parameter 2: strides
+    Constraint: "len(strides) == 5 and strides[0] == 1 and strides[4] == 1"

@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.polar` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.polar` constructs a complex tensor from polar coordinates, where the input `abs` (magnitude) and `angle` (in radians) are combined as:  
+`abs * cos(angle) + abs * sin(angle) * j`.  
+
+**Key points:**  
+- Inputs `abs` and `angle` must be real tensors of matching dtype (float or double).  
+- Output dtype is `complex64` for float inputs, `complex128` for double inputs.  
+- It is not a polar decomposition; it directly converts polar to Cartesian complex form.  
+- Undefined behavior if `abs` is negative/NaN or `angle` is infinite.  
+
+**Example:**  
+```python
+abs = torch.tensor([1, 2], dtype=torch.float64)
+angle = torch.tensor([np.pi/2, 5*np.pi/4], dtype=torch.float64)
+z = torch.polar(abs, angle)  # tensor([(0+1j), (-1.4142-1.4142j)], dtype=torch.complex128)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  abs:
+    dtype: ["torch.float32", "torch.float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  angle:
+    dtype: ["torch.float32", "torch.float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["torch.complex64", "torch.complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: abs
+    Parameter 2: angle
+    Constraint: "abs.dtype == angle.dtype"
+  2:
+    Parameter 1: abs
+    Parameter 2: out
+    Constraint: "(abs.dtype == torch.float32 and out.dtype == torch.complex64) or (abs.dtype == torch.float64 and out.dtype == torch.complex128)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.polar in a complex way */
+import torch

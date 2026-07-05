@@ -1,0 +1,142 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.CyclicLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CyclicLR** is a PyTorch learning rate scheduler that implements **Cyclical Learning Rates (CLR)**, cycling the learning rate between a lower bound (`base_lr`) and an upper bound (`max_lr`) over training iterations.
+
+### Key Features:
+- **Cycles per batch**: Adjusts LR after each batch (not epoch).
+- **Built-in policies**:  
+  - `triangular`: Linear up/down cycle.  
+  - `triangular2`: Halves amplitude each cycle.  
+  - `exp_range`: Scales amplitude exponentially by `gamma^cycle_iterations`.
+- **Custom scaling**: Optional `scale_fn` for user-defined cycle shapes.
+- **Momentum cycling**: If `cycle_momentum=True`, momentum varies inversely to LR between `base_momentum` and `max_momentum`.
+
+### Main Parameters:
+- `optimizer`: Wrapped optimizer (e.g., SGD).
+- `base_lr` / `max_lr`: Lower/upper LR bounds.
+- `step_size_up`: Iterations for increasing half of cycle (default: 2000).
+- `step_size_down`: Iterations for decreasing half (defaults to `step_size_up`).
+- `mode`: Policy type (`'triangular'`, `'triangular2'`, `'exp_range'`).
+- `cycle_momentum`: Whether to cycle momentum (default: `True`).
+
+### Usage Example:
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+scheduler = torch.optim.lr_scheduler.CyclicLR(
+    optimizer, 
+    base_lr=0.01, 
+    max_lr=0.1,
+    step_size_up=10
+)
+
+for batch in data_loader:
+    train_batch(...)
+    optimizer.step()
+    scheduler.step()  # Update LR after each batch
+```
+
+### Notes:
+- Use `scheduler.step()` **after each batch**.
+- `last_epoch` tracks batch count, not epoch count.
+- Momentum cycling is applied automatically when enabled.
+
+This scheduler helps escape poor local minima and can reduce the need for extensive LR tuning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: null
+  base_lr:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: null
+  max_lr:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: null
+  step_size_up:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "2000"
+  step_size_down:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar", "null"]
+    shape: "No mention"
+    default: "None"
+  mode:
+    dtype: ["str"]
+    range: ["triangular", "triangular2", "exp_range"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'triangular'"
+  gamma:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  scale_fn:
+    dtype: ["function"]
+    range: "No mention"
+    structure: ["function"]
+    shape: "No mention"
+    default: "None"
+  scale_mode:
+    dtype: ["str"]
+    range: ["cycle", "iterations"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'cycle'"
+  cycle_momentum:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  base_momentum:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "0.8"
+  max_momentum:
+    dtype: ["float", "list"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "0.9"
+  last_epoch:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: "base_lr"
+    Parameter 2: "max_lr"
+    Constraint: "max_lr > base_lr"
+  2:
+    Parameter 1: "base_momentum"
+    Parameter 2: "max_momentum"
+    Constraint: "max_momentum > base_momentum"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.CyclicLR in a complex way */
+import torch

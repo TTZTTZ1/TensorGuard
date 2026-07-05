@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Conv3DBackpropInput` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.Conv3DBackpropInput` operation computes the gradient of a 3-D convolution with respect to the input tensor, which is used during backpropagation in neural networks.
+
+**Key Points:**
+- **Purpose:** Calculates the input gradient given the filter, output gradient, and convolution parameters.
+- **Inputs:** Requires the input shape (`input`), filter, output gradient (`out_backprop`), stride, padding type, and optional dilation rates.
+- **Constraints:** Strides must have `strides[0] = strides[4] = 1`, and `in_channels` must match between input and filter.
+- **Output:** Returns a tensor of the same type as the input, representing the gradient with respect to the input.
+
+This low-level operation is essential for training 3-D convolutional networks, enabling gradient flow to earlier layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch, depth, rows, cols, in_channels]"]
+    default: null
+  filter:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[depth, rows, cols, in_channels, out_channels]"]
+    default: null
+  out_backprop:
+    dtype: ["half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch, out_depth, out_rows, out_cols, out_channels]"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["length >= 5"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dilations:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: ["length 5"]
+    default: "[1, 1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filter
+    Constraint: "input.shape[4] == filter.shape[3]"
+  2:
+    Parameter 1: strides
+    Parameter 2: strides
+    Constraint: "len(strides) >= 5 and strides[0] == 1 and strides[4] == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Conv3DBackpropInput in a complex way */
+import tensorflow as tf

@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DeserializeManySparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DeserializeManySparse` reconstructs multiple sparse tensors from their serialized form and concatenates them into a single sparse tensor along a new batch dimension.  
+
+**Key points:**  
+- **Input:** A string matrix of shape `[N, 3]`, where each row corresponds to a serialized sparse tensor (from `SerializeSparse`).  
+- **Output:** A single sparse tensor with rank increased by 1 (batch dimension added).  
+- **Shape handling:** The output’s first dimension equals the batch size `N`; other dimensions take the maximum across input shapes.  
+- **Assumption:** Input indices must be in lexicographic order; otherwise, apply `SparseReorder` afterward.  
+
+**Example:**  
+If two sparse tensors (shapes `[50]` and `[30]`) are serialized in a `[2, 3]` matrix, the result is a sparse tensor of shape `[2, 50]`, with indices prefixed by batch IDs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  serialized_sparse:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: [[None, 3]]
+    default: null
+  dtype:
+    dtype: ["tf.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: serialized_sparse
+    Parameter 2: serialized_sparse
+    Constraint: "len(serialized_sparse.shape) == 2"
+  2:
+    Parameter 1: serialized_sparse
+    Parameter 2: serialized_sparse
+    Constraint: "serialized_sparse.shape[1] == 3"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DeserializeManySparse in a complex way */
+import tensorflow as tf

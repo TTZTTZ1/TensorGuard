@@ -1,0 +1,116 @@
+
+# You are a Python code generation assistant for the `torch.utils.benchmark.Timer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.benchmark` module provides tools for accurately measuring and comparing the performance of PyTorch code. Its core component is the `Timer` class, which builds upon Python's `timeit` but adds PyTorch-specific features like warmup, threadpool control, and synchronization for accelerators.
+
+**Key Features:**
+
+*   **Adaptive Timing:** Methods like `blocked_autorange` and `adaptive_autorange` automatically determine the optimal number of runs to get stable, low-overhead timing measurements.
+*   **Structured Results:** Returns `Measurement` objects that store runtimes and metadata (label, sub_label, description, environment) for easy organization and comparison.
+*   **Instruction Counting:** Can use Callgrind via `collect_callgrind` to get deterministic instruction counts for deep performance analysis, returning `CallgrindStats` and `FunctionCounts` objects.
+*   **Comparison:** The `Compare` class takes a list of `Measurement` objects and formats them into a clear table for performance comparison, with options to colorize, highlight warnings, and trim significant figures.
+
+**Basic Workflow:**
+1.  Create a `Timer` with your code snippet (`stmt`) and optional setup.
+2.  Use `.blocked_autorange()` or `.timeit()` to collect a `Measurement`.
+3.  Use `Compare` to display and analyze multiple measurements.
+
+This module is designed for benchmarking PyTorch operations with an emphasis on statistical robustness, reduced measurement bias, and insightful result presentation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  stmt:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'pass'"
+  setup:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "'pass'"
+  global_setup:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "''"
+  timer:
+    dtype: ["Callable"]
+    range: [null]
+    structure: ["callable"]
+    shape: [null]
+    default: "<built-in function perf_counter>"
+  globals:
+    dtype: ["dict", "None"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: "null"
+  label:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  sub_label:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  description:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  env:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+  num_threads:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "1"
+  language:
+    dtype: ["enum"]
+    range: [["Language.PYTHON"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "Language.PYTHON"
+constraints:
+  1:
+    Parameter 1: "threshold"
+    Parameter 2: "max_run_time"
+    Constraint: "threshold <= max_run_time"
+  2:
+    Parameter 1: "min_run_time"
+    Parameter 2: "max_run_time"
+    Constraint: "min_run_time <= max_run_time"
+  3:
+    Parameter 1: "number"
+    Parameter 2: "null"
+    Constraint: "number > 0"
+  4:
+    Parameter 1: "repeats"
+    Parameter 2: "null"
+    Constraint: "repeats is None or repeats > 0"
+  5:
+    Parameter 1: "collect_baseline"
+    Parameter 2: "retain_out_file"
+    Constraint: "isinstance(collect_baseline, bool) and isinstance(retain_out_file, bool)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.benchmark.Timer in a complex way */
+import torch

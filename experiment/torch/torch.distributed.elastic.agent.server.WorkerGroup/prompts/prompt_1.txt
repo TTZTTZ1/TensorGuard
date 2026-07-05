@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.WorkerGroup` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in PyTorch's torchelastic framework, responsible for launching, managing, and monitoring distributed worker processes. It ensures fault tolerance by restarting workers upon failures and supports elasticity by adapting to membership changes.
+
+### Key Responsibilities:
+1. **Distributed Coordination**: Provides workers with necessary information to initialize `torch.distributed.init_process_group()`.
+2. **Fault Tolerance**: Monitors worker health and restarts all workers if any fail or become unhealthy.
+3. **Elasticity**: Reacts to cluster membership changes and restarts workers with updated configurations.
+
+### Core Components:
+- **`ElasticAgent`**: Abstract base class for agent implementations.
+- **`WorkerSpec`**: Blueprint defining worker configuration (role, entrypoint, world size, etc.).
+- **`WorkerGroup`**: A set of `Worker` instances managed by an agent.
+- **`WorkerState`**: Tracks the state of a worker group (e.g., `HEALTHY`, `FAILED`, `STOPPED`).
+
+### Implementations:
+- **`LocalElasticAgent`**: Manages local workers on a single host, typically used per node. It handles spawning, monitoring, and restarting workers, with support for GPU configurations.
+
+### Extending the Agent:
+- **`SimpleElasticAgent`**: Recommended base class for custom agents, providing scaffolding for core operations like worker assignment (`_assign_worker_ranks`), monitoring (`_monitor_workers`), and lifecycle management.
+
+### Additional Features:
+- **Watchdog**: Optional named pipe-based timer to detect agent/worker hangs.
+- **Health Check Server**: Optional TCP/HTTP server for external health monitoring.
+
+### Usage Example:
+Agents execute worker functions or binaries, handle retries up to `max_restarts`, and return results via `RunResult`, which indicates success/failure across all managed workers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["WorkerSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.WorkerGroup in a complex way */
+import torch

@@ -1,0 +1,52 @@
+params:
+  image:
+    dtype: ["uint8", "uint16", "int8", "int16", "int32", "int64", "half", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  boxes:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [2,4]
+    default: null
+  box_ind:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  crop_size:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  method:
+    dtype: ["string"]
+    range: [["bilinear", "nearest"]]
+    structure: ["scalar"]
+    shape: []
+    default: "bilinear"
+  extrapolation_value:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: box_ind
+    Constraint: "boxes.shape[0] == box_ind.shape[0]"
+  2:
+    Parameter 1: box_ind
+    Parameter 2: image
+    Constraint: "all(0 <= box_ind[i] < image.shape[0] for i in range(box_ind.shape[0]))"

@@ -1,0 +1,48 @@
+params:
+  diagonals:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor", "list of tensors"]
+    shape: ["dynamic"]
+    default: null
+  diagonals_format:
+    dtype: ["string"]
+    range: ["matrix", "sequence", "compact"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "compact"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  is_square:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "LinearOperatorTridiag"
+constraints:
+  1:
+    Parameter 1: "diagonals"
+    Parameter 2: "is_self_adjoint"
+    Constraint: "not (tf.dtypes.as_dtype(diagonals.dtype).is_floating and not tf.dtypes.as_dtype(diagonals.dtype).is_complex and is_self_adjoint != True)"

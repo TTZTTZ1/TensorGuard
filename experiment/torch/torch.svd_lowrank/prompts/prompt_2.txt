@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.svd_lowrank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.svd_lowrank` computes a low‑rank singular value decomposition (SVD) of a matrix (or batch of matrices) \( A \approx U \operatorname{diag}(S) V^H \). It is a randomized algorithm suitable for large sparse matrices where a full SVD would be too expensive.
+
+**Key parameters:**
+- `A`: input tensor of shape `(*, m, n)`.
+- `q`: slightly overestimated rank (default 6).
+- `niter`: number of subspace iterations (default 2).
+- `M`: optional mean tensor to subtract from `A` before decomposition.
+
+**Notes:**
+- Use when the matrix is too large for `torch.linalg.svd`, especially for sparse data.
+- The rank parameter `q` should satisfy \( k \leq q \leq \min(2k, m, n) \), where \( k \) is the true rank.
+- Results are non‑deterministic unless the random seed is fixed.
+- Based on the randomized SVD algorithm by Halko et al. (2009).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(∗, m, n)"]
+    default: null
+  q:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "6"
+  niter:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2"
+  M:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(∗, m, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: niter
+    Parameter 2: niter
+    Constraint: "niter >= 0"
+  2:
+    Parameter 1: M
+    Parameter 2: A
+    Constraint: "M is None or (M.shape == A.shape or (len(M.shape) <= len(A.shape) and all(m == a or m == 1 for m, a in zip(M.shape, A.shape[-len(M.shape):]))))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.svd_lowrank in a complex way */
+import torch

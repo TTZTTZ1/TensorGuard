@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `tf.TensorArraySpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.TensorArraySpec` is a **type specification class** for TensorFlow's `tf.TensorArray`. It defines the structural properties of a `TensorArray` object, enabling type checking, serialization, and compatibility comparisons in TensorFlow's graph-based execution.
+
+---
+
+### **Key Purpose**
+- Describes the **shape, data type, and dynamic behavior** of a `TensorArray`.
+- Used for **type validation** in functions decorated with `@tf.function` to ensure consistent tensor array structures.
+- Supports **serialization** and **subtype/supertype relationships** via TensorFlow's `TypeSpec` and `TraceType` interfaces.
+
+---
+
+### **Constructor Parameters**
+| Parameter | Description |
+|-----------|-------------|
+| `element_shape` | Shape of each element in the array (e.g., `(None, 10)` for variable-length vectors of size 10). |
+| `dtype` | Data type of elements (default: `tf.float32`). |
+| `dynamic_size` | If `True`, the array can grow beyond its initial size. |
+| `infer_shape` | If `True`, enables shape inference during operations. |
+
+---
+
+### **Core Methods**
+1. **`is_subtype_of(other)`**  
+   Checks if `self` is a subtype of another `TypeSpec` (for type hierarchy).
+
+2. **`most_specific_common_supertype(others)`**  
+   Finds the most specific common supertype among multiple `TypeSpec` instances.
+
+3. **`is_compatible_with(spec_or_value)`**  
+   Determines compatibility with another `TypeSpec` or value.
+
+4. **`from_value(value)`**  
+   Creates a `TensorArraySpec` from an existing `TensorArray`.
+
+5. **Serialization methods** (`experimental_as_proto`, `experimental_from_proto`)  
+   Convert between `TypeSpec` and protocol buffer representations.
+
+---
+
+### **Use Case Example**
+```python
+spec = tf.TensorArraySpec(element_shape=(None, 5), dtype=tf.int32, dynamic_size=True)
+# This spec describes a TensorArray that:
+# - Holds elements of shape (?, 5)
+# - Contains int32 tensors
+# - Can dynamically expand
+```
+
+---
+
+### **Notes**
+- Inherits from `tf.TypeSpec` and `tf.types.experimental.TraceType`.
+- Used internally by TensorFlow for graph tracing and autograph transformations.
+- The deprecated `most_specific_compatible_type` is replaced by `most_specific_common_supertype`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  element_shape:
+    dtype: ["None", "tuple"]
+    range: null
+    structure: ["None", "tuple"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["tf.dtypes.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "tf.dtypes.float32"
+  dynamic_size:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  infer_shape:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.TensorArraySpec in a complex way */
+import tensorflow as tf

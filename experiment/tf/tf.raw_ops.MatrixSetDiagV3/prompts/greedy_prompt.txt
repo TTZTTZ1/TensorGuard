@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MatrixSetDiagV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.MatrixSetDiagV3` replaces specified diagonals of batched matrices with new values. It takes an input tensor and a diagonal tensor, returning a tensor of the same shape as the input but with updated diagonal elements.
+
+**Key Parameters:**
+- **`input`**: A rank `r+1` tensor representing batched matrices.
+- **`diagonal`**: The new diagonal values. Its rank depends on `k`:
+  - Rank `r` if `k` is a single integer or `k[0] == k[1]`.
+  - Rank `r+1` otherwise.
+- **`k`**: Diagonal offset(s). Can be a single integer or a range `[low, high]`. Positive values indicate superdiagonals, negative values subdiagonals, and 0 the main diagonal.
+- **`align`**: Controls alignment for shorter diagonals (default is `"RIGHT_LEFT"`). Options include `"LEFT_RIGHT"`, `"LEFT_LEFT"`, and `"RIGHT_RIGHT"`.
+
+**Functionality:**
+- Overwrites specified diagonals in the innermost matrices of `input` with values from `diagonal`.
+- Supports single diagonals or a band of diagonals.
+- Handles varying diagonal lengths via padding according to the `align` parameter.
+
+**Example Use:**  
+Replace the main diagonal of each matrix in a batch:
+```python
+output = tf.raw_ops.MatrixSetDiagV3(input, diagonal, k=0)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: [No mention]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  diagonal:
+    dtype: ["same as input"]
+    range: [No mention]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  k:
+    dtype: ["int32"]
+    range: ["any integer"]
+    structure: ["scalar", "tuple"]
+    shape: ["[]", "[2]"]
+    default: null
+  align:
+    dtype: ["string"]
+    range: ["LEFT_RIGHT", "RIGHT_LEFT", "LEFT_LEFT", "RIGHT_RIGHT"]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "RIGHT_LEFT"
+  name:
+    dtype: ["string"]
+    range: ["any string"]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: diagonal
+    Parameter 2: input
+    Constraint: diagonal.dtype == input.dtype
+  2:
+    Parameter 1: k
+    Parameter 2: k
+    Constraint: k[0] <= k[1] if isinstance(k, (list, tuple)) and len(k) == 2
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MatrixSetDiagV3 in a complex way */
+import tensorflow as tf

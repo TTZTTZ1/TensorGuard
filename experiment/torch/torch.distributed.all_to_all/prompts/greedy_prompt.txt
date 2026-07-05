@@ -1,0 +1,93 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_to_all` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables synchronous distributed training and communication primitives for exchanging data between processes.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training
+- **NCCL**: Recommended for CUDA GPU training (supports InfiniBand/GPUDirect)
+- **XCCL**: For XPU GPU training  
+- **MPI**: Optional backend requiring source build
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication subsets via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups across device topologies
+- **Collective Operations**: 
+  - Point-to-point: `send()`, `recv()`, `isend()`, `irecv()`
+  - Collective: `all_reduce()`, `broadcast()`, `all_gather()`, `scatter()`, etc.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+
+### Usage Pattern
+```python
+import torch.distributed as dist
+
+# Initialize
+dist.init_process_group(backend='nccl', init_method='env://')
+
+# Get rank and world size
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+
+# Use collective operations
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# Cleanup
+dist.destroy_process_group()
+```
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU
+- Set `async_op=True` for asynchronous operations
+- Ensure proper GPU device assignment with `torch.cuda.set_device()`
+- Clean up with `destroy_process_group()` to avoid hangs
+- Use `TORCH_DISTRIBUTED_DEBUG` for debugging distributed applications
+
+The package supports both synchronous and asynchronous operations, with the latter returning `Work` objects that can be waited upon. It integrates with `DistributedDataParallel` for model parallelism and provides utilities for launching distributed jobs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  output_tensor_list:
+    dtype: ["list of Tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  input_tensor_list:
+    dtype: ["list of Tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "output_tensor_list"
+    Parameter 2: "input_tensor_list"
+    Constraint: "len(output_tensor_list) == len(input_tensor_list)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_to_all in a complex way */
+import torch

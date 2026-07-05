@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.gather` selects elements from an input tensor along a specified dimension (`dim`) using indices provided by an index tensor. The output tensor has the same shape as the index tensor, with each element determined by replacing the index value at the corresponding position into the given dimension of the input.
+
+**Key points:**
+- `input` and `index` must have the same number of dimensions.
+- For all dimensions `d` except `dim`, `index.size(d) ≤ input.size(d)`.
+- No broadcasting between `input` and `index`.
+
+**Example:**
+```python
+t = torch.tensor([[1, 2], [3, 4]])
+torch.gather(t, 1, torch.tensor([[0, 0], [1, 0]]))
+# Output: [[1, 1], [4, 3]]
+```
+Here, for `dim=1`, each row uses the index values to pick elements from that row’s columns.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  index:
+    dtype: ["longtensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  sparse_grad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: index
+    Constraint: "input.dim() == index.dim()"
+  2:
+    Parameter 1: index
+    Parameter 2: input
+    Constraint: "all(index.size(d) <= input.size(d) for d in range(input.dim()) if d != dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.gather in a complex way */
+import torch

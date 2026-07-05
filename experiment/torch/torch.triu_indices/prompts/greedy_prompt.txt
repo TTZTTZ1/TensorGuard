@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.triu_indices` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.triu_indices` returns a 2×N tensor containing the row and column indices of the upper triangular part of a matrix with specified dimensions. The indices are ordered by row first, then column.
+
+**Parameters:**
+- `row` (int): Number of rows in the matrix.
+- `col` (int): Number of columns in the matrix.
+- `offset` (int, optional): Diagonal offset. Default is 0 (main diagonal and above). Positive values exclude diagonals above the main diagonal; negative values include diagonals below it.
+
+**Keyword arguments:**
+- `dtype` (optional): Data type of the returned tensor (only `torch.int` or `torch.long`). Default is `torch.long`.
+- `device` (optional): Device for the tensor. Default is CPU.
+- `layout` (optional): Currently only `torch.strided` is supported.
+
+**Example:**
+```python
+>>> torch.triu_indices(3, 3)
+tensor([[0, 0, 0, 1, 1, 2],
+        [0, 1, 2, 1, 2, 2]])
+```
+This function is useful for indexing operations on matrices, particularly when you need to work with or manipulate only the upper triangular elements.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  row:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  col:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  offset:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  dtype:
+    dtype: ["torch.int", "torch.long"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.long"
+  device:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'cpu'"
+  layout:
+    dtype: ["string"]
+    range: [["torch.strided"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.strided"
+constraints:
+  1:
+    Parameter 1: "row"
+    Parameter 2: "col"
+    Constraint: "not (str(device).startswith('cuda') and row * col >= 2**59)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.triu_indices in a complex way */
+import torch

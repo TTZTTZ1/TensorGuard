@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SaveSlices` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SaveSlices` saves multiple tensors to a file, with support for storing slices of larger tensors. Unlike `Save`, it allows specifying each tensor's position within a bigger logical tensor via `shapes_and_slices`. This is useful for checkpointing partitioned variables.
+
+**Key Parameters:**
+- `filename`: File path (single string).
+- `tensor_names`: Names of tensors to save.
+- `shapes_and_slices`: Specifies each tensor's full shape and slice range; use `""` for full tensors.
+- `data`: List of tensors to save (must match `tensor_names` length).
+
+**Slice Format:**  
+`dim0 dim1 ... slice0:slice1:...` where each slice is `-` (all indices) or `start,length`.
+
+**Returns:**  
+A TensorFlow Operation that performs the save.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filename:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: [[1]]
+    default: null
+  tensor_names:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  shapes_and_slices:
+    dtype: ["string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  data:
+    dtype: ["int32", "int64", "float32", "float64", "string", "bool"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: filename
+    Parameter 2: null
+    Constraint: "filename.shape == [1]"
+  2:
+    Parameter 1: tensor_names
+    Parameter 2: shapes_and_slices
+    Constraint: "tensor_names.shape == shapes_and_slices.shape"
+  3:
+    Parameter 1: tensor_names
+    Parameter 2: data
+    Constraint: "len(data) == tensor_names.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SaveSlices in a complex way */
+import tensorflow as tf

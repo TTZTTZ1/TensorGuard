@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrize.remove_parametrizations` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `remove_parametrizations` function removes a parametrization from a specified tensor within a PyTorch module. It offers two options:  
+- If `leave_parametrized=True` (default), the tensor retains its current parametrized output, provided the parametrization hasn’t changed its `dtype`.  
+- If `leave_parametrized=False`, the tensor reverts to its original unparametrized state, which is only allowed when the parametrization depends on a single tensor.  
+
+The function raises a `ValueError` if the tensor isn’t parametrized or if reverting is attempted for a multi-tensor parametrization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  tensor_name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  leave_parametrized:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: module
+    Parameter 2: tensor_name
+    Constraint: "hasattr(module, 'parametrizations') and tensor_name in module.parametrizations"
+  2:
+    Parameter 1: leave_parametrized
+    Parameter 2: tensor_name
+    Constraint: "leave_parametrized or isinstance(module.parametrizations[tensor_name].original, torch.Tensor)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrize.remove_parametrizations in a complex way */
+import torch

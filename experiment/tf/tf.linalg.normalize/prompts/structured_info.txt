@@ -1,0 +1,34 @@
+params:
+  tensor:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  ord:
+    dtype: ["string", "int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'euclidean'"
+  axis:
+    dtype: ["NoneType", "int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [null, [2]]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "axis"
+    Parameter 2: "ord"
+    Constraint: "not (axis is None or isinstance(axis, int)) or ord != 'fro'"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "ord"
+    Constraint: "not (isinstance(axis, tuple) and len(axis) == 2) or ord in ['euclidean', 'fro', 1, 2, np.inf]"

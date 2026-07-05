@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Requantize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.Requantize` operation converts a quantized tensor from one precision level to a lower one, adjusting its numerical range based on specified minimum and maximum values.
+
+**Key Functionality:**
+- Transforms a quantized input tensor into a lower-bit-depth output tensor.
+- Uses input range parameters (`input_min`, `input_max`) to interpret the quantized input as floating-point values.
+- Maps these values to a new quantized output using the requested output range (`requested_output_min`, `requested_output_max`).
+
+**Parameters:**
+- **`input`**: A quantized tensor (`qint8`, `quint8`, `qint32`, `qint16`, or `quint16`).
+- **`input_min` / `input_max`**: `float32` tensors defining the float range represented by the min/max quantized input values.
+- **`requested_output_min` / `requested_output_max`**: `float32` tensors specifying the desired float range for the output.
+- **`out_type`**: The target quantized data type, which must have a lower bit depth than the input type.
+
+**Returns:**
+- **`output`**: The requantized tensor of type `out_type`.
+- **`output_min` / `output_max`**: `float32` tensors representing the actual float range of the output values.
+
+**Example Interpretation:**
+If `input` is `quint16` with `input_min = -1.0` and `input_max = 1.0`, then:
+- The quantized value `0` corresponds to `-1.0` in float.
+- The quantized value `65535` corresponds to `1.0` in float.
+
+The operation rescales and requantizes these values into the output range specified by `requested_output_min` and `requested_output_max`, producing a lower-precision quantized output.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input_min
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  input_max
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  requested_output_min
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  requested_output_max
+    dtype: ["float32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  out_type
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  name
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: input
+    Parameter 2: out_type
+    Constraint: {'qint8':8, 'quint8':8, 'qint16':16, 'quint16':16, 'qint32':32}[out_type] < {'qint8':8, 'quint8':8, 'qint16':16, 'quint16':16, 'qint32':32}[input.dtype]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Requantize in a complex way */
+import tensorflow as tf

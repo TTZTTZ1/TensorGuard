@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FusedBatchNormGradV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FusedBatchNormGradV2` computes the gradients for batch normalization during backpropagation. It uses precomputed batch statistics (`reserve_space_1`, `reserve_space_2`) to efficiently calculate gradients for the input, scale, and offset parameters. The operation supports both training and inference modes via `is_training`, and handles data in either `"NHWC"` or `"NCHW"` format.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y_backprop:
+    dtype: ["half", "bfloat16", "float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  x:
+    dtype: ["half", "bfloat16", "float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  scale:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  reserve_space_1:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  reserve_space_2:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  epsilon:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0.0001"
+  data_format:
+    dtype: ["string"]
+    range: [["NHWC", "NCHW"]]
+    structure: ["scalar"]
+    shape: []
+    default: "NHWC"
+  is_training:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: y_backprop
+    Parameter 2: x
+    Constraint: "y_backprop.dtype == x.dtype"
+  2:
+    Parameter 1: scale
+    Parameter 2: x
+    Constraint: "scale.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"
+  3:
+    Parameter 1: reserve_space_1
+    Parameter 2: x
+    Constraint: "reserve_space_1.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"
+  4:
+    Parameter 1: reserve_space_2
+    Parameter 2: x
+    Constraint: "reserve_space_2.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FusedBatchNormGradV2 in a complex way */
+import tensorflow as tf

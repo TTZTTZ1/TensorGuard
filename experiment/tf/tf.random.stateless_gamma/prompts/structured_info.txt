@@ -1,0 +1,50 @@
+params:
+  shape:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["tensor", "array"]
+    shape: [1]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  alpha:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  beta:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  dtype:
+    dtype: ["dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.dtypes.float32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: alpha
+    Parameter 2: beta
+    Constraint: tf.broadcast_dynamic_shape(tf.shape(alpha), tf.shape(beta)) is not None
+  2:
+    Parameter 1: alpha
+    Parameter 2: shape
+    Constraint: tf.rank(alpha) <= tf.size(shape) and tf.broadcast_dynamic_shape(tf.shape(alpha), shape[-tf.rank(alpha):]) is not None
+  3:
+    Parameter 1: beta
+    Parameter 2: shape
+    Constraint: tf.rank(beta) <= tf.size(shape) and tf.broadcast_dynamic_shape(tf.shape(beta), shape[-tf.rank(beta):]) is not None

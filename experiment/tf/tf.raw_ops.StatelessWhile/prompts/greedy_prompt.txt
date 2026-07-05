@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.StatelessWhile` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.StatelessWhile` is a stateless version of the while-loop operation in TensorFlow. It repeatedly executes a loop body as long as a condition function holds true, without allowing stateful operations inside the condition or body functions.
+
+**Key Features:**
+- **Input/Output:** Takes a list of input tensors, which are passed through the condition and body functions iteratively.
+- **Condition (`cond`):** A function that evaluates the loop continuation based on the current tensors (non-zero/non-empty values imply `True`).
+- **Body (`body`):** A function that transforms the input tensors in each iteration.
+- **Stateless Restriction:** Both `cond` and `body` must be free of stateful operations (e.g., no variable updates).
+- **Use Case:** Suitable for deterministic, side-effect-free loops where the iteration depends only on the input tensors.
+
+**Parameters:**
+- `input`: List of input tensors.
+- `cond`: Condition function (decorated with `@Defun`).
+- `body`: Loop body function (decorated with `@Defun`).
+- `output_shapes`: (Optional) Expected shapes of output tensors.
+- `parallel_iterations`: (Optional) Number of iterations allowed to run in parallel (default: 10).
+
+**Returns:** A list of tensors with the same types as the input, resulting from the loop execution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: [No mention]
+    range: [No mention]
+    structure: [list]
+    shape: [No mention]
+    default: null
+  cond:
+    dtype: [No mention]
+    range: [No mention]
+    structure: [function]
+    shape: [No mention]
+    default: null
+  body:
+    dtype: [No mention]
+    range: [No mention]
+    structure: [function]
+    shape: [No mention]
+    default: null
+  output_shapes:
+    dtype: [No mention]
+    range: [No mention]
+    structure: [list]
+    shape: [No mention]
+    default: []
+  parallel_iterations:
+    dtype: [int]
+    range: [No mention]
+    structure: [scalar]
+    shape: [1]
+    default: 10
+  name:
+    dtype: [string]
+    range: [No mention]
+    structure: [scalar]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: cond
+    Parameter 2: body
+    Constraint: is_stateless(cond) and is_stateless(body)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.StatelessWhile in a complex way */
+import tensorflow as tf

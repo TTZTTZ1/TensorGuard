@@ -1,0 +1,11 @@
+import tensorflow as tf
+x = tf.random.normal(shape=[2, 3])
+w = tf.Variable(tf.random.normal([3, 2]))
+wW = tf.tile(w, [2, 1])
+b = tf.Variable(tf.random.normal([2, 1]))
+y = (tf.matmul(x, w) + b)
+y = tf.nn.softmax(y)
+y_conv = tf.nn.conv2d(x, w, strides=[1, 1, 1, 1], padding='SAME')
+y_conv = tf.reshape(y_conv, [(- 1), 4, 10, 5])
+cost = tf.reduce_mean(tf.square((y - y)))
+loss = tf.reduce_mean((y * tf.math.log(y)))

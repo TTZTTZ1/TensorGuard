@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.distributed.reduce_op` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines or GPUs. It enables synchronous distributed training, offering advantages over other parallelism approaches like independent optimizers per process and reduced Python interpreter overhead.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training
+- **NCCL**: Recommended for CUDA GPU training (best performance)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires building from source
+
+### Initialization Methods
+1. **Environment variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared file system**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication subsets via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous variants
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+
+### Key Functions
+- `init_process_group()`: Initialize distributed processing
+- `init_device_mesh()`: Create device mesh for complex topologies
+- `all_reduce()`, `broadcast()`, `all_gather()`: Common collective operations
+- `send()`, `recv()`, `isend()`, `irecv()`: Point-to-point communication
+- `destroy_process_group()`: Clean up resources
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout detection
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `breakpoint()`: Debug single rank while others wait
+- HTTP debug server for runtime data collection
+
+### Best Practices
+- Use NCCL for GPU training, Gloo for CPU
+- Ensure proper cleanup with `destroy_process_group()`
+- Set `async_op=True` for overlapping communication/computation
+- Use `DeviceMesh` for complex multi-dimensional parallelism
+- Enable debugging flags (`TORCH_DISTRIBUTED_DEBUG`) for troubleshooting
+
+The package supports both synchronous and asynchronous operations, with the latter returning `Work` objects that can be waited on or queried for completion.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  None
+
+constraints:
+  None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.reduce_op in a complex way */
+import torch

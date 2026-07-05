@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.distributions.lowrank_multivariate_normal.LowRankMultivariateNormal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like:
+   - `sample()`, `rsample()`: Sampling
+   - `log_prob()`: Log probability density/mass
+   - `entropy()`, `mean`, `variance`: Statistics
+   - `cdf()`, `icdf()`: Cumulative/inverse cumulative functions
+
+2. **Common Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Dirichlet, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Multinomial, MultivariateNormal, Normal, Poisson, StudentT, Uniform, and many others.
+
+3. **Special Classes**:
+   - `ExponentialFamily`: Base for exponential family distributions
+   - `TransformedDistribution`: Applies transforms to base distributions
+   - `Independent`: Reinterprets batch dims as event dims
+   - `MixtureSameFamily`: Mixture distributions
+
+4. **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`, `AffineTransform`) for constrained parameter optimization.
+
+5. **Constraints**: Define valid parameter regions (e.g., `simplex`, `positive_definite`, `interval`).
+
+6. **KL Divergence**: Computes KL divergence between distributions via `kl_divergence()` with registered implementations for many distribution pairs.
+
+**Usage Examples:**
+- **REINFORCE**:
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization**:
+  ```python
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  ```
+
+**Utilities:**
+- `transform_to()`: Gets transforms for constrained optimization
+- `biject_to()`: Gets bijective transforms for HMC
+- Constraint registry for custom constraints/transforms
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  cov_factor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape + (rank,)"]
+    default: null
+  cov_diag:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_shape + event_shape"]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cov_factor
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 2)"
+  2:
+    Parameter 1: cov_diag
+    Parameter 2: 
+    Constraint: "IndependentConstraint(GreaterThan(lower_bound=0.0), 1)"
+  3:
+    Parameter 1: loc
+    Parameter 2: 
+    Constraint: "IndependentConstraint(Real(), 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.lowrank_multivariate_normal.LowRankMultivariateNormal in a complex way */
+import torch

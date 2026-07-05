@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.BoolStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+- **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (`torch.UntypedStorage`)
+- Primary storage class: a byte array independent of data type interpretation.
+- Multiple tensors can share the same storage (e.g., tensor views).
+- Accessed via `tensor.untyped_storage()`.
+- Key attributes/methods:
+  - `data_ptr()`: Unique identifier for the storage.
+  - `device`, `is_cuda`, `filename` (if memory-mapped).
+  - In-place operations: `fill_()`, `copy_()`.
+  - Device transfer: `cuda()`, `cpu()`, `to()`.
+  - Memory sharing: `share_memory_()` for inter-process communication.
+  - `from_file()`: Create storage backed by a memory-mapped file.
+
+### Important Notes
+- **Low-level API**: Direct storage manipulation is discouraged; use tensor methods (e.g., `clone()`, `fill_()`) when possible.
+- **Special Cases**:
+  - Tensors with gradients have separate storages for data and grad.
+  - "meta" device tensors and FakeTensors have no actual storage.
+- **Legacy Typed Storage** (`torch.TypedStorage`, `torch.FloatStorage`, etc.) is deprecated; use `torch.UntypedStorage`.
+
+### Key Use Cases
+1. **Memory Efficiency**: Sharing storage between tensors reduces memory footprint.
+2. **Inter-Process Communication**: `share_memory_()` enables data sharing across processes.
+3. **Memory-Mapped Files**: `from_file()` allows large datasets to be loaded lazily from disk.
+4. **Low-Level Optimization**: Direct storage access for advanced performance tuning (use with caution).
+
+### Warning
+Storage operations are low-level and risk-breaking tensor invariants. Prefer high-level tensor APIs unless you have specific performance or memory-sharing requirements.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.bool"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.bool"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: wrap_storage
+    Parameter 2: dtype
+    Constraint: "dtype == torch.bool or dtype is None"
+  2:
+    Parameter 1: wrap_storage
+    Parameter 2: device
+    Constraint: "device is None or device == wrap_storage.device"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.BoolStorage in a complex way */
+import torch

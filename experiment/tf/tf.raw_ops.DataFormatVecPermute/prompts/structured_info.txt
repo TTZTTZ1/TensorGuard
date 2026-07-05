@@ -1,0 +1,34 @@
+params:
+  x:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1, 2]
+    default: null
+  src_format:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "NHWC"
+  dst_format:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "NCHW"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: src_format
+    Constraint: "len(x.shape) in [1, 2] and ( (len(x.shape) == 1 and x.shape[0] in [len(src_format), len(src_format)-2]) or (len(x.shape) == 2 and x.shape[0] in [len(src_format), len(src_format)-2] and x.shape[1] == 2) )"
+  2:
+    Parameter 1: src_format
+    Parameter 2: dst_format
+    Constraint: "len(src_format) == len(dst_format) and len(src_format) in [4, 5]"

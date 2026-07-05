@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.ConstantLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**ConstantLR** is a PyTorch learning rate scheduler that temporarily reduces the learning rate by a constant factor for a specified number of initial training steps (epochs), then restores it to the original value.
+
+### Key Features:
+- **Factor scaling**: Multiplies the learning rate by `factor` (default: 1/3) for each parameter group.
+- **Duration control**: Applies the reduced learning rate for the first `total_iters` steps (default: 5).
+- **Automatic restoration**: After `total_iters` steps, the learning rate returns to its original value (scaled by `1/factor`).
+- **Integration**: Works alongside other learning rate adjustments from outside the scheduler.
+
+### Parameters:
+- `optimizer`: The optimizer to wrap.
+- `factor` (float): Multiplier for the learning rate during the initial phase.
+- `total_iters` (int): Number of steps to apply the reduced learning rate.
+- `last_epoch` (int): The index of the last epoch (default: -1, sets initial learning rate).
+
+### Example Usage:
+```python
+scheduler = ConstantLR(optimizer, factor=0.5, total_iters=40)
+for epoch in range(100):
+    train(...)
+    validate(...)
+    scheduler.step()  # Call after optimizer.step()
+```
+- For epochs 0–39: learning rate = original × 0.5
+- From epoch 40 onward: learning rate = original
+
+### Key Methods:
+- `get_last_lr()`: Returns the most recent learning rates.
+- `get_lr()`: Computes the next learning rates (internal use).
+- `step()`: Updates the learning rate (call after optimizer.step()).
+- `state_dict()` / `load_state_dict()`: Save and restore scheduler state.
+
+This scheduler is useful for warm-up phases or controlled initial training with a lower learning rate.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["instance"]
+    shape: [1]
+    default: null
+  factor:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.3333333333333333"
+  total_iters:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "5"
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.ConstantLR in a complex way */
+import torch

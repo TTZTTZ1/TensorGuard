@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.SparseCategoricalAccuracy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.SparseCategoricalAccuracy` is a metric used in multi-class classification tasks where the true labels are provided as integer indices (e.g., `[2, 1, 0]`) rather than one-hot encoded vectors. It calculates the frequency with which the predicted class (the index with the highest predicted value) matches the integer label.
+
+### Key Features:
+- **Inputs**:  
+  - `y_true`: Integer labels (shape: `[batch_size]` or `[batch_size, ...]`).  
+  - `y_pred`: Model predictions (logits or probabilities) with shape `[batch_size, num_classes]`.  
+- **Calculation**:  
+  Compares `y_true` with `np.argmax(y_pred, axis=1)` to compute accuracy.  
+- **Sample Weighting**:  
+  Supports optional `sample_weight` to adjust contributions of individual samples.  
+- **Stateful**:  
+  Maintains internal variables (`total` and `count`) to accumulate results across batches.  
+- **Usage**:  
+  Commonly used with `compile()` for training/evaluation, or manually via `update_state()` and `result()`.
+
+### Example:
+```python
+metric = tf.keras.metrics.SparseCategoricalAccuracy()
+metric.update_state([2, 1], [[0.1, 0.6, 0.3], [0.05, 0.95, 0]])  # 50% accuracy
+print(metric.result())  # Output: 0.5
+```
+
+### Typical Workflow:
+1. Initialize the metric.  
+2. Update state with batch data (`update_state()`).  
+3. Compute accuracy via `result()`.  
+4. Reset states for new evaluation (`reset_state()`).  
+
+This metric is widely used in classification models (e.g., with `sparse_categorical_crossentropy` loss).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [["sparse_categorical_accuracy"]]
+    structure: ["scalar"]
+    shape: []
+    default: "sparse_categorical_accuracy"
+  dtype:
+    dtype: ["string", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.SparseCategoricalAccuracy in a complex way */
+import tensorflow as tf

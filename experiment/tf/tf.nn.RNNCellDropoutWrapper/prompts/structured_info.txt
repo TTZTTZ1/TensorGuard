@@ -1,0 +1,87 @@
+params:
+  cell:
+    dtype: ["object"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  input_keep_prob:
+    dtype: ["float", "Tensor"]
+    range: ["[0, 1]"]
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: null
+  output_keep_prob:
+    dtype: ["float", "Tensor"]
+    range: ["[0, 1]"]
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: null
+  state_keep_prob:
+    dtype: ["float", "Tensor"]
+    range: ["[0, 1]"]
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: null
+  variational_recurrent:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  input_size:
+    dtype: ["TensorShape", "tuple"]
+    range: [null]
+    structure: ["tuple", "TensorShape"]
+    shape: [null]
+    default: null
+  dtype:
+    dtype: ["dtype"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dropout_state_filter_visitor:
+    dtype: ["function", "callable"]
+    range: [null]
+    structure: ["function"]
+    shape: [null]
+    default: "def dropout_state_filter_visitor(s):\n    if isinstance(s, LSTMCellState):\n        return LSTMCellState(c=False, h=True)\n    elif isinstance(s, TensorArray):\n        return False\n    return True"
+  **kwargs:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: "cell"
+    Parameter 2: "dropout_state_filter_visitor"
+    Constraint: "isinstance(cell, RNNCell) and (dropout_state_filter_visitor is None or callable(dropout_state_filter_visitor))"
+  2:
+    Parameter 1: "input_keep_prob"
+    Parameter 2: null
+    Constraint: "0 <= input_keep_prob <= 1"
+  3:
+    Parameter 1: "output_keep_prob"
+    Parameter 2: null
+    Constraint: "0 <= output_keep_prob <= 1"
+  4:
+    Parameter 1: "state_keep_prob"
+    Parameter 2: null
+    Constraint: "0 <= state_keep_prob <= 1"
+  5:
+    Parameter 1: "variational_recurrent"
+    Parameter 2: "input_keep_prob"
+    Parameter 3: "input_size"
+    Constraint: "not (variational_recurrent and input_keep_prob < 1) or input_size is not None"
+  6:
+    Parameter 1: "variational_recurrent"
+    Parameter 2: "dtype"
+    Constraint: "not variational_recurrent or dtype is not None"

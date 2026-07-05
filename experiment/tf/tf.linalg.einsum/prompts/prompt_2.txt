@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.linalg.einsum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.einsum` (aliased as `tf.einsum`) performs tensor contractions and outer products using Einstein summation notation. It allows flexible element-wise computations by specifying an equation string that defines how input indices map to output indices.
+
+**Key Features:**
+- **Equation Format:** Uses a string (e.g., `'ij,jk->ik'` for matrix multiplication) following NumPy's `einsum` conventions.
+- **Automatic Summation:** Repeated indices not in the output are summed over.
+- **Common Operations:** Supports matrix multiplication, dot products, outer products, transpose, diagonal extraction, trace, and batch operations.
+- **Ellipsis Support:** Allows broadcasting over unspecified axes (e.g., `'...ij,...jk->...ik'`).
+- **Optimization:** Optional contraction path optimization via `optimize` keyword.
+
+**Limitations:**
+- Does not support broadcasting on named axes; matching labels must have the same length.
+- Length-1 axes should be removed explicitly (e.g., using `tf.squeeze`).
+
+**Example:**
+```python
+# Matrix multiplication
+result = tf.einsum('ij,jk->ik', A, B)  # C[i,k] = sum_j A[i,j] * B[j,k]
+```
+
+This function is widely used in advanced linear algebra, automatic differentiation, and neural network operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  equation:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  inputs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tuple"]
+    shape: "No mention"
+    default: null
+  optimize:
+    dtype: ["string"]
+    range: ["greedy", "optimal", "branch-2", "branch-all", "auto"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "greedy"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: equation
+    Parameter 2: inputs
+    Constraint: "len(inputs) == equation.count(',') + 1"
+  2:
+    Parameter 1: inputs
+    Parameter 2: equation
+    Constraint: "all(inputs[i].shape[dim_i] == inputs[j].shape[dim_j] for every pair of positions (i, dim_i) and (j, dim_j) that correspond to the same non-ellipsis index label in equation)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.einsum in a complex way */
+import tensorflow as tf

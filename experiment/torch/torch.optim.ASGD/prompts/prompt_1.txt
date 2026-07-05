@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.optim.ASGD` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**ASGD (Averaged Stochastic Gradient Descent)** is an optimizer in PyTorch that improves convergence by averaging parameter values over time, reducing variance in stochastic updates.
+
+**Key Parameters:**
+- `lr`: Learning rate (default: 0.01)
+- `lambd`: Decay term for averaging (default: 1e-4)
+- `alpha`: Power for learning rate adjustment (default: 0.75)
+- `t0`: Starting iteration for averaging (default: 1e6)
+- `weight_decay`: L2 penalty (default: 0)
+- `foreach`: Use vectorized implementation (default: auto-detected for CUDA)
+- `maximize`: Maximize instead of minimize objective (default: False)
+- `differentiable`: Allow autograd through optimizer step (default: False)
+- `capturable`: Safe for CUDA graphs/torch.compile (default: False)
+
+**Core Functionality:**
+- Implements averaging of parameters after `t0` iterations to stabilize convergence
+- Automatically adjusts effective learning rate as `η/(1 + ληt)^α`
+- Supports standard optimizer features: parameter groups, state management, hooks
+
+**Usage Example:**
+```python
+optimizer = torch.optim.ASGD(model.parameters(), lr=0.01, lambd=1e-4)
+for epoch in range(epochs):
+    loss = compute_loss()
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+```
+
+**Best For:** Problems where standard SGD shows high variance in convergence, particularly in stochastic approximation scenarios. The averaging mechanism provides more stable convergence at the cost of additional memory for storing averaged parameters.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "1e-2"
+  lambd:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-4"
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.75"
+  t0:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e6"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  foreach:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.ASGD in a complex way */
+import torch

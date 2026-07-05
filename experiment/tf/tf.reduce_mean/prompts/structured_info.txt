@@ -1,0 +1,34 @@
+params:
+  input_tensor:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  axis:
+    dtype: ["None", "int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "tuple"]
+    default: "None"
+  keepdims:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "false"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: "axis"
+    Parameter 2: "input_tensor"
+    Constraint: "axis is None or ((isinstance(axis, int) and -len(input_tensor.shape) <= axis < len(input_tensor.shape)) or (isinstance(axis, (list, tuple)) and all(-len(input_tensor.shape) <= a < len(input_tensor.shape) for a in axis)))"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "axis"
+    Constraint: "not isinstance(axis, (list, tuple)) or len(set(axis)) == len(axis)"

@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `torch.addmv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.addmv` performs a matrix-vector multiplication between `mat` and `vec`, then adds the vector `input` to the result. The operation is scaled by factors `alpha` (for the multiplication) and `beta` (for the addition), following the formula:  
+
+\[
+\text{out} = \beta \cdot \text{input} + \alpha \cdot (\text{mat} @ \text{vec})
+\]
+
+**Key details:**
+- `mat` must be 2D (size \(n \times m\)), `vec` must be 1D (size \(m\)), and `input` must be broadcastable to a 1D tensor of size \(n\).
+- If `beta = 0`, `input` is ignored (including any NaN or inf values).
+- `alpha` and `beta` are numeric scaling factors.
+
+**Example:**
+```python
+M = torch.randn(2)        # vector to add
+mat = torch.randn(2, 3)   # matrix
+vec = torch.randn(3)      # vector
+torch.addmv(M, mat, vec)  # result size: (2,)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  mat:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  vec:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  beta:
+    dtype: ["int", "float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1"
+  alpha:
+    dtype: ["int", "float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1"
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "mat"
+    Parameter 2: "vec"
+    Constraint: "len(mat.shape) == 2 and len(vec.shape) == 1 and mat.shape[1] == vec.shape[0]"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "mat"
+    Constraint: "(input.ndim == 0) or (input.ndim == 1 and input.shape[0] == mat.shape[0])"
+  3:
+    Parameter 1: "input"
+    Parameter 2: "beta"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(beta, float)) or (input.dtype not in [torch.float32, torch.float64] and isinstance(beta, int))"
+  4:
+    Parameter 1: "input"
+    Parameter 2: "alpha"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(alpha, float)) or (input.dtype not in [torch.float32, torch.float64] and isinstance(alpha, int))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addmv in a complex way */
+import torch

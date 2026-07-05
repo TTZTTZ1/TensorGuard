@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.keras.utils.Sequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.utils.PyDataset` (formerly `Sequence`) is a base class for creating custom, parallelizable datasets in Keras using Python. It ensures thread-safe iteration and proper batch handling during training.
+
+**Key Features:**
+- **Thread-Safe Parallelism:** Supports multi-threading or multiprocessing for efficient data loading during `fit()`.
+- **Batch-Oriented:** Requires implementing `__getitem__()` to return a full batch and `__len__()` to return the number of batches.
+- **Epoch Management:** Optional `on_epoch_end()` method allows dataset updates between epochs.
+- **Safety:** Guarantees each sample is used once per epoch, unlike Python generators.
+
+**Core Methods to Implement:**
+- `__len__()`: Return the total number of batches.
+- `__getitem__(index)`: Return the batch at the given index.
+
+**Usage Example:**
+```python
+class CustomPyDataset(keras.utils.PyDataset):
+    def __init__(self, x, y, batch_size, **kwargs):
+        super().__init__(**kwargs)
+        self.x, self.y = x, y
+        self.batch_size = batch_size
+
+    def __len__(self):
+        return math.ceil(len(self.x) / self.batch_size)
+
+    def __getitem__(self, idx):
+        low = idx * self.batch_size
+        high = min(low + self.batch_size, len(self.x))
+        return self.x[low:high], self.y[low:high]
+```
+
+**Parallelism Configuration (for `fit()` only):**
+- `workers`: Number of parallel threads/processes.
+- `use_multiprocessing`: Use multiprocessing if data is pickle-safe.
+- `max_queue_size`: Limits pre-fetched batches in memory.
+
+**Note:** Parallel settings only apply during `fit()`; manual iteration runs sequentially.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  workers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+  use_multiprocessing:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  max_queue_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "10"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.utils.Sequence in a complex way */
+import tensorflow as tf

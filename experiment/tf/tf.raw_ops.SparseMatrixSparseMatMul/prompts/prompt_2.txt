@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseMatrixSparseMatMul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseMatrixSparseMatMul` function performs sparse matrix multiplication between two CSR (Compressed Sparse Row) format matrices. It multiplies matrix `a` by matrix `b`, supporting optional transposition or adjoint operations on either input. Both matrices must share the same data type (float32, float64, complex64, or complex128) and rank, with compatible inner dimensions. The result is returned as a CSR sparse matrix, which may contain non-structural zeros. This operation is efficient for large sparse matrices and is commonly used in linear algebra computations where both operands are sparse.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  b:
+    dtype: ["variant"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  type:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  transpose_a:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  adjoint_a:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  adjoint_b:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "transpose_a"
+    Parameter 2: "adjoint_a"
+    Constraint: "not (transpose_a and adjoint_a)"
+  2:
+    Parameter 1: "transpose_b"
+    Parameter 2: "adjoint_b"
+    Constraint: "not (transpose_b and adjoint_b)"
+  3:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.element_type == b.element_type"
+  4:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.shape.rank == b.shape.rank"
+  5:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.shape[:-2] == b.shape[:-2] and (a.shape[-1] if not transpose_a and not adjoint_a else a.shape[-2]) == (b.shape[-2] if not transpose_b and not adjoint_b else b.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseMatrixSparseMatMul in a complex way */
+import tensorflow as tf

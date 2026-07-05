@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `torch.distributed.all_to_all` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Process Groups**: Logical groups of processes for collective communication.
+- **Backends**: Supports multiple backends (Gloo, NCCL, MPI, XCCL) with different device compatibility.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+
+## **Key Components**
+
+### **1. Initialization**
+```python
+dist.init_process_group(backend, init_method='env://', ...)
+# or
+device_mesh = init_device_mesh("cuda", mesh_shape=(8,))
+```
+- Must be called before any distributed operations
+- Multiple initialization methods: TCP, shared file-system, environment variables
+
+### **2. Communication Primitives**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: 
+  - `all_reduce()`, `broadcast()`, `all_gather()`, `reduce_scatter()`
+  - `all_to_all()`, `barrier()`, `monitored_barrier()`
+- **Object collectives**: For Python objects (with performance caveats)
+
+### **3. Process Management**
+- `get_rank()`, `get_world_size()`, `new_group()`
+- `destroy_process_group()` for cleanup
+
+### **4. Key-Value Stores**
+- `TCPStore`, `FileStore`, `HashStore` for coordination
+- Used for process group initialization and information sharing
+
+## **Backend Selection Guide**
+- **CUDA GPUs**: Use NCCL (best performance)
+- **XPU GPUs**: Use XCCL  
+- **CPU**: Use Gloo
+- **InfiniBand**: NCCL for GPU, Gloo/MPI for CPU
+
+## **Best Practices**
+1. **Initialization**: Call `init_process_group()` once per process
+2. **Cleanup**: Use `destroy_process_group()` to avoid hangs
+3. **Device binding**: Set CUDA device before NCCL operations
+4. **Error handling**: Use `monitored_barrier()` for debugging hangs
+5. **Performance**: Use async operations (`async_op=True`) for overlap
+
+## **Debugging Tools**
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `torch.distributed.breakpoint()`: Interactive debugging
+- `monitored_barrier()`: Timeout-aware synchronization
+- HTTP debug server for runtime inspection
+
+## **Common Patterns**
+- **Data Parallelism**: Use `DistributedDataParallel` wrapper
+- **Model Parallelism**: Use DeviceMesh for multi-dimensional layouts
+- **Fault Tolerance**: Use `shrink_group()` for excluding failed ranks
+
+The package enables scalable distributed training with support for various network topologies and hardware configurations, while providing tools for debugging and performance optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  output_tensor_list:
+    dtype: ["list of Tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  input_tensor_list:
+    dtype: ["list of Tensor"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "output_tensor_list"
+    Parameter 2: "input_tensor_list"
+    Constraint: "len(output_tensor_list) == len(input_tensor_list)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.all_to_all in a complex way */
+import torch

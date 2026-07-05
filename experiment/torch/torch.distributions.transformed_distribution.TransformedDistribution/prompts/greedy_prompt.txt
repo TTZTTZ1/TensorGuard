@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transformed_distribution.TransformedDistribution` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling functions
+- Supports gradient estimation via:
+  - **Score function estimator (REINFORCE)**: Uses `sample()` + `log_prob()`
+  - **Pathwise derivative estimator (reparameterization trick)**: Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Transformed**: LogNormal, HalfNormal, HalfCauchy, Weibull, Pareto
+**Specialized**: MixtureSameFamily, RelaxedBernoulli, LKJCholesky, Wishart
+
+### **3. Key Features**
+- **Batch/Event shapes**: Supports batched parameters and samples
+- **ExponentialFamily**: Special class for distributions in exponential family form
+- **TransformedDistribution**: Creates new distributions via transform chains
+- **Independent**: Reinterprets batch dims as event dims
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+
+### **4. Gradient Estimation Methods**
+```python
+# REINFORCE (score function)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Pathwise derivative (reparameterization)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Requires .has_rsample == True
+loss = -reward
+```
+
+### **5. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Define valid parameter domains (real, positive, simplex, etc.)
+- **Constraint Registry**: `transform_to()` and `biject_to()` for unconstrained optimization
+
+### **6. Practical Applications**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders (reparameterization trick)
+- Bayesian modeling
+- Probabilistic programming
+- Stochastic optimization
+
+## **Usage Pattern**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sample
+samples = dist.sample([100])  # 100 samples
+
+# Compute probabilities
+log_probs = dist.log_prob(samples)
+
+# Reparameterized sampling (for gradients)
+reparam_samples = dist.rsample([100])
+```
+
+The package follows TensorFlow Distributions design and provides a flexible, differentiable interface for probabilistic modeling within PyTorch's autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_distribution:
+    dtype: ["Distribution"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  transforms:
+    dtype: ["list of Transform"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [true, false, null]
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transformed_distribution.TransformedDistribution in a complex way */
+import torch

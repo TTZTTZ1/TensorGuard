@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `torch.fft.fftshift` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.fftshift` reorders FFT output so that negative frequencies appear first, shifting the zero-frequency component to the center of the tensor. It is commonly used to visualize FFT results with frequencies arranged symmetrically around zero.
+
+**Key points:**
+- Moves the origin `(0, ..., 0)` to the tensor center along specified dimensions.
+- By default, operates on all dimensions; optional `dim` parameter allows selective shifting.
+- For even-sized dimensions, the Nyquist frequency is placed at index 0.
+- Often paired with `ifftshift` for converting between centered and uncentered grid conventions in spatial/spectral data processing.
+
+**Example:**
+```python
+f = torch.fft.fftfreq(4)  # [0.0, 0.25, -0.5, -0.25]
+torch.fft.fftshift(f)     # [-0.5, -0.25, 0.0, 0.25]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int", "tuple[int]"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: dim
+    Constraint: "dim is None or (isinstance(dim, int) and 0 <= dim < input.ndim) or (isinstance(dim, tuple) and all(0 <= d < input.ndim for d in dim))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.fftshift in a complex way */
+import torch

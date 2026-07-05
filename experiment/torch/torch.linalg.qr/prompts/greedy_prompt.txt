@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.linalg.qr` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.qr` computes the QR decomposition of a matrix (or batch of matrices) into an orthogonal/unitary matrix **Q** and an upper-triangular matrix **R**.  
+
+**Key features:**  
+- **Modes:**  
+  - `'reduced'` (default): Returns compact shapes (Q: m×k, R: k×n, where k = min(m, n)). Always differentiable.  
+  - `'complete'`: Returns full shapes (Q: m×m, R: m×n). Differentiable only when m ≤ n.  
+  - `'r'`: Returns only R (Q is empty). Not differentiable.  
+- Supports real and complex floating‑point dtypes and batched inputs.  
+- Uniqueness is only up to the sign of R’s diagonal (results may vary across platforms).  
+- Requires the first k columns of each matrix to be linearly independent for correct results.  
+
+**Example:**  
+```python
+Q, R = torch.linalg.qr(A)  # reduced QR by default
+A ≈ Q @ R
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["reduced", "complete", "r"]]
+    structure: ["scalar"]
+    shape: null
+    default: "reduced"
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: A
+    Constraint: "A.ndim >= 2"
+  2:
+    Parameter 1: mode
+    Parameter 2: mode
+    Constraint: "mode in ['reduced', 'complete', 'r']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.qr in a complex way */
+import torch

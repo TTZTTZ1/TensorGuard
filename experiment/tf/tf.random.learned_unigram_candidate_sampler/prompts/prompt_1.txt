@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `tf.random.learned_unigram_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.learned_unigram_candidate_sampler` is a TensorFlow function used for candidate sampling during training. It dynamically builds a unigram distribution from observed target classes and samples a set of candidate classes from this distribution.
+
+**Key Features:**
+- **Dynamic Distribution:** Maintains a running unigram frequency over target classes seen during training, starting each class with weight 1 and incrementing upon each occurrence.
+- **Sampling:** Returns `sampled_candidates` (drawn with or without replacement based on the `unique` flag) from the integer range `[0, range_max)`.
+- **Expected Counts:** Provides `true_expected_count` and `sampled_expected_count`, representing the approximate expected frequency of each true and sampled class under the sampling distribution.
+- **Algorithm-Agnostic:** Serves as a low-level building block for implementing specific sampling algorithms (e.g., NCE, Sampled Logistic) — it does not implement the full algorithms itself.
+
+**Parameters:**
+- `true_classes`: Target classes of shape `[batch_size, num_true]`.
+- `num_true`: Number of target classes per example.
+- `num_sampled`: Number of classes to sample.
+- `unique`: If `True`, ensures sampled classes are unique per batch.
+- `range_max`: Number of possible classes.
+- `seed`: Optional random seed.
+- `name`: Optional operation name.
+
+**Returns:**
+- `sampled_candidates`: Sampled class IDs, shape `[num_sampled]`.
+- `true_expected_count`: Expected counts for true classes.
+- `sampled_expected_count`: Expected counts for sampled classes.
+
+**Note:** The distribution is reset when a model is reloaded, as it is not saved in checkpoints.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  unique:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  range_max:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  seed:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: "true_classes.shape[1] == num_true"
+  2:
+    Parameter 1: true_classes
+    Parameter 2: range_max
+    Constraint: "tf.reduce_all(tf.logical_and(true_classes >= 0, true_classes < range_max))"
+  3:
+    Parameter 1: num_sampled
+    Parameter 2: range_max
+    Constraint: "not unique or num_sampled <= range_max"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.learned_unigram_candidate_sampler in a complex way */
+import tensorflow as tf

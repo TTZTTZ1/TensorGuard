@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.quantization.fake_quant_with_min_max_vars_per_channel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+This function performs per-channel fake quantization on a float tensor. It quantizes the input values within channel-specific min/max ranges and then dequantizes them back to floats, simulating quantization effects while maintaining gradient flow for training.
+
+**Key features:**
+- Operates per-channel with separate min/max values for each channel
+- Supports tensors of shape `[d]`, `[b, d]`, or `[b, h, w, d]`
+- Adjusts min/max ranges to ensure 0 is included in the quantization range
+- Allows bitwidth configuration (2-16 bits, default 8)
+- Provides narrow range option for symmetric quantization
+- Preserves gradients for training quantization parameters
+
+**Typical use:** Simulating quantization during training to improve model robustness for subsequent fixed-point deployment.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"], ["b", "d"], ["b", "h", "w", "d"]]
+    default: null
+  min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"]]
+    default: null
+  max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [["d"]]
+    default: null
+  num_bits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: min
+    Constraint: "inputs.shape[-1] == min.shape[0]"
+  2:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min.shape == max.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.fake_quant_with_min_max_vars_per_channel in a complex way */
+import tensorflow as tf

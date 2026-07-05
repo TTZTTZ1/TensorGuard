@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `tf.fingerprint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.fingerprint` generates a fixed-size byte array fingerprint for each batch element in the input tensor, based on the raw underlying data buffer. It treats the first dimension as the batch dimension, and outputs a `tf.uint8` tensor where each row corresponds to the fingerprint of a batch entry.
+
+**Key points:**
+- **Input:** A tensor with rank ≥ 1.
+- **Output:** A 2D `tf.uint8` tensor `(batch_size, fingerprint_size)`.
+- **Method:** Default is `farmhash64` (produces an 8-byte fingerprint per batch element).
+- **Invariance:** Fingerprints are unaffected by reshaping or bitcasting, as long as the batch dimension and raw buffer content remain unchanged.
+- **Note:** Does not fingerprint metadata (e.g., data type, shape). For strings, fingerprinting the raw buffer differs from fingerprinting the joined string.
+
+**Example:**  
+For a `data` of shape `(2, 3, 4)` and `dtype=tf.int32`, output shape is `(2, 8)`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: ["rank >=1"]
+    default: null
+  method:
+    dtype: ["string"]
+    range: [["farmhash64"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "farmhash64"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.fingerprint in a complex way */
+import tensorflow as tf

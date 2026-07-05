@@ -1,0 +1,136 @@
+
+# You are a Python code generation assistant for the `tf.Variable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.Variable` is a TensorFlow class used to create mutable tensors that hold persistent, shared state in a program. It is primarily employed to store trainable model parameters (like weights and biases) in machine learning models.
+
+### Key Features:
+- **Mutable State**: Unlike regular tensors, variables can be updated using methods like `assign()`, `assign_add()`, and `assign_sub()`.
+- **Initialization**: Requires an initial value (a tensor or convertible object) that defines its shape and data type.
+- **Trainable**: By default, variables are trainable, meaning they are automatically tracked by `tf.GradientTape` for gradient computation during training.
+- **Integration with Modules**: Variables assigned as attributes of `tf.Module` subclasses are automatically tracked, facilitating checkpointing and model serialization.
+- **Compatibility with `tf.function`**: Variables work seamlessly inside TensorFlow’s graph-based functions, though they must be created outside the function’s scope to ensure proper ownership.
+
+### Common Use Cases:
+- Storing and updating model parameters in neural networks.
+- Maintaining persistent counters or state across training steps.
+- Enabling automatic differentiation for optimization.
+
+### Important Methods:
+- **`assign(value)`**: Updates the variable with a new value.
+- **`assign_add(delta)` / `assign_sub(delta)`**: Increments or decrements the variable by a given amount.
+- **`read_value()`**: Retrieves the current value of the variable in the current context.
+- **`value()`**: Returns a snapshot of the variable’s value (non-mutable).
+
+### Example:
+```python
+import tensorflow as tf
+
+# Create a trainable variable
+weight = tf.Variable(1.0)
+weight.assign(2.0)  # Update value
+print(weight.numpy())  # Output: 2.0
+```
+
+Variables are foundational in TensorFlow for building and training models, providing a mechanism to store and update learnable parameters efficiently.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initial_value:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "callable"]
+    shape: ["any"]
+    default: "None"
+  trainable:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  validate_shape:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  caching_device:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  variable_def:
+    dtype: No mention
+    range: No mention
+    structure: ["object"]
+    shape: No mention
+    default: "None"
+  dtype:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  import_scope:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  constraint:
+    dtype: ["callable"]
+    range: No mention
+    structure: ["callable"]
+    shape: No mention
+    default: "None"
+  synchronization:
+    dtype: ["tf.VariableSynchronization"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.VariableSynchronization.AUTO"
+  aggregation:
+    dtype: ["tf.VariableAggregation"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.compat.v1.VariableAggregation.NONE"
+  shape:
+    dtype: ["tf.TensorShape"]
+    range: No mention
+    structure: ["tuple", "TensorShape"]
+    shape: ["any"]
+    default: "None"
+  experimental_enable_variable_lifting:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "variable_def"
+    Parameter 2: "initial_value"
+    Constraint: "not (variable_def is not None and initial_value is not None)"
+  2:
+    Parameter 1: "initial_value"
+    Parameter 2: "validate_shape"
+    Constraint: "initial_value is not None and (not validate_shape or (hasattr(initial_value, 'shape') and initial_value.shape is not None))"
+  3:
+    Parameter 1: "initial_value"
+    Parameter 2: "dtype"
+    Constraint: "not (callable(initial_value) and dtype is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.Variable in a complex way */
+import tensorflow as tf

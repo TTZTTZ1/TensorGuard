@@ -1,0 +1,86 @@
+params:
+  input:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  input_h:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  input_c:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  params:
+    dtype: ["bfloat16", "half", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  rnn_mode:
+    dtype: ["string"]
+    range: ["rnn_relu", "rnn_tanh", "lstm", "gru"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "lstm"
+  input_mode:
+    dtype: ["string"]
+    range: ["linear_input", "skip_input", "auto_select"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "linear_input"
+  direction:
+    dtype: ["string"]
+    range: ["unidirectional", "bidirectional"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "unidirectional"
+  dropout:
+    dtype: ["float"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+  seed:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+  seed2:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+  is_training:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [0]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: input_h
+    Constraint: "input_mode == 'skip_input' implies input.shape[2] == input_h.shape[2]"
+  2:
+    Parameter 1: input_h
+    Parameter 2: input_c
+    Constraint: "rnn_mode == 'lstm' implies input_h.shape == input_c.shape"
+  3:
+    Parameter 1: dropout
+    Parameter 2: dropout
+    Constraint: "dropout >= 0 and dropout <= 1"

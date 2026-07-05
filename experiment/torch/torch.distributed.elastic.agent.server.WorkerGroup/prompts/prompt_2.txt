@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.WorkerGroup` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** in PyTorch is the control plane for managing distributed worker processes, providing fault tolerance and elasticity. It handles worker lifecycle, monitors health, and reacts to failures or membership changes.
+
+### **Key Responsibilities:**
+- **Worker Management**: Launches and supervises workers, providing necessary configuration for `torch.distributed.init_process_group()`.
+- **Fault Tolerance**: Detects worker failures/unhealthiness, restarts workers, and supports retries up to `max_restarts`.
+- **Elasticity**: Adapts to membership changes (e.g., scaling) by restarting workers with updated members.
+
+### **Core Components:**
+- **`ElasticAgent`**: Abstract base class for agent implementations.
+- **`WorkerSpec`**: Blueprint defining worker properties (role, entrypoint, args, etc.).
+- **`WorkerGroup`**: Set of `Worker` instances managed by an agent.
+- **`WorkerState`**: Tracks the state of a worker group (e.g., `HEALTHY`, `FAILED`, `STOPPED`).
+
+### **Provided Implementation:**
+- **`LocalElasticAgent`**: Manages local workers on a single host. Suitable for multi-GPU setups where each GPU runs a worker.
+
+### **Extending the Agent:**
+- **`SimpleElasticAgent`**: Recommended base class for custom agents, handling common scaffolding (e.g., rendezvous, restart logic).
+
+### **Additional Features:**
+- **Watchdog**: Optional named pipe-based timer for monitoring agent/worker liveness.
+- **Health Check Server**: Optional TCP/HTTP server for external health monitoring.
+
+### **Typical Usage:**
+1. Define a `WorkerSpec` with role, entrypoint, and worker count.
+2. Instantiate an agent (e.g., `LocalElasticAgent`).
+3. Call `agent.run()` to execute workers and retrieve results via `RunResult`.
+
+The agent simplifies distributed training by automating process management, resilience, and dynamic scaling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["WorkerSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.WorkerGroup in a complex way */
+import torch

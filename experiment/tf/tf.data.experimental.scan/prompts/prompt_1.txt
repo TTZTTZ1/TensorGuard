@@ -1,0 +1,40 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.scan` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.scan` is a stateful dataset transformation that applies a function while accumulating internal state across elements. It processes each input by combining the current state with the input to produce both an updated state and an output element. This is useful for sequential or incremental computations within a data pipeline.
+
+**Key Points:**
+- **Stateful Mapping:** Unlike `map`, it maintains and updates state across dataset elements.
+- **Parameters:**  
+  - `initial_state`: Initial values for the accumulator (tensor or nested structure).  
+  - `scan_func`: A function taking `(state, input)` and returning `(new_state, output)`, where `new_state` matches `initial_state`'s structure.
+- **Output:** Returns a transformation function to be used with `Dataset.apply`.
+- **Status:** Deprecated; use `tf.data.Dataset.scan` instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initial_state:
+    dtype: ["tensor"]
+    range: null
+    structure: ["nested_structure"]
+    shape: null
+    default: null
+  scan_func:
+    dtype: ["callable"]
+    range: null
+    structure: ["function"]
+    shape: null
+    default: null
+constraints:
+  1.
+    Parameter 1: initial_state
+    Parameter 2: scan_func
+    Constraint: "tf.nest.is_nested(initial_state) and callable(scan_func) and tf.nest.assert_same_structure(initial_state, scan_func(initial_state, tf.constant(0))[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.scan in a complex way */
+import tensorflow as tf

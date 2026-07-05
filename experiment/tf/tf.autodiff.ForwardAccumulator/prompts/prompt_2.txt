@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.autodiff.ForwardAccumulator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.autodiff.ForwardAccumulator` is a TensorFlow tool for computing **Jacobian-vector products (JVPs)** using **forward-mode automatic differentiation**. It is particularly efficient for functions with many outputs and few inputs, as it avoids storing intermediate activations, making it memory-efficient compared to reverse-mode autodiff (backpropagation).
+
+### Key Features:
+- **Purpose**: Computes JVPs by multiplying the Jacobian matrix of a function with a specified tangent vector.
+- **Use Case**: Ideal for scenarios where you need gradients of many outputs with respect to few inputs (e.g., computing Hessian-vector products).
+- **Comparison**: Unlike `tf.GradientTape` (which computes vector-Jacobian products via backprop), forward-mode processes one column of the Jacobian at a time, while backprop processes one row.
+
+### Basic Usage:
+1. **Initialization**: Provide `primals` (tensors to differentiate) and `tangents` (the vector for the JVP).
+2. **Context Manager**: Use within a `with` block to record operations and compute JVPs.
+3. **Retrieving JVPs**: Call `.jvp(primals)` to fetch precomputed JVPs without additional computation.
+
+### Example:
+```python
+with tf.autodiff.ForwardAccumulator(primals=params, tangents=tangent_vector) as acc:
+    output = model(inputs)
+jvp_result = acc.jvp(output)  # Retrieves the JVP
+```
+
+### Nesting Behavior:
+- Accumulators must be strictly nested; inner accumulators do not see JVPs from outer ones.
+- Can be combined with `tf.GradientTape` for efficient higher-order differentiation (e.g., Hessian-vector products).
+
+### Arguments:
+- `primals`: Tensor or nested structure to differentiate.
+- `tangents`: Tensor/structure with same nesting as `primals`, defining the JVP direction.
+
+### Methods:
+- `.jvp(primals)`: Fetches JVPs for watched tensors.
+- Context manager methods (`__enter__`, `__exit__`) for scope management.
+
+### Error Handling:
+- Raises `ValueError` if duplicate tensors are specified in `primals`.
+
+This tool is valuable for memory-efficient forward-mode differentiation, especially in optimization and sensitivity analysis tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  primals_constructor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  tangents:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  primals_jvp:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "structure of tensors"]
+    shape: No mention
+    default: No mention
+  unconnected_gradients:
+    dtype: No mention
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "none"
+constraints:
+  1:
+    Parameter 1: primals_constructor
+    Parameter 2: tangents
+    Constraint: "tf.nest.is_nested(primals_constructor) == tf.nest.is_nested(tangents) and all(tf.size(t) == tf.size(p) for t, p in zip(tf.nest.flatten(tangents), tf.nest.flatten(primals_constructor)))"
+  2:
+    Parameter 1: primals_constructor
+    Parameter 2: primals_constructor
+    Constraint: "len(set(id(t) for t in tf.nest.flatten(primals_constructor))) == len(tf.nest.flatten(primals_constructor))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.autodiff.ForwardAccumulator in a complex way */
+import tensorflow as tf

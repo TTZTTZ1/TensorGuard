@@ -1,0 +1,31 @@
+
+# You are a Python code generation assistant for the `tf.recompute_grad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.recompute_grad` is a TensorFlow function that reduces memory usage during gradient computation by recomputing intermediate values on the backward pass instead of storing them. It wraps a given function `f` to create a checkpoint for automatic differentiation, trading off extra computation for lower memory consumption.
+
+**Key points:**
+- **Purpose:** Minimizes memory footprint of the autodiff tape by recomputing forward-pass operations during backpropagation.
+- **Usage:** Wrap any function returning tensors with `tf.recompute_grad`; the wrapped function recomputes its forward pass when gradients are calculated.
+- **Trade-off:** Increases computation time due to redundant forward passes but significantly reduces memory usage.
+- **Note:** If `f` is a Keras model/layer, access original attributes via `g.__wrapped__` since the wrapper does not preserve them directly.
+
+**Example effect:**  
+Without `recompute_grad`, all intermediate values are stored in the tape. With it, only the function call and inputs are recorded, and the forward pass is re-executed during gradient calculation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  f:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.recompute_grad in a complex way */
+import tensorflow as tf

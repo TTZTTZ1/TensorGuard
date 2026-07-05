@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.nn.TripletMarginLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**TripletMarginLoss** is a PyTorch loss function that measures relative similarity between samples using triplets: anchor (a), positive (p), and negative (n). It enforces that the distance between the anchor and positive is smaller than the distance between the anchor and negative by at least a specified margin.
+
+**Key Features:**
+- **Loss Formula**:  
+  \( L(a, p, n) = \max\{d(a_i, p_i) - d(a_i, n_i) + \text{margin}, 0\} \)  
+  where \( d(x_i, y_i) = \|x_i - y_i\|_p \).
+- **Parameters**:
+  - `margin`: Minimum desired separation (default: 1.0).
+  - `p`: Norm degree for distance calculation (default: 2, Euclidean).
+  - `eps`: Small constant for numerical stability.
+  - `swap`: Optionally use distance swapping as per the referenced paper.
+  - `reduction`: How to aggregate loss (`'none'`, `'mean'`, `'sum'`).
+
+**Usage**:
+- Input tensors must have shape `(N, D)` (batch size × feature dimension).
+- Returns a scalar loss (or per-element loss if `reduction='none'`).
+
+**Example**:
+```python
+loss_fn = nn.TripletMarginLoss(margin=1.0, p=2)
+loss = loss_fn(anchor, positive, negative)
+```
+This loss is commonly used in metric learning and embedding tasks to learn discriminative feature representations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  margin:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  p:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "2"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-06"
+  swap:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  size_average:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'mean'"
+constraints:
+  1. 
+    Parameter 1: "margin"
+    Parameter 2: "margin"
+    Constraint: "margin > 0"
+  2. 
+    Parameter 1: "p"
+    Parameter 2: "p"
+    Constraint: "p > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.TripletMarginLoss in a complex way */
+import torch

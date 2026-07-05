@@ -1,0 +1,66 @@
+params:
+  embedding_weights:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "list"]
+    shape: [null]
+    default: null
+  sparse_ids:
+    dtype: ["int"]
+    range: null
+    structure: ["SparseTensor", "RaggedTensor"]
+    shape: [null]
+    default: null
+  sparse_weights:
+    dtype: ["float"]
+    range: null
+    structure: ["SparseTensor", "RaggedTensor"]
+    shape: [null]
+    default: null
+  combiner:
+    dtype: ["string"]
+    range: [["mean", "sqrtn", "sum"]]
+    structure: ["scalar"]
+    shape: []
+    default: "mean"
+  default_id:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  max_norm:
+    dtype: ["float", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  allow_fast_lookup:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: []
+    default: false
+constraints:
+  1:
+    Parameter 1: embedding_weights
+    Parameter 2: embedding_weights
+    Constraint: isinstance(embedding_weights, list) and len(embedding_weights) > 0 or not isinstance(embedding_weights, list)
+  2:
+    Parameter 1: embedding_weights
+    Parameter 2: embedding_weights
+    Constraint: not isinstance(embedding_weights, list) or all(ew.shape[1:] == embedding_weights[0].shape[1:] for ew in embedding_weights)
+  3:
+    Parameter 1: sparse_ids
+    Parameter 2: sparse_weights
+    Constraint: sparse_weights is None or (type(sparse_ids) == type(sparse_weights) and sparse_ids.shape == sparse_weights.shape)
+  4:
+    Parameter 1: sparse_ids
+    Parameter 2: sparse_ids
+    Constraint: not isinstance(sparse_ids, tf.RaggedTensor) or sparse_ids.rank == 2

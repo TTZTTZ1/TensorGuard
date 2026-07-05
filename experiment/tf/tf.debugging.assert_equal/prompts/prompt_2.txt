@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `tf.debugging.assert_equal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.assert_equal` is a TensorFlow debugging operation that asserts two tensors `x` and `y` are equal element-wise. If the condition fails, it raises an `InvalidArgumentError` with an optional custom message and prints a summary of the mismatched values.
+
+**Key points:**
+- **Purpose:** Validate that `x == y` for all elements (supports broadcasting).
+- **Behavior in graphs:** When used inside `tf.function`, it executes at runtime. It's recommended to wrap it with `tf.control_dependencies` to ensure proper execution order.
+- **Output:** Returns an op that raises an error on failure; returns `None` in eager mode.
+- **Use case:** Commonly used for sanity checks in models, such as verifying tensor shapes or values during development.
+
+**Example:**
+```python
+tf.debugging.assert_equal(tf.shape(x), expected_shape, message="Shape mismatch")
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  message:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  summarize:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "assert_equal"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: x.dtype == y.dtype
+  2:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: tf.broadcast_static_shape(x.shape, y.shape) is not None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.debugging.assert_equal in a complex way */
+import tensorflow as tf

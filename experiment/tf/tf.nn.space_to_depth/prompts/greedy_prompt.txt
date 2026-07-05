@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.nn.space_to_depth` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.space_to_depth` rearranges spatial data (height and width) into depth channels. It divides the input into non-overlapping blocks of size `block_size x block_size`, moves each block's values into the depth dimension, and stacks them. This reduces spatial dimensions while increasing channel depth.
+
+**Key points:**
+- **Input requirement:** Height and width must be divisible by `block_size`.
+- **Output depth:** `output_depth = input_depth * block_size * block_size`.
+- **Data formats:** Supports `"NHWC"` (default), `"NCHW"`, and `"NCHW_VECT_C"`.
+- **Use cases:** Useful for downsampling while preserving all data (alternative to pooling) and in convolutional models.
+
+**Example:**  
+For input shape `[1, 2, 2, 1]` with `block_size=2`, output becomes `[1, 1, 1, 4]`, where the 2×2 spatial values are flattened into 4 channels.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  block_size:
+    dtype: ["int"]
+    range: [">= 2"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NCHW_VECT_C"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "NHWC"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: block_size
+    Constraint: (data_format == 'NHWC' and input.shape[1] % block_size == 0 and input.shape[2] % block_size == 0) or (data_format in ['NCHW', 'NCHW_VECT_C'] and input.shape[2] % block_size == 0 and input.shape[3] % block_size == 0)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.space_to_depth in a complex way */
+import tensorflow as tf

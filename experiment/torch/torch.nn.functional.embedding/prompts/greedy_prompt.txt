@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.embedding` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.embedding` is a function that retrieves embeddings from a given weight matrix based on input indices. It acts as a lookup table, commonly used for tasks like word embedding retrieval.
+
+**Key Parameters:**
+- `input`: Tensor of indices to look up
+- `weight`: Embedding matrix with shape `(vocab_size, embedding_dim)`
+- `padding_idx`: Optional index to exclude from gradient updates (fixed as padding)
+- `max_norm`: Optional maximum norm for renormalizing embeddings (modifies weight in-place)
+- `scale_grad_by_freq`: Scales gradients by inverse word frequency
+- `sparse`: Enables sparse gradient computation for memory efficiency
+
+**Input/Output Shapes:**
+- Input: Arbitrary shape containing indices
+- Weight: `(V, embedding_dim)` where V is vocabulary size
+- Output: Same shape as input with an added `embedding_dim` dimension
+
+**Important Notes:**
+- Unlike `torch.nn.Embedding`, this function doesn't initialize padding rows to zero
+- Analytical gradients for padding rows may differ from numerical gradients
+- Supports in-place weight normalization when `max_norm` is specified
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["arbitrary"]
+    default: null
+  weight:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(V, embedding_dim)"]
+    default: null
+  padding_idx:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  max_norm:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: null
+  norm_type:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "2.0"
+  scale_grad_by_freq:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+  sparse:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.max() < weight.shape[0]"
+  2:
+    Parameter 1: padding_idx
+    Parameter 2: weight
+    Constraint: "padding_idx is None or (0 <= padding_idx < weight.shape[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.embedding in a complex way */
+import torch

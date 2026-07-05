@@ -1,0 +1,72 @@
+params:
+  window_length:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  periodic:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  beta:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  layout:
+    dtype: ["torch.layout"]
+    range: [["torch.strided"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  device:
+    dtype: ["torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  pin_memory:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  requires_grad:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: periodic
+    Parameter 2: alpha
+    Constraint: "periodic is not None or alpha is None"
+  2:
+    Parameter 1: alpha
+    Parameter 2: beta
+    Constraint: "alpha is not None or beta is None"
+  3:
+    Parameter 1: layout
+    Parameter 2: None
+    Constraint: "layout is None or layout == torch.strided"
+  4:
+    Parameter 1: pin_memory
+    Parameter 2: device
+    Constraint: "not (pin_memory and device is not None and device.type != 'cpu')"

@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.Assert` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.Assert` (aliased as `tf.debugging.Assert`) is a TensorFlow operation that verifies a given condition is true during execution. If the condition evaluates to false, it prints the specified tensors (`data`) to aid debugging, with the optional `summarize` argument controlling how many tensor entries are displayed.
+
+**Key Points:**
+- Returns an operation that raises `tf.errors.InvalidArgumentError` if the condition is false.
+- The output operation must be used (e.g., by calling `.mark_used()` or adding it to control dependencies) to avoid warnings/errors.
+- In TensorFlow 1.x or outside `tf.function`, you must explicitly add a control dependency (e.g., `with tf.control_dependencies([assert_op]):`) to ensure the assertion runs.
+
+**Example Usage:**
+```python
+assert_op = tf.debugging.Assert(tf.less_equal(tf.reduce_max(x), 1.0), [x])
+# In TF1/graph mode, ensure execution:
+with tf.control_dependencies([assert_op]):
+    # Code dependent on the assertion
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  condition:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  summarize:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.Assert in a complex way */
+import tensorflow as tf

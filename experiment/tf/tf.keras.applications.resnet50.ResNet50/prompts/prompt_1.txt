@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.resnet50.ResNet50` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `ResNet50` function from TensorFlow/Keras creates a ResNet-50 deep learning model for image classification. It supports loading pre-trained ImageNet weights, customizing input shapes, and adapting the model for transfer learning. Key parameters include `include_top` to control the final classification layer, `weights` for pre-trained models, and `input_shape` for custom image dimensions. The model requires input preprocessing using `resnet.preprocess_input` to normalize images according to ImageNet standards.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights
+    dtype: ["None", "string"]
+    range: ["None", "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+  input_shape
+    dtype: ["tuple"]
+    range: ["tuple of 3 ints with channels last or first, width and height >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling
+    dtype: ["None", "string"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation
+    dtype: ["str", "callable", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "classes != 1000 implies (include_top == True and weights is None)"
+  3
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is not None implies classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.resnet50.ResNet50 in a complex way */
+import tensorflow as tf

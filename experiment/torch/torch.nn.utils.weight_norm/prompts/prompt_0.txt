@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.weight_norm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary:** `torch.nn.utils.weight_norm` is a deprecated function that applies weight normalization to a specified parameter (default: `'weight'`) in a PyTorch module. It reparameterizes the weight into two components: magnitude (`weight_g`) and direction (`weight_v`), computed as:  
+`weight = weight_g * (weight_v / ||weight_v||)`.  
+
+**Key Points:**
+- **Purpose**: Decouples weight magnitude from direction to improve training stability/optimization.
+- **Default Behavior**: Norm computed per output channel (`dim=0`); use `dim=None` for tensor-wide normalization.
+- **Deprecation**: Replaced by `torch.nn.utils.parametrizations.weight_norm`. The new version:
+  - Uses a modern parametrization API.
+  - Stores parameters as `parametrizations.weight.original0/1`.
+  - Recomputes weight on every access (vs. only before `forward()`).
+- **Migration**:  
+  - Remove via `remove_parametrizations()`.  
+  - Restore cached computation with `torch.nn.utils.parametrize.cached()`.
+- **Example**:  
+  ```python
+  m = weight_norm(nn.Linear(20, 40), name='weight')
+  # m.weight_g.shape: [40, 1]; m.weight_v.shape: [40, 20]
+  ```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'weight'"
+  dim:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.weight_norm in a complex way */
+import torch

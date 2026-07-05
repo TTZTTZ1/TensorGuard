@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.keras.optimizers.schedules.CosineDecay` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.optimizers.schedules.CosineDecay` is a learning rate schedule that combines an optional linear warmup phase with a cosine decay phase. It gradually reduces the learning rate from an initial value to a minimum (`alpha`) over a specified number of steps, following a cosine curve. Optionally, it can include a warmup phase that linearly increases the learning rate from `initial_learning_rate` to `warmup_target` before starting the decay.
+
+### Key Features:
+- **Cosine Decay**: After warmup (if enabled), the learning rate decays using a cosine function from the warmup target (or initial learning rate) to `alpha * initial_learning_rate`.
+- **Optional Warmup**: Supports a linear warmup phase to gradually ramp up the learning rate at the start of training.
+- **Configurable**: Parameters include `initial_learning_rate`, `decay_steps`, `alpha` (minimum learning rate fraction), `warmup_target`, and `warmup_steps`.
+- **Serializable**: Can be saved and restored via `serialize` and `deserialize`.
+
+### Typical Use:
+- **Without warmup**: Direct cosine decay from `initial_learning_rate` to `alpha`.
+- **With warmup**: Linear increase to `warmup_target`, then cosine decay to `alpha`.
+
+### Example:
+```python
+# Without warmup
+schedule = CosineDecay(initial_learning_rate=0.1, decay_steps=1000)
+
+# With warmup
+schedule = CosineDecay(initial_learning_rate=0.0, decay_steps=1000,
+                       warmup_target=0.1, warmup_steps=100)
+```
+This schedule is passed directly to a Keras optimizer and automatically adjusts the learning rate based on the current training step.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initial_learning_rate:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  decay_steps:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'CosineDecay'"
+  warmup_target:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  warmup_steps:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: decay_steps
+    Parameter 2: decay_steps
+    Constraint: "decay_steps > 0"
+  2:
+    Parameter 1: warmup_steps
+    Parameter 2: warmup_steps
+    Constraint: "warmup_steps >= 0"
+  3:
+    Parameter 1: alpha
+    Parameter 2: alpha
+    Constraint: "alpha >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.optimizers.schedules.CosineDecay in a complex way */
+import tensorflow as tf

@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.lite.Interpreter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.lite.Interpreter` class is the primary interface for running TensorFlow Lite models in Python. It loads a TFLite model (from a file or buffer) and provides methods to execute inference.
+
+**Key Features:**
+- Load models via `model_path` or `model_content`
+- Supports multi-threading, delegates, and custom op resolvers
+- Requires explicit tensor allocation via `allocate_tensors()` before inference
+- Provides tensor inspection and manipulation methods
+
+**Core Workflow:**
+1. **Initialize** interpreter with model
+2. **Allocate tensors** with `allocate_tensors()`
+3. **Set input data** using `set_tensor()` or via `tensor()` for zero-copy access
+4. **Run inference** with `invoke()`
+5. **Get results** via `get_tensor()` or `tensor()`
+
+**Advanced Capabilities:**
+- **Signature-based inference**: Use `get_signature_runner()` for a more intuitive API with named inputs/outputs
+- **Dynamic shapes**: Resize input tensors with `resize_tensor_input()`
+- **Tensor inspection**: Get detailed tensor metadata via `get_input_details()`, `get_output_details()`, etc.
+- **Intermediate tensor access**: Enable with `experimental_preserve_all_tensors=True`
+
+**Common Use Cases:**
+- Deploying converted Keras/TensorFlow models on edge devices
+- Running quantized models for efficient inference
+- Integrating with delegate APIs for hardware acceleration (GPU, NPU, etc.)
+- Building custom inference pipelines with dynamic input shapes
+
+The interpreter provides both low-level tensor manipulation and high-level signature-based APIs, making it suitable for both performance-critical applications and rapid prototyping.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  model_path:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  model_content:
+    dtype: ["bytes"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  experimental_delegates:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "None"
+  num_threads:
+    dtype: ["int"]
+    range: ["integer >= -1"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  experimental_op_resolver_type:
+    dtype: ["OpResolverType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.lite.experimental.OpResolverType.AUTO"
+  experimental_preserve_all_tensors:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  experimental_disable_delegate_clustering:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "num_threads"
+    Parameter 2: "None"
+    Constraint: "num_threads >= -1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lite.Interpreter in a complex way */
+import tensorflow as tf

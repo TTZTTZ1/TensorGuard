@@ -1,0 +1,34 @@
+# tf.raw_ops.LMDBReader
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/LMDBReader](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/LMDBReader)
+
+---
+
+A Reader that outputs the records from a LMDB file.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.LMDBReader`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/LMDBReader)
+
+```
+tf.raw_ops.LMDBReader(
+    container='', shared_name='', name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `container` | An optional `string`. Defaults to `""`. If non-empty, this reader is placed in the given container. Otherwise, a default container is used. |
+| `shared_name` | An optional `string`. Defaults to `""`. If non-empty, this reader is named in the given bucket with this shared\_name. Otherwise, the node name is used instead. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor` of type mutable `string`. | |

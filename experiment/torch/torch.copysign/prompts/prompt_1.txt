@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.copysign` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`torch.copysign(input, other, out=None)`**  
+Creates a tensor with the **magnitude** of `input` and the **sign** of `other`, applied elementwise.
+
+**Key behavior:**
+- Output magnitude = |`input`|  
+- Output sign matches `other`:
+  - If `other` ≥ 0.0 → positive output
+  - If `other` ≤ −0.0 → negative output
+- Supports **broadcasting** and integer/float inputs.
+- **Handles signed zeros**: `other = -0.0` results in a negative output.
+
+**Parameters:**
+- `input` (Tensor): Magnitude values.
+- `other` (Tensor or Number): Source of sign values.
+- `out` (Tensor, optional): Output tensor.
+
+**Example:**
+```python
+>>> torch.copysign(torch.tensor([-2.5, 3.0]), 1)
+tensor([2.5000, 3.0000])
+>>> torch.copysign(torch.tensor([1.0]), torch.tensor([-0.0]))
+tensor([-1.])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  other:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor", "scalar"]
+    shape: null
+    default: null
+  out:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "not isinstance(other, torch.Tensor) or all(s1 == s2 or s1 == 1 or s2 == 1 for s1, s2 in zip(reversed(input.shape), reversed(other.shape)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.copysign in a complex way */
+import torch

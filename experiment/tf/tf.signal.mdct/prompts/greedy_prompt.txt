@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `tf.signal.mdct` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.signal.mdct` function computes the Modified Discrete Cosine Transform (MDCT) of input signals. It supports GPU/TPU operations and gradients.
+
+**Key parameters:**
+- `signals`: Input tensor of real-valued signals with shape `[..., samples]`.
+- `frame_length`: Window length (must be divisible by 4).
+- `window_fn`: Window function (default is `tf.signal.vorbis_window`; use `None` for rectangular window).
+- `pad_end`: Option to zero-pad the end of signals.
+- `norm`: Normalization mode (`None` for unnormalized, `"ortho"` for orthonormal DCT-IV).
+
+**Output:** Returns a tensor of MDCT coefficients with shape `[..., frames, frame_length // 2]`.
+
+**Notes:** For perfect reconstruction when using `inverse_mdct`, specific window functions (like `vorbis_window`) or conditions on custom windows are required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  signals:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., samples]"]
+    default: null
+  frame_length:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  window_fn:
+    dtype: ["callable", "None"]
+    range: null
+    structure: ["callable", "None"]
+    shape: null
+    default: "tf.signal.vorbis_window"
+  pad_end:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  norm:
+    dtype: ["None", "string"]
+    range: [["None", "ortho"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "signals"
+    Parameter 2: ""
+    Constraint: "tf.rank(signals) >= 1"
+  2:
+    Parameter 1: "frame_length"
+    Parameter 2: ""
+    Constraint: "tf.rank(frame_length) == 0"
+  3:
+    Parameter 1: "frame_length"
+    Parameter 2: ""
+    Constraint: "frame_length % 4 == 0"
+  4:
+    Parameter 1: "signals"
+    Parameter 2: ""
+    Constraint: "signals.dtype in [tf.float32, tf.float64]"
+  5:
+    Parameter 1: "frame_length"
+    Parameter 2: ""
+    Constraint: "frame_length.dtype in [tf.int32, tf.int64]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.signal.mdct in a complex way */
+import tensorflow as tf

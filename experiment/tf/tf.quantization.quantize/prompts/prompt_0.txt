@@ -1,0 +1,95 @@
+
+# You are a Python code generation assistant for the `tf.quantization.quantize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.quantization.quantize` function converts a float tensor to a quantized integer type (`T`), such as `qint8` or `quint8`, using a specified range and quantization mode.
+
+**Key Parameters:**
+- **`input`**: Float32 tensor to quantize.
+- **`min_range`**, **`max_range`**: Scalar floats defining the expected input range (may be adjusted during quantization).
+- **`T`**: Target quantized data type (e.g., `tf.qint8`).
+- **`mode`**: Quantization method (`"MIN_COMBINED"`, `"MIN_FIRST"`, or `"SCALED"`), default is `"MIN_COMBINED"`.
+- **`axis`**: Enables per-channel quantization if specified (e.g., for convolutional filters).
+- **`narrow_range`**: If `True`, excludes the minimum quantized value (e.g., restricts int8 to -127..127 instead of -128..127 in `SCALED` mode).
+
+**Returns:**
+A tuple `(output, output_min, output_max)`:
+- `output`: Quantized tensor of type `T`.
+- `output_min`, `output_max`: Adjusted float range used for quantization.
+
+**Common Use Case:**
+Reducing model size and accelerating inference by converting weights/activations from float to lower-precision integers, often applied in post-training quantization or quantized training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  min_range:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  max_range:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  T:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["MIN_COMBINED", "MIN_FIRST", "SCALED"]]
+    structure: ["scalar"]
+    shape: null
+    default: "MIN_COMBINED"
+  round_mode:
+    dtype: ["string"]
+    range: [["HALF_AWAY_FROM_ZERO", "HALF_TO_EVEN"]]
+    structure: ["scalar"]
+    shape: null
+    default: "HALF_AWAY_FROM_ZERO"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  narrow_range:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  ensure_minimum_range:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.01"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.quantization.quantize in a complex way */
+import tensorflow as tf

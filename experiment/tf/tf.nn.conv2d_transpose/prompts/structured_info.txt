@@ -1,0 +1,62 @@
+params:
+  input:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filters:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  output_shape:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: [1,2,4]
+    default: null
+  padding:
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar", "list"]
+    shape: "No mention"
+    default: "SAME"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: [1,2,4]
+    default: "1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "input.shape[1 if data_format == 'NCHW' else 3] == filters.shape[3]"
+  2:
+    Parameter 1: padding
+    Parameter 2: data_format
+    Constraint: "padding in ['SAME', 'VALID'] or (isinstance(padding, list) and len(padding) == 4 and all(isinstance(p, list) and len(p) == 2 for p in padding) and ((data_format == 'NHWC' and padding[0] == [0,0] and padding[3] == [0,0]) or (data_format == 'NCHW' and padding[0] == [0,0] and padding[1] == [0,0])))"
+  3:
+    Parameter 1: dilations
+    Parameter 2: data_format
+    Constraint: "dilations == 1 or (isinstance(dilations, list) and len(dilations) in [1,2,4] and (len(dilations) != 4 or ((data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1))))"

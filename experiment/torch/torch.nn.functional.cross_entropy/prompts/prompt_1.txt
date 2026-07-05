@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.cross_entropy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.cross_entropy` computes the cross‑entropy loss between predicted logits and ground‑truth targets.  
+
+**Key parameters:**  
+- `input`: Unnormalized logits (shape can be `(C)`, `(N, C)`, or `(N, C, d1, d2, …)`).  
+- `target`: Either class indices (integer labels) or class probabilities (same shape as input).  
+- `weight`: Optional per‑class weighting tensor of size `C`.  
+- `ignore_index`: Target value to ignore (only for class indices).  
+- `reduction`: How to aggregate loss (`'none'`, `'mean'`, `'sum'`).  
+- `label_smoothing`: Smooths targets by mixing with uniform distribution (float in `[0.0, 1.0]`).  
+
+**Output:** A tensor with the computed loss, reduced according to `reduction`.  
+
+**Example uses:**  
+- With class indices: `target` as integer labels.  
+- With probabilities: `target` as a probability distribution.  
+
+This function is the functional counterpart to `torch.nn.CrossEntropyLoss`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(C)", "(N,C)", "(N,C,d1,...,dK) with K>=1"]
+    default: "null"
+  target
+    dtype: ["int", "float"]
+    range: ["[0,C) for indices", "[0,1] for probabilities"]
+    structure: ["tensor"]
+    shape: ["()", "(N)", "(N,d1,...,dK) for indices", "same as input for probabilities"]
+    default: "null"
+  weight
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(C)"]
+    default: "None"
+  size_average
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  ignore_index
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-100"
+  reduce
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  reduction
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+  label_smoothing
+    dtype: ["float"]
+    range: ["[0.0, 1.0]"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.0"
+constraints:
+  1
+    Parameter 1: "weight"
+    Parameter 2: "input"
+    Constraint: "weight is None or weight.size(0) == (input.size(1) if input.dim() >= 2 else input.size(0))"
+  2
+    Parameter 1: "target"
+    Parameter 2: "input"
+    Constraint: "target.is_floating_point() or (target.min() >= 0 and target.max() < (input.size(1) if input.dim() >= 2 else input.size(0)))"
+  3
+    Parameter 1: "target"
+    Parameter 2: "input"
+    Constraint: "not target.is_floating_point() or target.shape == input.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.cross_entropy in a complex way */
+import torch

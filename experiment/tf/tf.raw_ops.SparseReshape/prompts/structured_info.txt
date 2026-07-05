@@ -1,0 +1,38 @@
+params:
+  input_indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  input_shape:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  new_shape:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: new_shape
+    Parameter 2: new_shape
+    Constraint: "tf.reduce_sum(tf.cast(new_shape == -1, tf.int32)) <= 1"
+  2:
+    Parameter 1: new_shape
+    Parameter 2: input_shape
+    Constraint: "tf.reduce_prod(input_shape) == tf.reduce_prod(new_shape) or (tf.reduce_sum(tf.cast(new_shape == -1, tf.int32)) == 1 and tf.reduce_prod(input_shape) % tf.reduce_prod(tf.boolean_mask(new_shape, new_shape != -1)) == 0)"
+  3:
+    Parameter 1: input_indices
+    Parameter 2: input_shape
+    Constraint: "tf.shape(input_indices)[1] == tf.size(input_shape)"

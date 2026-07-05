@@ -1,0 +1,40 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  boundaries:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  out_int32:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  right:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: boundaries
+    Parameter 2: boundaries
+    Constraint: "torch.all(torch.diff(boundaries) > 0)"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or torch.all(out.size() == input.size())"

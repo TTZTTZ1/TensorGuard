@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.math.in_top_k` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.in_top_k` (aliased as `tf.nn.in_top_k`) determines whether the true class labels (targets) are within the top‑`k` predicted scores for each example in a batch. It returns a boolean tensor of shape `[batch_size]`, where `True` indicates that the target class for that example is among the `k` highest predictions.
+
+**Key points:**
+- **Inputs:**  
+  - `targets`: 1D integer tensor of class IDs (shape `[batch_size]`).  
+  - `predictions`: 2D float tensor (shape `[batch_size, num_classes]`).  
+  - `k`: Integer specifying the top‑k threshold.
+- **Behavior:**  
+  - Checks if the prediction for the true class is **finite** and ranks in the top‑`k` predictions for that example.  
+  - Handles ties inclusively: if multiple predictions have the same score at the top‑`k` boundary, all are considered in‑top‑k.  
+  - Predictions do not need to be normalized (e.g., softmax outputs).
+- **Use case:** Commonly used to compute top‑k accuracy in classification tasks.
+
+**Example:**
+```python
+targets = [0, 1, 3]
+predictions = [[1.2, -0.3, 2.8, 5.2],
+               [0.1, 0.0, 0.0, 0.0],
+               [0.0, 0.5, 0.3, 0.3]]
+tf.math.in_top_k(targets, predictions, k=2)  # → [False, True, True]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  targets:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["vector"]
+    shape: ["[batch_size]"]
+    default: null
+  predictions:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, classes]"]
+    default: null
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: targets
+    Parameter 2: predictions
+    Constraint: "targets.shape[0] == predictions.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.in_top_k in a complex way */
+import tensorflow as tf

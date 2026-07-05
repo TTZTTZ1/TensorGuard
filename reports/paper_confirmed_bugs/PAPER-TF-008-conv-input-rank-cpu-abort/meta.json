@@ -1,0 +1,34 @@
+{
+  "id": "PAPER-TF-008",
+  "title": "convolution rank mismatch aborts on CPU but errors on GPU",
+  "framework": "TensorFlow",
+  "api": "tf.nn.atrous_conv2d",
+  "related_apis": [
+    "tf.nn.conv2d",
+    "tf.nn.conv3d",
+    "tf.nn.depthwise_conv2d",
+    "tf.nn.depthwise_conv2d_backprop_filter",
+    "tf.raw_ops.Conv2D",
+    "tf.raw_ops.Conv3D",
+    "tf.raw_ops.DepthwiseConv2dNative",
+    "tf.raw_ops.Conv2DBackpropFilter",
+    "tf.raw_ops.Conv3DBackpropFilterV2"
+  ],
+  "bug_type": "CPU/GPU exception inconsistency / fatal check failure",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例"
+  },
+  "trigger": "Use a rank-1 value tensor with a 4D convolution filter.",
+  "expected": "CPU and GPU should consistently return a framework-level InvalidArgumentError for input rank mismatch.",
+  "observed": "GPU reports InvalidArgumentError; CPU aborts after a CHECK failure about invalid dimension index.",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["tensorflow", "cpu-gpu-inconsistency", "fatal-check", "convolution", "rank-validation"]
+}

@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.SoftmaxTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Implements parameterizable probability distributions with sampling functions
+- Supports stochastic gradient estimators (score function/REINFORCE and pathwise derivative)
+- Enables construction of stochastic computation graphs
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, Dirichlet, Wishart, LKJCholesky
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent
+
+### **3. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (VAEs)
+
+### **4. Key Features**
+- **Batch/Event Shapes**: Supports batched parameters and samples
+- **Parameter Constraints**: Automatic validation via `arg_constraints`
+- **KL Divergence**: Pre-registered KL computations between distributions
+- **Transforms**: Bijective transformations for constrained optimization
+- **Constraint Registry**: `transform_to()` and `biject_to()` for constrained parameter handling
+
+### **5. Common Use Cases**
+- Reinforcement learning (policy gradients)
+- Variational autoencoders (reparameterization)
+- Probabilistic modeling
+- Bayesian inference
+- Constrained parameter optimization
+
+## **Basic Usage Pattern**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sampling
+samples = dist.sample([100])  # 100 samples
+
+# Probability evaluation
+log_probs = dist.log_prob(samples)
+
+# Reparameterized sampling (differentiable)
+reparam_samples = dist.rsample([100])
+```
+
+The module follows a design similar to TensorFlow Distributions and provides a unified interface for probabilistic modeling with automatic differentiation support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.SoftmaxTransform in a complex way */
+import torch

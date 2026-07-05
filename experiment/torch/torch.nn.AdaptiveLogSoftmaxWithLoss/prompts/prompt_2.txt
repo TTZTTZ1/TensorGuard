@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.nn.AdaptiveLogSoftmaxWithLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**AdaptiveLogSoftmaxWithLoss** is a PyTorch module for efficient softmax approximation, designed for large output spaces with imbalanced label distributions (e.g., natural language modeling). It partitions labels into clusters based on frequency, reducing computational cost by assigning lower-dimensional embeddings to infrequent labels.
+
+### Key Features:
+- **Efficiency**: Only evaluates clusters containing at least one target per minibatch.
+- **Cluster partitioning**: Labels are split into a "head" (most frequent) and multiple clusters (less frequent) using `cutoffs`.
+- **Embedding scaling**: Cluster embedding sizes decrease by a factor of `div_value` for higher-index clusters.
+- **Output**: Returns a `NamedTuple` with `output` (log probabilities per example) and `loss` (negative log-likelihood).
+
+### Parameters:
+- `in_features`: Input feature dimension.
+- `n_classes`: Total number of classes.
+- `cutoffs`: Sorted list defining cluster boundaries (e.g., `[10, 100, 1000]`).
+- `div_value`: Scaling factor for cluster embedding sizes (default: 4.0).
+- `head_bias`: Whether to add bias to the head cluster (default: False).
+
+### Important Notes:
+- **Label ordering**: Labels must be sorted by frequency (most frequent = index 0).
+- **Methods**:
+  - `forward(input, target)`: Computes loss and log probabilities.
+  - `log_prob(input)`: Returns log probabilities for all classes.
+  - `predict(input)`: Efficiently predicts the most probable class.
+
+### Use Case:
+Ideal for tasks with highly skewed label distributions, such as language modeling, where it significantly reduces memory and computation costs compared to standard softmax.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_features:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  n_classes:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  cutoffs:
+    dtype: ["list", "tuple"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  div_value:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "4.0"
+  head_bias:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cutoffs
+    Parameter 2: cutoffs
+    Constraint: "all(cutoffs[i] < cutoffs[i+1] for i in range(len(cutoffs)-1))"
+  2:
+    Parameter 1: cutoffs
+    Parameter 2: n_classes
+    Constraint: "all(c < n_classes for c in cutoffs)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.AdaptiveLogSoftmaxWithLoss in a complex way */
+import torch

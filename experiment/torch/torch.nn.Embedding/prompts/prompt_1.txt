@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.nn.Embedding` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.nn.Embedding** is a PyTorch module that maps discrete indices (e.g., word IDs) to dense vectors of fixed size. It acts as a lookup table where each index corresponds to a learnable embedding vector.
+
+**Key Parameters:**
+- `num_embeddings`: Vocabulary size (number of unique indices).
+- `embedding_dim`: Dimensionality of each embedding vector.
+- `padding_idx` (optional): Index to be excluded from gradient updates (e.g., for padding tokens).
+- `max_norm` (optional): Renormalizes embeddings exceeding this norm during forward pass.
+
+**Core Functionality:**
+- **Input**: Tensor of indices (any shape, dtype `int`/`long`).
+- **Output**: Corresponding embedding vectors with shape `(*, embedding_dim)`.
+- **Weight Initialization**: Randomly sampled from 𝒩(0,1).
+
+**Important Notes:**
+- When `max_norm` is set, the weight tensor is modified in-place during forward pass. This requires cloning `embedding.weight` if used in prior differentiable operations.
+- Sparse gradients (`sparse=True`) are only supported by specific optimizers (e.g., `SGD`, `SparseAdam`).
+
+**Convenience Method:**
+- `from_pretrained()`: Initializes embeddings from a pre-existing 2D tensor (e.g., pretrained word vectors), with optional freezing.
+
+**Example Use Case:**
+```python
+embedding = nn.Embedding(vocab_size=1000, embedding_dim=128)
+indices = torch.tensor([[1, 2], [3, 4]])  # Batch of indices
+embeddings = embedding(indices)  # Shape: (2, 2, 128)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_embeddings:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  embedding_dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  padding_idx:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  max_norm:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  norm_type:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "2.0"
+  scale_grad_by_freq:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  sparse:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Embedding in a complex way */
+import torch

@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `torch.distributions.negative_binomial.NegativeBinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning.
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling, common in variational autoencoders.
+
+**Core Classes:**
+- **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`.
+- **ExponentialFamily**: Base class for exponential family distributions.
+- **TransformedDistribution**: Applies transforms to base distributions.
+- **Independent**: Reinterprets batch dims as event dims.
+- **MixtureSameFamily**: Mixture of same-family component distributions.
+
+**Common Distributions:**
+- Univariate: `Bernoulli`, `Beta`, `Binomial`, `Categorical`, `Normal`, `Gamma`, `Poisson`, `Uniform`, etc.
+- Multivariate: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`.
+- Transformed: `LogNormal`, `HalfNormal`, `Gumbel`, `Weibull`.
+
+**Key Methods:**
+- `sample()` / `rsample()`: Generate samples (rsample is reparameterized).
+- `log_prob()`: Compute log probability density/mass.
+- `entropy()`: Distribution entropy.
+- `cdf()` / `icdf()`: Cumulative distribution and inverse functions.
+- `expand()`: Expand batch dimensions.
+
+**Supporting Utilities:**
+- **KL Divergence**: `kl_divergence()` computes KL divergence between distributions.
+- **Transforms**: Classes like `AffineTransform`, `ExpTransform`, `SigmoidTransform` for bijective transformations.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive_definite`).
+- **Constraint Registry**: `biject_to()` and `transform_to()` for mapping constraints to transforms.
+
+**Usage Example:**
+```python
+# Create a normal distribution
+m = Normal(loc=0.0, scale=1.0)
+samples = m.sample((5,))  # Draw 5 samples
+log_probs = m.log_prob(samples)
+
+# Use in stochastic gradient estimation
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "1"
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: 
+    Constraint: "total_count >= 0"
+  2:
+    Parameter 1: probs
+    Parameter 2: 
+    Constraint: "(probs >= 0) & (probs < 1)"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is not None and logits is None) or (probs is None and logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.negative_binomial.NegativeBinomial in a complex way */
+import torch

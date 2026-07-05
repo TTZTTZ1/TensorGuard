@@ -1,0 +1,60 @@
+params:
+  image_size:
+    dtype: ["uint8", "int8", "int16", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  bounding_boxes:
+    dtype: ["float32"]
+    range: [0.0, 1.0]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  min_object_covered:
+    dtype: ["float32"]
+    range: [0.0, inf]
+    structure: ["tensor"]
+    shape: [1]
+    default: "0.1"
+  aspect_ratio_range:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [2]
+    default: "[0.75, 1.33]"
+  area_range:
+    dtype: ["float"]
+    range: [0.0, 1.0]
+    structure: ["list"]
+    shape: [2]
+    default: "[0.05, 1]"
+  max_attempts:
+    dtype: ["int"]
+    range: [1, inf]
+    structure: ["scalar"]
+    shape: [1]
+    default: "100"
+  use_image_if_no_bounding_boxes:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: bounding_boxes
+    Parameter 2: use_image_if_no_bounding_boxes
+    Constraint: "tf.shape(bounding_boxes)[1] > 0 or use_image_if_no_bounding_boxes"

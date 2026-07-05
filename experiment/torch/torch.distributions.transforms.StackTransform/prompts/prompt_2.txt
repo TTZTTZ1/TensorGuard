@@ -1,0 +1,110 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.StackTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Follows TensorFlow Distributions design pattern
+- Supports both discrete and continuous probability distributions
+
+## **Key Features**
+
+### **1. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+### **2. Distribution Classes**
+**Base Classes:**
+- `Distribution`: Abstract base class for all distributions
+- `ExponentialFamily`: Base for distributions in exponential family form
+
+**Common Distributions:**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- **Transformed**: HalfCauchy, HalfNormal, Pareto, Weibull, etc.
+- **Specialized**: LKJCholesky (correlation matrices), MixtureSameFamily, RelaxedBernoulli (Gumbel-Softmax), etc.
+
+### **3. Essential Methods**
+- `sample()` / `rsample()`: Generate samples (latter is reparameterized)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Compute distribution entropy
+- `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution functions
+- `mean`, `mode`, `variance`, `stddev`: Distribution statistics
+
+### **4. Advanced Components**
+- **Transforms**: Bijective transformations for constrained parameters (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Define valid parameter domains (interval, simplex, positive definite, etc.)
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Constraint Registry**: `transform_to()` and `biject_to()` for unconstrained optimization
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Construction**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))
+
+# Multivariate normal
+mvn = MultivariateNormal(torch.zeros(2), torch.eye(2))
+
+# Transformed distribution (e.g., LogNormal)
+log_normal = LogNormal(loc=0.0, scale=1.0)
+```
+
+## **Design Benefits**
+- **Batch-aware**: All distributions support batched parameters
+- **Validation**: Optional argument validation with `validate_args`
+- **Extensible**: Easy to add custom distributions and transforms
+- **Numerically stable**: Careful implementation of log-space computations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tseq:
+    dtype: ["list", "tuple"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.StackTransform in a complex way */
+import torch

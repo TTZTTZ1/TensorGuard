@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel` performs per-channel fake quantization on a float input tensor. It clamps values within a channel-specific range defined by `min` and `max`, quantizes them to a specified bitwidth (`num_bits`), then de-quantizes back to float within the original range. This simulates quantization effects while preserving gradients, enabling training of the `min` and `max` parameters per channel. It supports inputs of shapes like `[d]`, `[b, d]`, or `[b, h, w, d]`, with `min`/`max` tensors of shape `[d]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d]", "[b, d]", "[b, h, w, d]"]
+    default: null
+  min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d]"]
+    default: null
+  max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[d]"]
+    default: null
+  num_bits:
+    dtype: ["int"]
+    range: [2, 16]
+    structure: ["scalar"]
+    shape: null
+    default: "8"
+  narrow_range:
+    dtype: ["bool"]
+    range: [False, True]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: min
+    Constraint: "inputs.shape[-1] == min.shape[0]"
+  2:
+    Parameter 1: min
+    Parameter 2: max
+    Constraint: "min.shape == max.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FakeQuantWithMinMaxVarsPerChannel in a complex way */
+import tensorflow as tf

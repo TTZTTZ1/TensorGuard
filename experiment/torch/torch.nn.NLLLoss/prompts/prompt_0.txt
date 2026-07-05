@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.nn.NLLLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`NLLLoss` (Negative Log Likelihood Loss) is a PyTorch loss function for classification tasks with C classes. It expects **log-probabilities** as input (typically from a `LogSoftmax` layer) and **class indices** as targets.
+
+**Key Features:**
+- **Input:** Log-probabilities of shape `(N, C)` or `(N, C, d1, d2, ...)`.
+- **Target:** Class indices in range `[0, C-1]` (or `ignore_index`).
+- **Weighting:** Optional class weights via `weight` tensor for imbalanced datasets.
+- **Reduction:** Supports `'none'`, `'mean'` (default), or `'sum'`.
+- **Ignore Index:** Specifies target values to ignore in loss calculation.
+
+**Common Usage:**
+```python
+log_softmax = nn.LogSoftmax(dim=1)
+loss_fn = nn.NLLLoss()
+loss = loss_fn(log_softmax(input), target)
+```
+**Note:** For convenience, `CrossEntropyLoss` combines `LogSoftmax` and `NLLLoss` in a single layer.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weight:
+    dtype: ["tensor", "none"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: "null"
+  size_average:
+    dtype: ["bool", "none"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  ignore_index:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "-100"
+  reduce:
+    dtype: ["bool", "none"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  reduction:
+    dtype: ["string"]
+    range: ["none", "mean", "sum"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "mean"
+constraints:
+  1.
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight is None or (weight.ndim == 1 and weight.size(0) == (input.size(0) if input.dim() == 1 else input.size(1)))"
+  2.
+    Parameter 1: target
+    Parameter 2: input
+    Constraint: "all(t == ignore_index or (0 <= t < (input.size(0) if input.dim() == 1 else input.size(1))) for t in target.flatten())"
+  3.
+    Parameter 1: input
+    Parameter 2: target
+    Constraint: "(input.dim() == 1 and target.dim() == 0) or (input.dim() == 2 and target.dim() == 1 and target.size(0) == input.size(0)) or (input.dim() > 2 and target.dim() == input.dim() - 1 and all(target.size(i) == input.size(i+1) for i in range(target.dim())))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.NLLLoss in a complex way */
+import torch

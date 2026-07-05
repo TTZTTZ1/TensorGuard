@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.random.experimental.stateless_fold_in` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.random.experimental.stateless_fold_in` deterministically combines an existing random seed with additional integer data to produce a new seed. This is useful for generating unique but reproducible seed streams in contexts like distributed training, where each replica can derive its own seed from a common master seed and its ID.
+
+**Key Parameters:**
+- `seed`: A 2-element tensor (int32/int64) serving as the base RNG seed.
+- `data`: An integer scalar to fold into the seed.
+- `alg`: The RNG algorithm (default is `'auto_select'`).
+
+**Returns:** A new 2-element seed tensor, with dtype matching `data`.
+
+**Example:**  
+```python
+master_seed = [1, 2]
+replica_seed = tf.random.experimental.stateless_fold_in(master_seed, replica_id=3)
+# replica_seed can then be used in stateless random functions
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  seed:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: [[2]]
+    default: null
+  data:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  alg:
+    dtype: ["string"]
+    range: [["auto_select"]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "'auto_select'"
+constraints:
+  1:
+    Parameter 1: seed
+    Parameter 2: seed
+    Constraint: "seed.shape == [2]"
+  2:
+    Parameter 1: seed
+    Parameter 2: seed
+    Constraint: "seed.dtype in [tf.int32, tf.int64]"
+  3:
+    Parameter 1: data
+    Parameter 2: data
+    Constraint: "tf.rank(data) == 0"
+  4:
+    Parameter 1: data
+    Parameter 2: data
+    Constraint: "data.dtype in [tf.int32, tf.int64]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.random.experimental.stateless_fold_in in a complex way */
+import tensorflow as tf

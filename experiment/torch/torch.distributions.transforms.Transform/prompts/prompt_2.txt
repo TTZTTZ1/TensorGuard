@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.Transform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and gradient estimators. Key features include:
+
+## Core Concepts
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## Main Components
+
+### 1. **Distribution Base Class**
+Abstract base class with methods:
+- `sample()` / `rsample()`: Generate samples
+- `log_prob()`: Compute log probability
+- `entropy()`: Distribution entropy
+- `cdf()` / `icdf()`: Cumulative/inverse cumulative distribution
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### 2. **Available Distributions**
+Includes both univariate and multivariate distributions:
+- **Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, etc.
+- **Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, etc.
+- **Multivariate**: MultivariateNormal, Dirichlet, Wishart, etc.
+- **Specialized**: MixtureSameFamily, TransformedDistribution, Independent
+
+### 3. **Transforms**
+Bijective transformations for reparameterization:
+- `AffineTransform`, `ExpTransform`, `SigmoidTransform`
+- `SoftmaxTransform`, `StickBreakingTransform`
+- `ComposeTransform` for chaining transforms
+
+### 4. **Constraints**
+Define valid parameter ranges:
+- `interval`, `greater_than`, `simplex`, `positive_definite`
+- Used in `arg_constraints` for parameter validation
+
+### 5. **KL Divergence**
+- `kl_divergence()` computes KL divergence between distributions
+- Extensible via `register_kl()` decorator
+
+## Key Usage Patterns
+
+### REINFORCE (Policy Gradient)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### Constrained Optimization
+```python
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## Design Features
+- Follows TensorFlow Distributions design
+- Supports batch and event shapes for vectorized operations
+- Provides both exact and approximate gradient estimators
+- Enables construction of complex probabilistic models
+- Integrates with PyTorch autograd system
+
+The package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.Transform in a complex way */
+import torch

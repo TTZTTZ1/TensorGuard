@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.sequence_mask` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.sequence_mask` generates a boolean mask tensor where the first `N` positions (specified by `lengths`) along the last dimension are `True`, and the rest are `False`. It is commonly used to handle variable-length sequences in operations like masking padded values.
+
+**Key features:**
+- **Input:** `lengths` (integer tensor with values ≤ `maxlen`).
+- **Output:** A mask tensor of shape `lengths.shape + (maxlen,)` with dtype `dtype` (default: `bool`).
+- **Default behavior:** If `maxlen` is not provided, it uses the maximum value in `lengths`.
+- **Example:**  
+  `tf.sequence_mask([1, 3, 2], 5)` →  
+  `[[True, False, False, False, False],`  
+   `[True,  True,  True, False, False],`  
+   `[True,  True, False, False, False]]`
+
+**Use case:** Masking padded elements in sequences (e.g., in RNNs or attention mechanisms).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  lengths:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  maxlen:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "maximum value in lengths"
+  dtype:
+    dtype: ["dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.bool"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: lengths
+    Parameter 2: maxlen
+    Constraint: "tf.reduce_max(lengths) <= maxlen"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.sequence_mask in a complex way */
+import tensorflow as tf

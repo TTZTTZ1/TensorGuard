@@ -1,0 +1,152 @@
+
+# You are a Python code generation assistant for the `torch.fx.Node` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch that enables programmatic modification of `nn.Module` instances. It provides a pipeline for capturing, analyzing, and rewriting PyTorch code.
+
+---
+
+### **Core Components**
+1. **Symbolic Tracer** (`symbolic_trace` / `Tracer`)  
+   - Performs symbolic execution using `Proxy` objects to record operations.
+   - Captures the semantics of a module’s `forward` method.
+
+2. **Intermediate Representation (IR)** (`Graph` / `Node`)  
+   - Represents the traced code as a graph of nodes (placeholders, calls, outputs).
+   - Enables inspection and manipulation of the computation graph.
+
+3. **Python Code Generation** (`GraphModule`)  
+   - Converts the `Graph` back into executable Python code.
+   - Produces a runnable `nn.Module` with a generated `forward` method.
+
+---
+
+### **Key Use Cases**
+- **Graph Transformations**: Modify or optimize models by rewriting the graph (e.g., operator substitution, fusion).
+- **Analysis**: Inspect model structure, compute properties (e.g., shape propagation), or profile execution.
+- **Code Generation**: Programmatically create models from configuration.
+
+---
+
+### **Writing Transformations**
+Transformations typically:
+1. Acquire a `Graph` via tracing.
+2. Manipulate nodes (replace, insert, delete) using:
+   - Direct graph editing (e.g., `node.replace_all_uses_with`).
+   - Proxy-based retracing (reusing `Proxy` to record new operations).
+   - Pattern matching (`replace_pattern`) for find/replace rewrites.
+3. Recompile the `GraphModule` and return it.
+
+---
+
+### **Debugging & Limitations**
+- **Debugging**: Use `print(graph)`, `graph.print_tabular()`, or `pdb` to step through generated code.
+- **Limitations**:
+  - **Dynamic control flow** (e.g., loops/conditions depending on input values) is not supported.
+  - **Non-`torch` functions** (e.g., `len`, `math.sqrt`) require wrapping with `torch.fx.wrap`.
+  - **Tensor constructors** (e.g., `torch.rand`) may embed constants; use `wrap` for dynamic behavior.
+
+---
+
+### **Customization**
+- Subclass `Tracer` to override:
+  - `is_leaf_module`: Control which modules are traced through vs. preserved as calls.
+  - `call_module`: Customize handling of module invocations.
+- Use `Interpreter` or `Transformer` to implement node-by-node execution or transformation patterns.
+
+---
+
+### **Example Workflow**
+```python
+import torch, torch.fx
+
+# 1. Trace a module
+module = MyModule()
+traced = torch.fx.symbolic_trace(module)
+
+# 2. Inspect/transform the graph
+for node in traced.graph.nodes:
+    if node.op == "call_function" and node.target == torch.add:
+        node.target = torch.mul
+
+# 3. Recompile and run
+traced.recompile()
+output = traced(input_data)
+```
+
+---
+
+### **API Highlights**
+- `symbolic_trace`: Entry point for tracing modules/functions.
+- `GraphModule`: The transformed module containing the `Graph` and generated code.
+- `Proxy`: Wrapper for symbolic values during tracing.
+- `replace_pattern`: High-level subgraph rewriting tool.
+
+---
+
+**torch.fx** enables powerful, modular transformations of PyTorch models while maintaining the flexibility of Python code. It is widely used for quantization, optimization, and analysis in the PyTorch ecosystem.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  graph:
+    dtype: ["Graph"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  op:
+    dtype: ["string"]
+    range: [["call_function", "call_method", "get_attr", "call_module", "placeholder", "output"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  target:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["scalar", "object", "string"]
+    shape: [null]
+    default: null
+  args:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["tuple", "list", "dict", "scalar", "object"]
+    shape: [null]
+    default: null
+  kwargs:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["dict", "tuple", "list", "scalar", "object"]
+    shape: [null]
+    default: null
+  return_type:
+    dtype: ["Any"]
+    range: [null]
+    structure: ["scalar", "object", "string"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: op
+    Parameter 2: args
+    Constraint: "op in ['placeholder', 'output'] and isinstance(args, (tuple, list))"
+  2:
+    Parameter 1: op
+    Parameter 2: target
+    Constraint: "op == 'call_function' and callable(target) or op == 'call_method' and isinstance(target, str) or op == 'get_attr' and isinstance(target, str) or op == 'call_module' and isinstance(target, str) or op == 'placeholder' and isinstance(target, str) or op == 'output' and target == 'output'"
+  3:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "isinstance(args, (tuple, list, dict, Node, str, int, float, bool, complex, torch.dtype, torch.Tensor, torch.device, torch.memory_format, torch.layout, OpOverload, torch.SymInt, torch.SymBool, torch.SymFloat, type(None))) and isinstance(kwargs, (dict, tuple, list, Node, str, int, float, bool, complex, torch.dtype, torch.Tensor, torch.device, torch.memory_format, torch.layout, OpOverload, torch.SymInt, torch.SymBool, torch.SymFloat, type(None)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Node in a complex way */
+import torch

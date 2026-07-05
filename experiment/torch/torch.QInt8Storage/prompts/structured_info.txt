@@ -1,0 +1,40 @@
+params:
+  args:
+    dtype: ["tuple", "list", "int", "torch.Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list", "tensor"]
+    shape: ["any"]
+    default: "null"
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: ["torch.qint8"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.qint8"
+  device:
+    dtype: ["string", "torch.device"]
+    range: ["cpu", "cuda", "hpu", "mps", "meta"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  _internal:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "None"
+    Constraint: "dtype == torch.qint8"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "args"
+    Constraint: "wrap_storage is None or len(args) == 0"

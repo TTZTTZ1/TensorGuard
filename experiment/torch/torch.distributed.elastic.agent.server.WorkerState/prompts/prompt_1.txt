@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.WorkerState` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in TorchElastic, responsible for launching and managing distributed PyTorch worker processes. It handles:
+
+- **Distributed setup**: Automatically configures workers to call `torch.distributed.init_process_group()`.
+- **Fault tolerance**: Monitors workers and restarts all on failure.
+- **Elasticity**: Reacts to membership changes and restarts workers with updated members.
+
+### Key Components:
+- **`ElasticAgent`**: Abstract base class for agent implementations.
+- **`WorkerSpec`**: Blueprint defining worker configuration (role, entrypoint, world size, etc.).
+- **`WorkerGroup`**: Set of `Worker` instances managed by an agent.
+- **`WorkerState`**: Tracks the state of a worker group (e.g., `HEALTHY`, `FAILED`).
+
+### Implementations:
+- **`LocalElasticAgent`**: Manages local workers on a single host, typically one per GPU. Supports both function and binary entrypoints.
+
+### Extending:
+- **`SimpleElasticAgent`**: Recommended base for custom agents, providing scaffolding for core operations like `_start_workers`, `_stop_workers`, and `_monitor_workers`.
+
+### Additional Features:
+- **Watchdog**: Optional named pipe-based timer for health monitoring.
+- **Health Check Server**: Optional TCP/HTTP server for external health checks.
+
+### Usage Example:
+```python
+spec = WorkerSpec(role="trainer", local_world_size=4, entrypoint=trainer_fn, args=("data",))
+agent = LocalElasticAgent(spec)
+result = agent.run()
+if result.is_failed():
+    handle_failure(result.failures[0])
+else:
+    output = result.return_values[0]  # Rank 0's result
+```
+
+The agent simplifies distributed training by automating process management, resilience, and scaling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: value
+    Parameter 2: null
+    Constraint: "value in {1, 2, 3, 4, 5, 6, 7}"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.WorkerState in a complex way */
+import torch

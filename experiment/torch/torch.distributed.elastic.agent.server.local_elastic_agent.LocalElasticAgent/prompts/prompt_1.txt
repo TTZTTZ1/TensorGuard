@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.agent.server.local_elastic_agent.LocalElasticAgent` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Elastic Agent** is the control plane in PyTorch's torchelastic framework, responsible for launching and managing distributed worker processes. It provides fault tolerance by monitoring workers and restarting them upon failures, and supports elasticity by adapting to membership changes.
+
+### Key Components:
+- **ElasticAgent**: Abstract base class for managing worker groups. It handles worker initialization, monitoring, and restart logic.
+- **WorkerSpec**: Blueprint defining worker configuration (role, entrypoint, world size, etc.).
+- **WorkerGroup**: A set of `Worker` instances managed by an agent.
+- **WorkerState**: Represents the state of a worker group (e.g., `HEALTHY`, `FAILED`, `STOPPED`).
+
+### Implementations:
+- **LocalElasticAgent**: Manages local workers on a single host, typically used for GPU-based training. It supports spawning multiple workers per node and handles logging, watchdog timers, and health checks.
+
+### Core Functionality:
+1. **Distributed Initialization**: Workers are started with necessary information to call `torch.distributed.init_process_group()`.
+2. **Fault Tolerance**: Automatically restarts workers on failure (up to `max_restarts`).
+3. **Elasticity**: Reacts to cluster membership changes and adjusts worker groups accordingly.
+4. **Health Monitoring**: Includes optional watchdog timers and health check servers for liveness detection.
+
+### Usage:
+Agents are deployed per node and can manage multiple workers depending on hardware (e.g., one agent per GPU). Users implement or extend agents (preferably via `SimpleElasticAgent`) to define custom start, stop, and monitoring behaviors.
+
+### Extensibility:
+The framework allows custom agent implementations, with `SimpleElasticAgent` providing scaffolding for common patterns. Advanced features include named pipe watchdogs and TCP/HTTP health check servers for enhanced resilience.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spec:
+    dtype: ["WorkerSpec"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  logs_specs:
+    dtype: ["unknown"]
+    range: null
+    structure: ["unknown"]
+    shape: null
+    default: null
+  start_method:
+    dtype: ["string"]
+    range: [["spawn"]]
+    structure: ["scalar"]
+    shape: null
+    default: "spawn"
+  exit_barrier_timeout:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "300"
+  log_line_prefix_template:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.agent.server.local_elastic_agent.LocalElasticAgent in a complex way */
+import torch

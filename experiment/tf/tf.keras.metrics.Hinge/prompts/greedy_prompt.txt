@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.Hinge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.Hinge` class computes the hinge loss metric, commonly used for binary classification tasks. It expects `y_true` labels to be -1 or 1 (converting 0/1 labels automatically) and calculates the average hinge loss between true labels and predictions.
+
+**Key Features:**
+- Inherits from `MeanMetricWrapper`, so it computes the mean of hinge losses across batches.
+- Automatically handles label conversion from binary (0/1) to (-1/1) format.
+- Supports sample weighting for weighted loss calculation.
+
+**Basic Usage:**
+```python
+metric = tf.keras.metrics.Hinge()
+metric.update_state(y_true, y_pred)
+result = metric.result()  # Returns average hinge loss
+```
+
+**Example Output:**
+- With predictions `[[0.6, 0.4], [0.4, 0.6]]` and labels `[[0, 1], [0, 0]]`, the result is `1.3`
+- With sample weighting `[1, 0]`, the result becomes `1.1`
+
+**Main Methods:**
+- `update_state()`: Accumulates metric statistics
+- `result()`: Returns current metric value
+- `reset_state()`: Clears accumulated state between epochs
+
+This metric is useful for monitoring hinge loss during training of models like SVMs or when using hinge loss as an optimization objective.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [["any string"]]
+    structure: ["scalar"]
+    shape: []
+    default: "hinge"
+  dtype:
+    dtype: ["string", "tf.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  y_true:
+    dtype: ["int", "float"]
+    range: [[-1, 0, 1]]
+    structure: ["tensor", "array"]
+    shape: ["any shape"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: ["same as y_true"]
+    default: null
+  sample_weight:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "scalar", "array"]
+    shape: ["broadcastable with y_true"]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: y_true.shape == y_pred.shape
+  2:
+    Parameter 1: sample_weight
+    Parameter 2: y_true
+    Constraint: sample_weight is None or sample_weight.shape is compatible with y_true.shape
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.Hinge in a complex way */
+import tensorflow as tf

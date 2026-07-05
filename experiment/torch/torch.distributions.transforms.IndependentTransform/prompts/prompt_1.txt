@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.IndependentTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and enabling gradient-based optimization. Key features include:
+
+## Core Components
+- **Distribution**: Abstract base class for all probability distributions
+- **ExponentialFamily**: Base class for distributions belonging to exponential families
+- **TransformedDistribution**: Creates new distributions by applying transforms to base distributions
+
+## Key Methods
+- `sample()`: Draw random samples
+- `log_prob()`: Compute log probability density/mass
+- `rsample()`: Reparameterized sampling for differentiable samples
+- `entropy()`: Compute distribution entropy
+- `cdf()`/`icdf()`: Cumulative distribution and inverse CDF functions
+
+## Gradient Estimation Techniques
+1. **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+2. **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (e.g., in VAEs)
+
+## Available Distributions
+Includes common distributions like:
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, Uniform
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Specialized**: LKJCholesky, MixtureSameFamily, RelaxedBernoulli, StudentT, VonMises, Wishart
+
+## Supporting Infrastructure
+- **Transforms**: Bijective transformations for constrained parameter spaces (e.g., ExpTransform, SigmoidTransform, StickBreakingTransform)
+- **Constraints**: Define valid parameter ranges (e.g., positive, simplex, interval)
+- **KL Divergence**: Pre-registered KL divergence computations between distribution pairs
+- **Constraint Registry**: `biject_to()` and `transform_to()` for mapping between constrained and unconstrained spaces
+
+## Design Principles
+- Follows TensorFlow Distributions package design
+- Enables stochastic gradient estimators for optimization
+- Supports both discrete and continuous distributions
+- Provides batch and event shape semantics for vectorized operations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions within PyTorch computational graphs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_transform:
+    dtype: ["Transform"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  reinterpreted_batch_ndims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: reinterpreted_batch_ndims
+    Parameter 2: reinterpreted_batch_ndims
+    Constraint: "reinterpreted_batch_ndims >= 0"
+  2:
+    Parameter 1: cache_size
+    Parameter 2: cache_size
+    Constraint: "cache_size == 0 or cache_size == 1"
+  3:
+    Parameter 1: base_transform
+    Parameter 2: base_transform
+    Constraint: "isinstance(base_transform, Transform)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.IndependentTransform in a complex way */
+import torch

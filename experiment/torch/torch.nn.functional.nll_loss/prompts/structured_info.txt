@@ -1,0 +1,56 @@
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["(N,C)", "(N,C,H,W)", "(N,C,d1,...,dK)"]
+    default: null
+  target:
+    dtype: ["int"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["(N)", "(N,d1,...,dK)"]
+    default: null
+  weight:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: "None"
+  size_average:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  ignore_index:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-100"
+  reduce:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  reduction:
+    dtype: ["str"]
+    range: ["'none'", "'mean'", "'sum'"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: target
+    Parameter 2: input
+    Constraint: "torch.all(target >= 0) and torch.all(target < input.shape[1])"
+  2:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight is None or weight.shape[0] == input.shape[1]"
+  3:
+    Parameter 1: input
+    Parameter 2: target
+    Constraint: "input.dim() == target.dim() + 1 and input.shape[2:] == target.shape[1:]"

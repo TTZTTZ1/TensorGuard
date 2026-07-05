@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `torch.IntStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation explains the low-level data container that underlies tensors. Here’s a concise summary:
+
+### Core Concept
+- A **tensor** is defined by:
+  - **Storage**: A contiguous 1D array of bytes holding the actual data.
+  - `dtype`, `shape`, `stride`, `offset`: Metadata describing how the data is interpreted.
+- **`torch.UntypedStorage`** is the primary storage class—a raw byte array independent of data type or shape.
+
+### Key Points
+- **Storage Sharing**: Multiple tensors (e.g., views created via `.view()` or slicing) can share the same underlying storage.
+- **Access**: Use `tensor.untyped_storage()` to get the storage object.
+- **Identification**: `storage.data_ptr()` returns a unique identifier for the storage’s memory address.
+- **Low-Level Manipulation**: Storages can be modified directly (e.g., `fill_()`, `clone()`), but this is **discouraged** for typical use—prefer high-level tensor operations.
+- **Special Cases**: Tensors on `"meta"` device or `FakeTensor` have no actual storage. Tensors with gradients have separate storages for data and grad.
+
+### Legacy Note
+- **Typed storages** (e.g., `torch.FloatStorage`) are **deprecated**. Use `torch.UntypedStorage` instead.
+
+### Common Methods
+- **Device/Type**: `.cpu()`, `.cuda()`, `.to()`, `.float()`, `.int()`, etc.
+- **Memory**: `.pin_memory()`, `.share_memory_()` (for multiprocessing).
+- **File Mapping**: `.from_file()` to create storage backed by a memory-mapped file.
+
+### Warning
+Direct storage manipulation is a low-level, risky API. For most applications, tensor-level operations are safer and more efficient.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "iterable"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: [1]
+    default: null
+  wrap_storage:
+    dtype: ["UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.int32"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: None
+    Constraint: "dtype == torch.int32"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.IntStorage in a complex way */
+import torch

@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.JoinHook` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Generic Join Context Manager** in PyTorch enables distributed training with uneven inputs across processes. It prevents hanging or errors when some processes finish their data earlier than others by coordinating collective communications.
+
+### **Key Components:**
+1. **`Join`** – The main context manager that wraps the training loop. It takes a list of `Joinable` objects and ensures all processes synchronize properly.
+2. **`Joinable`** – An abstract base class for distributed modules/optimizers (e.g., `DistributedDataParallel`, `ZeroRedundancyOptimizer`). It must implement:
+   - `join_hook()`: Returns a `JoinHook` instance.
+   - `join_device()`: Returns the device for collective communications.
+   - `join_process_group()`: Returns the process group.
+3. **`JoinHook`** – Defines two methods:
+   - `main_hook()`: Called repeatedly to shadow collective communications for already-joined processes.
+   - `post_hook(is_last_joiner)`: Called after all processes join, for final synchronization.
+
+### **Usage Workflow:**
+1. Wrap your training loop with `Join([joinable1, joinable2, ...])`.
+2. Each `Joinable` must call `Join.notify_join_context()` **before** its per-iteration collective communications (e.g., at the start of `forward()` in DDP).
+3. The context manager detects when a process runs out of data and coordinates the remaining processes to complete training without hanging.
+
+### **Key Parameters:**
+- `enable`: Enables uneven input detection (default `True`).
+- `throw_on_early_termination`: If `True`, throws an exception when uneven inputs are detected (default `False`).
+
+### **Example:**
+```python
+with Join([model, optimizer]):
+    for input in data:
+        loss = model(input).sum()
+        loss.backward()
+        optimizer.step()
+```
+This ensures all ranks finish cleanly even if they have different numbers of inputs.
+
+### **Note:** 
+All `Joinable` objects must use the **same process group**, and the first `Joinable`’s device is used for synchronization checks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  is_last_joiner:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.JoinHook in a complex way */
+import torch

@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.QInt8Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary: PyTorch Storage**
+
+PyTorch tensors are built on top of **storage objects**, which are low-level, contiguous, one-dimensional arrays of bytes that hold the actual data.
+
+### **Core Concepts**
+
+1. **`torch.UntypedStorage`** (Primary API)
+   - A raw byte array, independent of data type (`dtype`) or shape.
+   - Accessed via `tensor.untyped_storage()`.
+   - Multiple tensors (e.g., views) can share the same underlying storage.
+   - Has a unique identifier: `data_ptr()`.
+   - Can be memory-mapped from a file (`from_file()`), moved to shared memory (`share_memory_()`), or pinned for faster GPU transfer (`pin_memory()`).
+
+2. **Tensor-Storage Relationship**
+   - A tensor's structure is defined by:
+     - **Storage**: The raw data bytes.
+     - **`dtype`**: How to interpret those bytes.
+     - **Shape, Stride, Offset**: Metadata for indexing.
+   - Changing a tensor's storage directly (via `set_()`) is possible but **not recommended**; use high-level tensor methods instead.
+
+3. **Special Cases**
+   - Tensors with gradients have separate storages for `.data` and `.grad`.
+   - Tensors on `"meta"` device or `FakeTensor` have no actual storage.
+   - Tensor subclasses may behave unusually.
+
+### **Legacy API (Deprecated)**
+- **`torch.TypedStorage`** and type-specific classes (e.g., `torch.FloatStorage`) are **deprecated**.
+- They wrap an `UntypedStorage` with a specific `dtype`.
+- **Use `torch.UntypedStorage` for all new code.**
+
+### **Key Takeaways**
+- **Storage is a low-level implementation detail.** Most users should operate on tensors directly.
+- **Primary use cases:** Advanced memory management (shared memory, memory-mapped files) or debugging.
+- **Avoid direct storage manipulation** in favor of standard tensor operations (`clone()`, `fill_()`, etc.).
+- **`UntypedStorage` is the future-proof API;** typed storages will be removed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["tuple", "list", "int", "torch.Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list", "tensor"]
+    shape: ["any"]
+    default: "null"
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: ["torch.qint8"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.qint8"
+  device:
+    dtype: ["string", "torch.device"]
+    range: ["cpu", "cuda", "hpu", "mps", "meta"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  _internal:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "None"
+    Constraint: "dtype == torch.qint8"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "args"
+    Constraint: "wrap_storage is None or len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QInt8Storage in a complex way */
+import torch

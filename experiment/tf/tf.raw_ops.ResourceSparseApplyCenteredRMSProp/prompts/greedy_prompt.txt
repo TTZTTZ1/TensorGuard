@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceSparseApplyCenteredRMSProp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceSparseApplyCenteredRMSProp` is a low-level TensorFlow operation that performs a sparse update of a variable using the **centered RMSProp optimization algorithm**. It is designed for scenarios where gradients are sparse (i.e., only a subset of parameters receive updates in each iteration).
+
+### Key Features:
+- **Centered RMSProp**: Unlike standard RMSProp, it uses an estimate of the variance (centered second moment) for normalization, which can improve training stability but requires slightly more computation and memory.
+- **Sparse Updates**: Only updates the variables at the specified `indices`, making it efficient for sparse gradients (e.g., in embedding layers).
+- **Resource Variables**: Operates directly on TensorFlow resource variables (`var`, `mg`, `ms`, `mom`), which are mutable tensors stored externally.
+
+### Core Algorithm:
+The update rules for the selected indices are:
+1. **Update mean square (ms)**:  
+   \( ms \leftarrow \rho \cdot ms + (1 - \rho) \cdot \text{grad}^2 \)
+2. **Update mean gradient (mg)**:  
+   \( mg \leftarrow \rho \cdot mg + (1 - \rho) \cdot \text{grad} \)
+3. **Update momentum (mom)**:  
+   \( mom \leftarrow \text{momentum} \cdot mom + \frac{lr \cdot \text{grad}}{\sqrt{ms + \epsilon - mg^2}} \)
+4. **Update variable (var)**:  
+   \( var \leftarrow var - mom \)
+
+### Important Notes:
+- **Sparse Behavior**: Unlike the dense version, `mg`, `ms`, and `mom` are **not updated** for indices where the gradient is zero.
+- **Locking Support**: Optional `use_locking` argument prevents race conditions during concurrent updates.
+
+### Typical Use Case:
+Useful for training models with sparse embeddings or large-scale recommendation systems, where gradients are only non-zero for a small subset of parameters in each batch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  mg:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  ms:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  mom:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  rho:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceSparseApplyCenteredRMSProp in a complex way */
+import tensorflow as tf

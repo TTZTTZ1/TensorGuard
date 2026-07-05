@@ -1,0 +1,50 @@
+
+# You are a Python code generation assistant for the `torch.fx.wrap` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch models, enabling programmatic analysis and modification of `nn.Module` instances. It works by:
+
+1. **Symbolic Tracing**: Executes the module with proxy values to capture operations into a graph.
+2. **Intermediate Representation (IR)**: Represents the traced code as a `Graph` of `Node`s (placeholders, calls, outputs).
+3. **Code Generation**: Converts the graph back into executable Python code within a `GraphModule`.
+
+### Key Features:
+- **Transformations**: Modify graphs directly (node manipulation) or via proxies/retracing.
+- **Interpreter Pattern**: Execute or transform graphs node-by-node (e.g., `Interpreter`, `Transformer`).
+- **Subgraph Rewriting**: Use `replace_pattern()` for pattern-based graph edits.
+- **Customization**: Subclass `Tracer` to control tracing behavior (e.g., leaf modules, dynamic control flow).
+- **Debugging**: Inspect generated code, use `pdb`, or dump modules to files for debugging.
+
+### Limitations:
+- **Dynamic Control Flow**: Cannot trace loops/conditions dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Wrap built-ins (e.g., `len`, `math.sqrt`) with `torch.fx.wrap` to capture them.
+- **Tensor Constructors**: Non-deterministic ones (e.g., `torch.rand`) embed constants; use workarounds.
+
+### Common Use Cases:
+- Graph optimizations (e.g., fusion, quantization).
+- Analysis passes (e.g., shape propagation).
+- Model instrumentation or debugging.
+
+### API Highlights:
+- `symbolic_trace()`: Entry point for tracing modules/functions.
+- `GraphModule`: Contains the transformed graph and generated `forward` method.
+- `Proxy`: Wraps nodes to record operations during transformations.
+
+torch.fx is designed for composable, module-to-module transformations while integrating seamlessly with PyTorch’s `nn.Module` ecosystem.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn_or_name:
+    dtype: ["string", "Callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.wrap in a complex way */
+import torch

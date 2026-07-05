@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `torch.cholesky_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cholesky_solve` solves the linear system \(AX = B\) for \(X\), where \(A\) is a Hermitian/symmetric positive-definite matrix given by its Cholesky decomposition \(A = LL^H\). It supports real and complex floating-point dtypes and batched inputs.
+
+**Parameters:**
+- `B`: Right-hand side tensor of shape `(*, n, k)`.
+- `L`: Cholesky factor of \(A\) with shape `(*, n, n)` (lower-triangular by default).
+- `upper`: If `True`, treats `L` as upper-triangular.
+
+**Returns:** Solution tensor \(X\) with the same batch dimensions as the inputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, k)"]
+    default: null
+  L:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: ["(*, n, k)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "B"
+    Parameter 2: "L"
+    Constraint: "B.shape[:-2] == L.shape[:-2]"
+  2:
+    Parameter 1: "B"
+    Parameter 2: "L"
+    Constraint: "B.shape[-2] == L.shape[-2]"
+  3:
+    Parameter 1: "out"
+    Parameter 2: "B"
+    Constraint: "out is None or out.shape == B.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cholesky_solve in a complex way */
+import torch

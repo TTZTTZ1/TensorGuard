@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.package.PackagingError` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle both model artifacts (e.g., pickled objects, tensors) and the Python source code they depend on. These packages can be saved, shared, and later loaded in isolated environments—even on different machines or in production via `torch::deploy`.
+
+### **Key Features**
+- **Dependency Capture**: Automatically traces and includes the Python modules your code uses, ensuring reproducibility.
+- **Isolation**: Loaded packages run in a hermetic environment, preventing conflicts with the system’s Python installation.
+- **Resource Packaging**: Save pickled objects, text, and binary data alongside code.
+- **Dependency Management**: Control which modules are packaged (`intern`), left as external dependencies (`extern`), replaced with stubs (`mock`), or blocked (`deny`).
+- **Inspection**: Explore package contents via ZIP tools or the `file_structure()` API.
+
+### **Core Workflow**
+1. **Export** with `PackageExporter`:
+   - Use `save_pickle()`, `save_text()`, `save_binary()` to add data.
+   - Use `save_module()` or `save_source_string()` to include code.
+   - Define dependency policies (`intern`, `extern`, `mock`, `deny`).
+2. **Import** with `PackageImporter`:
+   - Load packages using `load_pickle()`, `import_module()`, etc.
+   - Access resources via `importlib.resources` or the importer’s methods.
+
+### **Use Cases**
+- Packaging models with their custom code for deployment.
+- Creating reproducible experiments by capturing all dependencies.
+- Sharing code and data as a single file.
+
+### **Important Notes**
+- **Security**: Relies on `pickle`; only load trusted packages.
+- **Sharp Edges**: Avoid mutable global state in modules; packaged and non-packaged types are not interchangeable.
+- **Best Practices**: Refactor code to minimize dependencies; prefer `intern`/`extern` over `mock`.
+
+`torch.package` enables robust, self-contained model distribution, crucial for production and collaboration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dependency_graph:
+    dtype: ["object"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  debug:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  []
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.PackagingError in a complex way */
+import torch

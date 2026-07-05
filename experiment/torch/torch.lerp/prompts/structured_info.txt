@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  end:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  weight:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: end
+    Constraint: "all(s1 == 1 or s2 == 1 or s1 == s2 for s1, s2 in zip( (1,)*(max(len(input.shape), len(end.shape)) - len(input.shape)) + tuple(input.shape), (1,)*(max(len(input.shape), len(end.shape)) - len(end.shape)) + tuple(end.shape) ))"
+  2:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "not isinstance(weight, torch.Tensor) or all(len(set(s)) == 1 or 1 in set(s) for s in zip( (1,)*(max(len(weight.shape), len(input.shape), len(end.shape)) - len(weight.shape)) + tuple(weight.shape), (1,)*(max(len(weight.shape), len(input.shape), len(end.shape)) - len(input.shape)) + tuple(input.shape), (1,)*(max(len(weight.shape), len(input.shape), len(end.shape)) - len(end.shape)) + tuple(end.shape) ))"

@@ -1,0 +1,58 @@
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["5-D"]
+    default: null
+  filter_sizes:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1-D with length 5"]
+    default: null
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["5-D"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["length 5"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NDHWC", "NCDHW"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "NDHWC"
+  dilations:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["length 5"]
+    default: "[1, 1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "strides[0] == 1 and strides[4] == 1"
+  2:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NDHWC' and dilations[0] == 1 and dilations[1] == 1) or (data_format == 'NCDHW' and dilations[0] == 1 and dilations[2] == 1)"

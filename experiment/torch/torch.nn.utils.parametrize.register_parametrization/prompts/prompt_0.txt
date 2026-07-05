@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.parametrize.register_parametrization` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.parametrize.register_parametrization` allows you to apply a parametrization (a transformation) to a module's parameter or buffer. When accessing the parameter (e.g., `module.weight`), the parametrized version is returned, with gradients flowing through the transformation during backpropagation.
+
+**Key features:**
+- Adds a `parametrizations` attribute to the module, containing the original tensor and the parametrization.
+- Supports chaining multiple parametrizations on the same tensor.
+- Optional `right_inverse` method enables initializing the original tensor by assignment.
+- Includes caching and training mode synchronization.
+
+**Example usage:**
+```python
+import torch.nn as nn
+import torch.nn.utils.parametrize as P
+
+class Symmetric(nn.Module):
+    def forward(self, X):
+        return X.triu() + X.triu(1).T  # Makes matrix symmetric
+
+m = nn.Linear(5, 5)
+P.register_parametrization(m, "weight", Symmetric())
+# m.weight is now symmetric and differentiable
+```
+
+**Note:** If a parametrization uses multiple inputs, additional parameters are created and may need manual optimizer registration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["nn.Module"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  tensor_name:
+    dtype: ["str"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: null
+  parametrization:
+    dtype: ["nn.Module"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  unsafe:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "module"
+    Parameter 2: "tensor_name"
+    Constraint: "tensor_name in list(module._parameters.keys()) + list(module._buffers.keys())"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.parametrize.register_parametrization in a complex way */
+import torch

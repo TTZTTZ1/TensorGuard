@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.svd_lowrank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.svd_lowrank` computes a randomized low‑rank singular value decomposition (SVD) of a matrix (or batch of matrices) \( A \approx U \text{diag}(S) V^H \). It is designed for large or sparse matrices where a full SVD would be too expensive.
+
+**Key parameters:**
+- `A`: input tensor of shape `(*, m, n)`.
+- `q`: over‑estimated target rank (should satisfy \( k \leq q \leq \min(2k, m, n) \) for true rank \( k \)).
+- `niter`: number of subspace iterations (default 2).
+- `M`: optional mean tensor to subtract from `A` before decomposition.
+
+**When to use:**
+- Prefer `torch.linalg.svd` for dense matrices (much faster).
+- Use `svd_lowrank` for huge sparse matrices that cannot be handled by the full SVD.
+
+**Notes:**
+- Randomized algorithm; set a random seed for reproducibility.
+- Suitable when the true rank \( k \) is unknown; choose \( q \) slightly larger than the expected rank (e.g., \( q = k + 5 \) for large matrices).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(∗, m, n)"]
+    default: null
+  q:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "6"
+  niter:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2"
+  M:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(∗, m, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: niter
+    Parameter 2: niter
+    Constraint: "niter >= 0"
+  2:
+    Parameter 1: M
+    Parameter 2: A
+    Constraint: "M is None or (M.shape == A.shape or (len(M.shape) <= len(A.shape) and all(m == a or m == 1 for m, a in zip(M.shape, A.shape[-len(M.shape):]))))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.svd_lowrank in a complex way */
+import torch

@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant` is a TensorFlow class that represents a circulant matrix (or batch of circulant matrices) without explicitly storing the full matrix. Instead, it is defined by its frequency-domain **spectrum**, which is the DFT of the convolution kernel.
+
+### Key Features:
+- **Efficient Operations**: Matrix multiplication (`matmul`) and solving linear systems (`solve`) are performed via FFT in \(O(N \log N)\) time per column.
+- **Batch Support**: Handles batches of circulant matrices with shape `[B1,...,Bb, N, N]`.
+- **Property Hints**: Allows specifying matrix properties like `is_self_adjoint`, `is_positive_definite`, etc., for validation and optimization.
+- **Real/Complex Handling**: Can enforce real-valued input/output even with a Hermitian spectrum.
+
+### Core Concepts:
+- **Spectrum**: A 1D tensor (or batched) representing the eigenvalues of the circulant matrix (the DFT of the convolution kernel).
+- **Convolution Kernel**: The inverse DFT of the spectrum, defining the circulant structure.
+- **Hermitian Spectrum**: If the spectrum is Hermitian, the operator corresponds to a real-valued matrix.
+
+### Common Use Cases:
+1. **Define via Spectrum**:
+   ```python
+   spectrum = [6., 4., 2.]
+   operator = LinearOperatorCirculant(spectrum)
+   ```
+2. **Real-Valued Matrix from Hermitian Spectrum**:
+   ```python
+   operator = LinearOperatorCirculant(spectrum, input_output_dtype=tf.float32)
+   ```
+3. **Efficient Matrix Operations**:
+   - `operator.matmul(x)`: Computes \(A x\) using FFT.
+   - `operator.solve(rhs)`: Solves \(A X = \text{rhs}\) using FFT.
+
+### Performance:
+- Operations scale with \(O(N \log N)\) per column, making it efficient for large \(N\).
+- Batch dimensions increase complexity multiplicatively.
+
+### Important Methods:
+- `to_dense()`: Returns the explicit dense matrix (use cautiously for large \(N\)).
+- `convolution_kernel()`: Returns the time-domain kernel.
+- `assert_hermitian_spectrum()`: Validates if the spectrum is Hermitian.
+
+This operator is ideal for problems involving circulant matrices (e.g., convolution, signal processing) where memory and computational efficiency are critical.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  input_output_dtype:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'LinearOperatorCirculant'"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant in a complex way */
+import tensorflow as tf

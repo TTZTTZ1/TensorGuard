@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.addbmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.addbmm` performs a batched matrix multiplication and adds the result to an input matrix. It computes the sum of matrix products from two 3D tensors (`batch1` and `batch2`) and then combines the result with a 2D input tensor using scaling factors `alpha` and `beta`.
+
+**Key Points:**
+- **Inputs:**  
+  - `batch1`: shape `(b, n, m)`  
+  - `batch2`: shape `(b, m, p)`  
+  - `input`: broadcastable to shape `(n, p)`
+- **Operation:**  
+  `output = beta * input + alpha * sum(batch1[i] @ batch2[i] for i in range(b))`
+- **Output:** A 2D tensor of shape `(n, p)`.
+- **Use Case:** Efficiently aggregates results from batched matrix multiplications (e.g., in attention mechanisms or sequence processing).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  batch1:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  batch2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  beta:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: []
+    default: "1"
+  alpha:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: []
+    default: "1"
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: [2]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: batch1
+    Parameter 2: batch2
+    Constraint: "batch1.dim() == 3 and batch2.dim() == 3"
+  2:
+    Parameter 1: batch1
+    Parameter 2: batch2
+    Constraint: "batch1.size(0) == batch2.size(0)"
+  3:
+    Parameter 1: batch1
+    Parameter 2: batch2
+    Constraint: "batch1.size(2) == batch2.size(1)"
+  4:
+    Parameter 1: input
+    Parameter 2: batch1, batch2
+    Constraint: "input.dim() == 2 and (input.size(0) == 1 or input.size(0) == batch1.size(1)) and (input.size(1) == 1 or input.size(1) == batch2.size(2))"
+  5:
+    Parameter 1: input, beta, alpha
+    Parameter 2: null
+    Constraint: "if input.dtype in [torch.float32, torch.float64] then isinstance(beta, (int, float)) and isinstance(alpha, (int, float)) else isinstance(beta, int) and isinstance(alpha, int)"
+  6:
+    Parameter 1: out
+    Parameter 2: batch1, batch2
+    Constraint: "out is None or out.shape == (batch1.size(1), batch2.size(2))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addbmm in a complex way */
+import torch

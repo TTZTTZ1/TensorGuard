@@ -1,0 +1,34 @@
+# tf.raw_ops.PlaceholderWithDefault
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/PlaceholderWithDefault](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/PlaceholderWithDefault)
+
+---
+
+A placeholder op that passes through `input` when its output is not fed.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.PlaceholderWithDefault`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/PlaceholderWithDefault)
+
+```
+tf.raw_ops.PlaceholderWithDefault(
+    input, shape, name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `input` | A `Tensor`. The default value to produce when `output` is not fed. |
+| `shape` | A [`tf.TensorShape`](https://tensorflow.google.cn/api_docs/python/tf/TensorShape) or list of `ints`. The (possibly partial) shape of the tensor. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `input`. | |

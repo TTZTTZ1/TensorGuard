@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_backend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables distributed parallel training across multiple processes and machines. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Process Groups**: Logical groups of processes for collective communication.
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (CPU).
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device topologies.
+
+## **Key Components**
+
+### **Initialization**
+```python
+dist.init_process_group(backend="nccl", init_method="env://")
+# or
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+### **Collective Operations**
+- **Point-to-point**: `send()`, `recv()`, `isend()`, `irecv()`
+- **Collectives**: `all_reduce()`, `broadcast()`, `all_gather()`, `scatter()`, `barrier()`
+- **Object collectives**: Python object communication (with performance caveats)
+
+### **Groups & Topology**
+- Create subgroups with `new_group()`
+- `DeviceMesh` for multi-dimensional parallelism (DP, TP, etc.)
+- Rank/world size utilities: `get_rank()`, `get_world_size()`
+
+## **Best Practices**
+1. **Backend Selection**:
+   - CUDA GPU: Use NCCL
+   - CPU: Use Gloo
+   - XPU GPU: Use XCCL
+
+2. **Initialization Methods**:
+   - Environment variables (default: `env://`)
+   - TCP (`tcp://IP:PORT`)
+   - Shared file system (`file:///path`)
+
+3. **Performance Tips**:
+   - Use NCCL for GPU training with InfiniBand/Ethernet
+   - Set `async_op=True` for computation/communication overlap
+   - Configure network interfaces via `NCCL_SOCKET_IFNAME`/`GLOO_SOCKET_IFNAME`
+
+## **Debugging & Profiling**
+- `TORCH_DISTRIBUTED_DEBUG=INFO|DETAIL` for detailed logging
+- `torch.distributed.breakpoint()` for rank-specific debugging
+- `monitored_barrier()` for timeout-aware synchronization
+- Standard PyTorch profiler support for collective operations
+
+## **Important Notes**
+- Each process maintains independent Python interpreter and optimizer
+- Supports synchronous (`async_op=False`) and asynchronous (`async_op=True`) operations
+- Requires explicit cleanup with `destroy_process_group()`
+- Windows support available (except NCCL backend)
+
+The package provides the foundation for `DistributedDataParallel` and enables scalable training across multiple nodes while avoiding Python GIL limitations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_backend in a complex way */
+import torch

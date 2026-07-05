@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.VGG19` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.VGG19` function instantiates the VGG19 convolutional neural network, which is a deep model pre-trained on ImageNet for image classification.  
+
+**Key features:**  
+- **Default input size:** 224×224 pixels with 3 color channels (RGB).  
+- **Preprocessing:** Requires input images to be processed using `keras.applications.vgg19.preprocess_input` (converts RGB to BGR and centers pixel values relative to ImageNet).  
+- **Flexible configuration:**  
+  - `include_top`: Option to include or exclude the final fully connected classification layers.  
+  - `weights`: Load pre-trained ImageNet weights, use random initialization, or load custom weights from a file.  
+  - `input_shape`: Customizable if `include_top=False` (minimum 32×32).  
+  - `pooling`: Apply global average or max pooling when `include_top=False`.  
+  - `classes`: Number of output classes (only relevant if `include_top=True` and no pre-trained weights are used).  
+
+**Common use cases:**  
+- Image classification (with `include_top=True`).  
+- Feature extraction or transfer learning (with `include_top=False`).  
+- Neural style transfer (as shown in TensorFlow tutorials).  
+
+**Reference:** Based on the paper *"Very Deep Convolutional Networks for Large-Scale Image Recognition"* (ICLR 2015).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "None"]
+    range: [None, "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple of 3 ints, min dimension 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["string", "None"]
+    range: [None, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "None"]
+    range: ["str", "callable", None]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "not (include_top and input_shape is not None)"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "include_top or classes == 1000"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights is None or classes == 1000"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.VGG19 in a complex way */
+import tensorflow as tf

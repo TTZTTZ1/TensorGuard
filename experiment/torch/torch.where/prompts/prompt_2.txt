@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `torch.where` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.where` is a PyTorch function that selects elements from one of two input tensors based on a condition tensor. It operates element-wise: where `condition` is True (nonzero), the output takes the value from `input`; otherwise, it takes the value from `other`. All inputs must be broadcastable to a common shape.
+
+**Key features:**
+- **Three-argument form:** `torch.where(condition, input, other)` → returns a tensor with selected values.
+- **Single-argument form:** `torch.where(condition)` → equivalent to `torch.nonzero(condition, as_tuple=True)`, returning a tuple of coordinate tensors for True entries.
+- **Supports scalars:** Both `input` and `other` can be scalars, which are broadcast to match the condition's shape.
+
+**Example:**
+```python
+>>> torch.where(x > 0, x, 0.0)  # Keeps positive values, replaces others with 0
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  condition:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: condition
+    Parameter 2: input
+    Constraint: "try: torch.broadcast_shapes(condition.shape if torch.is_tensor(condition) else (), input.shape if torch.is_tensor(input) else (), other.shape if torch.is_tensor(other) else ()); True; except ValueError: False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.where in a complex way */
+import torch

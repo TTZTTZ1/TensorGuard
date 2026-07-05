@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.switch_case` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.switch_case` creates an integer-indexed conditional operation, similar to a C++ switch/case statement. It selects and executes one callable from `branch_fns` based on the value of `branch_index`, making it more efficient than `tf.case` when exactly one branch is chosen.
+
+**Key Features:**
+- Accepts `branch_fns` as a dictionary, list of (int, callable) pairs, or a list of callables (with implicit integer keys starting from 0).
+- If no matching key is found, it executes the `default` callable; if no default is provided, it executes the branch with the maximum key.
+- All callables must return the same nested structure of tensors (supported via `tf.nest`).
+
+**Example:**
+```python
+r = tf.switch_case(branch_index, branch_fns={0: f1, 1: f2}, default=f3)
+```
+This provides a streamlined way to implement integer-based conditional logic in TensorFlow graphs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  branch_index:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  branch_fns:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["dict", "list"]
+    shape: ["No mention"]
+    default: null
+  default:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["callable"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "'switch_case'"
+constraints:
+  1:
+    Parameter 1: "branch_fns"
+    Parameter 2: "None"
+    Constraint: "isinstance(branch_fns, (dict, list))"
+  2:
+    Parameter 1: "branch_fns"
+    Parameter 2: "None"
+    Constraint: "not isinstance(branch_fns, list) or all(callable(item) or (isinstance(item, tuple) and len(item)==2 and isinstance(item[0], int) and callable(item[1])) for item in branch_fns)"
+  3:
+    Parameter 1: "branch_fns"
+    Parameter 2: "None"
+    Constraint: "set(k for k in (branch_fns.keys() if isinstance(branch_fns, dict) else [i if isinstance(branch_fns[i], callable) else branch_fns[i][0] for i in range(len(branch_fns))])) == set(range(len(branch_fns)))"
+  4:
+    Parameter 1: "branch_fns"
+    Parameter 2: "default"
+    Constraint: "all(callable(fn) for fn in (branch_fns.values() if isinstance(branch_fns, dict) else [item if callable(item) else item[1] for item in branch_fns])) and (default is None or callable(default))"
+  5:
+    Parameter 1: "branch_index"
+    Parameter 2: "None"
+    Constraint: "hasattr(branch_index, 'dtype') and branch_index.dtype.is_integer"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.switch_case in a complex way */
+import tensorflow as tf

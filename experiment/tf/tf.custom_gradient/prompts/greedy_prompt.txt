@@ -1,0 +1,41 @@
+
+# You are a Python code generation assistant for the `tf.custom_gradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.custom_gradient` is a decorator that allows you to define a custom gradient for a sequence of operations in TensorFlow. It is useful for improving numerical stability or efficiency when the default automatic differentiation is insufficient.
+
+### Key Features:
+- **Custom Gradient Definition**: You can specify a manual gradient computation for a function, overriding the default autodiff behavior.
+- **Handles Multiple Inputs**: The gradient function must return gradients for all inputs, matching the number of arguments.
+- **Supports Variables**: If the forward function uses trainable variables, the gradient function should accept an additional `variables` parameter and return gradients for those variables as well.
+- **Chain Rule Integration**: The custom gradient automatically integrates with TensorFlow’s backpropagation via the upstream gradient (`upstream`), which represents gradients from later layers.
+
+### Common Use Cases:
+1. **Numerical Stability**: Fix unstable gradients (e.g., the `log1pexp` example where the default gradient produces NaN for large inputs).
+2. **Efficiency**: Provide a more efficient gradient implementation than the default autodiff.
+3. **Non-Differentiable Operations**: Customize gradients for operations that lack built-in derivatives (using `tf.stop_gradient` to avoid errors).
+
+### Important Notes:
+- The decorated function must return both the output and a gradient function.
+- The gradient function receives the upstream gradient and should return gradients corresponding to each input.
+- Nesting `@tf.custom_gradient` requires careful handling to avoid confusion with higher-order derivatives.
+- When using variables, ensure ResourceVariables are enabled in the variable scope.
+
+This decorator offers fine-grained control over gradient computation, complementing TensorFlow’s automatic differentiation for specialized needs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  f:
+    dtype: ["function"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.custom_gradient in a complex way */
+import tensorflow as tf

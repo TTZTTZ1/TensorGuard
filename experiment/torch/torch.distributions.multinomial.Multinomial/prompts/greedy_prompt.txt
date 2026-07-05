@@ -1,0 +1,135 @@
+
+# You are a Python code generation assistant for the `torch.distributions.multinomial.Multinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable Distributions**: Includes common distributions (Normal, Bernoulli, Categorical, etc.) with parameter validation via constraints.
+- **Gradient Estimation**: Supports two main methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients
+  - **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## Main Components
+
+### 1. **Distribution Base Class**
+Abstract base class with essential methods:
+- `sample()` / `rsample()`: Generate samples (with/without reparameterization)
+- `log_prob()`: Compute log probability density/mass
+- `entropy()`: Calculate distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+- `support`: Defines valid domain of the distribution
+
+### 2. **Key Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Pareto, Weibull (via `TransformedDistribution`)
+- **Specialized**: LKJCholesky (correlation matrices), Wishart, VonMises (circular), MixtureSameFamily
+
+### 3. **Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, StickBreaking, etc.) for reparameterization
+- **Constraints**: Define valid parameter ranges (positive, simplex, interval, etc.)
+- **Registry System**: `transform_to()` and `biject_to()` for mapping constraints to transforms
+
+### 4. **KL Divergence**
+- `kl_divergence()`: Computes KL divergence between distributions
+- Extensible via `register_kl()` decorator for custom distribution pairs
+
+## Practical Usage Examples
+
+### REINFORCE (Policy Gradient)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick (VAEs)
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### Distribution Creation & Sampling
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))  # 100 samples
+log_probs = normal.log_prob(samples)
+
+# Multivariate normal
+mvn = MultivariateNormal(torch.zeros(2), torch.eye(2))
+```
+
+## Key Features
+- **Batch Support**: All distributions support batched parameters
+- **Validation**: Optional argument validation via `validate_args`
+- **Exponential Family**: Specialized class for distributions in exponential family form
+- **Independent Wrapper**: Reinterprets batch dimensions as event dimensions
+- **Transformed Distributions**: Compose base distributions with transforms
+
+The package is designed for both machine learning applications (VAEs, reinforcement learning) and general probabilistic modeling, providing efficient, differentiable operations on GPU/CPU.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["int", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: "1"
+  probs:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  logits:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: null
+    Constraint: "total_count >= 0"
+  2:
+    Parameter 1: probs
+    Parameter 2: null
+    Constraint: "torch.all(probs >= 0) and torch.all(probs <= 1)"
+  3:
+    Parameter 1: logits
+    Parameter 2: null
+    Constraint: "torch.isfinite(logits)"
+  4:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+  5:
+    Parameter 1: total_count
+    Parameter 2: probs
+    Constraint: "torch.broadcast_shapes(total_count.shape, probs.shape) is not None"
+  6:
+    Parameter 1: total_count
+    Parameter 2: logits
+    Constraint: "torch.broadcast_shapes(total_count.shape, logits.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.multinomial.Multinomial in a complex way */
+import torch

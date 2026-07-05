@@ -1,0 +1,78 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["1D", "2D"]
+    shape: [["L"], ["B", "L"]]
+    default: null
+  n_fft:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  hop_length:
+    dtype: ["int", "None"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  win_length:
+    dtype: ["int", "None"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  window:
+    dtype: ["Tensor", "None"]
+    range: null
+    structure: ["1D"]
+    shape: [["win_length"]]
+    default: "None"
+  center:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  pad_mode:
+    dtype: ["str"]
+    range: [["reflect", "constant", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"reflect\""
+  normalized:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  onesided:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  return_complex:
+    dtype: ["bool", "None"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "win_length"
+    Parameter 2: "n_fft"
+    Constraint: "win_length is None or win_length <= n_fft"
+  2:
+    Parameter 1: "window"
+    Parameter 2: "win_length"
+    Constraint: "window is None or (window.ndim == 1 and window.size(0) == win_length)"
+  3:
+    Parameter 1: "onesided"
+    Parameter 2: "input"
+    Constraint: "not (input.is_complex() or (window is not None and window.is_complex())) or onesided == False"
+  4:
+    Parameter 1: "return_complex"
+    Parameter 2: "input"
+    Constraint: "not input.is_complex() or return_complex is not None"

@@ -1,0 +1,36 @@
+params:
+  LU_data:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["*"]
+    default: null
+  LU_pivots:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["*"]
+    default: null
+  unpack_data:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  unpack_pivots:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "LU_data"
+    Parameter 2: "LU_pivots"
+    Constraint: "len(LU_data.shape) >= 2 and LU_data.shape[:-2] == LU_pivots.shape[:-1] and LU_pivots.shape[-1] == min(LU_data.shape[-2], LU_data.shape[-1])"

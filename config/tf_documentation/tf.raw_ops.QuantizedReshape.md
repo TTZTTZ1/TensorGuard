@@ -1,0 +1,102 @@
+# tf.raw_ops.QuantizedReshape
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QuantizedReshape](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QuantizedReshape)
+
+---
+
+Reshapes a quantized tensor as per the Reshape op.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.QuantizedReshape`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QuantizedReshape)
+
+```
+tf.raw_ops.QuantizedReshape(
+    tensor, shape, input_min, input_max, name=None
+)
+```
+
+```
+<!-- Tabular view -->
+ <table class="responsive fixed orange">
+<colgroup><col width="214px"><col></colgroup>
+<tr><th colspan="2"><h2 class="add-link">Args</h2></th></tr>
+
+<tr>
+<td>
+`tensor`<a id="tensor"></a>
+</td>
+<td>
+A `Tensor`.
+</td>
+</tr><tr>
+<td>
+`shape`<a id="shape"></a>
+</td>
+<td>
+A `Tensor`. Must be one of the following types: `int32`, `int64`.
+Defines the shape of the output tensor.
+</td>
+</tr><tr>
+<td>
+`input_min`<a id="input_min"></a>
+</td>
+<td>
+A `Tensor` of type `float32`. The minimum value of the input.
+</td>
+</tr><tr>
+<td>
+`input_max`<a id="input_max"></a>
+</td>
+<td>
+A `Tensor` of type `float32`. The maximum value of the input.
+</td>
+</tr><tr>
+<td>
+`name`<a id="name"></a>
+</td>
+<td>
+A name for the operation (optional).
+</td>
+</tr>
+</table>
+
+<!-- Tabular view -->
+ <table class="responsive fixed orange">
+<colgroup><col width="214px"><col></colgroup>
+<tr><th colspan="2"><h2 class="add-link">Returns</h2></th></tr>
+<tr class="alt">
+<td colspan="2">
+A tuple of `Tensor` objects (output, output_min, output_max).
+</td>
+</tr>
+<tr>
+<td>
+`output`<a id="output"></a>
+</td>
+<td>
+A `Tensor`. Has the same type as `tensor`.
+</td>
+</tr><tr>
+<td>
+`output_min`<a id="output_min"></a>
+</td>
+<td>
+A `Tensor` of type `float32`.
+</td>
+</tr><tr>
+<td>
+`output_max`<a id="output_max"></a>
+</td>
+<td>
+A `Tensor` of type `float32`.
+</td>
+</tr>
+</table>
+```

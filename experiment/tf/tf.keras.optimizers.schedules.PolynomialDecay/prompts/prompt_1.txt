@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `tf.keras.optimizers.schedules.PolynomialDecay` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`PolynomialDecay` is a TensorFlow/Keras learning rate schedule that decays the learning rate polynomially from an initial value to a specified end value over a set number of steps.  
+
+**Key features:**  
+- **Decay formula**:  
+  \[
+  \text{lr} = (\text{initial\_lr} - \text{end\_lr}) \times \left(1 - \frac{\text{step}}{\text{decay\_steps}}\right)^{\text{power}} + \text{end\_lr}
+  \]
+  If `step > decay_steps`, learning rate stays at `end_learning_rate` unless `cycle=True`.  
+
+- **Cycle mode** (optional):  
+  If `cycle=True`, the decay period (`decay_steps`) is extended multiplicatively when steps exceed it, allowing the decay to restart in cycles.  
+
+- **Usage**:  
+  Pass the schedule directly to a Keras optimizer’s `learning_rate` argument. It is serializable via `serialize`/`deserialize`.  
+
+**Parameters:**  
+- `initial_learning_rate`: Starting learning rate (float).  
+- `decay_steps`: Steps over which decay occurs (positive integer).  
+- `end_learning_rate`: Final learning rate (float, default 0.0001).  
+- `power`: Exponent of polynomial (float, default 1.0 → linear decay).  
+- `cycle`: Whether to restart decay cycles after `decay_steps` (bool).  
+- `name`: Optional operation name.  
+
+**Example:**  
+```python
+lr_schedule = PolynomialDecay(
+    initial_learning_rate=0.1,
+    decay_steps=10000,
+    end_learning_rate=0.01,
+    power=0.5
+)
+optimizer = SGD(learning_rate=lr_schedule)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  initial_learning_rate:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  decay_steps:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  end_learning_rate:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0001"
+  power:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  cycle:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: '"PolynomialDecay"'
+constraints:
+  1:
+    Parameter 1: decay_steps
+    Parameter 2: 
+    Constraint: "decay_steps > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.optimizers.schedules.PolynomialDecay in a complex way */
+import tensorflow as tf

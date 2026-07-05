@@ -1,0 +1,56 @@
+params:
+  superdiag:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., 1, M]"]
+    default: null
+  maindiag:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., 1, M]"]
+    default: null
+  subdiag:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., 1, M]"]
+    default: null
+  rhs:
+    dtype: ["float64", "float32", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, N]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "superdiag"
+    Parameter 2: "maindiag"
+    Constraint: "superdiag.dtype == maindiag.dtype"
+  2:
+    Parameter 1: "superdiag"
+    Parameter 2: "subdiag"
+    Constraint: "superdiag.dtype == subdiag.dtype"
+  3:
+    Parameter 1: "superdiag"
+    Parameter 2: "rhs"
+    Constraint: "superdiag.dtype == rhs.dtype"
+  4:
+    Parameter 1: "superdiag"
+    Parameter 2: "maindiag"
+    Constraint: "superdiag.shape[:-2] == maindiag.shape[:-2] and superdiag.shape[-1] == maindiag.shape[-1]"
+  5:
+    Parameter 1: "superdiag"
+    Parameter 2: "subdiag"
+    Constraint: "superdiag.shape[:-2] == subdiag.shape[:-2] and superdiag.shape[-1] == subdiag.shape[-1]"
+  6:
+    Parameter 1: "superdiag"
+    Parameter 2: "rhs"
+    Constraint: "superdiag.shape[:-2] == rhs.shape[:-2] and superdiag.shape[-1] == rhs.shape[-2]"

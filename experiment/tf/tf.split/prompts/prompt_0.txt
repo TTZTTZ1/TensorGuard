@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.split` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.split` divides a tensor into multiple sub-tensors along a specified axis.  
+
+**Key behaviors:**  
+- If `num_or_size_splits` is an integer, the axis dimension is split into that many equal parts.  
+- If `num_or_size_splits` is a list or 1-D tensor, it defines the sizes of each output along the axis.  
+
+**Example:**  
+```python
+# Split a [5, 30] tensor into 3 equal parts along axis 1 → each part shape: [5, 10]
+s0, s1, s2 = tf.split(x, num_or_size_splits=3, axis=1)
+
+# Split with custom sizes [4, 15, 11] along axis 1
+split0, split1, split2 = tf.split(x, [4, 15, 11], 1)
+```
+
+**Arguments:**  
+- `value`: Input tensor.  
+- `num_or_size_splits`: Either an integer (number of equal splits) or a list of split sizes.  
+- `axis`: Dimension to split (default 0).  
+- `num`: Optional, specifies output count if not inferable.  
+- `name`: Operation name (optional).  
+
+**Returns:**  
+A list of tensors resulting from the split.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  num_or_size_splits:
+    dtype: ["int", "int32 Tensor", "list of ints"]
+    range: "No mention"
+    structure: ["scalar", "tensor", "list"]
+    shape: ["scalar", "1-D"]
+    default: "null"
+  axis:
+    dtype: ["int", "int32 Tensor"]
+    range: ["[-rank(value), rank(value))"]
+    structure: ["scalar", "tensor"]
+    shape: ["scalar"]
+    default: "0"
+  num:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'split'"
+constraints:
+  1:
+    Parameter 1: "axis"
+    Parameter 2: "value"
+    Constraint: "axis >= -tf.rank(value) and axis < tf.rank(value)"
+  2:
+    Parameter 1: "num_or_size_splits"
+    Parameter 2: "value"
+    Constraint: "not isinstance(num_or_size_splits, int) or value.shape[axis] % num_or_size_splits == 0"
+  3:
+    Parameter 1: "num_or_size_splits"
+    Parameter 2: "value"
+    Constraint: "not isinstance(num_or_size_splits, (list, tf.Tensor)) or sum(num_or_size_splits) == value.shape[axis]"
+  4:
+    Parameter 1: "num_or_size_splits"
+    Parameter 2: "num_or_size_splits"
+    Constraint: "not (tf.is_tensor(num_or_size_splits) and tf.rank(num_or_size_splits) == 0)"
+  5:
+    Parameter 1: "num"
+    Parameter 2: "num_or_size_splits"
+    Constraint: "num is not None or (isinstance(num_or_size_splits, int) or (isinstance(num_or_size_splits, (list, tf.Tensor)) and tf.size(num_or_size_splits) is not None))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.split in a complex way */
+import tensorflow as tf

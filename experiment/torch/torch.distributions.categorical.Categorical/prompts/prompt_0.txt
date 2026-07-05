@@ -1,0 +1,120 @@
+
+# You are a Python code generation assistant for the `torch.distributions.categorical.Categorical` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key features and usage:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Follows design patterns similar to TensorFlow Distributions
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `log_prob()`, `rsample()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` (reparameterization trick) for differentiable sampling
+
+### **3. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Normal, Poisson, StudentT, Uniform, etc.
+
+**Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, Relaxed distributions
+
+### **4. Transforms System**
+- Transform between constrained and unconstrained spaces
+- Common transforms: Exp, Sigmoid, Softmax, StickBreaking, Affine, etc.
+- Used in `TransformedDistribution` for complex distributions
+
+### **5. Constraints System**
+- Defines valid parameter/value ranges for distributions
+- Registry system (`biject_to`, `transform_to`) links constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **6. KL Divergence**
+- Computes KL divergence between distributions
+- Pre-registered implementations for many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Practical Usage Examples**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Working with Constraints**
+```python
+# Unconstrained optimization of scale parameter
+unconstrained = torch.zeros(100, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Key Features**
+- **Batching**: All distributions support batch operations
+- **Validation**: Optional argument validation
+- **Extensibility**: Easy to add custom distributions/transforms
+- **Efficiency**: Optimized implementations with GPU support
+- **Integration**: Seamlessly works with PyTorch autograd and neural networks
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring stochastic computation with gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "None"
+    Constraint: "probs is None or ( (probs >= 0).all() and (probs.sum(dim=-1) == 1).all() )"
+  2:
+    Parameter 1: "logits"
+    Parameter 2: "None"
+    Constraint: "logits is None or isinstance(logits, torch.Tensor)"
+  3:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.categorical.Categorical in a complex way */
+import torch

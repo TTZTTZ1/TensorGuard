@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `torch.linalg.cond` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.cond` computes the condition number of a matrix (or batch of matrices) with respect to a specified matrix norm. The condition number quantifies the numerical stability of solving a linear system involving the matrix.
+
+**Key details:**
+- **Input:** A tensor `A` of shape `(*, m, n)`. For norms `'fro'`, `'nuc'`, `inf`, `-inf`, `1`, `-1`, the matrix must be square and invertible (`*, n, n`). For norms `2` and `-2`, any shape is allowed.
+- **Parameter `p`:** Defines the matrix norm used (default is `None`, meaning the 2-norm). Supported values include `'fro'`, `'nuc'`, `inf`, `-inf`, `1`, `-1`, `2`, `-2`.
+- **Output:** A real-valued tensor containing the condition number(s), preserving batch dimensions.
+- **Computation:** For norms `'fro'`, `'nuc'`, `inf`, `-inf`, `1`, `-1`, it uses `torch.linalg.norm` and `torch.linalg.inv`. For `2` and `-2`, it uses singular values (`torch.linalg.svdvals`).
+- **Note:** On CUDA devices, certain norms (`'fro'`, `'nuc'`, `inf`, `-inf`, `1`, `-1`) synchronize the device with the CPU.
+
+**Example:**
+```python
+A = torch.tensor([[1., 0, -1], [0, 1, 0], [1, 0, 1]])
+cond = torch.linalg.cond(A, p=2)  # Condition number using 2-norm
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, m, n)", "(*, n, n)"]
+    default: null
+  p:
+    dtype: ["int", "str", "float", "None"]
+    range: ["None", "'fro'", "'nuc'", "inf", "-inf", "1", "-1", "2", "-2"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.cond in a complex way */
+import torch

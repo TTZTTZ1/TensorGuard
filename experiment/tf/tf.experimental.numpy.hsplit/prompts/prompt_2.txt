@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `tf.experimental.numpy.hsplit` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.numpy.hsplit` is a TensorFlow function that replicates NumPy's `hsplit`. It splits an input array **horizontally** (along the second axis, i.e., columns) into multiple sub-arrays.
+
+**Key points:**
+- **Purpose:** Divides an array into equal or specified column-wise sections.
+- **Parameters:**
+  - `ary`: The input array (TensorFlow tensor/array).
+  - `indices_or_sections`: 
+    - An integer: splits the array into that many equal parts along columns.
+    - A 1-D sequence of integers: specifies the column indices at which to split.
+- **Returns:** A list of sub-arrays resulting from the split.
+- **Note:** For 1-D arrays, it behaves like `split` (since there is no horizontal axis).
+
+**Example use:** Splitting a 2D array of shape `(3, 9)` into 3 equal parts would yield three arrays each of shape `(3, 3)`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ary:
+    dtype: ["int", "float", "complex", "bool"]
+    range: null
+    structure: ["array"]
+    shape: ["[m, n, ...]"]  # with m, n, ... as positive integers and ndim >= 2
+    default: null
+  indices_or_sections:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "sequence"]
+    shape: ["[]", "[k]"]  # scalar or 1-D array with length k
+    default: null
+constraints:
+  1:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, int) or (isinstance(indices_or_sections, (list, tuple)) and all(isinstance(i, int) for i in indices_or_sections))"
+  2:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "(not isinstance(indices_or_sections, int)) or (ary.shape[1] % indices_or_sections == 0)"
+  3:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "not isinstance(indices_or_sections, (list, tuple)) or all(0 <= i < ary.shape[1] for i in indices_or_sections)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.numpy.hsplit in a complex way */
+import tensorflow as tf

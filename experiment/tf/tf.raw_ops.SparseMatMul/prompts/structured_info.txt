@@ -1,0 +1,48 @@
+params:
+  a:
+    dtype: ["float32", "bfloat16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2"]
+    default: null
+  b:
+    dtype: ["float32", "bfloat16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2"]
+    default: null
+  transpose_a:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  a_is_sparse:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  b_is_sparse:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "(tf.shape(a)[1] if not transpose_a else tf.shape(a)[0]) == (tf.shape(b)[0] if not transpose_b else tf.shape(b)[1])"

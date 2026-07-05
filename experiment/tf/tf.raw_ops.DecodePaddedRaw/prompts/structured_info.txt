@@ -1,0 +1,36 @@
+params:
+  input_bytes:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  fixed_length:
+    dtype: ["int32"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  out_type:
+    dtype: ["half", "float32", "float64", "int32", "uint16", "uint8", "int16", "int8", "int64", "bfloat16"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  little_endian:
+    dtype: ["bool"]
+    range: ["true", "false"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: fixed_length
+    Parameter 2: out_type
+    Constraint: "fixed_length % tf.dtypes.as_dtype(out_type).size == 0"

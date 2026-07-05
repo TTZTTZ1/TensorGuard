@@ -1,0 +1,109 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.TanhTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise summary of its key aspects:
+
+### **Core Purpose**
+- Facilitates construction of stochastic computation graphs and gradient estimators (e.g., REINFORCE, reparameterization trick) for optimization tasks like reinforcement learning and variational autoencoders.
+
+### **Main Components**
+1. **Distribution Base Class** (`torch.distributions.Distribution`):
+   - Abstract base class for all probability distributions.
+   - Key methods: `sample()`, `rsample()` (reparameterized), `log_prob()`, `entropy()`, `cdf()`, `icdf()`.
+   - Properties: `mean`, `variance`, `support`, `batch_shape`, `event_shape`.
+
+2. **Built-in Distributions**:
+   - Includes common univariate and multivariate distributions (e.g., `Normal`, `Bernoulli`, `Categorical`, `Beta`, `Gamma`, `Dirichlet`, `MultivariateNormal`).
+   - Specialized distributions: `MixtureSameFamily`, `TransformedDistribution`, `Independent` (for reshaping batch/event dimensions).
+
+3. **Gradient Estimation Techniques**:
+   - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients.
+   - **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling (e.g., in VAEs).
+
+4. **Transforms** (`torch.distributions.transforms`):
+   - Bijective and non-bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`, `AffineTransform`).
+   - Used to create complex distributions via `TransformedDistribution`.
+   - Enable constrained optimization via `biject_to()` and `transform_to()` registries.
+
+5. **Constraints** (`torch.distributions.constraints`):
+   - Define valid parameter domains (e.g., `simplex`, `positive`, `interval`).
+   - Linked to transforms for mapping unconstrained parameters to constrained spaces.
+
+6. **KL Divergence** (`torch.distributions.kl_divergence`):
+   - Computes KL divergence between distributions.
+   - Pre-registered for many distribution pairs; extensible via `register_kl()`.
+
+### **Key Features**
+- **Reparameterization**: Distributions with `has_rsample=True` (e.g., `Normal`, `Gamma`) support pathwise gradients.
+- **Batch and Event Shapes**: Supports batched parameters and multi-dimensional events.
+- **Extensibility**: Users can register custom distributions, transforms, and KL divergences.
+- **Validation**: Optional argument validation via `validate_args`.
+
+### **Common Use Cases**
+1. **Reinforcement Learning**:
+   ```python
+   m = Categorical(probs)
+   action = m.sample()
+   loss = -m.log_prob(action) * reward
+   ```
+2. **Variational Inference**:
+   ```python
+   m = Normal(loc, scale)
+   z = m.rsample()  # Differentiable sample
+   ```
+3. **Constrained Optimization**:
+   ```python
+   unconstrained = torch.randn(5)
+   scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+   ```
+
+### **Registry System**
+- `biject_to`: Maps constraints to bijective transforms (for HMC).
+- `transform_to`: Maps constraints to transforms (for coordinate-wise optimization).
+
+### **Example Workflow**
+```python
+import torch.distributions as dist
+
+# Define a distribution
+normal = dist.Normal(loc=0.0, scale=1.0)
+
+# Sample and compute log probability
+sample = normal.rsample()
+log_prob = normal.log_prob(sample)
+
+# Transform to constrained space
+constraint = dist.constraints.positive
+transform = dist.transforms.ExpTransform()
+transformed_dist = dist.TransformedDistribution(normal, [transform])
+```
+
+### **Advantages**
+- Integrates seamlessly with PyTorch’s autograd.
+- Provides efficient, GPU-accelerated implementations.
+- Supports complex probabilistic models via composition of distributions and transforms.
+
+This package is essential for probabilistic modeling, Bayesian inference, and stochastic optimization in PyTorch, combining flexibility with performance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+
+constraints:
+  1:
+    Parameter 1: "cache_size"
+    Parameter 2: null
+    Constraint: "cache_size in [0, 1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.TanhTransform in a complex way */
+import torch

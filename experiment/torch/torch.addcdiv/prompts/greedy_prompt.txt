@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.addcdiv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.addcdiv` performs an element-wise operation that divides `tensor1` by `tensor2`, multiplies the result by a scalar `value`, and adds the outcome to `input`. The formula is:
+
+\[
+\text{out}_i = \text{input}_i + \text{value} \times \frac{\text{tensor1}_i}{\text{tensor2}_i}
+\]
+
+**Key points:**
+- Supports broadcasting for `input`, `tensor1`, and `tensor2`.
+- For integer inputs, note that future versions will use true division instead of truncating division.
+- `value` is optional and defaults to 1.
+
+**Example:**
+```python
+torch.addcdiv(t, t1, t2, value=0.1)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor1:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  value:
+    dtype: ["int", "float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: tensor1
+    Constraint: "all(a == b or a == 1 or b == 1 for a, b in zip(reversed(input.shape), reversed(tensor1.shape))) and all(a == b or a == 1 or b == 1 for a, b in zip(reversed(input.shape), reversed(tensor2.shape))) and all(a == b or a == 1 or b == 1 for a, b in zip(reversed(tensor1.shape), reversed(tensor2.shape)))"
+  2:
+    Parameter 1: input
+    Parameter 2: value
+    Constraint: "input.dtype in [torch.float32, torch.float64] or isinstance(value, int)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addcdiv in a complex way */
+import torch

@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `torch.profiler.ProfilerActivity` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool for collecting metrics during model training and inference. It helps identify expensive operators, analyze input shapes, examine stack traces, and visualize execution traces.
+
+**Key Components:**
+
+1. **`torch.profiler.profile`** – Main context manager for profiling:
+   - Supports CPU, CUDA, and XPU activities.
+   - Optional `schedule` for cyclic profiling (wait/warmup/active phases).
+   - `on_trace_ready` callback to handle traces (e.g., export or print results).
+   - Features: shape recording, memory profiling, stack traces, FLOPs estimation, and module hierarchy (TorchScript only).
+
+2. **`_KinetoProfile`** – Lower-level wrapper for advanced use (experimental).
+
+3. **`ProfilerAction` & `schedule()`** – Control profiling intervals (skip, wait, warmup, active, repeat).
+
+4. **Output & Export**:
+   - `key_averages()`: Aggregate events by operator, shape, or stack.
+   - `export_chrome_trace()`: Save traces in Chrome JSON format.
+   - `tensorboard_trace_handler()`: Generate TensorBoard-compatible files.
+   - `export_stacks()`: Save stack traces.
+   - `export_memory_timeline()`: Export memory usage (deprecated; use `torch.cuda.memory` APIs instead).
+
+5. **Intel ITT APIs** – For marking events and pushing/pop ranges in Intel tracing tools.
+
+**Basic Usage Example:**
+```python
+with torch.profiler.profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+    # Code to profile
+    model(input)
+print(prof.key_averages().table(sort_by="self_cuda_time_total"))
+```
+
+**Note:** Enabling shape/stack tracing adds overhead. The legacy `torch.autograd.profiler` is deprecated.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  activity:
+    dtype: ["string"]
+    range: [["CPU", "XPU", "MTIA", "CUDA", "HPU", "PrivateUse1"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.ProfilerActivity in a complex way */
+import torch

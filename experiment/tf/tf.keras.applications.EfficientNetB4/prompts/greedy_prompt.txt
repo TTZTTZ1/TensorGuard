@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.EfficientNetB4` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.EfficientNetB4` is a pre-trained convolutional neural network model from the EfficientNet family, designed for image classification. It is based on the EfficientNet architecture, which optimizes model scaling for improved accuracy and efficiency.
+
+**Key Features:**
+- **Pre-trained Weights:** Can be loaded with ImageNet weights (`weights='imagenet'`) for transfer learning or used with custom weights.
+- **Input Handling:** Accepts RGB images with pixel values in the range `[0, 255]`. Input preprocessing is built into the model as a `Rescaling` layer.
+- **Flexible Top Layer:** The top fully-connected classification layer can be included or excluded (`include_top`) to adapt the model for feature extraction or custom classification tasks.
+- **Pooling Options:** When `include_top=False`, you can apply global average or max pooling (`pooling='avg'` or `'max'`) to obtain 2D feature vectors, or omit pooling to retain 4D convolutional outputs.
+
+**Common Use Cases:**
+1. **Image Classification:** Direct use with `include_top=True` for classifying images into 1000 ImageNet categories or a custom number of classes.
+2. **Transfer Learning:** Remove the top layer (`include_top=False`) to extract features and add custom layers for new tasks.
+
+**Important Notes:**
+- Input images should be float tensors with values in `[0, 255]`.
+- The `classifier_activation` can be adjusted (e.g., to `None` for logits), but when using ImageNet weights, it must be either `None` or `'softmax'`.
+
+This model balances performance and computational efficiency, making it suitable for both research and production applications in computer vision.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "None"]
+    range: ["None", "\"imagenet\"", "any valid string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"imagenet\""
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with last element 3"]
+    structure: ["tuple"]
+    shape: ["any"]
+    default: "null"
+  pooling:
+    dtype: ["string", "None"]
+    range: ["None", "\"avg\"", "\"max\""]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "None"]
+    range: ["string", "callable", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "pooling"
+    Constraint: "include_top == False or pooling is None"
+  3:
+    Parameter 1: "include_top"
+    Parameter 2: "classes"
+    Constraint: "include_top == True or classes == 1000"
+  4:
+    Parameter 1: "weights"
+    Parameter 2: "classes"
+    Constraint: "weights is None or classes == 1000"
+  5:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.EfficientNetB4 in a complex way */
+import tensorflow as tf

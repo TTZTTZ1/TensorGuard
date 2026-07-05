@@ -1,0 +1,38 @@
+params:
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, k)"]
+    default: null
+  L:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  upper:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor", "None"]
+    shape: ["(*, n, k)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "B"
+    Parameter 2: "L"
+    Constraint: "B.shape[:-2] == L.shape[:-2]"
+  2:
+    Parameter 1: "B"
+    Parameter 2: "L"
+    Constraint: "B.shape[-2] == L.shape[-2]"
+  3:
+    Parameter 1: "out"
+    Parameter 2: "B"
+    Constraint: "out is None or out.shape == B.shape"

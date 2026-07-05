@@ -1,0 +1,113 @@
+
+# You are a Python code generation assistant for the `torch.distributions.exp_family.ExponentialFamily` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Two gradient estimation methods**:
+  - **Score function/REINFORCE**: Uses `sample()` and `log_prob()` for policy gradients
+  - **Pathwise derivative/Reparameterization**: Uses `rsample()` for differentiable sampling (e.g., VAEs)
+
+## Main Components
+
+### 1. **Distribution Classes**
+- **Base class**: `Distribution` (abstract) with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`
+- **Common distributions**: 
+  - Continuous: `Normal`, `Beta`, `Gamma`, `Exponential`, `Dirichlet`, etc.
+  - Discrete: `Bernoulli`, `Categorical`, `Binomial`, `Poisson`, etc.
+  - Multivariate: `MultivariateNormal`, `LowRankMultivariateNormal`
+  - Transformed: `LogNormal`, `HalfNormal`, `Gumbel`, etc.
+
+### 2. **Key Methods**
+- `sample()` / `rsample()`: Generate samples (latter is reparameterizable)
+- `log_prob(value)`: Compute log probability density/mass
+- `entropy()`: Compute distribution entropy
+- `cdf()` / `icdf()`: Cumulative distribution and inverse functions
+
+### 3. **Specialized Classes**
+- `ExponentialFamily`: Base for exponential family distributions
+- `TransformedDistribution`: Apply transforms to base distributions
+- `Independent`: Reinterpret batch dims as event dims
+- `MixtureSameFamily`: Mixture distributions with same component type
+
+### 4. **Transforms & Constraints**
+- **Transforms**: `AffineTransform`, `ExpTransform`, `SigmoidTransform`, etc.
+- **Constraints**: Define valid parameter ranges (e.g., `positive`, `simplex`, `interval`)
+- **Constraint registries**: `biject_to()` and `transform_to()` for unconstrained optimization
+
+### 5. **Utilities**
+- **KL Divergence**: `kl_divergence(p, q)` with registered implementations for many distribution pairs
+- **Validation**: Automatic argument validation with `validate_args`
+
+## Typical Usage Patterns
+
+### REINFORCE (Policy Gradient)
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### Reparameterization Trick
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### Distribution Creation & Sampling
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample((100,))  # 100 samples
+
+# With gradients
+loc = torch.tensor(0.0, requires_grad=True)
+scale = torch.tensor(1.0, requires_grad=True)
+normal = Normal(loc, scale)
+loss = -normal.log_prob(data).sum()
+loss.backward()
+```
+
+## Key Features
+- **Batch support**: All distributions support batched parameters
+- **Gradient-friendly**: Designed for use in neural networks and optimization
+- **Extensible**: Register custom distributions, transforms, and KL divergences
+- **Numerically stable**: Careful implementation of log-probabilities and transforms
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions within PyTorch's autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  batch_shape:
+    dtype: ["torch.Size"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  event_shape:
+    dtype: ["torch.Size"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  validate_args:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.exp_family.ExponentialFamily in a complex way */
+import torch

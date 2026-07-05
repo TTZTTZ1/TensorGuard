@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `torch.distributed.Store` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. It supports synchronous distributed training and is essential for scaling deep learning models.
+
+## Key Features
+
+### Backends
+- **Gloo**: Recommended for CPU training and as a fallback for GPU
+- **NCCL**: Optimized for CUDA GPU training (default for CUDA)
+- **XCCL**: For XPU GPU training
+- **MPI**: Optional, requires building from source
+
+### Initialization Methods
+1. **Environment Variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: Specify IP address and port
+3. **Shared File System**: Use a shared file for coordination
+
+### Core Components
+- **Process Groups**: Manage communication groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional topologies
+- **Collective Operations**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`/`recv` and asynchronous `isend`/`irecv`
+
+### Key Functions
+- `init_process_group()`: Initialize distributed package
+- `init_device_mesh()`: Create device mesh for multi-dimensional parallelism
+- `destroy_process_group()`: Clean up resources
+- `get_rank()` / `get_world_size()`: Get process information
+
+### Synchronous vs Asynchronous
+- **Synchronous** (`async_op=False`): Block until operation completes
+- **Asynchronous** (`async_op=True`): Return `Work` object for non-blocking execution
+
+### Key-Value Stores
+- **TCPStore**: Network-based store for multi-machine coordination
+- **FileStore**: File-based store for shared filesystems
+- **HashStore**: In-memory store for single-process multi-threading
+
+### Best Practices
+1. Use NCCL for CUDA GPU training, Gloo for CPU
+2. Call `destroy_process_group()` for clean shutdown
+3. Set `torch.cuda.set_device()` before NCCL operations
+4. Use `DistributedDataParallel` wrapper for model parallelism
+
+### Debugging Tools
+- `monitored_barrier()`: Enhanced barrier with timeout detection
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `torch.distributed.breakpoint()`: Debug single rank with pdb
+
+The package enables efficient distributed training by allowing each process to maintain its own optimizer and Python interpreter, reducing communication overhead compared to other parallelism approaches.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  key:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  amount:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  expected_value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  desired_value:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  block:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "True"
+  timeout:
+    dtype: ["timedelta"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "timedelta(seconds=300)"
+
+constraints:
+  1:
+    Parameter 1: "keys"
+    Parameter 2: "values"
+    Constraint: "len(keys) == len(values)"
+  2:
+    Parameter 1: "dst"
+    Parameter 2: "group_dst"
+    Constraint: "dst is None or group_dst is None"
+  3:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.Store in a complex way */
+import torch

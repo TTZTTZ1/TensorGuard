@@ -1,0 +1,70 @@
+params:
+  name:
+    dtype: ["str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+  entrypoint:
+    dtype: ["Callable", "str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+  args:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: "null"
+  envs:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: "null"
+  log_dir:
+    dtype: ["str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+  start_method:
+    dtype: ["str"]
+    range: ["spawn", "fork", "forkserver"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "'spawn'"
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: "No mention"
+    structure: ["object"]
+    shape: ["1"]
+    default: "null"
+  local_ranks_filter:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "null"
+  duplicate_stdout_filters:
+    dtype: ["list", "None"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "None"
+  duplicate_stderr_filters:
+    dtype: ["list", "None"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "set(args.keys()) == set(envs.keys())"
+  2:
+    Parameter 1: "entrypoint"
+    Parameter 2: "args"
+    Constraint: "not (isinstance(entrypoint, str) and any(not isinstance(arg, str) for args_tuple in args.values() for arg in args_tuple))"

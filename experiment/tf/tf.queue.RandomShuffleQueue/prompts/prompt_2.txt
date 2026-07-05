@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.queue.RandomShuffleQueue` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.queue.RandomShuffleQueue` is a TensorFlow queue implementation that dequeues elements in random order. It is useful for shuffling data during training to improve model generalization.
+
+**Key Features:**
+- **Randomized Dequeue:** Elements are dequeued in random order, not FIFO.
+- **Capacity Control:** Defined by `capacity` (max elements) and `min_after_dequeue` (minimum elements to retain after dequeue to ensure randomness).
+- **Multi-component Elements:** Supports tuples of tensors with specified `dtypes`, `shapes`, and optional `names`.
+- **Thread-safe Operations:** Supports concurrent enqueue/dequeue across multiple sessions via `shared_name`.
+
+**Core Methods:**
+- `enqueue(vals)`: Adds a single element (blocks if full).
+- `enqueue_many(vals)`: Adds a batch of elements.
+- `dequeue()`: Removes and returns one random element (blocks if empty).
+- `dequeue_many(n)`: Removes and concatenates `n` random elements.
+- `close()`: Closes the queue, preventing further enqueues.
+- `size()`: Returns the current number of elements.
+
+**Typical Use Case:**  
+Used in data pipelines to shuffle input data (e.g., training samples) by enqueuing data in order and dequeuing randomly, often combined with `tf.data` or threading for efficient preprocessing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  capacity:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  min_after_dequeue:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  dtypes:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  shapes:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list", "None"]
+    shape: null
+    default: "None"
+  names:
+    dtype: ["list", "None"]
+    range: null
+    structure: ["list", "None"]
+    shape: null
+    default: "None"
+  seed:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: []
+    default: "None"
+  shared_name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'random_shuffle_queue'"
+constraints:
+  1:
+    Parameter 1: shapes
+    Parameter 2: dtypes
+    Constraint: "shapes is None or len(shapes) == len(dtypes)"
+  2:
+    Parameter 1: names
+    Parameter 2: dtypes
+    Constraint: "names is None or len(names) == len(dtypes)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.queue.RandomShuffleQueue in a complex way */
+import tensorflow as tf

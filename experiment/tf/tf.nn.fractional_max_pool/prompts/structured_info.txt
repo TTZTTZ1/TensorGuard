@@ -1,0 +1,54 @@
+params:
+  value:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  pooling_ratio:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: null
+  pseudo_random:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  overlapping:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: pooling_ratio
+    Parameter 2: pooling_ratio
+    Constraint: "(isinstance(pooling_ratio, (int, float)) and pooling_ratio >= 1.0) or (isinstance(pooling_ratio, list) and all(isinstance(r, (int, float)) and r >= 1.0 for r in pooling_ratio))"
+  2:
+    Parameter 1: pooling_ratio
+    Parameter 2: pooling_ratio
+    Constraint: "not isinstance(pooling_ratio, list) or len(pooling_ratio) in [1, 2, 4]"
+  3:
+    Parameter 1: pooling_ratio
+    Parameter 2: pooling_ratio
+    Constraint: "not (isinstance(pooling_ratio, list) and len(pooling_ratio) == 4) or (pooling_ratio[0] == 1.0 and pooling_ratio[3] == 1.0)"
+  4:
+    Parameter 1: value
+    Parameter 2: value
+    Constraint: "value.shape.ndims == 4"

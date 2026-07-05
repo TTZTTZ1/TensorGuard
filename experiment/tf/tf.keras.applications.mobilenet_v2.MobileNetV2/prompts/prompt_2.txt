@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.mobilenet_v2.MobileNetV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.mobilenet_v2.MobileNetV2` function instantiates the MobileNetV2 architecture, a lightweight convolutional neural network designed for efficient image classification and transfer learning. Key features include:
+
+- **Architecture**: Uses inverted residual blocks with bottlenecking features, reducing parameters compared to the original MobileNet.
+- **Input flexibility**: Supports any input size ≥32×32, with larger images improving performance.
+- **Preprocessing**: Requires scaling input pixels between -1 and 1 via `mobilenet_v2.preprocess_input`.
+- **Parameters**:
+  - `alpha`: Width multiplier to adjust filter counts per layer.
+  - `include_top`: Option to include the final classification layer.
+  - `weights`: Supports ImageNet pretrained weights or custom paths.
+  - `pooling`: Optional global pooling when `include_top=False`.
+  - `classes`: Number of output classes (default 1000).
+- **Use cases**: Image classification, transfer learning, and feature extraction.
+- **Reference**: Based on the *MobileNetV2: Inverted Residuals and Linear Bottlenecks* paper (CVPR 2018).
+
+This model balances efficiency and accuracy, making it suitable for mobile and edge-device applications.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_shape:
+    dtype: ["tuple", "None"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  alpha:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "None"]
+    range: [null, "imagenet"]
+    structure: ["scalar"]
+    shape: [1]
+    default: '"imagenet"'
+  input_tensor:
+    dtype: ["tensor", "None"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  pooling:
+    dtype: ["string", "None"]
+    range: [null, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: '"softmax"'
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes != 1000 implies include_top == True"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "classes != 1000 implies weights is None"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights == 'imagenet' implies classifier_activation in [None, 'softmax']"
+  5:
+    Parameter 1: "pooling"
+    Parameter 2: "include_top"
+    Constraint: "include_top == True implies pooling is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.mobilenet_v2.MobileNetV2 in a complex way */
+import tensorflow as tf

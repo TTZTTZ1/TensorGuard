@@ -1,0 +1,42 @@
+# tf.raw_ops.ScaleAndTranslateGrad
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ScaleAndTranslateGrad](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ScaleAndTranslateGrad)
+
+---
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.ScaleAndTranslateGrad`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ScaleAndTranslateGrad)
+
+```
+tf.raw_ops.ScaleAndTranslateGrad(
+    grads,
+    original_image,
+    scale,
+    translation,
+    kernel_type='lanczos3',
+    antialias=True,
+    name=None
+)
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `grads` | A `Tensor`. Must be one of the following types: `float32`. |
+| `original_image` | A `Tensor`. Must have the same type as `grads`. |
+| `scale` | A `Tensor` of type `float32`. |
+| `translation` | A `Tensor` of type `float32`. |
+| `kernel_type` | An optional `string`. Defaults to `"lanczos3"`. |
+| `antialias` | An optional `bool`. Defaults to `True`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `grads`. | |

@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.GenerateBoundingBoxProposals` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.GenerateBoundingBoxProposals` operation generates region proposals (RoIs) for object detection by processing anchor-based predictions. It takes predicted scores and bounding box adjustments relative to anchors, selects top-scoring candidates, decodes them into image coordinates, and applies non-maximum suppression (NMS) to filter overlapping boxes.
+
+**Key steps:**
+1. Selects the top `pre_nms_topn` scoring anchor boxes.
+2. Decodes the bounding box adjustments (`bbox_deltas`) relative to the provided `anchors`.
+3. Applies NMS using the specified `nms_threshold` to remove highly overlapping boxes.
+4. Discards boxes smaller than `min_size`.
+5. Returns up to `post_nms_topn` final RoIs per image along with their scores.
+
+**Inputs:**
+- `scores`: Predicted objectness scores per anchor `[batch, height, width, num_anchors]`.
+- `bbox_deltas`: Bounding box adjustments `[dy, dx, dh, dw]` per anchor `[batch, height, width, 4 * num_anchors]`.
+- `anchors`: Anchor box coordinates `[num_anchors, 4]` in `[y1, x1, y2, x2]` format.
+- `image_info`: Image dimensions and scale `[batch, 5]`.
+- Thresholds and size constraints for filtering.
+
+**Outputs:**
+- `rois`: Final region proposals `[batch, post_nms_topn, 4]`.
+- `roi_probabilities`: Corresponding scores `[batch, post_nms_topn]`.
+
+This operation is commonly used in region proposal networks (RPNs) within frameworks like Faster R-CNN.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scores:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  bbox_deltas:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  image_info:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  anchors:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  nms_threshold:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  pre_nms_topn:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  min_size:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  post_nms_topn:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "300"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "scores"
+    Parameter 2: "bbox_deltas"
+    Constraint: "scores.shape[0] == bbox_deltas.shape[0] and scores.shape[1] == bbox_deltas.shape[1] and scores.shape[2] == bbox_deltas.shape[2]"
+  2:
+    Parameter 1: "scores"
+    Parameter 2: "bbox_deltas"
+    Constraint: "bbox_deltas.shape[3] == 4 * scores.shape[3]"
+  3:
+    Parameter 1: "scores"
+    Parameter 2: "anchors"
+    Constraint: "scores.shape[3] == anchors.shape[0]"
+  4:
+    Parameter 1: "scores"
+    Parameter 2: "image_info"
+    Constraint: "scores.shape[0] == image_info.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.GenerateBoundingBoxProposals in a complex way */
+import tensorflow as tf

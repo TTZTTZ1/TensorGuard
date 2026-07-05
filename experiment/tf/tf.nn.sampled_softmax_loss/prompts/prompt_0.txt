@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `tf.nn.sampled_softmax_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.sampled_softmax_loss` is a computationally efficient loss function for training softmax classifiers with a very large number of classes. Instead of computing probabilities for all classes, it estimates the loss by sampling a subset of negative classes per batch, making it suitable for tasks like language modeling or recommendation systems with extensive vocabularies or item catalogs.
+
+**Key Features:**
+- **Purpose:** Approximates the full softmax cross-entropy loss using only a sampled set of negative classes, significantly speeding up training.
+- **Use Case:** Primarily for training; evaluation or inference typically uses the full softmax loss for accuracy.
+- **Parameters:** Requires class embeddings (`weights`), biases (`biases`), target labels (`labels`), and input activations (`inputs`), along with sampling parameters (`num_sampled`, `num_classes`).
+- **Sampling:** By default, it uses log-uniform sampling for negative classes, but custom samplers can be provided via `sampled_values`.
+- **Note:** Currently supports only the "div" partition strategy for embedding lookups.
+
+**Typical Workflow:**
+- **Training:** Use `sampled_softmax_loss` to compute loss efficiently.
+- **Evaluation/Inference:** Switch to the full `softmax_cross_entropy_with_logits` for precise loss calculation.
+
+This method balances performance and scalability when dealing with massive classification tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weights:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor", "list of Tensor"]
+    shape: [[num_classes, dim]]
+    default: null
+  biases:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [[num_classes]]
+    default: null
+  labels:
+    dtype: ["int64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [[batch_size, num_true]]
+    default: null
+  inputs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [[batch_size, dim]]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  num_classes:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "1"
+  sampled_values:
+    dtype: ["tuple"]
+    range: null
+    structure: ["None", "tuple"]
+    shape: null
+    default: "None"
+  remove_accidental_hits:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: [[]]
+    default: "True"
+  seed:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [[]]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "sampled_softmax_loss"
+constraints:
+  1:
+    Parameter 1: weights
+    Parameter 2: inputs
+    Constraint: "weights.shape[1] == inputs.shape[1]"
+  2:
+    Parameter 1: biases
+    Parameter 2: weights
+    Constraint: "biases.shape[0] == weights.shape[0]"
+  3:
+    Parameter 1: labels
+    Parameter 2: num_true
+    Constraint: "labels.shape[1] == num_true"
+  4:
+    Parameter 1: num_sampled
+    Parameter 2: num_classes
+    Constraint: "num_sampled < num_classes"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.sampled_softmax_loss in a complex way */
+import tensorflow as tf

@@ -1,0 +1,68 @@
+params:
+  feed_dict:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "None"
+  session:
+    dtype: ["Session"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "None"
+  shape:
+    dtype: ["TensorShape", "list", "tuple", "None"]
+    range: [null]
+    structure: ["TensorShape", "list", "tuple", "None"]
+    shape: ["any"]
+    default: "No default"
+  y:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No default"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  other:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No default"
+  slice_spec:
+    dtype: ["int", "slice", "ellipsis", "None", "int32", "int64"]
+    range: [null]
+    structure: ["scalar", "slice", "ellipsis", "tensor"]
+    shape: ["scalar"]
+    default: "No default"
+  var:
+    dtype: ["Variable"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No default"
+  dtype:
+    dtype: ["data type"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "y"
+    Parameter 2: "self"
+    Constraint: "dtype(y) == dtype(self)"
+  2:
+    Parameter 1: "shape"
+    Parameter 2: "self.shape"
+    Constraint: "shape is compatible with self.shape"
+  3:
+    Parameter 1: "slice_spec"
+    Parameter 2: "self.shape"
+    Constraint: "isinstance(slice_spec, (int, slice, type(Ellipsis), type(None))) or (isinstance(slice_spec, tf.Tensor) and slice_spec.dtype in [tf.int32, tf.int64] and tf.rank(slice_spec) == 0)"

@@ -1,0 +1,40 @@
+params:
+  counts:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  mean_ss:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  variance_ss:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  shift:
+    dtype: ["float", "int", "None"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: mean_ss
+    Parameter 2: variance_ss
+    Constraint: "tf.shape(mean_ss) == tf.shape(variance_ss)"
+  2:
+    Parameter 1: shift
+    Parameter 2: mean_ss
+    Constraint: "shift is None or tf.shape(shift) == tf.shape(mean_ss)"

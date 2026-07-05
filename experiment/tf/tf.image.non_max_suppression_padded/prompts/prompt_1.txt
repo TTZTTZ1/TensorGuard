@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.image.non_max_suppression_padded` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.non_max_suppression_padded` performs greedy non-maximum suppression (NMS) to select a subset of bounding boxes based on their scores, with the added capability to pad the output to a fixed size. It is particularly useful for batched inputs.
+
+**Key Features:**
+- **Input:** Accepts batched inputs (`boxes` with shape `[..., num_boxes, 4]` and `scores` with shape `[..., num_boxes]`).
+- **Output:** Returns a tuple (`selected_indices_padded`, `num_valid`), where:
+  - `selected_indices_padded` contains the selected box indices, padded to `max_output_size`.
+  - `num_valid` indicates how many indices are valid per batch entry.
+- **Padding Requirement:** For batched inputs, `pad_to_max_output_size` must be `True` to ensure consistent output shapes.
+- **Additional Parameters:** Includes options for pre-sorted inputs, canonicalized coordinates, and tiling for optimization.
+
+**Common Usage:**
+```python
+selected_indices_padded, num_valid = tf.image.non_max_suppression_padded(
+    boxes, scores, max_output_size, iou_threshold, score_threshold,
+    pad_to_max_output_size=True)
+# Extract valid indices and corresponding boxes
+selected_indices = tf.slice(selected_indices_padded, [0], num_valid)
+selected_boxes = tf.gather(boxes, selected_indices)
+```
+
+This function is essential for efficient batch processing in object detection pipelines, ensuring output tensors have uniform dimensions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., num_boxes, 4]"]
+    default: null
+  scores:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., num_boxes]"]
+    default: null
+  max_output_size:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  iou_threshold:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.5"
+  score_threshold:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "float('-inf')"
+  pad_to_max_output_size:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  sorted_input:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  canonicalized_coordinates:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  tile_size:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "512"
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: pad_to_max_output_size
+    Constraint: "pad_to_max_output_size or boxes.shape.rank <= 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.non_max_suppression_padded in a complex way */
+import tensorflow as tf

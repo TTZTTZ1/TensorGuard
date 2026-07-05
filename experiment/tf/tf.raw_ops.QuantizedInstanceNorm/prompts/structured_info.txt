@@ -1,0 +1,64 @@
+params:
+  x:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  x_min:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  x_max:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  output_range_given:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  given_y_min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  given_y_max:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  variance_epsilon:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1e-05"
+  min_separation:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0.001"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: x_max
+    Parameter 2: x_min
+    Constraint: "x_max > x_min"
+  2:
+    Parameter 1: given_y_max
+    Parameter 2: given_y_min
+    Constraint: "output_range_given == False or (given_y_max - given_y_min >= min_separation)"

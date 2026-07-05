@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  largest:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  sorted:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  out:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "k"
+    Parameter 2: "input"
+    Constraint: "k > 0 and k <= (input.size(dim) if dim is not None else input.size(-1))"
+  2:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "dim is None or (-input.dim() <= dim < input.dim())"

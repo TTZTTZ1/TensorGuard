@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.pad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.pad` pads an input tensor along specified dimensions. 
+
+**Key points:**
+- **Padding size (`pad`)**: Specified as a tuple of even length, starting from the last dimension and moving forward. For example, `(left, right)` pads the last dimension, `(left, right, top, bottom)` pads the last two dimensions.
+- **Modes**: Supports `'constant'` (default), `'reflect'`, `'replicate'`, and `'circular'`. Constant padding works for any dimension; other modes are limited to padding the last 1–3 dimensions depending on input dimensionality.
+- **Parameters**:
+  - `input`: N-dimensional tensor to pad.
+  - `pad`: Tuple defining padding amounts per dimension.
+  - `mode`: Padding mode.
+  - `value`: Fill value for constant padding (default 0).
+- **Note**: CUDA backend may introduce nondeterministic behavior in the backward pass.
+
+**Example**:  
+`F.pad(tensor, (1, 2, 3, 4), mode='constant', value=0)` pads the last dimension by (1, 2) and the second-to-last by (3, 4).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  pad:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["str"]
+    range: [["constant", "reflect", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "constant"
+  value:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "pad"
+    Parameter 2: "input"
+    Constraint: "len(pad) % 2 == 0 and len(pad) // 2 <= input.dim()"
+  2:
+    Parameter 1: "mode"
+    Parameter 2: "value"
+    Constraint: "value is not None implies mode == 'constant'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.pad in a complex way */
+import torch

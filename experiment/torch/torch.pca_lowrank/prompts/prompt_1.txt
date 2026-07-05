@@ -1,0 +1,73 @@
+
+# You are a Python code generation assistant for the `torch.pca_lowrank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.pca_lowrank(A, q=None, center=True, niter=2)`
+
+**Purpose:**  
+Performs linear Principal Component Analysis (PCA) on a low-rank matrix, batches of matrices, or a sparse matrix. It returns an approximate singular value decomposition (SVD) of a (centered) data matrix.
+
+**Returns:**  
+A namedtuple `(U, S, V)` representing:
+- `U`: m × q matrix (left singular vectors)
+- `S`: q-length vector (singular values)
+- `V`: n × q matrix (right singular vectors / principal directions)
+
+**Key Notes:**
+- The decomposition approximates the centered matrix \( A \approx U \text{diag}(S) V^H \).
+- `V` contains the principal directions.
+- \( S^2 / (m-1) \) gives eigenvalues of the covariance matrix when `center=True`.
+- `A @ V[:, :k]` projects data onto the top `k` principal components.
+- Output dimensions depend on `q` (estimated rank) rather than full dimensions.
+
+**Parameters:**
+- `A`: Input tensor of shape `(*, m, n)`.
+- `q`: Overestimated rank (default: `min(6, m, n)`).
+- `center`: If `True`, centers the data by subtracting the mean.
+- `niter`: Number of subspace iterations (default: 2).
+
+**Use Case:**  
+Efficient low-rank PCA approximation for large or sparse datasets, suitable for dimensionality reduction and feature extraction.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [["*", "m", "n"]]
+    default: null
+  q:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "min(6, m, n)"
+  center:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  niter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "2"
+constraints:
+  1:
+    Parameter 1: "q"
+    Parameter 2: "A"
+    Constraint: "1 <= q <= min(A.size(-2), A.size(-1))"
+  2:
+    Parameter 1: "niter"
+    Parameter 2: "niter"
+    Constraint: "niter >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.pca_lowrank in a complex way */
+import torch

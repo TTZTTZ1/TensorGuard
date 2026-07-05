@@ -1,0 +1,128 @@
+
+# You are a Python code generation assistant for the `tf.keras.optimizers.SGD` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.optimizers.SGD` class implements the **Stochastic Gradient Descent** optimizer, optionally with **momentum** and **Nesterov acceleration**. It is a fundamental optimization algorithm used to update model parameters during training by minimizing the loss function.
+
+### **Key Features:**
+- **Basic SGD**: Updates parameters by subtracting the gradient scaled by the learning rate.
+- **Momentum**: Accelerates convergence and reduces oscillations by accumulating a velocity term from past gradients.
+- **Nesterov Momentum**: A variant that adjusts the update rule for potentially faster convergence.
+- **Additional Enhancements**: Supports weight decay, gradient clipping, exponential moving averages (EMA), loss scaling, and gradient accumulation.
+
+### **Primary Use Cases:**
+- Training deep learning models, especially when fine-tuning or when a simple, stable optimizer is preferred.
+- Scenarios requiring customizable learning rate schedules or noise reduction via gradient accumulation.
+- Mixed precision training with loss scaling to prevent underflow.
+
+### **Common Parameters:**
+- `learning_rate`: Step size for updates (can be dynamic via schedules).
+- `momentum`: Strength of the momentum term (≥ 0).
+- `nesterov`: Enables Nesterov momentum if `True`.
+- `weight_decay`: Applies L2 regularization to parameters.
+- `clipnorm`/`clipvalue`: Gradient clipping to prevent exploding gradients.
+- `use_ema`: Smooths model weights over time for better generalization.
+
+### **Update Rules:**
+- **Without momentum**:  
+  `w = w - learning_rate * g`
+- **With momentum**:  
+  `velocity = momentum * velocity - learning_rate * g`  
+  `w = w + velocity`
+- **With Nesterov**:  
+  Adjusts velocity before updating weights for improved convergence.
+
+SGD is widely used due to its simplicity, efficiency, and effectiveness, especially when combined with momentum and learning rate scheduling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  learning_rate:
+    dtype: ["float", "keras.optimizers.schedules.LearningRateSchedule", "callable"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.01"
+  momentum:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  nesterov:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  clipnorm:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  clipvalue:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  global_clipnorm:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  use_ema:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  ema_momentum:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.99"
+  ema_overwrite_frequency:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  loss_scale_factor:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  gradient_accumulation_steps:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "SGD"
+constraints:
+  1:
+    Parameter 1: "momentum"
+    Parameter 2: "None"
+    Constraint: "momentum >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.optimizers.SGD in a complex way */
+import tensorflow as tf

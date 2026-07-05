@@ -1,0 +1,44 @@
+params:
+  ref:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["same as ref"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: ref
+    Constraint: "indices.shape[-1] > 0 and indices.shape[-1] <= ref.ndim"
+  2:
+    Parameter 1: updates
+    Parameter 2: ref
+    Constraint: "updates.dtype == ref.dtype"
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.ndim == indices.ndim - 1 + ref.ndim - indices.shape[-1]"

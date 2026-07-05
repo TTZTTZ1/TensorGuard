@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Batch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.Batch` operation dynamically batches multiple input tensors together along their first dimension, processing them asynchronously with configurable threading and timeouts. It is designed for concurrent execution, where multiple instances sharing the same `container` and `shared_name` on the same device will batch inputs collectively.
+
+**Key Features:**
+- **Dynamic Batching**: Batches are formed nondeterministically, with outputs ranging from empty tensors up to `max_batch_size`.
+- **Concurrent Support**: Enables multiple ops to batch tensors together when using identical `container` and `shared_name`.
+- **Metadata Output**: Returns `batched_tensors`, a `batch_index` tensor for unbatching, and a unique `id` for each invocation.
+- **Configurable Parameters**: Controls include the number of batch threads, timeout thresholds, allowed batch sizes (for padding), and queue limits.
+
+**Use Case**: Useful for batching related tensors (e.g., features and labels) in asynchronous or real-time inference/pipeline scenarios, where inputs arrive at variable rates.
+
+**Outputs**: A tuple containing:
+1. `batched_tensors`: Concatenated batch of input tensors (or empty if no batch is formed).
+2. `batch_index`: A `[K, 3]` int64 matrix mapping each input to its batch position.
+3. `id`: A unique int64 identifier for the invocation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_tensors:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  num_batch_threads:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_batch_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  batch_timeout_micros:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  grad_timeout_micros:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_enqueued_batches:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "10"
+  allowed_batch_sizes:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  container:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: '""'
+  shared_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: '""'
+  batching_queue:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: '""'
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Batch in a complex way */
+import tensorflow as tf

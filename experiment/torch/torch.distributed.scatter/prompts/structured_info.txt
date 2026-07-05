@@ -1,0 +1,46 @@
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  scatter_list:
+    dtype: ["list[torch.Tensor]"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  src:
+    dtype: ["int"]
+    range: [[0, "world_size-1"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["torch.distributed.ProcessGroup"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  group_src:
+    dtype: ["int"]
+    range: [[0, "group.world_size-1"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+  2:
+    Parameter 1: "scatter_list"
+    Parameter 2: "tensor"
+    Constraint: "scatter_list is None or all(tensor.shape == t.shape for t in scatter_list)"

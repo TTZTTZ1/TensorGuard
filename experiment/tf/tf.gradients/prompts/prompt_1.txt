@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.gradients` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.gradients` computes symbolic derivatives of a sum of tensors `ys` with respect to tensors `xs`, returning a list of gradients for each `x`. It is designed for use within TensorFlow's graph context, such as inside `tf.function`. Key features include:
+
+- **Inputs**: `ys` (tensors to differentiate) and `xs` (tensors to differentiate with respect to).
+- **Optional Parameters**:
+  - `grad_ys`: Initial gradients for `ys` (defaults to ones).
+  - `stop_gradients`: Tensors treated as constants, preventing backpropagation through them.
+  - `unconnected_gradients`: Controls gradient values for unconnected `xs` (options: `'zero'` or `'none'`).
+- **Output**: A list of gradients `sum(dy/dx)` for each `x` in `xs`.
+- **Use Case**: Primarily for computing gradients in backpropagation (e.g., derivatives of a loss with respect to model weights).
+- **Limitations**: Raises `RuntimeError` if called in eager mode; requires registered gradient functions for operations.
+
+This function enables fine-grained control over gradient computation, including partial derivatives and handling of disconnected graph parts.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ys:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["Tensor", "list"]
+    shape: ["any"]
+    default: null
+  xs:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["Tensor", "list"]
+    shape: ["any"]
+    default: null
+  grad_ys:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["Tensor", "list"]
+    shape: ["variable"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'gradients'"
+  gate_gradients:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  aggregation_method:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  stop_gradients:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["Tensor", "list"]
+    shape: ["any"]
+    default: "None"
+  unconnected_gradients:
+    dtype: ["string"]
+    range: [["none", "zero"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'none'"
+constraints:
+  1:
+    Parameter 1: grad_ys
+    Parameter 2: ys
+    Constraint: "grad_ys is None or len(grad_ys) ==
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.gradients in a complex way */
+import tensorflow as tf

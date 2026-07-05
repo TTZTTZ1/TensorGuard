@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.distributed.recv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines. Here's a concise summary of its key aspects:
+
+## **Core Components**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional). NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up communication before any distributed operations.
+- **DeviceMesh**: Higher-level abstraction for managing process groups with multi-dimensional device layouts.
+
+## **Key Features**
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and async variants `isend`/`irecv`.
+- **Process Groups**: Create subgroups with `new_group()` for fine-grained communication.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination.
+
+## **Usage Patterns**
+- **SPMD Model**: Same Python program runs on all ranks
+- **Initialization Methods**: TCP, shared file-system, or environment variables
+- **Synchronous/Async Operations**: Control with `async_op` flag
+
+## **Best Practices**
+- Use NCCL for GPU training, Gloo for CPU
+- Call `destroy_process_group()` for cleanup
+- Set `torch.cuda.set_device()` before NCCL operations
+- Use `TORCH_DISTRIBUTED_DEBUG` for debugging
+
+## **Utilities**
+- `launch` module for multi-process spawning (deprecated, use `torchrun`)
+- `spawn` for multiprocessing
+- Debugging tools: `monitored_barrier`, breakpoints, HTTP debug server
+
+## **Important Notes**
+- Thread-safe initialization is not guaranteed
+- Object collectives have performance limitations
+- Third-party backends can be registered via `Backend.register_backend()`
+
+The package enables efficient distributed training with advantages over `DataParallel`, including independent optimizers per process and reduced Python interpreter overhead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+  group_src:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "src"
+    Parameter 2: "group_src"
+    Constraint: "src is None or group_src is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.recv in a complex way */
+import torch

@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.to_sparse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.Tensor.to_sparse` method converts a dense tensor into a sparse representation. It supports two main usage patterns:
+
+1. **Basic conversion to COO format**:  
+   - Optionally specify `sparseDims` to control the number of sparse dimensions.  
+   - Non-zero values are stored with their indices, reducing memory for sparse data.
+
+2. **Conversion to various sparse layouts**:  
+   - Use keyword arguments (`layout`, `blocksize`, `dense_dim`) to target specific sparse formats like COO, CSR, CSC, BSR, or BSC.  
+   - `blocksize` is required for block-sparse formats (BSR/BSC) and must evenly divide sparse dimensions.  
+   - `dense_dim` allows creating hybrid sparse tensors with dense dimensions, applicable when converting from strided tensors.  
+
+The method returns a sparse copy of the tensor unless the existing layout and parameters already match the request.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sparseDims:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  layout:
+    dtype: ["string"]
+    range: [["torch.sparse_coo", "torch.sparse_csr", "torch.sparse_csc", "torch.sparse_bsr", "torch.sparse_bsc"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.sparse_coo"
+  blocksize:
+    dtype: ["None", "tuple", "list", "torch.Size"]
+    range: null
+    structure: ["scalar", "tuple", "list", "torch.Size"]
+    shape: [null, 2]
+    default: null
+  dense_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "layout"
+    Parameter 2: "blocksize"
+    Constraint: "blocksize is None or layout in [torch.sparse_bsr, torch.sparse_bsc]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.to_sparse in a complex way */
+import torch

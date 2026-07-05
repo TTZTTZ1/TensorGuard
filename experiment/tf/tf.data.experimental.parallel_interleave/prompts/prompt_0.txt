@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.parallel_interleave` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.parallel_interleave` is a deprecated parallel version of `Dataset.interleave()` that processes multiple input datasets concurrently to improve throughput, especially when some data sources are slower. It applies `map_func` to input elements to create nested datasets, then interleaves their outputs.
+
+**Key parameters:**
+- `map_func`: Function that creates a dataset from an input element.
+- `cycle_length`: Number of datasets to process in parallel.
+- `block_length`: Number of consecutive elements taken from each dataset before switching.
+- `sloppy`: Allows out-of-order element production for performance, sacrificing determinism.
+
+**Example:**
+```python
+filenames = tf.data.Dataset.list_files("/path/to/train*.tfrecords")
+dataset = filenames.apply(
+    tf.data.experimental.parallel_interleave(
+        lambda f: tf.data.TFRecordDataset(f),
+        cycle_length=4))
+```
+
+**Note:** This function is deprecated. Use `tf.data.Dataset.interleave(..., num_parallel_calls=tf.data.AUTOTUNE)` with `tf.data.Options.deterministic` for sloppy execution instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  map_func:
+    dtype: ["callable"]
+    range: null
+    structure: ["function"]
+    shape: null
+    default: null
+  cycle_length:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  block_length:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+  sloppy:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  buffer_output_elements:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  prefetch_input_elements:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: cycle_length
+    Parameter 2: cycle_length
+    Constraint: "cycle_length > 0"
+  2:
+    Parameter 1: block_length
+    Parameter 2: block_length
+    Constraint: "block_length > 0"
+  3:
+    Parameter 1: buffer_output_elements
+    Parameter 2: buffer_output_elements
+    Constraint: "buffer_output_elements is None or buffer_output_elements >= 0"
+  4:
+    Parameter 1: prefetch_input_elements
+    Parameter 2: prefetch_input_elements
+    Constraint: "prefetch_input_elements is None or prefetch_input_elements >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.parallel_interleave in a complex way */
+import tensorflow as tf

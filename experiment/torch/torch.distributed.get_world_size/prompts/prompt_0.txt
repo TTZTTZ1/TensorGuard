@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_world_size` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables distributed training across multiple processes and machines. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional). NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` first. Supports TCP, shared file-system, and environment variable methods.
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies.
+
+## **Key Features**
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point**: `send`/`recv` and async variants `isend`/`irecv`.
+- **Process Groups**: Create subgroups with `new_group()` for fine-grained communication.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination.
+
+## **Best Practices**
+- Use NCCL for GPU training, Gloo for CPU
+- Set `async_op=True` for overlapping communication/computation
+- Call `destroy_process_group()` for cleanup
+- Use `torch.nn.parallel.DistributedDataParallel` for model parallelism
+
+## **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout detection
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for detailed logging
+- `torch.distributed.breakpoint()`: Interactive debugging on specific ranks
+- HTTP debug server for runtime diagnostics
+
+## **Performance Optimizations**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+- **Environment Variables**: Tune network interfaces (`NCCL_SOCKET_IFNAME`, `GLOO_SOCKET_IFNAME`)
+- **Lazy Initialization**: `TORCH_GLOO_LAZY_INIT` for faster startup
+
+## **Important Notes**
+- Follow SPMD programming model (same code runs on all ranks)
+- Ensure consistent tensor sizes across ranks for collectives
+- Object collectives have performance limitations - prefer tensor operations
+- Third-party backends can be registered via `Backend.register_backend()`
+
+The package provides both low-level communication primitives and high-level abstractions like `DeviceMesh` for complex distributed training scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["object", "scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: group
+    Parameter 2: null
+    Constraint: "group is None or isinstance(group, ProcessGroup)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_world_size in a complex way */
+import torch

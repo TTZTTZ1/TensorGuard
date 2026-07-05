@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.Precision` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.Precision` is a metric that calculates the precision of predictions relative to true labels. It tracks true positives and false positives to compute precision as:
+
+\[
+\text{precision} = \frac{\text{true\_positives}}{\text{true\_positives} + \text{false\_positives}}
+\]
+
+**Key Parameters:**
+- `thresholds`: (Optional) Threshold(s) in [0, 1] to binarize predictions. Default is 0.5 if not set.
+- `top_k`: (Optional) If set, considers only the top-k predicted classes for each sample.
+- `class_id`: (Optional) If specified, computes precision for a specific class only.
+- `name` / `dtype`: (Optional) Instance name and data type.
+
+**Usage Example:**
+```python
+m = tf.keras.metrics.Precision()
+m.update_state([0, 1, 1, 1], [1, 0, 1, 1])
+print(m.result().numpy())  # Output: 0.6666667
+```
+
+**Integration with `compile()`:**
+```python
+model.compile(optimizer='sgd',
+              loss='binary_crossentropy',
+              metrics=[tf.keras.metrics.Precision()])
+```
+
+**Key Methods:**
+- `update_state()`: Accumulates TP/FP statistics.
+- `result()`: Computes and returns current precision.
+- `reset_state()`: Resets all metric variables.
+
+**Notes:**
+- Supports sample weighting.
+- For models with `from_logits=True`, set `thresholds=0`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  thresholds:
+    dtype: ["float", "list", "tuple"]
+    range: [0, 1]
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: "null"
+  top_k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+  class_id:
+    dtype: ["int"]
+    range: [0, "num_classes)"]
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+    dtype:
+    dtype: ["dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.Precision in a complex way */
+import tensorflow as tf

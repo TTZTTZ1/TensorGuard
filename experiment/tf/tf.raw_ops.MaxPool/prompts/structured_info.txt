@@ -1,0 +1,56 @@
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32", "int64", "uint8", "int16", "int8", "uint16", "qint8"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  ksize:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [">=4"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [">=4"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID", "EXPLICIT"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  explicit_paddings:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  data_format:
+    dtype: ["string"]
+    range: [["NHWC", "NCHW", "NCHW_VECT_C"]]
+    structure: ["scalar"]
+    shape: null
+    default: "NHWC"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: ksize
+    Constraint: "input.shape.ndims == len(ksize)"
+  2:
+    Parameter 1: ksize
+    Parameter 2: strides
+    Constraint: "len(ksize) == len(strides)"
+  3:
+    Parameter 1: padding
+    Parameter 2: explicit_paddings
+    Constraint: "padding != 'EXPLICIT' or len(explicit_paddings) > 0"

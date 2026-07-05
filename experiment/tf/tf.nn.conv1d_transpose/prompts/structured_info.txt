@@ -1,0 +1,70 @@
+params:
+  input:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  filters:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  output_shape:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: "null"
+  strides:
+    dtype: ["int", "list"]
+    range: ["No mention"]
+    structure: ["scalar", "list"]
+    shape: [0, 1, 3]
+    default: "null"
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "SAME"
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "NWC"
+  dilations:
+    dtype: ["int", "list"]
+    range: ["No mention"]
+    structure: ["scalar", "list"]
+    shape: [0, 1, 3]
+    default: "1"
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "filters"
+    Constraint: "(data_format == 'NWC' and input.shape[2] == filters.shape[2]) or (data_format == 'NCW' and input.shape[1] == filters.shape[2])"
+  2:
+    Parameter 1: "output_shape"
+    Parameter 2: "output_shape"
+    Constraint: "len(output_shape) == 3"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "padding"
+    Constraint: "padding in ['VALID', 'SAME']"
+  4:
+    Parameter 1: "data_format"
+    Parameter 2: "data_format"
+    Constraint: "data_format in ['NWC', 'NCW']"
+  5:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(isinstance(dilations, int) and dilations == 1) or (isinstance(dilations, list) and ((len(dilations) == 1) or (len(dilations) == 3 and dilations[0] == 1 and (dilations[2] == 1 if data_format == 'NWC' else dilations[1] == 1))))"

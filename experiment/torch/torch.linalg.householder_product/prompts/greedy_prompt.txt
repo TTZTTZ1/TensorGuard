@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `torch.linalg.householder_product` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.householder_product` computes the first \( n \) columns of a product of Householder matrices from input matrices `A` and reflection coefficients `tau`. It is commonly used to reconstruct the orthogonal/unitary matrix \( Q \) from a QR decomposition (obtained via `torch.geqrf`). The function supports real and complex-valued inputs, batched operations, and autograd, though gradients may be undefined if \( \tau_i = 1 / \|a_i\|^2 \).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  tau:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, k)"]
+    default: null
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as A"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "A.shape[-2] >= A.shape[-1]"
+  2:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[:-2] == tau.shape[:-1]"
+  3:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[-1] >= tau.shape[-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.householder_product in a complex way */
+import torch

@@ -1,0 +1,137 @@
+
+# You are a Python code generation assistant for the `torch.distributions.negative_binomial.NegativeBinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `stddev`, `mode`, `support`
+- Batch and event shape handling
+
+### **2. Available Distributions**
+**Univariate:**
+- Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, ContinuousBernoulli
+- Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal
+- Normal, Pareto, Poisson, StudentT, Uniform, VonMises, Weibull
+
+**Multivariate:**
+- Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal
+- Wishart, LKJCholesky (for correlation matrices)
+
+**Specialized:**
+- MixtureSameFamily, Independent, TransformedDistribution
+- Relaxed distributions (RelaxedBernoulli, RelaxedOneHotCategorical)
+
+### **3. Key Methods**
+- **`sample()`**: Regular sampling (non-differentiable)
+- **`rsample()`**: Reparameterized sampling (differentiable, requires `has_rsample=True`)
+- **`log_prob()`**: Log probability density/mass function
+- **`enumerate_support()`**: For discrete distributions
+
+### **4. Gradient Estimation Techniques**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (e.g., VAEs)
+
+### **5. Transforms System**
+- Bijective transformations for constrained parameter spaces
+- Common transforms: `ExpTransform`, `SigmoidTransform`, `SoftmaxTransform`, `StickBreakingTransform`
+- Used with `TransformedDistribution` to create complex distributions
+
+### **6. Constraints System**
+- Defines valid parameter ranges for distributions
+- Registry system (`biject_to()`, `transform_to()`) maps constraints to transforms
+- Enables unconstrained optimization of constrained parameters
+
+### **7. KL Divergence**
+- `kl_divergence()` computes KL between distributions
+- Extensive registry of implemented KL pairs
+
+## **Typical Usage Patterns**
+
+```python
+# 1. Basic distribution usage
+m = Normal(loc=0.0, scale=1.0)
+samples = m.sample((100,))  # 100 samples
+log_probs = m.log_prob(samples)
+
+# 2. REINFORCE gradient estimation
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# 3. Reparameterization gradient estimation
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+
+# 4. Working with constrained parameters
+scale = torch.zeros(100, requires_grad=True)
+# Transform unconstrained to positive scale
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Design Philosophy**
+- Follows TensorFlow Distributions design
+- Separates batch and event dimensions
+- Supports automatic differentiation through sampling via reparameterization
+- Modular with transforms and constraints for flexible distribution construction
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "1"
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: 
+    Constraint: "total_count >= 0"
+  2:
+    Parameter 1: probs
+    Parameter 2: 
+    Constraint: "(probs >= 0) & (probs < 1)"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is not None and logits is None) or (probs is None and logits is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.negative_binomial.NegativeBinomial in a complex way */
+import torch

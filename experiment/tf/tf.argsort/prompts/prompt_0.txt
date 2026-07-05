@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.argsort` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.argsort` returns the indices that would sort a tensor along a specified axis, allowing you to reorder elements based on their sorted positions.
+
+**Key Features:**
+- **Input:** A numeric tensor (1‑D or higher).
+- **Output:** An int32 tensor of the same shape, where each slice along the chosen axis contains the indices that sort that slice.
+- **Parameters:**
+  - `axis`: Axis to sort (default `-1`, the last axis).
+  - `direction`: `'ASCENDING'` (default) or `'DESCENDING'`.
+  - `stable`: If `True`, preserves the original order of equal elements (unstable sort not yet implemented).
+- **Common Use:** Combine with `tf.gather` to actually reorder the tensor using the returned indices.
+
+**Example:**
+```python
+values = [1, 10, 26.9, 2.8, 166.32, 62.3]
+indices = tf.argsort(values)  # [0, 3, 1, 2, 5, 4]
+sorted_values = tf.gather(values, indices)  # Same as tf.sort(values)
+```
+
+For multi‑dimensional tensors, `tf.argsort` provides per‑slice sorting indices, enabling batch‑wise sorting operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  direction:
+    dtype: ["string"]
+    range: [["ASCENDING", "DESCENDING"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'ASCENDING'"
+  stable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "axis >= -tf.rank(values) and axis < tf.rank(values)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.argsort in a complex way */
+import tensorflow as tf

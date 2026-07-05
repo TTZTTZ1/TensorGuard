@@ -1,0 +1,64 @@
+params:
+  set1_indices:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  set1_values:
+    dtype: ["int8", "int16", "int32", "int64", "uint8", "uint16", "string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  set1_shape:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  set2_indices:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  set2_values:
+    dtype: ["int8", "int16", "int32", "int64", "uint8", "uint16", "string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  set2_shape:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  set_operation:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  validate_indices:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "set1_values"
+    Parameter 2: "set2_values"
+    Constraint: "set1_values.dtype == set2_values.dtype"
+  2:
+    Parameter 1: "set1_shape"
+    Parameter 2: "set2_shape"
+    Constraint: "tf.size(set1_shape) == tf.size(set2_shape) and tf.reduce_all(tf.equal(set1_shape[:-1], set2_shape[:-1]))"

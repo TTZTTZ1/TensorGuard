@@ -1,0 +1,45 @@
+
+# You are a Python code generation assistant for the `tf.keras.losses.categorical_hinge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.losses.categorical_hinge` function computes the categorical hinge loss, which is used for multi-class classification tasks. It calculates the loss based on the difference between the maximum prediction for incorrect classes and the prediction for the correct class, applying a hinge margin.
+
+**Key Details:**
+- **Formula:** `loss = maximum(neg - pos + 1, 0)`, where `neg` is the maximum prediction for incorrect classes and `pos` is the prediction for the correct class.
+- **Inputs:** 
+  - `y_true`: Ground truth labels, expected as one-hot encoded tensors (values {0, 1}) or as {-1, +1} with shape `[batch_size, d0, ... dN]`.
+  - `y_pred`: Predicted values with the same shape as `y_true`.
+- **Output:** Loss values with shape `[batch_size, d0, ... dN-1]`.
+
+This loss function encourages correct class predictions to exceed incorrect ones by at least a margin of 1, commonly used in models like SVMs for multi-class classification.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y_true:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: "y_true.shape == y_pred.shape"
+  2:
+    Parameter 1: y_true
+    Parameter 2: y_true
+    Constraint: "tf.reduce_all(tf.logical_or(tf.equal(y_true, -1), tf.equal(y_true, 1))) or tf.reduce_all(tf.logical_or(tf.equal(y_true, 0), tf.equal(y_true, 1)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.losses.categorical_hinge in a complex way */
+import tensorflow as tf

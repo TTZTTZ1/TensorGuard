@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.addcmul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.addcmul` performs an element-wise operation that multiplies `tensor1` and `tensor2`, scales the result by `value`, and adds it to `input`. The formula is:  
+`output = input + value × (tensor1 × tensor2)`.  
+
+**Key points:**  
+- Input tensors must be broadcastable.  
+- `value` is a scalar multiplier (default is 1).  
+- Useful for fused operations like adding a scaled element-wise product.  
+
+**Example:**  
+```python
+result = torch.addcmul(input, tensor1, tensor2, value=0.1)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor1:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  value:
+    dtype: ["int", "float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: tensor1
+    Constraint: "all(ai == bi or ai == 1 or bi == 1 for ai, bi in __import__('itertools').zip_longest(reversed(input.shape), reversed(tensor1.shape), fillvalue=1)) and all(ai == ci or ai == 1 or ci == 1 for ai, ci in __import__('itertools').zip_longest(reversed(input.shape), reversed(tensor2.shape), fillvalue=1)) and all(bi == ci or bi == 1 or ci == 1 for bi, ci in __import__('itertools').zip_longest(reversed(tensor1.shape), reversed(tensor2.shape), fillvalue=1))"
+  2:
+    Parameter 1: input
+    Parameter 2: value
+    Constraint: "(any(t.dtype in [torch.float32, torch.float64] for t in [input, tensor1, tensor2]) and isinstance(value, (int, float))) or (all(t.dtype not in [torch.float32, torch.float64] for t in [input, tensor1, tensor2]) and isinstance(value, int))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addcmul in a complex way */
+import torch

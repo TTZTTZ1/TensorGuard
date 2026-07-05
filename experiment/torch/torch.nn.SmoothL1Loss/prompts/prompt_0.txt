@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.nn.SmoothL1Loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**SmoothL1Loss** is a PyTorch loss function that combines L1 and L2 losses based on a threshold (`beta`). It uses a squared (L2) term for small errors (below `beta`) and a linear (L1) term for larger errors, making it less sensitive to outliers than MSE loss.
+
+**Key features:**
+- **Formula:**  
+  For each element:  
+  If `|x - y| < beta`: loss = `0.5 * (x - y)^2 / beta`  
+  Else: loss = `|x - y| - 0.5 * beta`
+- **Reduction options:** `'none'`, `'mean'` (default), or `'sum'`.
+- **Beta parameter:** Controls the threshold between L1/L2 behavior (default: 1.0).
+- **Use case:** Robust regression, often used in object detection (e.g., Fast R-CNN) to mitigate exploding gradients.
+
+**Relationship to other losses:**
+- Equivalent to `HuberLoss(x, y) / beta`.
+- As `beta → 0`, it becomes `L1Loss`.
+- As `beta → ∞`, it approaches zero loss.
+
+**Input/Output shapes:**
+- Input and target: Any shape `(*)`.
+- Output: Scalar (if reduced), or same shape as input (if `reduction='none'`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size_average:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: [['none', 'mean', 'sum']]
+    structure: ["scalar"]
+    shape: null
+    default: "'mean'"
+  beta:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1.0"
+constraints:
+  1:
+    Parameter 1: "beta"
+    Parameter 2: "None"
+    Constraint: "beta >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.SmoothL1Loss in a complex way */
+import torch

@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  keepdim:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "dim"
+    Constraint: "all(input.size(i) > 0 for i in (range(input.ndim) if dim is None else [dim]))"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "input"
+    Constraint: "out is None or (isinstance(out, tuple) and len(out) == 2 and out[0].shape == (torch.Size([]) if dim is None else (torch.Size([input.shape[i] for i in range(input.ndim) if i != (dim if dim >= 0 else input.ndim + dim)]) if not keepdim else torch.Size([input.shape[i] if i != (dim if dim >= 0 else input.ndim + dim) else 1 for i in range(input.ndim)]))) and out[0].dtype == input.dtype and out[1].shape == out[0].shape and out[1].dtype == input.dtype)"

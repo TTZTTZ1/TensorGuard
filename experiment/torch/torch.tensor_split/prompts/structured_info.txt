@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices_or_sections:
+    dtype: ["tensor", "int", "list", "tuple"]
+    range: null
+    structure: ["scalar", "list", "tuple", "tensor"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "0 <= dim < input.dim()"
+  2:
+    Parameter 1: "indices_or_sections"
+    Parameter 2: "input"
+    Constraint: "if isinstance(indices_or_sections, (list, tuple, torch.Tensor)): all(0 <= i < input.size(dim) for i in indices_or_sections) else True"

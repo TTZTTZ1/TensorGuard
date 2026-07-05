@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.fft.hfft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.hfft` computes the 1D discrete Fourier transform of a **Hermitian-symmetric** input signal, producing a **real-valued** output in the frequency domain. It is the inverse counterpart to `torch.fft.ihfft`.
+
+**Key points:**
+- Input is assumed to be **Hermitian symmetric** in the time domain (mirrored with conjugate symmetry).
+- Output is **real-valued** in the frequency domain.
+- The `n` parameter is important to specify the output length, as it determines whether the original signal was odd or even in length.
+- Default `n` is `2*(input.size(dim) - 1)` (even output).
+- Supports normalization modes: `"forward"`, `"backward"`, `"ortho"`.
+
+**Example use:**  
+Transforming a Hermitian-symmetric time-domain signal into its real frequency representation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "2*(input.size(dim)-1)"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  norm:
+    dtype: ["string"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'backward'"
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+  2:
+    Parameter 1: n
+    Parameter 2: null
+    Constraint: "n is None or n > 0"
+  3:
+    Parameter 1: norm
+    Parameter 2: null
+    Constraint: "norm in ['forward', 'backward', 'ortho']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.hfft in a complex way */
+import torch

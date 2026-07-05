@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `torch.distributed.is_available` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch support for multiprocess parallelism across multiple machines. It enables synchronous distributed training with primitives for communication between processes.
+
+## Key Features
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (CPU/GPU with CUDA support if built with MPI)
+- **Initialization**: Three methods - TCP, shared file-system, and environment variables
+- **Communication**: Point-to-point (send/recv) and collective operations (broadcast, all_reduce, etc.)
+- **Groups**: Create subgroups for fine-grained communication
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies
+
+## Basic Usage Pattern
+1. Initialize process group with `init_process_group()` or `init_device_mesh()`
+2. Use collective operations or point-to-point communication
+3. Clean up with `destroy_process_group()`
+
+## Backend Selection Guidelines
+- **CUDA GPU training**: Use NCCL (best performance)
+- **XPU GPU training**: Use XCCL
+- **CPU training**: Use Gloo
+- **InfiniBand with GPU**: Use NCCL (only backend supporting GPUDirect)
+- **Ethernet with GPU**: Use NCCL, fallback to Gloo if needed
+
+## Common Environment Variables
+- `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK` for environment initialization
+- `NCCL_SOCKET_IFNAME`/`GLOO_SOCKET_IFNAME` to specify network interface
+- `NCCL_DEBUG=INFO` for NCCL debugging
+- `TORCH_DISTRIBUTED_DEBUG` for enhanced debugging
+
+## Important Notes
+- Supports Linux (stable), macOS (stable), Windows (prototype)
+- Each process maintains its own optimizer, eliminating parameter broadcast overhead
+- Multiple Python interpreters avoid GIL contention
+- Initialization is not thread-safe
+- Object collectives have performance limitations and should be used cautiously
+
+The package is essential for scaling PyTorch models across multiple GPUs and machines while maintaining training efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  None
+constraints:
+  None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.is_available in a complex way */
+import torch

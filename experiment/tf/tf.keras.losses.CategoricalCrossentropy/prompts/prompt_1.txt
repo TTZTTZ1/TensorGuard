@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `tf.keras.losses.CategoricalCrossentropy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.losses.CategoricalCrossentropy` is a loss function used for multi-class classification tasks where labels are provided in one-hot encoded format. It measures the cross-entropy between true labels and predicted probabilities.
+
+**Key Features:**
+- **Input Format:** Expects both `y_true` (true labels) and `y_pred` (predictions) to have shape `[batch_size, num_classes]`.
+- **Parameters:**
+  - `from_logits`: Set to `True` if `y_pred` are logits (unnormalized scores); default is `False` (probabilities).
+  - `label_smoothing`: Smooths labels by redistributing a small value from true labels to other classes (range [0, 1]).
+  - `axis`: Axis along which to compute cross-entropy (default is `-1`, the last axis).
+  - `reduction`: Loss reduction type (e.g., `"sum_over_batch_size"`, `"sum"`, or `None`).
+
+**Usage Example:**
+```python
+import tensorflow as tf
+
+# One-hot encoded labels and predictions
+y_true = [[0, 1, 0], [0, 0, 1]]
+y_pred = [[0.05, 0.95, 0], [0.1, 0.8, 0.1]]
+
+# Initialize loss
+cce = tf.keras.losses.CategoricalCrossentropy()
+loss = cce(y_true, y_pred)  # Output: ~1.177
+```
+
+**Common Use Case:**  
+Typically used in `model.compile()` for training multi-class classification models:
+```python
+model.compile(optimizer='adam', loss=tf.keras.losses.CategoricalCrossentropy())
+```
+
+**Note:** For integer-encoded labels, use `SparseCategoricalCrossentropy` instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  from_logits:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  label_smoothing:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  reduction:
+    dtype: ["string"]
+    range: [["sum", "sum_over_batch_size", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'sum_over_batch_size'"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'categorical_crossentropy'"
+constraints:
+  1:
+    Parameter 1: "label_smoothing"
+    Parameter 2: "None"
+    Constraint: "label_smoothing >= 0 and label_smoothing <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.losses.CategoricalCrossentropy in a complex way */
+import tensorflow as tf

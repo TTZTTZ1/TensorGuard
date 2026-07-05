@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `torch.addr` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.addr` function computes the outer product of two vectors (`vec1` and `vec2`) and adds the result to an input matrix, with optional scaling factors.  
+
+**Operation:**  
+\[
+\text{out} = \beta \cdot \text{input} + \alpha \cdot (\text{vec1} \otimes \text{vec2})
+\]  
+
+**Key details:**  
+- `vec1` (size `n`) and `vec2` (size `m`) produce an `n × m` matrix via their outer product.  
+- The `input` matrix must be broadcastable to shape `(n, m)`.  
+- If `beta = 0`, `input` is ignored (NaN/inf values are not propagated).  
+- `alpha` scales the outer product; `beta` scales the input matrix.  
+
+**Example:**  
+```python
+vec1 = torch.arange(1., 4.)
+vec2 = torch.arange(1., 3.)
+M = torch.zeros(3, 2)
+torch.addr(M, vec1, vec2)
+# Result: [[1, 2], [2, 4], [3, 6]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  vec1:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  vec2:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  beta:
+    dtype: ["number"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  alpha:
+    dtype: ["number"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "1"
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+constraints:
+  1. 
+    Parameter 1: vec1
+    Parameter 2: vec2
+    Constraint: "vec1.ndim == 1 and vec2.ndim == 1"
+  2. 
+    Parameter 1: input
+    Parameter 2: vec1
+    Constraint: "input.shape is broadcastable to (vec1.size(0), vec2.size(0))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addr in a complex way */
+import torch

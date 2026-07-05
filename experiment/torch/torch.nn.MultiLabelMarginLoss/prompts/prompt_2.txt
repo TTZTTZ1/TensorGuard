@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.nn.MultiLabelMarginLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`MultiLabelMarginLoss` is a PyTorch loss function for multi-class, multi-label classification tasks using a hinge loss (margin-based) approach. It computes the loss by comparing each target class score against all non-target class scores within a sample.
+
+**Key points:**
+- **Purpose**: Optimizes classification where each sample can belong to multiple classes.
+- **Input/Output shapes**:  
+  - Input: `(C)` or `(N, C)` (N = batch size, C = classes)  
+  - Target: Same shape as input, with target labels as indices and padded with `-1` after the last valid label.  
+  - Output: Scalar (or `(N)` if `reduction='none'`).
+- **Loss calculation**: For each sample, sums `max(0, 1 - (target_score - non_target_score))` and averages over the number of classes.
+- **Parameters**:  
+  - `reduction`: Specifies output reduction (`'none'`, `'mean'`, `'sum'`).  
+  - `size_average`, `reduce`: Deprecated (use `reduction`).
+
+**Example:**
+```python
+loss_fn = nn.MultiLabelMarginLoss()
+x = torch.FloatTensor([[0.1, 0.2, 0.4, 0.8]])  # 4 classes
+y = torch.LongTensor([[3, 0, -1, 1]])          # Targets: class 3 and 0 (padded with -1)
+loss = loss_fn(x, y)  # Computes margin loss
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size_average:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "mean"
+constraints:
+  1:
+    Parameter 1: "reduction"
+    Parameter 2: "reduction"
+    Constraint: "reduction in ['none', 'mean', 'sum']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MultiLabelMarginLoss in a complex way */
+import torch

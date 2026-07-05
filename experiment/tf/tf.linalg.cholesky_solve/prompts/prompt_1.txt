@@ -1,0 +1,42 @@
+
+# You are a Python code generation assistant for the `tf.linalg.cholesky_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.cholesky_solve` efficiently solves linear systems **A X = RHS** when the Cholesky decomposition **L** of matrix **A** (where **A = L Lᵀ**) is already available. It uses the provided Cholesky factor **chol** (lower triangular) and right-hand side **rhs** to compute the solution **X** without explicitly reconstructing **A**. This method is numerically stable and avoids redundant computation when **A** is known to be positive-definite.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  chol:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, M]"]
+    default: null
+  rhs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, K]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "cholesky_solve"
+constraints:
+  1:
+    Parameter 1: "chol"
+    Parameter 2: "rhs"
+    Constraint: "chol.dtype == rhs.dtype"
+  2:
+    Parameter 1: "chol"
+    Parameter 2: "rhs"
+    Constraint: "chol.shape[:-2] == rhs.shape[:-2] and chol.shape[-1] == rhs.shape[-2]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.cholesky_solve in a complex way */
+import tensorflow as tf

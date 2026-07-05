@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `tf.nn.learned_unigram_candidate_sampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.learned_unigram_candidate_sampler` (also available as `tf.random.learned_unigram_candidate_sampler`) is a TensorFlow function used for candidate sampling in training tasks like language modeling or recommendation systems. It dynamically learns a unigram distribution from observed target classes during training and uses it to sample candidate classes.
+
+**Key Features:**
+- **Dynamic Distribution:** Maintains a running unigram frequency distribution over target classes seen during training (starting with weight 1 per class, incremented each time a class appears as a target). This distribution is reset when a model is reloaded.
+- **Sampling:** Randomly samples `num_sampled` candidate classes from the range `[0, range_max)` without replacement if `unique=True`, or with replacement if `unique=False`.
+- **Expected Counts:** Returns expected occurrence counts under the sampling distribution for both the true target classes (`true_expected_count`) and the sampled candidates (`sampled_expected_count`), which are used in loss functions like NCE or sampled logistic.
+
+**Arguments:**
+- `true_classes`: Target classes of shape `[batch_size, num_true]`.
+- `num_true`: Number of target classes per example.
+- `num_sampled`: Number of classes to sample.
+- `unique`: Whether sampled classes in a batch must be unique.
+- `range_max`: Total number of possible classes.
+- `seed`: Optional random seed.
+- `name`: Optional operation name.
+
+**Returns:**
+- `sampled_candidates`: Sampled class IDs (may overlap with true classes).
+- `true_expected_count`: Expected counts for true classes.
+- `sampled_expected_count`: Expected counts for sampled candidates.
+
+**Note:** This function only provides the sampling components; you must implement the specific candidate sampling algorithm (e.g., NCE, sampled softmax) yourself, including steps like excluding true classes from negative samples if required.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[batch_size, num_true]"]
+    default: "No mention"
+  num_true:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  num_sampled:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  unique:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  range_max:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "No mention"
+  seed:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "true_classes"
+    Parameter 2: "num_true"
+    Constraint: "true_classes.shape[1] == num_true"
+  2:
+    Parameter 1: "true_classes"
+    Parameter 2: "range_max"
+    Constraint: "tf.reduce_all(true_classes >= 0) and tf.reduce_all(true_classes < range_max)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.learned_unigram_candidate_sampler in a complex way */
+import tensorflow as tf

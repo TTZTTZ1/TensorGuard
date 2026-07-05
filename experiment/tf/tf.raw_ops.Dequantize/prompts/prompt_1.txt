@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Dequantize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.Dequantize` operation converts a quantized tensor (e.g., `qint8`, `quint8`) into a floating-point tensor (`float32` or `bfloat16`). It uses specified `min_range` and `max_range` values to map the quantized data back to its approximate original float range.
+
+**Key Parameters:**
+- **`input`**: Quantized tensor (`qint8`, `quint8`, `qint16`, `quint16`, `qint32`).
+- **`min_range` / `max_range`**: Scalars defining the output float range.
+- **`mode`**: Dequantization method (`"MIN_COMBINED"`, `"MIN_FIRST"`, or `"SCALED"`), with `"MIN_COMBINED"` as default.
+- **`dtype`**: Output type (`float32` or `bfloat16`). `bfloat16` only supports `"MIN_COMBINED"` mode.
+
+**Functionality:**
+- In `MIN_COMBINED` mode, values are adjusted and scaled linearly to the specified float range.
+- In `MIN_FIRST` mode, a range adjustment is applied for uniform quantization.
+- In `SCALED` mode, values are multiplied by a scaling factor derived from the range.
+
+**Use Case:**  
+Commonly used to convert quantized tensors (e.g., from operations like `QuantizedRelu6`) back to float values for further floating-point computations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  min_range:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  max_range:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["MIN_COMBINED", "MIN_FIRST", "SCALED"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "MIN_COMBINED"
+  narrow_range:
+    dtype: ["bool"]
+    range: ["False", "True"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  axis:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "-1"
+  dtype:
+    dtype: ["bfloat16", "float32"]
+    range: ["tf.bfloat16", "tf.float32"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.float32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: mode
+    Constraint: "dtype != tf.bfloat16 or mode == 'MIN_COMBINED'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Dequantize in a complex way */
+import tensorflow as tf

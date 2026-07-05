@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.nn.modules.lazy.LazyModuleMixin` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**LazyModuleMixin** is a PyTorch mixin for modules that defer parameter initialization until the first forward pass. This allows automatic shape inference from input data, eliminating the need to specify dimensions like `in_features` upfront.
+
+### Key Features:
+- **Lazy Initialization**: Parameters remain as `UninitializedParameter` until the first forward call, after which they become regular `Parameter` objects.
+- **Automatic Shape Inference**: Parameter shapes are derived from the first input's dimensions.
+- **Convenience**: Simplifies module construction by avoiding explicit size calculations.
+
+### Usage Workflow:
+1. **Construct** the network with lazy modules (e.g., `LazyLinear`).
+2. **Transform** the network to the desired device/dtype (e.g., `.cuda()`).
+3. **Perform a "dry run"** by passing a sample input through the network to initialize all lazy modules.
+4. **Use as normal** after initialization, including attaching optimizers.
+
+### Important Notes:
+- **Initialization Order**: Lazy modules initialize after non-lazy ones, which may affect parameter initialization order and reproducibility.
+- **Serialization**: Lazy modules can be saved/loaded via `state_dict()`. They can load both initialized and uninitialized parameters, but once initialized, parameters won't be re-initialized by subsequent dry runs.
+
+### Methods:
+- `has_uninitialized_params()`: Checks if any parameters remain uninitialized.
+- `initialize_parameters()`: Explicitly triggers parameter initialization using input batch properties.
+
+### Example:
+```python
+lazy_mlp = LazyMLP()  # Contains LazyLinear layers
+lazy_mlp = lazy_mlp.cuda()
+lazy_mlp(torch.ones(10, 10).cuda())  # Dry run initializes parameters
+optim = torch.optim.SGD(lazy_mlp.parameters(), lr=0.01)  # Now usable
+```
+
+Lazy modules streamline network design when input dimensions are unknown at construction time, while maintaining full compatibility with standard PyTorch workflows after initialization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["object"]
+    range: null
+    structure: ["tuple"]
+    shape: ["variable"]
+    default: null
+  kwargs:
+    dtype: ["object"]
+    range: null
+    structure: ["dict"]
+    shape: ["variable"]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.modules.lazy.LazyModuleMixin in a complex way */
+import torch

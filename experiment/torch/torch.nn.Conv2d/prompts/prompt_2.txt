@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `torch.nn.Conv2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.Conv2d` is a PyTorch module that performs 2D convolution on multi-channel input images. It applies a learnable filter (kernel) to extract spatial features, commonly used in computer vision tasks.
+
+**Key Parameters:**
+- **in_channels**: Number of input channels (e.g., 3 for RGB images)
+- **out_channels**: Number of output feature maps (filters)
+- **kernel_size**: Size of the convolution filter (int or tuple)
+- **stride**: Step size for sliding the kernel (default: 1)
+- **padding**: Adds zeros around input (int/tuple or 'same'/'valid')
+- **dilation**: Spacing between kernel elements (default: 1)
+- **groups**: Controls input-output connections (1=standard, in_channels=depthwise)
+- **bias**: Whether to add a learnable bias term (default: True)
+
+**Output Size Formula:**
+```
+H_out = floor((H_in + 2×padding[0] - dilation[0]×(kernel_size[0]-1) - 1)/stride[0] + 1)
+W_out = floor((W_in + 2×padding[1] - dilation[1]×(kernel_size[1]-1) - 1)/stride[1] + 1)
+```
+
+**Special Modes:**
+- `padding='valid'`: No padding (output shrinks)
+- `padding='same'`: Pads to maintain input dimensions (stride=1 only)
+- `groups=in_channels`: Depthwise convolution (each input channel processed separately)
+
+**Weight Initialization:** Sampled from uniform distribution based on input channels and kernel size.
+
+**Example:**
+```python
+conv = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1)
+# Input: (batch, 3, 224, 224) → Output: (batch, 64, 112, 112)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  out_channels:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  padding:
+    dtype: ["int", "tuple", "string"]
+    range: ["No mention", "No mention", ["valid", "same"]]
+    structure: ["scalar", "tuple", "string"]
+    shape: [1, 2, 1]
+    default: "0"
+  dilation:
+    dtype: ["int", "tuple"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [1, 2]
+    default: "1"
+  groups:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  padding_mode:
+    dtype: ["string"]
+    range: [["zeros", "reflect", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  device:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "in_channels"
+    Parameter 2: "groups"
+    Constraint: "in_channels % groups == 0"
+  2:
+    Parameter 1: "out_channels"
+    Parameter 2: "groups"
+    Constraint: "out_channels % groups == 0"
+  3:
+    Parameter 1: "padding"
+    Parameter 2: "stride"
+    Constraint: "padding != 'same' or stride == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Conv2d in a complex way */
+import torch

@@ -1,0 +1,26 @@
+params:
+  x:
+    dtype: ["float"]
+    range: ["[0, 255]"]
+    structure: ["tensor", "numpy.array"]
+    shape: ["3", "4"]
+    default: null
+  data_format:
+    dtype: ["string", "None"]
+    range: ["channels_last", "channels_first", null]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: "None"
+    Constraint: "x.min() >= 0 and x.max() <= 255"
+  2:
+    Parameter 1: "x"
+    Parameter 2: "data_format"
+    Constraint: "(data_format is None or data_format == 'channels_last') and x.shape[-1] == 3 or data_format == 'channels_first' and x.shape[0] == 3"
+  3:
+    Parameter 1: "data_format"
+    Parameter 2: "None"
+    Constraint: "data_format is None or data_format in ['channels_last', 'channels_first']"

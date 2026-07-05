@@ -1,0 +1,58 @@
+params:
+  input_dim:
+    dtype: ["int"]
+    range: ["positive integers"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  output_dim:
+    dtype: ["int"]
+    range: ["positive integers"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  embeddings_initializer:
+    dtype: ["string", "callable"]
+    range: ["any valid initializer"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'uniform'"
+  embeddings_regularizer:
+    dtype: ["callable", "None"]
+    range: ["any regularizer function or None"]
+    structure: ["callable", "None"]
+    shape: [1]
+    default: "None"
+  embeddings_constraint:
+    dtype: ["callable", "None"]
+    range: ["any constraint function or None"]
+    structure: ["callable", "None"]
+    shape: [1]
+    default: "None"
+  mask_zero:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  weights:
+    dtype: ["float"]
+    range: ["matrix of floats with shape (input_dim, output_dim)"]
+    structure: ["tensor"]
+    shape: ["2D"]
+    default: "None"
+  lora_rank:
+    dtype: ["int", "None"]
+    range: ["positive integer or None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: mask_zero
+    Parameter 2: input_dim
+    Constraint: "not mask_zero or input_dim >= 2"
+  2:
+    Parameter 1: weights
+    Parameter 2: input_dim
+    Constraint: "weights is None or (hasattr(weights, 'shape') and len(weights.shape) == 2 and weights.shape[0] == input_dim and weights.shape[1] == output_dim)"

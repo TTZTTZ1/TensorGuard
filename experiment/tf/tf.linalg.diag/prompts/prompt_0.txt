@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.linalg.diag` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.linalg.diag` function constructs a batched diagonal matrix from given diagonal values. It allows creating matrices with specified diagonals (main, superdiagonals, or subdiagonals) while padding other entries with a given value. Key features include:
+
+- **Input**: A tensor of rank ≥1 containing diagonal values.
+- **Output**: A tensor with one higher rank, forming batched matrices.
+- **Parameters**:
+  - `k`: Specifies diagonal offsets (single integer for one diagonal, or a pair for a band).
+  - `num_rows`/`num_cols`: Define output matrix dimensions (inferred if not provided).
+  - `padding_value`: Fills non-diagonal entries (default 0).
+  - `align`: Controls alignment for shorter diagonals (default "RIGHT_LEFT").
+
+It supports rectangular matrices, multiple diagonals, and flexible alignment options, commonly used for creating banded matrices or embedding diagonals in larger matrices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonal:
+    dtype: ["int", "float", "complex", "bool", "string"]
+    range: null
+    structure: ["tensor"]
+    shape: ["variable"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "diag"
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: ["scalar", "pair"]
+    default: "0"
+  num_rows:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  num_cols:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  padding_value:
+    dtype: ["int", "float", "complex"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  align:
+    dtype: ["string"]
+    range: [["RIGHT_LEFT", "LEFT_RIGHT", "LEFT_LEFT", "RIGHT_RIGHT"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "RIGHT_LEFT"
+constraints:
+  1:
+    Parameter 1: "k"
+    Parameter 2: "k"
+    Constraint: "not (isinstance(k, (tuple, list)) and len(k) == 2 and k[0] > k[1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.diag in a complex way */
+import tensorflow as tf

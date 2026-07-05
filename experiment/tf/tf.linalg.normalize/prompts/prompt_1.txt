@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.linalg.normalize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.normalize` normalizes a tensor along a specified axis using a given norm. It computes the norm using `tf.linalg.norm` and returns both the normalized tensor and the computed norms.
+
+**Key Parameters:**
+- **`tensor`**: Input tensor of numeric types.
+- **`ord`**: Norm order (e.g., `'euclidean'`, `1`, `2`, `'fro'`, `np.inf`). Default is `'euclidean'`.
+- **`axis`**: Axis along which to normalize. If `None`, treats the tensor as a single vector; if an integer, treats it as a batch of vectors; if a 2-tuple, treats it as a batch of matrices.
+- **`name`**: Optional operation name.
+
+**Returns:**
+- **`normalized`**: Normalized tensor with the same shape as the input.
+- **`norm`**: Computed norms, matching the input shape except the final axis is reduced to size 1.
+
+**Notes:**
+- Supports various vector and matrix norms.
+- Restrictions apply: `'fro'` is not for vectors, and matrix norms (with a 2-tuple `axis`) support limited norm types.
+- Use `axis=[-2,-1]` to reliably compute matrix norms for tensors that could be matrices or batches of matrices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  ord:
+    dtype: ["string", "int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'euclidean'"
+  axis:
+    dtype: ["NoneType", "int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [null, [2]]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "axis"
+    Parameter 2: "ord"
+    Constraint: "not (axis is None or isinstance(axis, int)) or ord != 'fro'"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "ord"
+    Constraint: "not (isinstance(axis, tuple) and len(axis) == 2) or ord in ['euclidean', 'fro', 1, 2, np.inf]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.normalize in a complex way */
+import tensorflow as tf

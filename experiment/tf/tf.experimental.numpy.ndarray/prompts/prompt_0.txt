@@ -1,0 +1,139 @@
+
+# You are a Python code generation assistant for the `tf.experimental.numpy.ndarray` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**`tf.experimental.numpy.ndarray`** (alias for `tf.Tensor`) is a multidimensional array representing the core data structure in TensorFlow, with elements of a single data type (e.g., `float32`, `int32`).
+
+---
+
+### **Key Features:**
+- **Properties:**  
+  - `dtype`: Data type of elements.  
+  - `shape`: Dimensions of the tensor (may be partially known in graph mode).  
+  - `ndim`: Number of dimensions (rank).  
+  - `name`: Optional identifier.
+
+- **Execution Modes:**  
+  - **Eager execution:** Operations run immediately (default).  
+  - **Graph execution:** Built via `tf.function` for deferred evaluation.
+
+- **Specialized Tensors:**  
+  `tf.Variable`, `tf.constant`, `tf.sparse.SparseTensor`, `tf.RaggedTensor`.
+
+---
+
+### **Important Methods:**
+| Method | Purpose |
+|--------|---------|
+| `eval(feed_dict, session)` | Evaluates tensor in a session (legacy graph mode). |
+| `get_shape()` / `shape` | Returns `tf.TensorShape` (static shape, may be partial). |
+| `set_shape(shape)` | Updates shape (asserts compatibility; prefer `tf.ensure_shape`). |
+| `ref()` | Returns a hashable reference for use in sets/dictionaries. |
+| `numpy()` | Converts eager tensor to NumPy array (eager mode only). |
+
+---
+
+### **Operator Overloading:**
+Supports Python operators (e.g., `+`, `*`, `@` for matmul, `[]` for indexing) similar to NumPy, but with restrictions:
+- Basic indexing only (no advanced indexing).
+- Broadcasting is supported for comparisons and arithmetic.
+- **Caution:** Tensors cannot be used as booleans (e.g., in `if` statements).
+
+---
+
+### **Usage Notes:**
+- **Eager Example:**
+  ```python
+  c = tf.constant([[1.0, 2.0], [3.0, 4.0]])
+  print(c.numpy())  # Convert to NumPy array
+  ```
+- **Shape Handling:**  
+  Use `tf.shape(tensor)` for runtime shape (as a tensor) and `tensor.shape` for static shape.
+- **Memory Reuse Warning:**  
+  Tensors created from NumPy arrays may share memory (implementation detail).
+
+---
+
+### **Common Pitfalls:**
+- Avoid using tensors directly in boolean contexts (raises `TypeError`).
+- In graph mode, shapes may be unknown (`None`) until execution.
+- Prefer `tf.ensure_shape` over `set_shape` for runtime validation.
+
+This class underpins most TensorFlow operations, providing a flexible interface for numerical computation across eager and graph execution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  feed_dict:
+    dtype: ["dict"]
+    range: [null]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "None"
+  session:
+    dtype: ["Session"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "None"
+  shape:
+    dtype: ["TensorShape", "list", "tuple", "None"]
+    range: [null]
+    structure: ["TensorShape", "list", "tuple", "None"]
+    shape: ["any"]
+    default: "No default"
+  y:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No default"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  other:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No default"
+  slice_spec:
+    dtype: ["int", "slice", "ellipsis", "None", "int32", "int64"]
+    range: [null]
+    structure: ["scalar", "slice", "ellipsis", "tensor"]
+    shape: ["scalar"]
+    default: "No default"
+  var:
+    dtype: ["Variable"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No default"
+  dtype:
+    dtype: ["data type"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "y"
+    Parameter 2: "self"
+    Constraint: "dtype(y) == dtype(self)"
+  2:
+    Parameter 1: "shape"
+    Parameter 2: "self.shape"
+    Constraint: "shape is compatible with self.shape"
+  3:
+    Parameter 1: "slice_spec"
+    Parameter 2: "self.shape"
+    Constraint: "isinstance(slice_spec, (int, slice, type(Ellipsis), type(None))) or (isinstance(slice_spec, tf.Tensor) and slice_spec.dtype in [tf.int32, tf.int64] and tf.rank(slice_spec) == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.numpy.ndarray in a complex way */
+import tensorflow as tf

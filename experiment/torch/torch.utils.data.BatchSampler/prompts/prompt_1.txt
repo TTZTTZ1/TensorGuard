@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.BatchSampler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides tools for efficient data loading and batching in PyTorch, centered around the `DataLoader` class.
+
+**Core Components:**
+- **`DataLoader`**: Main class that creates an iterable over a dataset, supporting batching, shuffling, multi-process loading, and memory pinning.
+- **Dataset Types**:
+  - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk).
+  - **Iterable-style**: Implements `__iter__()` (e.g., streaming from a database or real-time logs).
+- **`Sampler`**: Controls data loading order (e.g., sequential, random, weighted) for map-style datasets.
+
+**Key Features:**
+1. **Automatic Batching**: Combines samples into batches via `batch_size` and `collate_fn`.
+2. **Customizable Loading**: Use `sampler` or `batch_sampler` to define sample order.
+3. **Multi-process Loading**: Set `num_workers > 0` to parallelize data loading (with platform-specific considerations for Windows/Unix).
+4. **Memory Pinning**: Enable `pin_memory=True` for faster GPU data transfer.
+5. **Flexible Collation**: Customize `collate_fn` to handle padding, custom data structures, or disable batching.
+
+**Additional Utilities:**
+- **Dataset Classes**: `TensorDataset`, `ConcatDataset`, `ChainDataset`, `Subset`, `StackDataset`.
+- **Samplers**: `RandomSampler`, `SequentialSampler`, `WeightedRandomSampler`, `BatchSampler`, `DistributedSampler`.
+- **Collate Functions**: `default_collate` (batched) and `default_convert` (non-batched) for automatic tensor conversion.
+
+**Usage Example:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+**Important Notes:**
+- For iterable-style datasets with multi-processing, implement sharding to avoid duplicate data.
+- Custom types require a `pin_memory()` method for memory pinning.
+- Multi-process loading may duplicate memory; use non-refcounted data structures (e.g., NumPy) to mitigate.
+
+This module is essential for handling large-scale datasets efficiently in PyTorch workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sampler:
+    dtype: ["Sampler", "Iterable"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  batch_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  drop_last:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.BatchSampler in a complex way */
+import torch

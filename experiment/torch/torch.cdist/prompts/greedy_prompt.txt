@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.cdist` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.cdist` computes batched pairwise p-norm distances between two sets of vectors.  
+
+**Key details:**  
+- **Inputs:** Tensors `x1` (shape `... × P × M`) and `x2` (shape `... × R × M`), where `M` is the feature dimension and `P`/`R` are point counts.  
+- **Output:** Tensor of shape `... × P × R` containing pairwise distances.  
+- **Parameter `p`:** Specifies the p-norm (e.g., `p=2` for Euclidean distance).  
+- **Parameter `compute_mode`:** Controls matrix-multiplication optimization for Euclidean distance (`p=2`).  
+- **Equivalence:** Matches `scipy.spatial.distance.cdist` for Minkowski distance when `p > 0`.  
+
+**Example:**  
+```python
+dist = torch.cdist(a, b, p=2)  # Euclidean distances between rows of a and b
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x1:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., P, M]"]
+    default: null
+  x2:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., R, M]"]
+    default: null
+  p:
+    dtype: ["float"]
+    range: [0, float('inf')]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2.0"
+  compute_mode:
+    dtype: ["string"]
+    range: [["use_mm_for_euclid_dist_if_necessary", "use_mm_for_euclid_dist", "donot_use_mm_for_euclid_dist"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "use_mm_for_euclid_dist_if_necessary"
+constraints:
+  1.
+    Parameter 1: x1
+    Parameter 2: x2
+    Constraint: "x1.shape[-1] == x2.shape[-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.cdist in a complex way */
+import torch

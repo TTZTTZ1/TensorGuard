@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.train.Coordinator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.Coordinator` is a thread coordination tool in TensorFlow designed to manage the graceful termination of multiple threads. It provides a simple mechanism for threads to signal when they should stop and handles exception propagation.
+
+**Key Functionality:**
+- **Thread Coordination**: Allows threads to request a global stop via `request_stop()` and check the stop condition with `should_stop()`.
+- **Exception Handling**: Exceptions reported during `request_stop()` are re-raised in the main thread when calling `join()`.
+- **Graceful Shutdown**: Includes a configurable grace period for threads to terminate after a stop is requested.
+- **Context Manager**: `stop_on_exception()` simplifies exception handling by automatically requesting a stop if an exception occurs within its block.
+
+**Basic Usage:**
+1. Create a coordinator: `coord = Coordinator()`
+2. Start threads, passing the coordinator to each.
+3. Threads should regularly check `coord.should_stop()` in their loops.
+4. Call `coord.join(threads)` in the main thread to wait for termination.
+
+**Key Methods:**
+- `request_stop(ex)`: Signals all threads to stop, optionally with an exception.
+- `should_stop()`: Returns `True` if a stop has been requested.
+- `join()`: Blocks until all threads terminate, re-raising any reported exception.
+- `stop_on_exception()`: Context manager for automatic stop on exception.
+
+**Parameters:**
+- `clean_stop_exception_types`: Specifies exception types (e.g., `OutOfRangeError`, `StopIteration`) that trigger a clean stop without propagating the exception.
+
+This coordinator is essential for managing multi-threaded data input pipelines and training loops in TensorFlow, ensuring orderly shutdown and proper error handling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  clean_stop_exception_types:
+    dtype: ["tuple"]
+    range: [null]
+    structure: ["tuple"]
+    shape: [null]
+    default: "(tf.errors.OutOfRangeError,)"
+  threads:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  stop_grace_period_secs:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "120"
+  ignore_live_threads:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  thread:
+    dtype: ["threading.Thread"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: "null"
+  ex:
+    dtype: ["Exception", "tuple"]
+    range: [null]
+    structure: ["scalar", "tuple"]
+    shape: [null]
+    default: "None"
+  timeout:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.Coordinator in a complex way */
+import tensorflow as tf

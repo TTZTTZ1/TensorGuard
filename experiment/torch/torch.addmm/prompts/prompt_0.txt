@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `torch.addmm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.addmm` performs matrix multiplication between `mat1` and `mat2`, then adds a third matrix `input` to the result. The operation is defined as:  
+
+**Formula:**  
+`output = beta * input + alpha * (mat1 @ mat2)`  
+
+**Key details:**  
+- `mat1` (n × m) and `mat2` (m × p) must be compatible for multiplication.  
+- `input` must be broadcastable to shape (n × p).  
+- `beta` scales `input`; if `beta = 0`, `input` is ignored (including its NaN/Inf values).  
+- `alpha` scales the matrix product.  
+- Supports sparse tensors (beta feature) and TensorFloat32 on CUDA.  
+- Optional `out_dtype` for controlling output dtype on CUDA with float16/bfloat16 inputs.  
+
+**Example:**  
+```python
+torch.addmm(M, mat1, mat2, beta=1, alpha=1)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+  mat1:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+  mat2:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+  out_dtype:
+    dtype: ["dtype"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  beta:
+    dtype: ["int", "float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  alpha:
+    dtype: ["int", "float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["2"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "mat1"
+    Parameter 2: "mat2"
+    Constraint: "mat1.shape[1] == mat2.shape[0]"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "mat1"
+    Constraint: "(input.ndim == 0) or (input.ndim == 1 and input.shape[0] in [1, mat1.shape[0], mat2.shape[1]]) or (input.ndim == 2 and input.shape[0] in [1, mat1.shape[0]] and input.shape[1] in [1, mat2.shape[1]])"
+  3:
+    Parameter 1: "beta"
+    Parameter 2: "input"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(beta, (int, float))) or (input.dtype not in [torch.float32, torch.float64] and isinstance(beta, int))"
+  4:
+    Parameter 1: "alpha"
+    Parameter 2: "input"
+    Constraint: "(input.dtype in [torch.float32, torch.float64] and isinstance(alpha, (int, float))) or (input.dtype not in [torch.float32, torch.float64] and isinstance(alpha, int))"
+  5:
+    Parameter 1: "out_dtype"
+    Parameter 2: "mat1"
+    Constraint: "out_dtype is None or (out_dtype == torch.float32 and mat1.dtype in [torch.float16, torch.bfloat16] and mat2.dtype in [torch.float16, torch.bfloat16] and input.device.type == 'cuda' and mat1.device.type == 'cuda' and mat2.device.type == 'cuda')"
+  6:
+    Parameter 1: "out"
+    Parameter 2: "input"
+    Constraint: "out is None or out.layout == input.layout"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.addmm in a complex way */
+import torch

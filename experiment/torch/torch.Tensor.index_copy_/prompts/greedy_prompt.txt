@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.Tensor.index_copy_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`index_copy_` copies elements from a source tensor into specific positions of the target tensor along a specified dimension, using an index tensor to map positions. The operation is performed in-place.
+
+**Key points:**
+- **Parameters:** `dim` (dimension to index), `index` (1D tensor of indices), `tensor` (source tensor).
+- **Behavior:** For each position `i` in `index`, the `i`-th slice along `dim` from `tensor` is copied to the `index[i]`-th slice of the target tensor.
+- **Requirements:** The size of `tensor` along `dim` must equal the length of `index`; other dimensions must match the target tensor.
+- **Note:** Duplicate indices cause nondeterministic overwrites.
+
+**Example:**
+```python
+x = torch.zeros(5, 3)
+t = torch.tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+index = torch.tensor([0, 4, 2])
+x.index_copy_(0, index, t)  # Copies rows 0,1,2 of t to rows 0,4,2 of x
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  index:
+    dtype: ["torch.LongTensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: index
+    Constraint: tensor.shape[dim] == index.shape[0]
+  2:
+    Parameter 1: tensor
+    Parameter 2: self
+    Constraint: tensor.ndim == self.ndim and all(tensor.shape[i] == self.shape[i] for i in range(tensor.ndim) if i != dim)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.Tensor.index_copy_ in a complex way */
+import torch

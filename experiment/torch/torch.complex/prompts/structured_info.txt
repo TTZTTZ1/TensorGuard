@@ -1,0 +1,28 @@
+params:
+  real:
+    dtype: ["torch.half", "torch.float32", "torch.float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  imag:
+    dtype: ["torch.half", "torch.float32", "torch.float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  out:
+    dtype: ["torch.complex64", "torch.complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "real"
+    Parameter 2: "imag"
+    Constraint: "real.dtype == imag.dtype"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "real"
+    Constraint: "out is None or ((real.dtype == torch.float32 and out.dtype == torch.complex64) or (real.dtype == torch.float64 and out.dtype == torch.complex128))"

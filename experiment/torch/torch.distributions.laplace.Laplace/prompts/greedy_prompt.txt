@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `torch.distributions.laplace.Laplace` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Parameterizable Distributions**: Includes a wide range of distributions (e.g., Normal, Bernoulli, Categorical, Beta, Gamma, etc.) that can be parameterized by tensors.
+- **Gradient Estimation**: Supports two primary methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients (common in reinforcement learning).
+  - **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (common in variational autoencoders).
+
+### **Main Classes**
+1. **`Distribution`**: Abstract base class for all distributions. Key methods:
+   - `sample()` / `rsample()`: Draw samples (with or without reparameterization).
+   - `log_prob()`: Compute log probability density/mass.
+   - `entropy()`: Calculate distribution entropy.
+   - `mean`, `variance`, `mode`: Distribution statistics.
+
+2. **`ExponentialFamily`**: Base class for exponential family distributions (e.g., Normal, Bernoulli, Beta), providing efficient entropy and KL divergence calculations.
+
+3. **`TransformedDistribution`**: Creates new distributions by applying a sequence of transforms to a base distribution (e.g., `LogNormal` from `Normal` via exponentiation).
+
+4. **`Independent`**: Reinterprets batch dimensions as event dimensions, useful for changing the shape of `log_prob()` results.
+
+5. **`MixtureSameFamily`**: Models mixture distributions where components are from the same distribution type.
+
+### **Key Transforms**
+- **Bijective Transforms**: Used for reparameterization (e.g., `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform`).
+- **Constraint Handling**: Transforms like `biject_to()` and `transform_to()` map unconstrained parameters to constrained spaces (e.g., simplex, positive definite matrices).
+
+### **KL Divergence**
+- **`kl_divergence()`**: Computes KL divergence between two distributions. Pre-registered for many distribution pairs (e.g., Normal-Normal, Beta-Gamma).
+
+### **Constraints**
+- **`Constraint`**: Abstract class for defining valid parameter regions (e.g., `positive`, `simplex`, `interval`).
+- Used in distribution `arg_constraints` to validate parameters.
+
+### **Usage Examples**
+- **REINFORCE (Policy Gradient)**:
+  ```python
+  probs = policy_network(state)
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  loss.backward()
+  ```
+- **Reparameterization Trick**:
+  ```python
+  params = policy_network(state)
+  m = Normal(*params)
+  action = m.rsample()  # Differentiable
+  loss = -reward
+  loss.backward()
+  ```
+
+### **Supported Distributions**
+Includes univariate (Bernoulli, Normal, Exponential, etc.), multivariate (MultivariateNormal, Dirichlet), and specialized distributions (LKJCholesky, Wishart, VonMises).
+
+### **Key Features**
+- **Batch and Event Shapes**: Supports batched parameters and samples.
+- **Validation**: Optional argument validation via `validate_args`.
+- **Extensibility**: Users can register custom constraints, transforms, and KL divergences.
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable stochastic operations in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["float", "torch.Tensor"]
+    range: [[0, inf]]
+    structure: ["scalar", "torch.Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [[true, false, null]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: null
+    Constraint: scale > 0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.laplace.Laplace in a complex way */
+import torch

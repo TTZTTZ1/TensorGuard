@@ -1,0 +1,104 @@
+
+# You are a Python code generation assistant for the `torch.distributed.isend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables multi‑process parallel training across multiple machines or GPUs. Here’s a concise overview of its key features:
+
+## **Backends**
+- **Gloo**: Recommended for CPU‑based training.
+- **NCCL**: Recommended for CUDA GPU training (best performance, supports InfiniBand/GPUDirect).
+- **XCCL**: For XPU GPU training.
+- **MPI**: Optional, requires building PyTorch from source.
+
+**Rule of thumb**: Use NCCL for GPU, Gloo for CPU.
+
+## **Initialization**
+Must call `init_process_group()` or `init_device_mesh()` before any other operations.  
+Common initialization methods:
+- **Environment variables** (`env://` default): Set `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`.
+- **TCP**: Specify a rank‑0 address and port.
+- **Shared file‑system**: Use a shared file path.
+
+## **Key Concepts**
+- **Process group**: Default group is `WORLD`; custom groups can be created with `new_group()`.
+- **DeviceMesh**: Higher‑level abstraction for managing multi‑dimensional device topologies (e.g., 2D mesh for data + tensor parallelism).
+- **Collective operations**: `broadcast`, `all_reduce`, `all_gather`, `scatter`, etc. Available in synchronous (`async_op=False`) and asynchronous (`async_op=True`) forms.
+- **Point‑to‑point**: `send`/`recv` and their non‑blocking variants `isend`/`irecv`.
+
+## **Communication Patterns**
+- **Synchronous**: Operation completes before returning (default).
+- **Asynchronous**: Returns a `Work` handle; use `wait()` or `is_completed()` to synchronize.
+
+## **Key‑Value Stores**
+Used for rendezvous/service discovery:
+- `TCPStore`: Network‑based store (client‑server).
+- `FileStore`: Shared‑file system store.
+- `HashStore`: In‑memory store for single‑process multi‑threading.
+
+## **Launching Utilities**
+- `torch.distributed.launch`: Spawns multiple processes per node (deprecated in favor of `torchrun`).
+- `torch.multiprocessing.spawn`: Python‑based spawning for single‑node multi‑process.
+
+## **Debugging & Profiling**
+- **Monitored barrier**: `monitored_barrier()` reports ranks that fail to synchronize.
+- **Environment variables**:  
+  `TORCH_DISTRIBUTED_DEBUG=INFO|DETAIL` adds logging and consistency checks.  
+  `TORCH_CPP_LOG_LEVEL` controls C++ log verbosity.
+- **Python breakpoint**: `torch.distributed.breakpoint(rank)` stops only the specified rank.
+- **Profiling**: Use `torch.profiler` to profile collective communication.
+
+## **Shutdown**
+Call `destroy_process_group()` to clean up resources (prevents hangs on exit).
+
+## **Best Practices**
+1. Set `CUDA_VISIBLE_DEVICES` or use `torch.cuda.set_device()` before initializing NCCL.
+2. For NCCL, ensure each process has exclusive GPU access.
+3. Use `async_op=True` for overlapping communication and computation.
+4. Follow SPMD (single program, multiple data) pattern: same code runs on all ranks.
+
+This package is the foundation for distributed training wrappers like `DistributedDataParallel`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group_dst:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: dst is not None and group_dst is not None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.isend in a complex way */
+import torch

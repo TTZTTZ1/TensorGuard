@@ -1,0 +1,70 @@
+# tf.image.adjust_gamma
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/image/adjust_gamma](https://tensorflow.google.cn/api_docs/python/tf/image/adjust_gamma)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/ops/image_ops_impl.py#L2312-L2375) |
+
+Performs [Gamma Correction](http://en.wikipedia.org/wiki/Gamma_correction).
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.image.adjust_gamma`](https://tensorflow.google.cn/api_docs/python/tf/image/adjust_gamma)
+
+```
+tf.image.adjust_gamma(
+    image, gamma=1, gain=1
+)
+```
+
+on the input image.
+
+Also known as Power Law Transform. This function converts the
+input images at first to float representation, then transforms them
+pixelwise according to the equation `Out = gain * In**gamma`,
+and then converts the back to the original data type.
+
+#### Usage Example:
+
+```
+>>> x = [[[1.0, 2.0, 3.0],
+...       [4.0, 5.0, 6.0]],
+...     [[7.0, 8.0, 9.0],
+...       [10.0, 11.0, 12.0]]]
+>>> tf.image.adjust_gamma(x, 0.2)
+<tf.Tensor: shape=(2, 2, 3), dtype=float32, numpy=
+array([[[1.       , 1.1486983, 1.2457309],
+        [1.319508 , 1.3797297, 1.4309691]],
+       [[1.4757731, 1.5157166, 1.5518456],
+        [1.5848932, 1.6153942, 1.6437519]]], dtype=float32)>
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `image` | RGB image or images to adjust. |
+| `gamma` | A scalar or tensor. Non-negative real number. |
+| `gain` | A scalar or tensor. The constant multiplier. |
+
+| Returns | |
+| A Tensor. A Gamma-adjusted tensor of the same shape and type as `image`. | |
+
+| Raises | |
+
+|  |  |
+| --- | --- |
+| `ValueError` | If gamma is negative. |
+
+| Notes | |
+| For gamma greater than 1, the histogram will shift towards left and the output image will be darker than the input image. For gamma less than 1, the histogram will shift towards right and the output image will be brighter than the input image. | |
+
+| References | |
+| [Wikipedia](http://en.wikipedia.org/wiki/Gamma_correction) | |

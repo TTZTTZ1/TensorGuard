@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.nn.space_to_batch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.nn.space_to_batch` operation divides the spatial dimensions of an input tensor into a grid of blocks, interleaves these blocks with the batch dimension, and optionally pads the spatial dimensions beforehand. It is primarily used for converting atrous (dilated) convolutions into regular convolutions.
+
+**Key Functionality:**
+- **Input:** An N-D tensor with shape `[batch] + spatial_shape + remaining_shape`.
+- **Parameters:**
+  - `block_shape`: 1-D tensor specifying the block sizes for each spatial dimension (all values ≥ 1).
+  - `paddings`: 2-D tensor specifying padding for each spatial dimension (all values ≥ 0).
+- **Output:** A tensor where spatial dimensions are rearranged into blocks and combined with the batch dimension.
+
+**Common Use Case:** Transforming data for efficient implementation of dilated convolutions by restructuring spatial data into batch entries.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  block_shape:
+    dtype: ["int32", "int64"]
+    range: [">= 1"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  paddings:
+    dtype: ["int32", "int64"]
+    range: [">= 0"]
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "block_shape"
+    Parameter 2: "paddings"
+    Constraint: "paddings.shape[0] == len(block_shape)"
+  2:
+    Parameter 1: "block_shape"
+    Parameter 2: "paddings"
+    Constraint: "all(block_shape[i] % (input.shape[i+1] + paddings[i][0] + paddings[i][1]) == 0 for i in range(len(block_shape)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.space_to_batch in a complex way */
+import tensorflow as tf

@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.norm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.norm` computes vector or matrix norms of a tensor but is deprecated; use `torch.linalg.vector_norm` or `torch.linalg.matrix_norm` instead. It supports various norm types via the `p` parameter (e.g., Frobenius, nuclear, or numerical orders) and can operate over specified dimensions (`dim`). The function works with float or complex inputs and allows optional output dtype and shape retention (`keepdim`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float", "complex"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  p:
+    dtype: ["int", "float", "string"]
+    range: [["fro", "nuc", "inf", "-inf"]]
+    structure: ["scalar", "string"]
+    shape: null
+    default: "'fro'"
+  dim:
+    dtype: ["int", "tuple", "list", "None"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: null
+    default: "None"
+  keepdim:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["Tensor", "None"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "p"
+    Parameter 2: "dim"
+    Constraint: "p != 'nuc' or (dim is not None and isinstance(dim, (tuple, list)) and len(dim) == 2)"
+  2:
+    Parameter 1: "p"
+    Parameter 2: "dim"
+    Constraint: "p != 'fro' or not (isinstance(dim, list) and len(dim) >= 3)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.norm in a complex way */
+import torch

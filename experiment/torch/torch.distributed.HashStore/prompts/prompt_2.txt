@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.distributed.HashStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI, and UCC
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations
+- **Process Groups**: Default world group and custom groups via `new_group()`
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies
+
+## **Key Features**
+1. **Collective Operations**: 
+   - Point-to-point: `send()`, `recv()`, `isend()`, `irecv()`
+   - All-to-all: `all_reduce()`, `all_gather()`, `broadcast()`, `scatter()`, etc.
+   - Support both synchronous (`async_op=False`) and asynchronous (`async_op=True`) modes
+
+2. **Initialization Methods**:
+   - TCP: `tcp://IP:PORT`
+   - Shared file system: `file:///path/to/file`
+   - Environment variables: `env://` (default)
+
+3. **DeviceMesh**: 
+   - Manages multi-dimensional device layouts
+   - Simplifies creation of inter/intra-node process groups
+   - Supports named mesh dimensions for readability
+
+## **Best Practices**
+- Use **NCCL** for CUDA GPU training
+- Use **Gloo** for CPU training
+- Use **XCCL** for XPU GPU training
+- Always call `destroy_process_group()` for cleanup
+- Set `torch.cuda.set_device()` before NCCL operations
+
+## **Debugging Tools**
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for debug logging
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `breakpoint()`: Rank-specific debugging
+- HTTP debug server for runtime diagnostics
+
+## **Performance Features**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines (NCCL 2.28+)
+- **Asynchronous Operations**: Overlap communication with computation
+- **Environment Variables**: For network interface selection and performance tuning
+
+## **Common Patterns**
+```python
+# Basic initialization
+dist.init_process_group(backend="nccl", init_method="env://")
+
+# Collective operations
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+
+# DeviceMesh usage
+mesh = init_device_mesh("cuda", mesh_shape=(2, 4))
+```
+
+The package enables scalable distributed training with support for various network backends, collective operations, and debugging tools while maintaining performance optimizations for different hardware configurations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.HashStore in a complex way */
+import torch

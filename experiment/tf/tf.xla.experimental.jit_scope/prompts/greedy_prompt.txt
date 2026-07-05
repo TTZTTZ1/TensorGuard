@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.xla.experimental.jit_scope` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.xla.experimental.jit_scope` is a context manager that controls whether TensorFlow operations within its scope are compiled using XLA (Accelerated Linear Algebra). It provides fine-grained control over JIT compilation on a best-effort basis.
+
+**Key Features:**
+- **Enable/Disable Compilation:** Use `compile_ops` (bool or callable) to turn compilation on/off for operations in the scope.
+- **Separate Gradient Compilation:** When `separate_compiled_gradients=True`, each gradient subgraph is compiled independently, which can improve performance.
+- **Flexible Control:** Compilation behavior can be defined per operation using a callable that inspects the node definition.
+
+**Usage Notes:**
+- Operations outside the scope may still be compiled together with those inside if compilation is enabled.
+- To isolate compilation strictly to a specific scope, nest it within an outer `jit_scope(compile_ops=False)`.
+- This feature is experimental and not supported when eager execution is enabled.
+
+**Example:**
+```python
+with tf.xla.experimental.jit_scope():
+    x = tf.matmul(a, b)  # Compiled
+with tf.xla.experimental.jit_scope(compile_ops=False):
+    y = tf.matmul(c, d)  # Not compiled
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  compile_ops:
+    dtype: ["bool", "callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  separate_compiled_gradients:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.xla.experimental.jit_scope in a complex way */
+import tensorflow as tf

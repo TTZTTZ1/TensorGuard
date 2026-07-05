@@ -1,0 +1,112 @@
+# tf.io.decode_json_example
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/io/decode_json_example](https://tensorflow.google.cn/api_docs/python/tf/io/decode_json_example)
+
+---
+
+[View source on GitHub](https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/python/ops/parsing_ops.py#L1147-L1229) |
+
+Convert JSON-encoded Example records to binary protocol buffer strings.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.decode_json_example`](https://tensorflow.google.cn/api_docs/python/tf/io/decode_json_example), [`tf.compat.v1.io.decode_json_example`](https://tensorflow.google.cn/api_docs/python/tf/io/decode_json_example)
+
+```
+tf.io.decode_json_example(
+    json_examples, name=None
+)
+```
+
+**Note:** This is **not** a general purpose JSON parsing op.
+
+This op converts JSON-serialized [`tf.train.Example`](https://tensorflow.google.cn/api_docs/python/tf/train/Example) (maybe created with
+`json_format.MessageToJson`, following the
+[standard JSON mapping](https://developers.google.cn/protocol-buffers/docs/proto3#json))
+to a binary-serialized [`tf.train.Example`](https://tensorflow.google.cn/api_docs/python/tf/train/Example) (equivalent to
+[`Example.SerializeToString()`](https://tensorflow.google.cn/api_docs/python/tf/train/BytesList#SerializeToString)) suitable for conversion to tensors with
+[`tf.io.parse_example`](https://tensorflow.google.cn/api_docs/python/tf/io/parse_example).
+
+Here is a [`tf.train.Example`](https://tensorflow.google.cn/api_docs/python/tf/train/Example) proto:
+
+```
+>>> example = tf.train.Example(
+...   features=tf.train.Features(
+...       feature={
+...           "a": tf.train.Feature(
+...               int64_list=tf.train.Int64List(
+...                   value=[1, 1, 3]))}))
+```
+
+Here it is converted to JSON:
+
+```
+>>> from google.protobuf import json_format
+>>> example_json = json_format.MessageToJson(example)
+>>> print(example_json)
+{
+  "features": {
+    "feature": {
+      "a": {
+        "int64List": {
+          "value": [
+            "1",
+            "1",
+            "3"
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+This op converts the above json string to a binary proto:
+
+```
+>>> example_binary = tf.io.decode_json_example(example_json)
+>>> example_binary.numpy()
+b'\n\x0f\n\r\n\x01a\x12\x08\x1a\x06\x08\x01\x08\x01\x08\x03'
+```
+
+The OP works on string tensors of andy shape:
+
+```
+>>> tf.io.decode_json_example([
+...     [example_json, example_json],
+...     [example_json, example_json]]).shape.as_list()
+[2, 2]
+```
+
+This resulting binary-string is equivalent to [`Example.SerializeToString()`](https://tensorflow.google.cn/api_docs/python/tf/train/BytesList#SerializeToString),
+and can be converted to Tensors using [`tf.io.parse_example`](https://tensorflow.google.cn/api_docs/python/tf/io/parse_example) and related
+functions:
+
+```
+>>> tf.io.parse_example(
+...   serialized=[example_binary.numpy(),
+...              example.SerializeToString()],
+...   features = {'a': tf.io.FixedLenFeature(shape=[3], dtype=tf.int64)})
+{'a': <tf.Tensor: shape=(2, 3), dtype=int64, numpy=
+ array([[1, 1, 3],
+        [1, 1, 3]])>}
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `json_examples` | A string tensor containing json-serialized `tf.Example` protos. |
+| `name` | A name for the op. |
+
+| Returns | |
+| A string Tensor containing the binary-serialized `tf.Example` protos. | |
+
+| Raises | |
+| [`tf.errors.InvalidArgumentError`](https://tensorflow.google.cn/api_docs/python/tf/errors/InvalidArgumentError): If the JSON could not be converted to a `tf.Example` | |

@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.PaddingFIFOQueueV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.PaddingFIFOQueueV2` creates a FIFO (first-in, first-out) queue that supports variable-sized tensors by padding them to a common shape within a batch. It is useful for handling sequences or data with varying dimensions.
+
+**Key Features:**
+- **FIFO Order:** Elements are dequeued in the order they are enqueued.
+- **Variable Shapes:** Allows tensors with dynamic dimensions by setting shape dimensions to `-1` or `0` (depending on the operation mode). During batch dequeuing (`DequeueMany`), elements are padded to the maximum size in the batch.
+- **Component-wise Specification:** Each element in the queue can have multiple components (e.g., a tuple of tensors), with individual types and shapes defined via `component_types` and `shapes`.
+- **Configurable Capacity:** The queue can have a fixed capacity or be unbounded (if `capacity=-1`).
+- **Cross-session Sharing:** Can be shared across sessions using `shared_name` and `container`.
+
+**Parameters:**
+- `component_types`: List of data types for each tensor component.
+- `shapes`: List of shapes for each component; use `-1` for variable dimensions.
+- `capacity`: Maximum queue size; `-1` for unlimited.
+- `container`/`shared_name`: For shared queue access across sessions.
+- `name`: Optional operation name.
+
+**Returns:** A `resource` handle referencing the queue.
+
+**Use Case:** Ideal for batching variable-length sequences (e.g., in natural language processing) where padding is required for uniform batch processing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  component_types:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  shapes:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  capacity:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  container:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: '""'
+  shared_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: '""'
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "component_types"
+    Parameter 2: "component_types"
+    Constraint: "len(component_types) >= 1"
+  2:
+    Parameter 1: "shapes"
+    Parameter 2: "component_types"
+    Constraint: "len(shapes) == 0 or len(shapes) == len(component_types)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.PaddingFIFOQueueV2 in a complex way */
+import tensorflow as tf

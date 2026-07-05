@@ -1,0 +1,101 @@
+params:
+  activities:
+    dtype: ["iterable"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "ProfilerActivity.CPU and (when available) ProfilerActivity.CUDA or (when available) ProfilerActivity.XPU"
+  schedule:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+  on_trace_ready:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+  record_shapes:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  profile_memory:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_stack:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_flops:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  with_modules:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  experimental_config:
+    dtype: ["_ExperimentalConfig"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  execution_trace_observer:
+    dtype: ["ExecutionTraceObserver"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  acc_events:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  use_cuda:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  custom_trace_id_callback:
+    dtype: ["Callable"]
+    range: null
+    structure: ["Callable"]
+    shape: null
+    default: null
+
+constraints:
+  1:
+    Parameter 1: "activities"
+    Parameter 2: null
+    Constraint: "activities must contain only values from torch.profiler.ProfilerActivity (CPU, CUDA, XPU, MTIA, HPU, PrivateUse1)"
+  2:
+    Parameter 1: "schedule"
+    Parameter 2: "on_trace_ready"
+    Constraint: "on_trace_ready is called when schedule returns ProfilerAction.RECORD_AND_SAVE"
+  3:
+    Parameter 1: "record_shapes"
+    Parameter 2: "profile_memory"
+    Constraint: "record_shapes=True may prevent certain optimizations and introduce extra tensor copies"
+  4:
+    Parameter 1: "with_modules"
+    Parameter 2: null
+    Constraint: "with_modules=True only works for TorchScript models, not eager mode models"
+  5:
+    Parameter 1: "use_cuda"
+    Parameter 2: "activities"
+    Constraint: "use_cuda is deprecated since version 1.8.1; use activities instead"

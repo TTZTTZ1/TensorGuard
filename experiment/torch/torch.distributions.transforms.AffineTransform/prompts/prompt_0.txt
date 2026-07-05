@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.AffineTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. Key features include:
+
+**Core Concepts:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for gradient estimation via likelihood ratios (common in reinforcement learning).
+- **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling via deterministic transformations (common in variational autoencoders).
+
+**Main Classes:**
+- **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `entropy()`, `mean`, `variance`, etc.
+- **ExponentialFamily**: Base class for distributions in exponential family form.
+- **TransformedDistribution**: Applies a sequence of transforms to a base distribution.
+- **Independent**: Reinterprets batch dimensions as event dimensions.
+- **MixtureSameFamily**: Mixture distribution with components from the same family.
+
+**Common Distributions:**
+- Univariate: `Bernoulli`, `Beta`, `Binomial`, `Categorical`, `Normal`, `Poisson`, `Uniform`, etc.
+- Multivariate: `MultivariateNormal`, `LowRankMultivariateNormal`, `Dirichlet`, etc.
+- Continuous: `Gamma`, `Exponential`, `StudentT`, `Laplace`, etc.
+- Transformed: `LogNormal`, `HalfNormal`, `Gumbel`, `Weibull`, etc.
+
+**Key Functionality:**
+- **Sampling**: `sample()` and `rsample()` (reparameterized).
+- **Evaluation**: `log_prob()`, `cdf()`, `icdf()`.
+- **Statistics**: `mean`, `variance`, `entropy`, `mode`.
+- **KL Divergence**: `kl_divergence()` for many distribution pairs.
+- **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) for constrained optimization.
+- **Constraints**: Define valid parameter domains (e.g., `simplex`, `positive_definite`).
+- **Constraint Registry**: `transform_to()` and `biject_to()` map constraints to transforms for unconstrained optimization.
+
+**Usage Example:**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and other stochastic optimization tasks in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["Tensor", "float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  scale:
+    dtype: ["Tensor", "float"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  event_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  cache_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "event_dim"
+    Parameter 2: "event_dim"
+    Constraint: "event_dim >= 0"
+  2:
+    Parameter 1: "cache_size"
+    Parameter 2: "cache_size"
+    Constraint: "cache_size == 0 or cache_size == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.AffineTransform in a complex way */
+import torch

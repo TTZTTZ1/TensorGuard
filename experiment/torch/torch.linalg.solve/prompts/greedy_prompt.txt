@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `torch.linalg.solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.solve` computes the solution to a square system of linear equations with a unique solution. It solves \(AX = B\) (default) or \(XA = B\) (when `left=False`), assuming matrix \(A\) is invertible.
+
+**Key features:**
+- Supports float, double, cfloat, and cdouble dtypes.
+- Handles both single matrices and batched inputs.
+- Automatically broadcasts `B` if its shape is compatible.
+- More efficient and numerically stable than computing the inverse separately.
+- For CUDA inputs, it synchronizes the device with the CPU.
+
+**Parameters:**
+- `A`: Coefficient matrix of shape `(*, n, n)`.
+- `B`: Right-hand side tensor of shape `(*, n)`, `(*, n, k)`, `(n,)`, or `(n, k)`.
+- `left`: If `True`, solves \(AX = B\); if `False`, solves \(XA = B\).
+- `out`: Optional output tensor.
+
+**Raises `RuntimeError` if `A` is not invertible.**
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, n, n)"]
+    default: null
+  B:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, n)", "(*, n, k)", "(n,)", "(n, k)"]
+    default: null
+  left:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "True"
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: A
+    Constraint: "A.shape[-1] == A.shape[-2]"
+  2:
+    Parameter 1: A
+    Parameter 2: B
+    Constraint: "(left != True) or ( (B.ndim == 1 and A.shape[-2] == B.shape[-1]) or (B.ndim >= 2 and A.shape[-2] == B.shape[-2]) )"
+  3:
+    Parameter 1: A
+    Parameter 2: B
+    Constraint: "(left != False) or (A.shape[-1] == B.shape[-1])"
+  4:
+    Parameter 1: A
+    Parameter 2: left
+    Constraint: "not (A.layout == torch.sparse_csr) or left == True"
+  5:
+    Parameter 1: A
+    Parameter 2: B
+    Constraint: "A.dtype in [torch.float32, torch.float64, torch.complex64, torch.complex128] and B.dtype in [torch.float32, torch.float64, torch.complex64, torch.complex128] and A.dtype == B.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.solve in a complex way */
+import torch

@@ -1,0 +1,91 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ReshapeTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Facilitates stochastic gradient estimation via REINFORCE (score function) and reparameterization (pathwise derivative) methods
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, etc.
+- **Common Distributions**: Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Exponential, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+- **Specialized**: TransformedDistribution, MixtureSameFamily, Independent, ExponentialFamily
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (e.g., in VAEs)
+
+### **3. Transforms System**
+- **Transform Classes**: AffineTransform, ExpTransform, SigmoidTransform, SoftmaxTransform, etc.
+- **Constraint Registry**: `transform_to()` and `biject_to()` for constrained optimization
+- Enables working with constrained parameters via unconstrained optimization
+
+### **4. Key Functionality**
+- **Sampling**: `sample()`, `rsample()` (reparameterized)
+- **Probability**: `log_prob()`, `cdf()`, `icdf()`
+- **Statistics**: `mean`, `variance`, `entropy`, `mode`
+- **KL Divergence**: `kl_divergence()` between distributions
+- **Batch/Event Shapes**: Support for batched distributions
+
+### **5. Practical Applications**
+- **Reinforcement Learning**: Policy gradients with categorical distributions
+- **Variational Inference**: Reparameterization with Normal/Beta distributions
+- **Probabilistic Modeling**: Building complex distributions via transforms and mixtures
+- **Constrained Optimization**: Using transforms for parameters with constraints (e.g., simplex, positive)
+
+## **Basic Usage Pattern**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sample
+samples = dist.sample((100,))
+
+# Compute probabilities
+log_probs = dist.log_prob(samples)
+
+# Reparameterized sampling (differentiable)
+params = torch.randn(10, requires_grad=True)
+m = Normal(params, 1.0)
+samples = m.rsample()  # Differentiable w.r.t params
+```
+
+The module is designed to be compatible with automatic differentiation, making it suitable for gradient-based optimization in probabilistic models, variational inference, and reinforcement learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  out_shape:
+    dtype: ["torch.Size"]
+    range: [null]
+    structure: ["torch.Size"]
+    shape: [null]
+    default: null
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "in_shape"
+    Parameter 2: "out_shape"
+    Constraint: "torch.Size(in_shape).numel() == torch.Size(out_shape).numel()"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ReshapeTransform in a complex way */
+import torch

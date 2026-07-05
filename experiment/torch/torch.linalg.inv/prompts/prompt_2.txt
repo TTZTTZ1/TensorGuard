@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `torch.linalg.inv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.inv` computes the inverse of a square matrix (or a batch of square matrices). It requires the input matrix to be invertible; otherwise, a `RuntimeError` is raised.
+
+**Key points:**
+- **Input:** A tensor of shape `(*, n, n)` where `*` denotes optional batch dimensions.
+- **Output:** The inverse matrix `A⁻¹` such that `A @ A⁻¹ ≈ I`.
+- **Supports:** Float, double, complex float, and complex double data types.
+- **Note:** For better numerical stability and performance, prefer `torch.linalg.solve` when solving linear systems rather than explicitly computing the inverse.
+- **CUDA:** Synchronizes the device with the CPU; use `torch.linalg.inv_ex` for a non-synchronizing version.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(..., n, n)"]
+    default: null
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(..., n, n)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: A
+    Constraint: "A.shape[-1] == A.shape[-2]"
+  2:
+    Parameter 1: out
+    Parameter 2: A
+    Constraint: "out is None or out.shape == A.shape"
+  3:
+    Parameter 1: out
+    Parameter 2: A
+    Constraint: "out is None or out.dtype == A.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.inv in a complex way */
+import torch

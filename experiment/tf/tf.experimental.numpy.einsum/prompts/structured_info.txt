@@ -1,0 +1,48 @@
+params:
+  subscripts:
+    dtype: ["string"]
+    range: ["any valid einsum subscript string"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  operands:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tuple"]
+    shape: ["variable"]
+    default: null
+  out:
+    dtype: ["tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dtype:
+    dtype: ["string", "type"]
+    range: ["any valid data-type"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  order:
+    dtype: ["string"]
+    range: ["C", "F", "A", "K"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  casting:
+    dtype: ["string"]
+    range: ["no", "equiv", "safe", "same_kind", "unsafe"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  optimize:
+    dtype: ["bool", "string"]
+    range: [False, True, "greedy", "optimal"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: subscripts
+    Parameter 2: operands
+    Constraint: "len(operands) == (subscripts.split('->')[0].count(',') + 1) if '->' in subscripts else (subscripts.count(',') + 1)"

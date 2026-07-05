@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.L1Unstructured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `L1Unstructured` class in PyTorch performs pruning by zeroing out tensor elements with the lowest L1-norm (absolute values). It supports pruning a specified number or fraction of parameters and integrates with PyTorch modules via hooks and masks.
+
+**Key Features:**
+- **Pruning Method**: Removes parameters with the smallest absolute values (L1-norm).
+- **Amount Specification**: Can be an integer (absolute count) or float (fraction between 0.0 and 1.0).
+- **Integration**: Attaches to PyTorch modules to apply pruning dynamically and stores pruning masks as buffers.
+- **Permanent Effect**: Once applied, pruning is not reversible, though the reparameterization can be removed.
+
+**Main Methods:**
+- `apply()`: Attaches pruning to a module parameter.
+- `prune()`: Computes and returns a pruned tensor.
+- `apply_mask()`: Applies the pruning mask to the tensor.
+- `remove()`: Removes pruning hooks and buffers, leaving the parameter permanently pruned.
+
+**Usage**: Typically used to reduce model size or computational cost by sparsifying weights during or after training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  amount:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  module:
+    dtype: ["nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: amount
+    Parameter 2: null
+    Constraint: "(isinstance(amount, float) and 0.0 <= amount <= 1.0) or (isinstance(amount, int) and amount >= 0)"
+  2:
+    Parameter 1: importance_scores
+    Parameter 2: module
+    Constraint: "importance_scores is None or importance_scores.shape == getattr(module, name).shape"
+  3:
+    Parameter 1: importance_scores
+    Parameter 2: t
+    Constraint: "importance_scores is None or importance_scores.shape == t.shape"
+  4:
+    Parameter 1: default_mask
+    Parameter 2: t
+    Constraint: "default_mask is None or default_mask.shape == t.shape"
+  5:
+    Parameter 1: name
+    Parameter 2: module
+    Constraint: "hasattr(module, name)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.L1Unstructured in a complex way */
+import torch

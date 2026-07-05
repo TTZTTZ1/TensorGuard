@@ -1,0 +1,78 @@
+params:
+  weights:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "list"]
+    shape: [2]
+    default: null
+  biases:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  labels:
+    dtype: ["int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  inputs:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  num_sampled:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  num_classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  num_true:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "1"
+  sampled_values:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: ["No mention"]
+    default: "None"
+  remove_accidental_hits:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "'nce_loss'"
+constraints:
+  1:
+    Parameter 1: weights
+    Parameter 2: inputs
+    Constraint: weights.shape[1] == inputs.shape[1]
+  2:
+    Parameter 1: labels
+    Parameter 2: inputs
+    Constraint: labels.shape[0] == inputs.shape[0]
+  3:
+    Parameter 1: labels
+    Parameter 2: num_true
+    Constraint: labels.shape[1] == num_true
+  4:
+    Parameter 1: num_sampled
+    Parameter 2: num_classes
+    Constraint: num_sampled < num_classes

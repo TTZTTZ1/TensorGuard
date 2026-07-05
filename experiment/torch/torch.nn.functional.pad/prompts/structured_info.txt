@@ -1,0 +1,34 @@
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  pad:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  mode:
+    dtype: ["str"]
+    range: [["constant", "reflect", "replicate", "circular"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "constant"
+  value:
+    dtype: ["float", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: "pad"
+    Parameter 2: "input"
+    Constraint: "len(pad) % 2 == 0 and len(pad) // 2 <= input.dim()"
+  2:
+    Parameter 1: "mode"
+    Parameter 2: "value"
+    Constraint: "value is not None implies mode == 'constant'"

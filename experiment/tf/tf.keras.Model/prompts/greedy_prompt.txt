@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `tf.keras.Model` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.Model` class is the core component for building and training neural networks in TensorFlow's Keras API. It groups layers into a single object with comprehensive training and inference capabilities.
+
+### Key Features:
+- **Three Instantiation Methods**:
+  1. **Functional API**: Chain layers from `Input` to outputs, supporting complex architectures with shared layers.
+  2. **Subclassing**: Define layers in `__init__` and forward pass in `call()`, allowing custom logic (e.g., different behaviors during training/inference).
+  3. **Sequential Model**: Simplified for linear stacks of layers.
+
+### Core Functionality:
+- **Training & Evaluation**: 
+  - `compile()`: Configures optimizer, loss, and metrics.
+  - `fit()`: Trains the model on data.
+  - `evaluate()`: Evaluates performance on test data.
+  - `predict()`: Generates predictions.
+- **Model Management**:
+  - `save()` / `load_weights()`: Save/load model architecture and weights.
+  - `export()`: Creates lightweight SavedModel artifacts for deployment.
+  - `summary()`: Prints model architecture details.
+- **Customization**: Override methods like `compute_loss()` or `compute_metrics()` for custom training logic.
+
+### Key Attributes:
+- `input` / `output`: Retrieve model input/output tensors.
+- `layers`: Access model layers.
+- `metrics_names`: Names of metrics used during training/evaluation.
+
+### Use Cases:
+- Building both simple and complex neural network architectures.
+- Training, evaluating, and deploying models across various backends (TensorFlow, JAX, PyTorch).
+- Supporting research and production workflows through extensible subclassing and efficient APIs.
+
+The `Model` class integrates seamlessly with TensorFlow's ecosystem, enabling end-to-end machine learning workflows from prototyping to production.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["string", "object"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "rmsprop"
+  loss:
+    dtype: ["string", "object"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  loss_weights:
+    dtype: ["list", "dict"]
+    range: [null]
+    structure: ["list", "dict"]
+    shape: [null]
+    default: null
+  metrics:
+    dtype: ["string", "function", "object", "list", "dict"]
+    range: [null]
+    structure: ["scalar", "list", "dict"]
+    shape: [null]
+    default: null
+  weighted_metrics:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  run_eagerly:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "false"
+  steps_per_execution:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "1"
+  jit_compile:
+    dtype: ["bool", "string"]
+    range: [[true, false, "auto"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "\"auto\""
+  auto_scale_loss:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "true"
+constraints:
+  1:
+    Parameter 1: metrics
+    Parameter 2: weighted_metrics
+    Constraint: "metrics and weighted_metrics are mutually exclusive in terms of sample weighting; weighted_metrics apply sample_weight or class_weight, while metrics do not"
+  2:
+    Parameter 1: loss_weights
+    Parameter 2: model outputs
+    Constraint: "len(loss_weights) == len(model.outputs) if loss_weights is a list"
+  3:
+    Parameter 1: steps_per_execution
+    Parameter 2: batch size
+    Constraint: "steps_per_execution <= ceil(dataset_size / batch_size)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.Model in a complex way */
+import tensorflow as tf

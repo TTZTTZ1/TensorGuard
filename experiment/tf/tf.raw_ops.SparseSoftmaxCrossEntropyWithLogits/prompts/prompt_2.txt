@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseSoftmaxCrossEntropyWithLogits` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseSoftmaxCrossEntropyWithLogits` function computes the softmax cross-entropy loss and its gradients for sparse classification tasks. It takes logits as input and uses integer labels (one per sample) rather than probability distributions. The operation outputs both the loss value and the gradient for backpropagation.
+
+**Key points:**
+- **Inputs:** Logits (`features`) of shape `[batch_size, num_classes]` and integer labels (`labels`) of shape `[batch_size]` in the range `[0, num_classes)`.
+- **Outputs:** A tuple containing the loss (scalar per batch) and the gradient with respect to the logits.
+- **Use case:** Efficiently handles classification where each sample belongs to exactly one class.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  features:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [[null, null]]
+    default: null
+  labels:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "labels"
+    Parameter 2: "features"
+    Constraint: "tf.shape(labels)[0] == tf.shape(features)[0]"
+  2:
+    Parameter 1: "labels"
+    Parameter 2: "features"
+    Constraint: "tf.logical_and(tf.reduce_all(labels >= 0), tf.reduce_all(labels < tf.shape(features)[1]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseSoftmaxCrossEntropyWithLogits in a complex way */
+import tensorflow as tf

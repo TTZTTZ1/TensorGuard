@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.gather` selects values from a source tensor (`input`) along a specified axis (`dim`) using indices provided by another tensor (`index`). The output tensor has the same shape as `index`, with each element determined by looking up the corresponding index in `input` along the chosen dimension.
+
+**Key points:**
+- `input` and `index` must have the same number of dimensions.
+- For all dimensions except `dim`, the size of `index` must not exceed the size of `input`.
+- No broadcasting occurs between `input` and `index`.
+
+**Example:**
+```python
+t = torch.tensor([[1, 2], [3, 4]])
+torch.gather(t, 1, torch.tensor([[0, 0], [1, 0]]))
+# Output: [[1, 1], [4, 3]]
+```
+Here, for each row (`dim=1`), values are gathered from columns specified by the `index` tensor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  index:
+    dtype: ["longtensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  sparse_grad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  out:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: index
+    Constraint: "input.dim() == index.dim()"
+  2:
+    Parameter 1: index
+    Parameter 2: input
+    Constraint: "all(index.size(d) <= input.size(d) for d in range(input.dim()) if d != dim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.gather in a complex way */
+import torch

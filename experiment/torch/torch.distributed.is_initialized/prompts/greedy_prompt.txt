@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.distributed.is_initialized` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Components**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional). NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up communication before any distributed operations.
+- **DeviceMesh**: Higher-level abstraction for managing process groups in N-dimensional device topologies.
+
+## **Key Features**
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, `scatter`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous `isend`/`irecv` for direct rank communication.
+- **Process Groups**: Create subgroups with `new_group()` for fine-grained communication.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination and initialization.
+
+## **Usage Patterns**
+1. **Basic Setup**:
+```python
+dist.init_process_group(backend='nccl', init_method='env://')
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+```
+
+2. **Collective Example**:
+```python
+# All-reduce operation
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+```
+
+3. **Distributed Data Parallel**:
+```python
+model = DistributedDataParallel(model, device_ids=[local_rank])
+```
+
+## **Best Practices**
+- Use NCCL backend for multi-GPU training
+- Call `destroy_process_group()` for cleanup
+- Set `async_op=True` for overlapping communication/computation
+- Use environment variables (`MASTER_ADDR`, `MASTER_PORT`) for initialization
+
+## **Debugging Tools**
+- `monitored_barrier()` for timeout-aware synchronization
+- `TORCH_DISTRIBUTED_DEBUG` environment variable for detailed logging
+- `torch.distributed.breakpoint()` for interactive debugging
+- HTTP debug server for runtime diagnostics
+
+## **Important Notes**
+- Supports SPMD (Single Program Multiple Data) programming model
+- Each process maintains independent Python interpreter and optimizer
+- Thread-safe initialization is required
+- Windows support is available but with some limitations
+
+This package enables efficient distributed training by reducing parameter broadcast overhead and eliminating Python GIL limitations compared to alternatives like `DataParallel`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  (no parameters)
+
+constraints:
+  (no constraints)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.is_initialized in a complex way */
+import torch

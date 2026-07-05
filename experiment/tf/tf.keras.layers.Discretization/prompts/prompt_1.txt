@@ -1,0 +1,85 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Discretization` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.Discretization` is a preprocessing layer that converts continuous numerical features into discrete bins (categories) by assigning each input value to a specific range. It can be configured with predefined bin boundaries or learn them automatically from data via the `adapt()` method.
+
+**Key Features:**
+- **Input/Output Shape:** Accepts any array of dimension 2 or higher; output shape matches input shape.
+- **Modes:** Supports multiple output formats: integer bin indices, one-hot, multi-hot, or count encodings.
+- **Adaptability:** Can learn bin boundaries from data when `num_bins` is specified, or use fixed boundaries via `bin_boundaries`.
+- **Integration:** Safe to use within `tf.data` pipelines.
+
+**Common Use Cases:**
+- Preprocessing continuous features for models that require categorical input.
+- Feature engineering in recommendation systems or deep retrieval models.
+
+**Example Usage:**
+```python
+# Fixed boundaries
+layer = Discretization(bin_boundaries=[0., 1., 2.])
+# Learned boundaries
+layer = Discretization(num_bins=4)
+layer.adapt(data)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  bin_boundaries:
+    dtype: ["float"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  num_bins:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  epsilon:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.01"
+  output_mode:
+    dtype: ["string"]
+    range: [["int", "one_hot", "multi_hot", "count"]]
+    structure: ["scalar"]
+    shape: null
+    default: "'int'"
+  sparse:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  dtype:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: bin_boundaries
+    Parameter 2: num_bins
+    Constraint: "bin_boundaries is not None or num_bins is not None"
+  2:
+    Parameter 1: sparse
+    Parameter 2: output_mode
+    Constraint: "not sparse or output_mode in ['one_hot', 'multi_hot', 'count']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Discretization in a complex way */
+import tensorflow as tf

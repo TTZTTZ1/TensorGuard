@@ -1,0 +1,26 @@
+params:
+  equation:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  operands:
+    dtype: ["tensor"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: equation
+    Parameter 2: operands
+    Constraint: "len([s for s in (equation.split('->')[0] if '->' in equation else equation).strip().split(',') if s]) == len(operands) or (equation == '' and len(operands) == 1)"
+  2:
+    Parameter 1: equation
+    Parameter 2: operands
+    Constraint: "all(operand.dim() == (len(subscript_group.replace('...', '')) + (1 if '...' in subscript_group else 0)) for operand, subscript_group in zip(operands, [s for s in (equation.split('->')[0] if '->' in equation else equation).strip().split(',') if s])) if equation != '' else True"
+  3:
+    Parameter 1: equation
+    Parameter 2: operands
+    Constraint: "all(operand.shape[i] == operand.shape[j] for operand, subscript_group in zip(operands, [s for s in (equation.split('->')[0] if '->' in equation else equation).strip().split(',') if s]) for i, char_i in enumerate(subscript_group.replace('...', '')) for j, char_j in enumerate(subscript_group.replace('...', '')) if i < j and char_i == char_j) if equation != '' else True"

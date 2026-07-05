@@ -1,0 +1,38 @@
+params:
+  input_shape:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  block_shape:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N]"]
+    default: null
+  base_paddings:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[N, 2]"]
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: input_shape
+    Parameter 2: block_shape
+    Constraint: "tf.shape(input_shape)[0] == tf.shape(block_shape)[0]"
+  2:
+    Parameter 1: base_paddings
+    Parameter 2: input_shape
+    Constraint: "tf.shape(base_paddings)[0] == tf.shape(input_shape)[0] and tf.shape(base_paddings)[1] == 2"
+  3:
+    Parameter 1: base_paddings
+    Parameter 2: base_paddings
+    Constraint: "tf.reduce_all(base_paddings >= 0)"

@@ -1,0 +1,107 @@
+
+# You are a Python code generation assistant for the `torch.nn.RNNBase` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary of `torch.nn.RNNBase`**
+
+`RNNBase` is the foundational class for PyTorch's recurrent neural network modules (RNN, LSTM, GRU). It handles common initialization and parameter management tasks but does not implement the forward pass, which is left to its subclasses.
+
+**Key Points:**
+- **Purpose:** Serves as a base class for RNN, LSTM, and GRU, providing shared functionality.
+- **Core Features:**
+  - Manages parameter storage and initialization.
+  - Includes a `flatten_parameters()` method to optimize performance on GPU with cuDNN (otherwise a no-op).
+- **Notes:**
+  - The forward method must be implemented by subclasses.
+  - LSTM and GRU may override certain methods from `RNNBase`.
+
+**Usage:** Direct instantiation is not typical; instead, use `torch.nn.RNN`, `torch.nn.LSTM`, or `torch.nn.GRU` for specific RNN architectures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mode:
+    dtype: ["string"]
+    range: [["RNN", "LSTM", "GRU"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  input_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  hidden_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  num_layers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  batch_first:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  dropout:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.0"
+  bidirectional:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  proj_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  device:
+    dtype: ["string", "torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dropout
+    Parameter 2: num_layers
+    Constraint: "dropout == 0 or num_layers > 1"
+  2:
+    Parameter 1: proj_size
+    Parameter 2: hidden_size
+    Constraint: "proj_size == 0 or proj_size < hidden_size"
+  3:
+    Parameter 1: proj_size
+    Parameter 2: mode
+    Constraint: "proj_size == 0 or mode == 'LSTM'"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.RNNBase in a complex way */
+import torch

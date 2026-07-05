@@ -1,0 +1,82 @@
+params:
+  directory:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  labels:
+    dtype: ["string", "None", "list[int]", "tuple[int]"]
+    range: "No mention"
+    structure: ["scalar", "sequence"]
+    shape: ["any"]
+    default: "inferred"
+  label_mode:
+    dtype: ["string", "None"]
+    range: ["int", "categorical", "binary", null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "int"
+  class_names:
+    dtype: ["list", "tuple", "None"]
+    range: "No mention"
+    structure: ["scalar", "sequence"]
+    shape: ["any"]
+    default: null
+  batch_size:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "32"
+  max_length:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  shuffle:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  seed:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  validation_split:
+    dtype: ["float", "None"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  subset:
+    dtype: ["string"]
+    range: ["training", "validation", "both"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  follow_links:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  verbose:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: class_names
+    Parameter 2: labels
+    Constraint: not (class_names is not None and labels != "inferred")
+  2:
+    Parameter 1: subset
+    Parameter 2: validation_split
+    Constraint: not (subset is not None and validation_split is None)

@@ -1,0 +1,98 @@
+
+# You are a Python code generation assistant for the `torch.distributions.dirichlet.Dirichlet` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both discrete and continuous probability distributions
+- Facilitates stochastic gradient estimation through two main methods:
+  1. **Score function estimator (REINFORCE)** - Uses `sample()` and `log_prob()`
+  2. **Pathwise derivative estimator (reparameterization trick)** - Uses `rsample()`
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous:** Normal, Beta, Gamma, Exponential, Dirichlet, Cauchy, Laplace, StudentT, Uniform, etc.
+**Discrete:** Bernoulli, Binomial, Categorical, Poisson, Geometric, Multinomial, etc.
+**Multivariate:** MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+**Transformed:** LogNormal, HalfNormal, HalfCauchy, Gumbel, Weibull, etc.
+
+### **3. Special Features**
+- **ExponentialFamily** - Base class for distributions in exponential family form
+- **TransformedDistribution** - Applies transforms to base distributions
+- **MixtureSameFamily** - Mixture distributions with same component type
+- **Independent** - Reinterprets batch dimensions as event dimensions
+- **KL Divergence** - Pre-registered KL computations between distribution pairs
+
+### **4. Transforms System**
+- Bijective transformations with computable log determinant Jacobians
+- Common transforms: ExpTransform, SigmoidTransform, AffineTransform, SoftmaxTransform
+- Used for reparameterization and constraint handling
+- **Constraint Registry** (`biject_to`, `transform_to`) maps constraints to transforms
+
+### **5. Constraints Framework**
+- Defines valid parameter/value regions for distributions
+- Common constraints: `positive`, `simplex`, `interval`, `real`, `lower_cholesky`
+- Used in distribution parameter validation
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sampling
+loss = -reward
+loss.backward()
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions package design
+- Separates batch and event shapes for broadcasting
+- Supports automatic differentiation through sampling operations
+- Provides both exact and approximate gradient estimators
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probabilistic computations in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2: concentration
+    Constraint: "torch.all(concentration > 0.0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.dirichlet.Dirichlet in a complex way */
+import torch

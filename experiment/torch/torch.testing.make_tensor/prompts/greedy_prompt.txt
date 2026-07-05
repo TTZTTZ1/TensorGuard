@@ -1,0 +1,133 @@
+
+# You are a Python code generation assistant for the `torch.testing.make_tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.testing` module provides utilities for testing PyTorch code, primarily focusing on tensor comparisons and tensor creation for testing purposes.
+
+**Key Functions:**
+
+1. **`torch.testing.assert_close(actual, expected, ...)`**
+   - **Purpose:** Asserts that two inputs (tensors, scalars, sequences, mappings) are "close" within specified tolerances.
+   - **Key Features:**
+     - Supports a wide range of inputs: tensors, scalars, NumPy arrays, sequences, and dictionaries.
+     - Configurable tolerances (`rtol`, `atol`) with dtype-specific defaults.
+     - Checks for device, dtype, layout, and stride consistency (configurable).
+     - Handles special values: `inf`, `-inf`, and `NaN` (with `equal_nan` option).
+     - Supports sparse and quantized tensors.
+     - Allows custom error messages (including callable formatters).
+   - **Common Use:** Comparing model outputs, gradients, or any tensor results in tests.
+
+2. **`torch.testing.make_tensor(shape, dtype, device, ...)`**
+   - **Purpose:** Creates a tensor with random values (uniformly distributed) for testing.
+   - **Key Features:**
+     - Customizable shape, dtype, and device.
+     - Optional value range (`low`, `high`), with sensible defaults per dtype.
+     - Options for non-contiguous tensors, memory format, and requiring gradients.
+     - Can exclude zeros (replaces them with small positive values).
+   - **Common Use:** Generating test data for unit tests, such as random inputs for models or layers.
+
+3. **`torch.testing.assert_allclose(...)`**
+   - **Note:** **Deprecated.** Use `assert_close` instead. It has less functionality and different default behavior (e.g., `equal_nan=True` by default).
+
+**Usage Philosophy:**
+- `assert_close` is designed to be strict by default (checking dtype, device, etc.) but highly configurable via `functools.partial` for specific use cases (e.g., creating a custom `assert_equal` with zero tolerances).
+- `make_tensor` simplifies creating test tensors with control over properties like non-contiguity or gradient requirements.
+
+**Example Workflow:**
+```python
+import torch
+from torch.testing import make_tensor, assert_close
+
+# Create a random test tensor
+x = make_tensor((2, 3), dtype=torch.float32, device='cpu', low=-1, high=1)
+
+# Perform some operation
+y = torch.sigmoid(x)
+
+# Verify the result against an expected computation
+expected = 1 / (1 + torch.exp(-x))
+assert_close(y, expected)
+```
+
+This module is essential for writing robust, device- and dtype-aware tests in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  low:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  high:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  requires_grad:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  noncontiguous:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  exclude_zero:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  memory_format:
+    dtype: ["torch.memory_format"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: requires_grad
+    Parameter 2: dtype
+    Constraint: "not (requires_grad and dtype in [torch.uint8, torch.int8, torch.int16, torch.int32, torch.int64])"
+  2:
+    Parameter 1: low
+    Parameter 2: high
+    Constraint: "low < high"
+  3:
+    Parameter 1: low
+    Parameter 2: high
+    Constraint: "not (math.isnan(low) or math.isnan(high))"
+  4:
+    Parameter 1: noncontiguous
+    Parameter 2: memory_format
+    Constraint: "not (noncontiguous and memory_format is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.testing.make_tensor in a complex way */
+import torch

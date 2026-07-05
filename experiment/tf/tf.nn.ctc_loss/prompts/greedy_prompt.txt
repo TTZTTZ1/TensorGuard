@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `tf.nn.ctc_loss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.ctc_loss` computes the Connectionist Temporal Classification (CTC) loss, used for training recurrent neural networks on sequence data with variable timing, such as speech or handwriting recognition. It handles alignment between input sequences (logits) and target labels without requiring pre-segmented data.
+
+**Key Parameters:**
+- `labels`: Target sequences as a dense padded tensor or `SparseTensor`.
+- `logits`: Network outputs (logits) with shape `[frames, batch_size, num_labels]` by default.
+- `label_length`: Lengths of each label sequence.
+- `logit_length`: Lengths of each input sequence.
+- `blank_index`: Optional index for the blank label (default 0).
+
+**Important Notes:**
+- Automatically applies softmax to `logits`.
+- Supports both dense and sparse labels (sparse is faster on CPU/GPU).
+- Default blank label index is 0, but can be customized.
+
+**Returns:** A 1-D tensor of negative log probabilities per batch element.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  labels:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "SparseTensor"]
+    shape: ["[batch_size, max_label_seq_length]", "No mention for SparseTensor"]
+    default: "null"
+  logits:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[frames, batch_size, num_labels]", "[batch_size, frames, num_labels]"]
+    default: "null"
+  label_length:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["[batch_size]"]
+    default: "null"
+  logit_length:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[batch_size]"]
+    default: "null"
+  logits_time_major:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  unique:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  blank_index:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: []
+    default: "'ctc_loss_dense'"
+constraints:
+  1:
+    Parameter 1: "labels"
+    Parameter 2: "label_length"
+    Constraint: "not isinstance(labels, tf.SparseTensor) or label_length is None"
+  2:
+    Parameter 1: "labels"
+    Parameter 2: "blank_index"
+    Constraint: "not isinstance(labels, tf.SparseTensor) or blank_index is not None"
+  3:
+    Parameter 1: "blank_index"
+    Parameter 2: "logits"
+    Constraint: "blank_index is None or (blank_index >= -logits.shape[-1] and blank_index < logits.shape[-1])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.ctc_loss in a complex way */
+import tensorflow as tf

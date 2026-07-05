@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ScatterNdNonAliasingAdd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ScatterNdNonAliasingAdd` performs a sparse addition operation by adding values from `updates` into a copy of the `input` tensor at positions specified by `indices`. It ensures non-aliasing behavior, meaning the original `input` is modified only if it is not used elsewhere; otherwise, a copy is created. This operation supports gradients for both `input` and `updates`.
+
+**Key Parameters:**
+- **`input`**: A tensor of rank `P` (supports various numeric and boolean types).
+- **`indices`**: An integer tensor (int32/int64) of rank `Q`, where its innermost dimension `K` (with `0 < K ≤ P`) indexes into elements or slices of `input`.
+- **`updates`**: A tensor with the same dtype as `input` and shape matching the indexed sections of `input`.
+
+**Example:** Adding 4 values to specific indices of an 8-element vector:
+- `input = [1, 2, 3, 4, 5, 6, 7, 8]`
+- `indices = [[4], [3], [1], [7]]`
+- `updates = [9, 10, 11, 12]`
+- Result: `[1, 13, 3, 14, 14, 6, 7, 20]`
+
+This function is useful for efficiently updating tensors with sparse additions while preserving gradient flow and memory safety.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64", "bool"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  updates:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64", "bool"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "input"
+    Constraint: "indices.shape[-1] > 0 and indices.shape[-1] <= len(input.shape)"
+  2:
+    Parameter 1: "updates"
+    Parameter 2: "indices"
+    Constraint: "updates.shape == indices.shape[:-1] + input
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ScatterNdNonAliasingAdd in a complex way */
+import tensorflow as tf

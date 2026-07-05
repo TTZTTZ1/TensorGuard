@@ -1,0 +1,28 @@
+params:
+  data:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  mask:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "mask"
+    Parameter 2: "mask"
+    Constraint: "mask.shape.rank is not None"
+  2:
+    Parameter 1: "data"
+    Parameter 2: "mask"
+    Constraint: "len(mask.shape) <= len(data.shape) and all(mask.shape[i] == data.shape[i] for i in range(len(mask.shape)))"

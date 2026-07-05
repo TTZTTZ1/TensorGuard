@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.nn.CosineEmbeddingLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CosineEmbeddingLoss** is a PyTorch loss function that measures similarity between two input tensors based on their cosine similarity, guided by a label tensor.
+
+**Purpose:**  
+Used for learning embeddings or semi‑supervised learning, where you want to maximize similarity for positive pairs (label = 1) and minimize it (below a margin) for negative pairs (label = −1).
+
+**Loss definition:**  
+- If label = 1: `loss = 1 − cos(x1, x2)`  
+- If label = −1: `loss = max(0, cos(x1, x2) − margin)`  
+  (margin is a float between −1 and 1, default 0)
+
+**Parameters:**  
+- `margin`: threshold for negative pairs (default 0)  
+- `reduction`: how to aggregate loss (`'none'`, `'mean'`, `'sum'`; default `'mean'`)
+
+**Input shapes:**  
+- `input1`: `(N, D)` or `(D)`  
+- `input2`: same shape as input1  
+- `target`: `(N)` or scalar  
+
+**Output:**  
+- Scalar if reduction is `'mean'` or `'sum'`, otherwise `(N)`.
+
+**Example usage:**
+```python
+loss_fn = nn.CosineEmbeddingLoss()
+loss = loss_fn(input1, input2, target)  # target contains 1 or -1
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  margin:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.0"
+  size_average:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'mean'"
+constraints:
+  1:
+    Parameter 1: margin
+    Parameter 2: margin
+    Constraint: "margin >= -1 and margin <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.CosineEmbeddingLoss in a complex way */
+import torch

@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.ln_structured` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.utils.prune.ln_structured` is a function that prunes a specified parameter in a PyTorch module by removing channels with the lowest L`n`-norm along a given dimension. It modifies the module in place by adding a binary mask buffer and replacing the original parameter with a pruned version, while storing the unpruned tensor separately. The function requires specifying the module, parameter name, pruning amount, norm type `n`, target dimension `dim`, and optionally custom importance scores. It returns the pruned module.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["Module"]
+    range: "No mention"
+    structure: ["instance"]
+    shape: "No mention"
+    default: "null"
+  name:
+    dtype: ["str"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  amount:
+    dtype: ["int", "float"]
+    range: ["float: [0.0, 1.0]", "int: >=0"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  n:
+    dtype: ["int", "float", "str"]
+    range: ["int: any", "float: any", "str: 'fro', 'nuc'"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  dim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["same as parameter tensor"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: "dim"
+    Parameter 2: "name"
+    Constraint: "dim >= 0 and dim < len(getattr(module, name).shape)"
+  2.
+    Parameter 1: "importance_scores"
+    Parameter 2: "name"
+    Constraint: "importance_scores is None or importance_scores.shape == getattr(module, name).shape"
+  3.
+    Parameter 1: "amount"
+    Parameter 2: "dim"
+    Constraint: "(isinstance(amount, float) and 0.0 <= amount <= 1.0) or (isinstance(amount, int) and amount >= 0 and amount <= getattr(module, name).shape[dim])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.ln_structured in a complex way */
+import torch

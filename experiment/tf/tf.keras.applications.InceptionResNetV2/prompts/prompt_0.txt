@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.InceptionResNetV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.InceptionResNetV2` function creates the Inception-ResNet v2 model, a deep convolutional neural network for image classification. It supports optional pre-trained ImageNet weights and allows customization through parameters like `include_top`, `input_shape`, and `pooling`. Inputs must be preprocessed using `inception_resnet_v2.preprocess_input` to scale pixels between -1 and 1. The model is suitable for both direct classification and transfer learning tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["None", "string"]
+    range: ["None", "imagenet", "any string"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["None", "tuple with 3 ints, channels_last or channels_first, width and height >=75"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["None", "string"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: ["None", "softmax", "any string or callable"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "softmax"
+constraints:
+  1:
+    Parameter 1: include_top
+    Parameter 2: input_shape
+    Constraint: not include_top or input_shape is None or input_shape in [(299, 299, 3), (3, 299, 299)]
+  2:
+    Parameter 1: include_top
+    Parameter 2: pooling
+    Constraint: not include_top or pooling is None
+  3:
+    Parameter 1: include_top
+    Parameter 2: classes
+    Constraint: include_top or classes is None
+  4:
+    Parameter 1: weights
+    Parameter 2: classes
+    Constraint: weights is None or classes is None
+  5:
+    Parameter 1: include_top
+    Parameter 2: classifier_activation
+    Constraint: include_top or classifier_activation is None
+  6:
+    Parameter 1: weights
+    Parameter 2: classifier_activation
+    Constraint: weights is None or classifier_activation in [None, "softmax"]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.InceptionResNetV2 in a complex way */
+import tensorflow as tf

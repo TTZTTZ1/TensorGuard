@@ -1,0 +1,68 @@
+params:
+  optimizer:
+    dtype: ["string", "object"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "rmsprop"
+  loss:
+    dtype: ["string", "object"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  loss_weights:
+    dtype: ["list", "dict"]
+    range: [null]
+    structure: ["list", "dict"]
+    shape: [null]
+    default: null
+  metrics:
+    dtype: ["string", "function", "object", "list", "dict"]
+    range: [null]
+    structure: ["scalar", "list", "dict"]
+    shape: [null]
+    default: null
+  weighted_metrics:
+    dtype: ["list"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: null
+  run_eagerly:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "false"
+  steps_per_execution:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "1"
+  jit_compile:
+    dtype: ["bool", "string"]
+    range: [[true, false, "auto"]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "\"auto\""
+  auto_scale_loss:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "true"
+constraints:
+  1:
+    Parameter 1: metrics
+    Parameter 2: weighted_metrics
+    Constraint: "metrics and weighted_metrics are mutually exclusive in terms of sample weighting; weighted_metrics apply sample_weight or class_weight, while metrics do not"
+  2:
+    Parameter 1: loss_weights
+    Parameter 2: model outputs
+    Constraint: "len(loss_weights) == len(model.outputs) if loss_weights is a list"
+  3:
+    Parameter 1: steps_per_execution
+    Parameter 2: batch size
+    Constraint: "steps_per_execution <= ceil(dataset_size / batch_size)"

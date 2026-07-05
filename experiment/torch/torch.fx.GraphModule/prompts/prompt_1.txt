@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.fx.GraphModule` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch models, enabling programmatic modification of `nn.Module` instances. It consists of three core components:
+
+1. **Symbolic Tracer** (`symbolic_trace` / `Tracer`)  
+   Performs symbolic execution using proxy objects to capture operations without real data.
+
+2. **Intermediate Representation (IR)** (`Graph` / `Node`)  
+   Represents the traced code as a graph of nodes (placeholders, calls, outputs).
+
+3. **Python Code Generation** (`GraphModule`)  
+   Generates executable Python code from the graph, producing a runnable `nn.Module`.
+
+### Key Use Cases
+- **Transformations**: Modify model graphs (e.g., op replacement, fusion, quantization).
+- **Analysis**: Inspect or profile model execution (e.g., shape propagation).
+- **Code Generation**: Programmatically create models from configurations.
+
+### Writing Transformations
+Transformations typically:
+1. Acquire a `Graph` via tracing.
+2. Modify the graph (direct manipulation, proxy-based rewriting, or pattern replacement).
+3. Return a new `GraphModule`.
+
+### Important Notes
+- **Limitations**: Does not support dynamic control flow (conditions/loops dependent on inputs). Use `concrete_args` to specialize static control flow.
+- **Customization**: Subclass `Tracer` to override tracing behavior (e.g., leaf module detection).
+- **Debugging**: Use `print(graph)`, `graph.print_tabular()`, or `pdb` to inspect generated code and transformations.
+
+### Example Workflow
+```python
+import torch.fx
+
+# Trace a module
+traced = torch.fx.symbolic_trace(model)
+
+# Transform: replace torch.add with torch.mul
+for node in traced.graph.nodes:
+    if node.op == 'call_function' and node.target == torch.add:
+        node.target = torch.mul
+
+traced.recompile()  # Update generated code
+```
+
+**torch.fx** enables powerful model introspection and transformation while maintaining standard PyTorch module semantics.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  root:
+    dtype: ["torch.nn.Module", "dict"]
+    range: null
+    structure: ["instance", "dict"]
+    shape: null
+    default: null
+  graph:
+    dtype: ["Graph"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  class_name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "GraphModule"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.GraphModule in a complex way */
+import torch

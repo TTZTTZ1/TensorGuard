@@ -1,0 +1,48 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["5"]
+    default: null
+  kernel_size:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "kernel_size"
+  padding:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "0"
+  ceil_mode:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  count_include_pad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  divisor_override:
+    dtype: ["int", "float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: padding
+    Parameter 2: kernel_size
+    Constraint: "all(p <= k // 2 for p, k in zip( (padding if isinstance(padding, tuple) else (padding, padding, padding)), (kernel_size if isinstance(kernel_size, tuple) else (kernel_size, kernel_size, kernel_size)) ))"

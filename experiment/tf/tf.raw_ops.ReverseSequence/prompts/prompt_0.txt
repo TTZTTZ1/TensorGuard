@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ReverseSequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ReverseSequence` operation reverses variable-length slices of a tensor along a specified sequence dimension, with reversal lengths controlled per batch entry.
+
+**Key functionality:**
+- Reverses the first `seq_lengths[i]` elements along dimension `seq_dim` for each slice `i` in dimension `batch_dim`.
+- Elements beyond `seq_lengths[i]` remain unchanged.
+- `seq_lengths` must be a 1-D vector with length equal to `input.dims[batch_dim]`, and each value must not exceed `input.dims[seq_dim]`.
+
+**Parameters:**
+- `input`: Input tensor.
+- `seq_lengths`: 1-D tensor (`int32`/`int64`) specifying reversal lengths per batch.
+- `seq_dim`: Dimension to partially reverse.
+- `batch_dim`: Dimension along which reversal is applied (default 0).
+
+**Use case:** Useful for tasks like reversing variable-length sequences in batch data (e.g., in RNNs or attention models).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  seq_lengths:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  seq_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  batch_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: seq_lengths
+    Parameter 2: input
+    Constraint: "seq_lengths.shape[0] == input.shape[batch_dim]"
+  2:
+    Parameter 1: seq_lengths
+    Parameter 2: input
+    Constraint: "all(seq_lengths[i] <= input.shape[seq_dim] for i in range(seq_lengths.shape[0]))"
+  3:
+    Parameter 1: seq_dim
+    Parameter 2: input
+    Constraint: "0 <= seq_dim < len(input.shape)"
+  4:
+    Parameter 1: batch_dim
+    Parameter 2: input
+    Constraint: "0 <= batch_dim < len(input.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ReverseSequence in a complex way */
+import tensorflow as tf

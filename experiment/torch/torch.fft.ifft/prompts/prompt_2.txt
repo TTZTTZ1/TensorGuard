@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.fft.ifft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.fft.ifft`  
+**Purpose:** Computes the 1D inverse discrete Fourier transform (IFFT) of a complex-valued input tensor.
+
+**Key Parameters:**
+- `input` (Tensor): Complex input signal.
+- `n` (int, optional): Desired signal length; pads or truncates input.
+- `dim` (int, optional): Dimension along which to compute IFFT (default: -1).
+- `norm` (str, optional): Normalization mode:
+  - `"backward"` (default): Normalizes by `1/n`.
+  - `"forward"`: No normalization.
+  - `"ortho"`: Normalizes by `1/sqrt(n)` for orthonormal transform.
+
+**Notes:**
+- Acts as the inverse of `torch.fft.fft` when using matching `norm`.
+- On CUDA, supports `torch.half`/`torch.chalf` only for power-of-2 lengths (SM53+ GPUs).
+
+**Example:**
+```python
+>>> t = torch.tensor([6.+0.j, -2.+2.j, -2.+0.j, -2.-2.j])
+>>> torch.fft.ifft(t)
+tensor([0.+0.j, 1.+0.j, 2.+0.j, 3.+0.j])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  norm:
+    dtype: ["str"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "\"backward\""
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "input"
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.ifft in a complex way */
+import torch

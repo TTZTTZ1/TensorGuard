@@ -1,0 +1,54 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.Slice` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.Slice` function extracts a sub-tensor (slice) from an input tensor, defined by starting offsets (`begin`) and slice sizes (`size`) for each dimension.  
+
+**Key points:**  
+- **Inputs:**  
+  - `input`: The source tensor.  
+  - `begin`: A 1D tensor (int32/int64) specifying the starting index for each dimension.  
+  - `size`: A 1D tensor (same type as `begin`) specifying the number of elements to take from each dimension.  
+- **Special `size` value:** `-1` in any dimension means "take all remaining elements" from that dimension starting at `begin[i]`.  
+- **Requirement:**  
+  `0 ≤ begin[i] ≤ begin[i] + size[i] ≤ dim_size(i)` for all dimensions.  
+- **Output:** A tensor with shape `size`, containing the extracted slice.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  begin:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  size:
+    dtype: ["int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: begin
+    Parameter 2: size
+    Constraint: "all(0 <= b and b + (s if s != -1 else d - b) <= d for b, s, d in zip(begin, size, input.shape))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.Slice in a complex way */
+import tensorflow as tf

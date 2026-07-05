@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.case` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.case` is a conditional operation that selects and executes one of multiple callable functions based on boolean predicates. It takes a list of `(predicate, callable)` pairs, evaluates the predicates, and returns the tensors from the first callable whose predicate is `True`. If no predicate is `True`, it returns the result of an optional `default` callable. Key features include:
+
+- **Exclusive mode**: If `exclusive=True`, it ensures at most one predicate is `True`, raising an error if multiple are.
+- **Strict mode**: If `strict=True`, it disables automatic unpacking of singleton lists/tuples in return values.
+- **Nested structures**: Supports nested outputs via `tf.nest`, requiring all callables to return the same structure.
+- **V2 compatibility**: In TensorFlow 2.x, `pred_fn_pairs` must be a list or tuple (not a dictionary, as tensors are no longer hashable).
+
+**Example**:
+```python
+r = tf.case([(tf.less(x, y), lambda: tf.constant(17))], default=lambda: tf.constant(23))
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  pred_fn_pairs:
+    dtype: ["list", "tuple"]
+    range: "No mention"
+    structure: ["list", "tuple"]
+    shape: ["any"]
+    default: null
+  default:
+    dtype: ["callable"]
+    range: "No mention"
+    structure: ["callable"]
+    shape: "No mention"
+    default: "None"
+  exclusive:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  strict:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "'case'"
+constraints:
+  1:
+    Parameter 1: "pred_fn_pairs"
+    Parameter 2: "pred_fn_pairs"
+    Constraint: "isinstance(pred_fn_pairs, (list, tuple))"
+  2:
+    Parameter 1: "pred_fn_pairs"
+    Parameter 2: "pred_fn_pairs"
+    Constraint: "all(isinstance(pair, tuple) and len(pair) == 2 for pair in pred_fn_pairs)"
+  3:
+    Parameter 1: "pred_fn_pairs"
+    Parameter 2: "default"
+    Constraint: "all(callable(pair[1]) for pair in pred_fn_pairs) and (default is None or callable(default))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.case in a complex way */
+import tensorflow as tf

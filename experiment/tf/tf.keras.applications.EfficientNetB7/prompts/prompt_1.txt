@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.EfficientNetB7` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.applications.EfficientNetB7` is a deep learning model for image classification, based on the EfficientNet architecture from the 2019 ICML paper. It is designed to be highly scalable and efficient.
+
+**Key Features:**
+- **Pre-trained Weights:** Can load weights trained on ImageNet (1000 classes) for transfer learning.
+- **Input Handling:** Includes built-in preprocessing (pixel values scaled 0–255), so no external preprocessing is needed.
+- **Flexible Top Layer:** The fully connected classification layer can be included or excluded for feature extraction.
+- **Pooling Options:** When `include_top=False`, you can apply global average or max pooling to the last convolutional layer’s output.
+
+**Common Use Cases:**
+1. **Image Classification:** Use `include_top=True` with ImageNet weights for classifying 1000 object categories.
+2. **Transfer Learning:** Set `include_top=False` to extract features and add custom layers for new tasks.
+
+**Example Usage:**
+```python
+model = tf.keras.applications.EfficientNetB7(
+    include_top=False,
+    weights='imagenet',
+    pooling='avg'
+)
+```
+This loads the model without the classification head, uses ImageNet weights, and applies global average pooling to output a 2D feature vector per image.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["NoneType", "string"]
+    range: ["None", "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with exactly 3 elements, last element must be 3"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["string", "NoneType"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "NoneType"]
+    range: ["None", "'softmax'", "other strings or callables"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+  **kwargs:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "(include_top == True and weights is None) or classes == 1000"
+  3:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.EfficientNetB7 in a complex way */
+import tensorflow as tf

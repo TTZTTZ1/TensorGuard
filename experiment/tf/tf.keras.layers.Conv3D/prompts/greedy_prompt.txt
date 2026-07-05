@@ -1,0 +1,148 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.Conv3D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.Conv3D` is a 3D convolution layer used for processing volumetric data (e.g., video, medical scans). It applies a 3D convolution kernel to an input tensor, producing an output tensor with optional bias and activation.
+
+**Key Parameters:**
+- `filters`: Number of output channels.
+- `kernel_size`: Size of the 3D convolution window (int or tuple of 3 ints).
+- `strides`: Convolution stride (default: `(1, 1, 1)`).
+- `padding`: `"valid"` (no padding) or `"same"` (padding to preserve spatial dimensions when `strides=1`).
+- `data_format`: `"channels_last"` (default) or `"channels_first"`.
+- `dilation_rate`: Dilation factor for dilated convolution.
+- `groups`: Number of groups for grouped convolution (input and filters must be divisible by groups).
+- `activation`: Activation function (e.g., `'relu'`).
+- `use_bias`: Whether to include a bias vector.
+
+**Input Shape:**
+- 5D tensor: `(batch, spatial_dim1, spatial_dim2, spatial_dim3, channels)` for `"channels_last"`, or `(batch, channels, spatial_dim1, spatial_dim2, spatial_dim3)` for `"channels_first"`.
+
+**Output Shape:**
+- Similar 5D tensor with updated spatial dimensions and `filters` as the channel dimension.
+
+**Example:**
+```python
+x = np.random.rand(4, 10, 10, 10, 128)  # 4 samples, 128 channels
+y = Conv3D(32, 3, activation='relu')(x)  # Output shape: (4, 8, 8, 8, 32)
+```
+
+**Constraints:**
+- `strides > 1` and `dilation_rate > 1` cannot be used simultaneously.
+
+This layer is essential for 3D feature extraction in tasks like video analysis or 3D image segmentation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filters:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  kernel_size:
+    dtype: ["int", "tuple", "list"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list"]
+    shape: [1, 3]
+    default: "null"
+  strides:
+    dtype: ["int", "tuple", "list"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list"]
+    shape: [1, 3]
+    default: "(1, 1, 1)"
+  padding:
+    dtype: ["string"]
+    range: ["valid", "same"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'valid'"
+  data_format:
+    dtype: ["string"]
+    range: ["channels_last", "channels_first"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dilation_rate:
+    dtype: ["int", "tuple", "list"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list"]
+    shape: [1, 3]
+    default: "(1, 1, 1)"
+  groups:
+    dtype: ["int"]
+    range: ["positive"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  activation:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  use_bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  kernel_initializer:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  kernel_regularizer:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  bias_regularizer:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  activity_regularizer:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  kernel_constraint:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  bias_constraint:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "dilation_rate"
+    Constraint: "not (strides > 1 and dilation_rate > 1)"
+  2:
+    Parameter 1: "filters"
+    Parameter 2: "groups"
+    Constraint: "filters % groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.Conv3D in a complex way */
+import tensorflow as tf

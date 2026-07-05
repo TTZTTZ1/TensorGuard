@@ -1,0 +1,38 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.errors.ErrorHandler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The documentation describes PyTorch TorchElastic's error propagation mechanism for distributed training jobs. Key points:
+
+**Purpose**: Propagates errors from worker processes to the scheduler for proper job state reporting and retry policies.
+
+**Error Categories**:
+1. **User Error** – Invalid API inputs
+2. **Worker Failure** – Failures in user-provided training scripts
+3. **Platform Error** – Agent failures
+4. **Infra Error** – External failures (e.g., host failures)
+
+**Core Mechanism**:
+- Uses `@record` decorator on the main function to capture uncaught exceptions.
+- Writes errors to a file specified by `TORCHELASTIC_ERROR_FILE`.
+- The agent aggregates error files and propagates the **first error** (by timestamp).
+
+**Key Components**:
+- `record()`: Decorator to enable error recording in the main process.
+- `ChildFailedError`: Exception to propagate child process errors without wrapping in parent traceback.
+- `ErrorHandler`: Base class for writing structured error data to JSON files.
+- `ProcessFailure`: Represents a failed process result, reading error details from the error file.
+
+**Usage**: Decorate the main entry point with `@record` to ensure errors in worker processes are properly captured and propagated to the scheduler.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.errors.ErrorHandler in a complex way */
+import torch

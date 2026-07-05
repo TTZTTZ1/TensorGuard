@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `torch.package.PackageImporter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle model code, data, and dependencies into a single archive (`.pt` file). It enables reproducible deployment by isolating packaged code from the local environment, ensuring that models run consistently across different machines or in production via `torch::deploy`.
+
+### Key Features:
+- **Packaging**: Save Python modules, pickled objects (models/data), and arbitrary resources (text/binary) into a ZIP-based archive.
+- **Dependency Management**: Automatically resolves and includes required modules (`intern`), while allowing external dependencies (`extern`) or stubbing out unnecessary ones (`mock`).
+- **Isolation**: Packaged code runs in a hermetic environment, preventing conflicts with system-installed packages.
+- **Inspection**: Tools to explore package contents, analyze dependencies, and debug inclusion reasons.
+
+### Core Workflow:
+1. **Export** with `PackageExporter`:
+   - Use `save_pickle()`, `save_module()`, etc., to add assets.
+   - Control dependencies via `intern()`, `extern()`, `mock()`.
+2. **Import** with `PackageImporter`:
+   - Load modules (`import_module()`) and resources (`load_pickle()`, etc.) from the package.
+   - Executes code within the packaged environment.
+
+### Use Cases:
+- Deploy models without worrying about environment differences.
+- Share reproducible research artifacts.
+- Patch or customize code within packages.
+- Bundle training scripts, configs, and model weights together.
+
+### Important Notes:
+- **Security**: Relies on `pickle`; only load trusted packages.
+- **Best Practices**: Avoid global mutable state, refactor code to minimize dependencies, and prefer `importlib.resources` for accessing packaged resources.
+
+`torch.package` simplifies model distribution and ensures consistent execution, making it ideal for production and collaboration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  file_or_buffer:
+    dtype: ["string", "PathLike", "IO", "PyTorchFileReader"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  module_allowed:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "<function PackageImporter.<lambda>>"
+  include:
+    dtype: ["string", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "**"
+  exclude:
+    dtype: ["string", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: "()"
+  package:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  resource:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  encoding:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'utf-8'"
+  errors:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'strict'"
+  map_location:
+    dtype: ["string", "dict", "callable", "torch.device"]
+    range: null
+    structure: ["scalar", "dict"]
+    shape: null
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: encoding
+    Parameter 2: errors
+    Constraint: "encoding in ['utf-8', 'utf-16', 'ascii'] and errors in ['strict', 'ignore', 'replace']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.PackageImporter in a complex way */
+import torch

@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.NonMaxSuppression` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.NonMaxSuppression` performs greedy non-maximum suppression (NMS) to filter overlapping bounding boxes based on their scores and intersection-over-union (IOU).  
+
+**Key Points:**  
+- **Inputs:**  
+  - `boxes`: 2D float tensor `[num_boxes, 4]` in `[y1, x1, y2, x2]` format (normalized or absolute coordinates).  
+  - `scores`: 1D float tensor `[num_boxes]` for each box’s confidence.  
+  - `max_output_size`: Scalar integer for the maximum number of selected boxes.  
+  - `iou_threshold` (optional, default=0.5): IOU threshold to suppress overlapping boxes.  
+
+- **Functionality:**  
+  - Selects boxes in descending score order, removing those with high IOU overlap with higher-scoring selections.  
+  - Algorithm is invariant to coordinate system translations/reflections.  
+
+- **Output:**  
+  - 1D integer tensor of selected box indices (size ≤ `max_output_size`). Use `tf.gather` to retrieve the corresponding box coordinates.  
+
+**Example Usage:**  
+```python
+selected_indices = tf.raw_ops.NonMaxSuppression(boxes, scores, max_output_size, iou_threshold)
+selected_boxes = tf.gather(boxes, selected_indices)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1, 4]]
+    default: null
+  scores:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1]]
+    default: null
+  max_output_size:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  iou_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "0.5"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: scores
+    Constraint: "boxes.shape[0] == scores.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.NonMaxSuppression in a complex way */
+import tensorflow as tf

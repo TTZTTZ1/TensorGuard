@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.random_split` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides a flexible data-loading utility centered around the `DataLoader` class, which enables efficient iteration over datasets with support for:
+
+**Key Features:**
+- **Dataset Types:** Supports both **map-style** (with `__getitem__` and `__len__`) and **iterable-style** (with `__iter__`) datasets.
+- **Data Loading Order:** Uses `Sampler` objects to control index/sequence sampling, especially for map-style datasets.
+- **Automatic Batching:** Collates individual samples into batches via `batch_size`, `drop_last`, and `collate_fn`.
+- **Multi-process Loading:** Speeds up data loading with `num_workers` (though care is needed for CUDA tensors and Windows compatibility).
+- **Memory Pinning:** Uses `pin_memory=True` to accelerate host-to-GPU data transfers.
+
+**Common Usage:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+loader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+for batch in loader:
+    # training loop
+```
+
+**Important Classes:**
+- `DataLoader`: Main iterable for loading data.
+- `Dataset` / `IterableDataset`: Base classes for custom datasets.
+- `Sampler` / `RandomSampler` / `BatchSampler`: Control sampling logic.
+- `TensorDataset`, `ConcatDataset`, `Subset`: Convenient dataset utilities.
+
+**Notes:**
+- Use `worker_init_fn` and `get_worker_info()` to handle multi-process loading correctly, especially for `IterableDataset`.
+- Custom `collate_fn` can be defined for non-standard batching or padding.
+- On Windows, wrap main script code in `if __name__ == '__main__':` when using multi-process loading.
+
+This module is essential for handling large-scale datasets efficiently in PyTorch, integrating seamlessly with training loops.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  lengths:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  generator:
+    dtype: ["Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "torch.Generator()"
+constraints:
+  1:
+    Parameter 1: lengths
+    Parameter 2: dataset
+    Constraint: "isinstance(lengths, (list, tuple)) and all(isinstance(l, (int, float)) for l in lengths) and all(l > 0 for l in lengths) and ((all(isinstance(l, int) for l in lengths) and sum(lengths) == len(dataset)) or (all(isinstance(l, float) for l in lengths) and abs(sum(lengths) - 1) < 1e-9))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.random_split in a complex way */
+import torch

@@ -1,0 +1,49 @@
+# tf.math.invert_permutation
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/math/invert_permutation](https://tensorflow.google.cn/api_docs/python/tf/math/invert_permutation)
+
+---
+
+Computes the inverse permutation of a tensor.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.invert_permutation`](https://tensorflow.google.cn/api_docs/python/tf/math/invert_permutation), [`tf.compat.v1.math.invert_permutation`](https://tensorflow.google.cn/api_docs/python/tf/math/invert_permutation)
+
+```
+tf.math.invert_permutation(
+    x: Annotated[Any, TV_InvertPermutation_T], name=None
+) -> Annotated[Any, TV_InvertPermutation_T]
+```
+
+This operation computes the inverse of an index permutation. It takes a 1-D
+integer tensor `x`, which represents the indices of a zero-based array, and
+swaps each value with its index position. In other words, for an output tensor
+`y` and an input tensor `x`, this operation computes the following:
+
+`y[x[i]] = i for i in [0, 1, ..., len(x) - 1]`
+
+The values must include 0. There can be no duplicate values or negative values.
+
+#### For example:
+
+```
+# tensor `x` is [3, 4, 0, 2, 1]
+invert_permutation(x) ==> [2, 4, 3, 0, 1]
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `x` | A `Tensor`. Must be one of the following types: `int32`, `int64`. 1-D. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `x`. | |

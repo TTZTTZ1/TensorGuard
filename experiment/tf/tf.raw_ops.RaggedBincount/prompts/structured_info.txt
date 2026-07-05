@@ -1,0 +1,46 @@
+params:
+  splits:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  values:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2"]
+    default: null
+  size:
+    dtype: ["int32", "int64"]
+    range: ["non-negative"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+  weights:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["2", "0"]
+    default: null
+  binary_output:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "size"
+    Parameter 2: "values"
+    Constraint: "size.dtype == values.dtype"
+  2:
+    Parameter 1: "weights"
+    Parameter 2: "values"
+    Constraint: "tf.size(weights) == 0 or weights.shape == values.shape"

@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adamax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.Adamax` class implements the Adamax optimization algorithm, a variant of Adam that uses the infinity norm for adaptive learning rates.
+
+**Key Features:**
+- **Algorithm**: Adamax (based on the infinity norm instead of L2 norm)
+- **Default Parameters**: 
+  - Learning rate (`lr`): 0.002
+  - Betas: (0.9, 0.999)
+  - Epsilon (`eps`): 1e-8
+  - Weight decay: 0
+
+**Core Functionality:**
+1. **Initialization**: Requires parameters to optimize (iterable of parameters or dicts)
+2. **Update Rule**: Uses exponentially weighted moving averages of gradients (`m_t`) and infinity norm (`u_t`)
+3. **Weight Decay**: Applied directly to gradients (not L2 regularization)
+4. **Bias Correction**: Includes `(1-β₁^t)` term for first moment estimation
+
+**Advanced Options:**
+- `foreach`: Enables faster implementation on CUDA (uses more memory)
+- `maximize`: Maximizes objective instead of minimizing
+- `differentiable`: Allows autograd through optimizer step (impairs performance)
+- `capturable`: Safe for CUDA graphs/torch.compile (impairs ungraphed performance)
+
+**Standard Optimizer Methods:**
+- `step()`: Performs single optimization step
+- `zero_grad()`: Resets gradients (default: set to None for memory efficiency)
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state
+- `add_param_group()`: Add parameter groups dynamically
+
+**Hook Support**: Pre/post hooks for `step()`, `state_dict()`, and `load_state_dict()` operations
+
+**Use Case**: Suitable for stochastic optimization problems where the infinity norm variant of Adam may provide better performance, particularly with sparse gradients.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: "No mention"
+    default: "0.002"
+  betas:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  foreach:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adamax in a complex way */
+import torch

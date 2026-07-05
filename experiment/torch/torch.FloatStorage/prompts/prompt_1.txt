@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `torch.FloatStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch **`torch.UntypedStorage`** is the low-level, contiguous, one-dimensional byte array that serves as the underlying data container for tensors. It is the core component of a tensor's storage, independent of the tensor's data type, shape, stride, or offset.
+
+### **Key Concepts:**
+
+*   **Purpose:** It holds the raw bytes of tensor data. A tensor is essentially a structured view (with dtype, shape, stride) on top of an `UntypedStorage`.
+*   **Relationship with Tensors:** Multiple tensors (e.g., a tensor and its views created via `.view()` or slicing) can share the same underlying `UntypedStorage`.
+*   **Access:** You can get a tensor's storage via `tensor.untyped_storage()`.
+*   **Identification:** Each storage has a unique identifier accessible via the `.data_ptr()` method.
+*   **Device-Aware:** Storages have a `.device` attribute (e.g., `cpu`, `cuda`).
+
+### **Primary Use Cases & Operations:**
+
+1.  **Memory-Mapped Files:** Create a storage directly from a file using `torch.UntypedStorage.from_file()`, enabling efficient large-data handling.
+2.  **Shared Memory:** Move a storage to shared memory between processes using `.share_memory_()` for efficient multiprocessing.
+3.  **Device Transfer:** Move storage between devices (CPU, CUDA, etc.) using methods like `.cuda()`, `.cpu()`, and `.to()`.
+4.  **Low-Level Manipulation:** Directly fill, copy, or clone the byte data using methods like `.fill_()`, `.copy_()`, and `.clone()`. **(Use with caution: this is a low-level API).**
+5.  **Pinning Memory:** Pin CPU storage for faster asynchronous transfers to GPU using `.pin_memory()`.
+
+### **Important Warnings:**
+
+*   **Avoid Direct Manipulation:** Directly modifying a tensor's storage (e.g., via `.set_()`) is not recommended for standard use. Prefer high-level tensor operations (like `.clone()` and `.fill_()`) for safety and clarity.
+*   **Legacy API:** The older `torch.TypedStorage` and type-specific classes (like `torch.FloatStorage`) are **deprecated**. Use `torch.UntypedStorage` for all new code.
+*   **Special Tensors:** Tensors on the `"meta"` device or internal `FakeTensor`s do not have standard storage.
+
+### **In Summary:**
+
+`torch.UntypedStorage` is PyTorch's fundamental byte buffer for tensor data. It's essential for advanced, performance-critical tasks like memory-mapped I/O, shared-memory multiprocessing, and low-level memory management, but should be used sparingly as most user needs are better served by the higher-level Tensor API.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "sequence", "torch.TypedStorage"]
+    range: null
+    structure: ["scalar", "iterable"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.float32"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.float32"
+  device:
+    dtype: ["torch.device", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.float32"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.FloatStorage in a complex way */
+import torch

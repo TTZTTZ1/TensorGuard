@@ -1,0 +1,103 @@
+
+# You are a Python code generation assistant for the `torch.sparse_coo_tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.sparse_coo_tensor` constructs a sparse tensor in COO (coordinate) format using provided indices and values. It creates a tensor where only specified coordinates hold non-zero data, making it efficient for sparse matrices.
+
+**Key parameters:**
+- `indices`: 2D array of non-zero coordinates (shape: `[sparse_dim, nnz]`)
+- `values`: Array of non-zero values corresponding to each coordinate
+- `size`: Optional tensor dimensions (inferred from indices if omitted)
+
+**Important notes:**
+- Returns an uncoalesced tensor by default (duplicate coordinates are allowed)
+- Device defaults to match input tensors unless explicitly specified
+- Supports standard tensor options like `dtype`, `device`, and `requires_grad`
+
+**Example:**
+```python
+i = torch.tensor([[0, 1], [2, 0]])  # Coordinates: (0,2) and (1,0)
+v = torch.tensor([3, 4])            # Values at those coordinates
+S = torch.sparse_coo_tensor(i, v, [2, 3])  # 2x3 sparse tensor
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["list", "tuple", "ndarray", "scalar", "other types"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "scalar", "other types"]
+    shape: [2]
+    default: "null"
+  values:
+    dtype: ["list", "tuple", "ndarray", "scalar", "other types"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "scalar", "other types"]
+    shape: "No mention"
+    default: "null"
+  size:
+    dtype: ["list", "tuple", "torch.Size"]
+    range: "No mention"
+    structure: ["list", "tuple", "torch.Size"]
+    shape: "No mention"
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  device:
+    dtype: ["torch.device"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  pin_memory:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  requires_grad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  check_invariants:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "as returned by torch.sparse.check_sparse_tensor_invariants.is_enabled(), initially False."
+  is_coalesced:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "indices.shape[1] == values.shape[0]"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "device is None or indices.device == values.device"
+  3:
+    Parameter 1: "size"
+    Parameter 2: "indices"
+    Constraint: "size is None or len(size) == indices.shape[0] + values.ndim - 1"
+  4:
+    Parameter 1: "size"
+    Parameter 2: "values"
+    Constraint: "size is None or size[indices.shape[0]:] == values.shape[1:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sparse_coo_tensor in a complex way */
+import torch

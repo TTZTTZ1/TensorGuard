@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.linalg.diag_part` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.diag_part` extracts specified diagonals from a batched tensor. It returns the diagonal elements of the input tensor along the given offsets, with options for padding and alignment.
+
+**Key features:**
+- Extracts one or multiple diagonals from a batched tensor (rank ≥ 2).
+- **`k`**: Defines which diagonal(s) to extract:
+  - Single integer for one diagonal (positive = superdiagonal, 0 = main diagonal, negative = subdiagonal).
+  - Pair `(low, high)` for a band of diagonals.
+- **`padding_value`**: Fills areas outside the diagonal band (default 0).
+- **`align`**: Controls padding alignment for shorter diagonals (default `"RIGHT_LEFT"`).
+
+**Output shape:**
+- Single diagonal (`num_diags == 1`): Rank `r-1`, shape `[..., max_diag_len]`.
+- Multiple diagonals: Rank `r`, shape `[..., num_diags, max_diag_len]`.
+
+**Example use:** Extract main diagonal from each batch:
+```python
+tf.linalg.diag_part(input)  # k=0 by default
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "diag_part"
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "0"
+  padding_value:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  align:
+    dtype: ["string"]
+    range: [["RIGHT_LEFT", "LEFT_RIGHT", "LEFT_LEFT", "RIGHT_RIGHT"]]
+    structure: ["scalar"]
+    shape: null
+    default: "RIGHT_LEFT"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: 
+    Constraint: input.shape.ndims >= 2
+  2:
+    Parameter 1: k
+    Parameter 2: 
+    Constraint: not isinstance(k, tuple) or (isinstance(k, tuple) and len(k) == 2 and k[0] <= k[1])
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.diag_part in a complex way */
+import tensorflow as tf

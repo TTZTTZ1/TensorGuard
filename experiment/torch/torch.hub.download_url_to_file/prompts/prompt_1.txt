@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.hub.download_url_to_file` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**PyTorch Hub** is a centralized repository for sharing and loading pre-trained models, designed to promote research reproducibility. It allows users to easily discover, load, and use models published by the community.
+
+### **Key Functions**
+
+1. **`torch.hub.list(github)`**  
+   Lists all available entrypoints (callable functions) from a specified GitHub repository.
+
+2. **`torch.hub.help(github, model)`**  
+   Displays the docstring and usage instructions for a specific model entrypoint.
+
+3. **`torch.hub.load(repo_or_dir, model, *args, **kwargs)`**  
+   Loads a model (or other objects like tokenizers) from a GitHub repo or local directory. Arguments are passed to the model's entrypoint function for instantiation.
+
+4. **`torch.hub.load_state_dict_from_url(url, ...)`**  
+   Downloads and loads a state dictionary from a URL, commonly used within entrypoints to load pretrained weights.
+
+### **Publishing Models**
+
+To publish a model on PyTorch Hub:
+- Add a `hubconf.py` file to your GitHub repository.
+- Define **entrypoints** (Python functions) that return models or utilities.
+- Specify required dependencies in a `dependencies` list.
+- Include clear docstrings with examples.
+- Models must be published on a branch or tag (not a random commit).
+
+### **Important Notes**
+
+- **Trust & Security**: Use `trust_repo` to control safety prompts (`"check"`, `True`, or `False`). Default will change to `"check"` in v2.0.
+- **Caching**: Downloaded models are cached locally. Use `force_reload=True` to refresh.
+- **Limitations**:  
+  - Avoid loading two different branches of the same repo in the same Python process.  
+  - Import conflicts may occur if different repos use identical sub-package names.
+
+### **Workflow for Users**
+
+1. Explore available models with `torch.hub.list()`.
+2. Check documentation with `torch.hub.help()`.
+3. Load a model with `torch.hub.load()`.
+4. Use `dir(model)` and `help(model.method)` to understand the loaded model's capabilities.
+
+### **Model Storage**
+
+Cache directory priority:
+1. Path set via `hub.set_dir()`.
+2. `$TORCH_HOME/hub`.
+3. `$XDG_CACHE_HOME/torch/hub`.
+4. `~/.cache/torch/hub`.
+
+PyTorch Hub simplifies sharing and reuse of models, accelerating experimentation and collaboration.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  url:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dst:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  hash_prefix:
+    dtype: ["str", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  progress:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hub.download_url_to_file in a complex way */
+import torch

@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `tf.saved_model.Asset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.saved_model.Asset` is a class used to represent external files (assets) that are bundled into a SavedModel for hermetic portability. It ensures that files like vocabulary tables or configuration files are copied into the SavedModel assets directory during export and remain accessible at correct paths after loading, even if the original files are moved or deleted.
+
+**Key Features:**
+- **Hermetic Inclusion:** Assets are copied into the SavedModel, making it self-contained.
+- **Automatic Path Handling:** Functions referencing an `Asset` automatically use the correct internal path after loading.
+- **Trackable:** Works with TensorFlow’s tracking system (e.g., `tf.train.Checkpoint`).
+
+**Usage Example:**
+```python
+# Create an Asset from a file
+vocab_file = tf.saved_model.Asset("vocab.txt")
+
+# Use it in a tf.function
+@tf.function
+def load_vocab():
+    return tf.io.read_file(vocab_file)
+
+# Save with the asset
+model = tf.train.Checkpoint(vocab_loader=load_vocab, vocab=vocab_file)
+tf.saved_model.save(model, "/tmp/model")
+
+# The SavedModel works independently of the original file location
+```
+
+**Main Attribute:**
+- `asset_path`: Returns the path to the asset (as a string or 0-D string tensor).
+
+This is particularly useful for embedding dependencies like tokenizer vocabularies or lookup tables into a SavedModel.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  path:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.saved_model.Asset in a complex way */
+import tensorflow as tf

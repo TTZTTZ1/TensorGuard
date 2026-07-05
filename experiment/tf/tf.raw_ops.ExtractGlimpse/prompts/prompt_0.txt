@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ExtractGlimpse` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ExtractGlimpse` extracts fixed-size windows ("glimpses") from a batch of input images at specified locations. If a window extends beyond the image boundaries, the out-of-bounds areas are filled with random noise (uniform, Gaussian, or zero). The operation supports both normalized and pixel-based coordinates for specifying window centers, with options for centered or corner-based alignment.
+
+**Key Parameters:**
+- `input`: 4-D float tensor `[batch, height, width, channels]`.
+- `size`: 1-D tensor `[glimpse_height, glimpse_width]` defining window dimensions.
+- `offsets`: 2-D tensor `[batch, 2]` specifying the (y, x) center of each window per batch.
+- `centered` / `normalized`: Control coordinate interpretation (centered on image or corner, normalized or pixel values).
+- `noise`: Type of noise for out-of-bounds areas (`"uniform"`, `"gaussian"`, or `"zero"`).
+
+**Returns:** A 4-D float tensor `[batch, glimpse_height, glimpse_width, channels]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, height, width, channels]"]
+    default: null
+  size:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  offsets:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, 2]"]
+    default: null
+  centered:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  normalized:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  uniform_noise:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  noise:
+    dtype: ["string"]
+    range: [["uniform", "gaussian", "zero"]]
+    structure: ["scalar"]
+    shape: null
+    default: "uniform"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "offsets"
+    Constraint: "input.shape[0] == offsets.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ExtractGlimpse in a complex way */
+import tensorflow as tf

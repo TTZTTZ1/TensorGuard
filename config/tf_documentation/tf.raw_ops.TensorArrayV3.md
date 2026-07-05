@@ -1,0 +1,50 @@
+# tf.raw_ops.TensorArrayV3
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayV3](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayV3)
+
+---
+
+An array of Tensors of given size.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.TensorArrayV3`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/TensorArrayV3)
+
+```
+tf.raw_ops.TensorArrayV3(
+    size,
+    dtype,
+    element_shape=None,
+    dynamic_size=False,
+    clear_after_read=True,
+    identical_element_shapes=False,
+    tensor_array_name='',
+    name=None
+)
+```
+
+Write data via Write and read via Read or Pack.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `size` | A `Tensor` of type `int32`. The size of the array. |
+| `dtype` | A [`tf.DType`](https://tensorflow.google.cn/api_docs/python/tf/dtypes/DType). The type of the elements on the tensor\_array. |
+| `element_shape` | An optional [`tf.TensorShape`](https://tensorflow.google.cn/api_docs/python/tf/TensorShape) or list of `ints`. Defaults to `None`. The expected shape of an element, if known. Used to validate the shapes of TensorArray elements. If this shape is not fully specified, gathering zero-size TensorArrays is an error. |
+| `dynamic_size` | An optional `bool`. Defaults to `False`. A boolean that determines whether writes to the TensorArray are allowed to grow the size. By default, this is not allowed. |
+| `clear_after_read` | An optional `bool`. Defaults to `True`. If true (default), Tensors in the TensorArray are cleared after being read. This disables multiple read semantics but allows early release of memory. |
+| `identical_element_shapes` | An optional `bool`. Defaults to `False`. If true (default is false), then all elements in the TensorArray will be expected to have identical shapes. This allows certain behaviors, like dynamically checking for consistent shapes on write, and being able to fill in properly shaped zero tensors on stack -- even if the element\_shape attribute is not fully defined. |
+| `tensor_array_name` | An optional `string`. Defaults to `""`. Overrides the name used for the temporary tensor\_array resource. Default value is the name of the 'TensorArray' op (which is guaranteed unique). |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A tuple of `Tensor` objects (handle, flow). | |
+| `handle` | A `Tensor` of type `resource`. |
+| `flow` | A `Tensor` of type `float32`. |

@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `torch.testing.assert_close` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.testing` module provides utilities for testing PyTorch code, primarily focusing on tensor comparisons and tensor creation for testing purposes.
+
+**Key Functions:**
+
+1. **`torch.testing.assert_close(actual, expected, ...)`**  
+   - **Purpose:** Asserts that `actual` and `expected` are close within specified tolerances.
+   - **Features:**
+     - Supports tensors, scalars, sequences, and mappings.
+     - Configurable checks for device, dtype, layout, and stride.
+     - Handles special values (NaN, inf) and sparse/quantized tensors.
+     - Default tolerances vary by dtype (see provided table).
+   - **Common Use:** Partial it for custom checks (e.g., `assert_equal` with `rtol=0, atol=0`).
+
+2. **`torch.testing.make_tensor(shape, dtype, device, ...)`**  
+   - **Purpose:** Creates a tensor with random values uniformly drawn from `[low, high)`.
+   - **Features:**
+     - Configurable shape, dtype, device, and value range.
+     - Options for noncontiguous tensors, memory format, and gradient recording.
+     - Automatically clamps `low`/`high` to dtype limits if out of range.
+
+3. **`torch.testing.assert_allclose(...)`**  
+   - **Note:** Deprecated since PyTorch 1.12. Use `assert_close` instead.
+
+**Usage Example:**
+```python
+import torch
+import functools
+
+# Custom equality check
+assert_equal = functools.partial(torch.testing.assert_close, rtol=0, atol=0)
+assert_equal(torch.tensor([1.0]), torch.tensor([1.0]))
+
+# Create a test tensor
+test_tensor = torch.testing.make_tensor((2, 3), dtype=torch.float32, device='cpu')
+```
+
+**Summary:**  
+`torch.testing` is essential for validating tensor operations in PyTorch, offering flexible comparison tools and controlled tensor generation for reproducible testing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  actual:
+    dtype: ["Any"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar", "sequence", "mapping"]
+    shape: ["No mention"]
+    default: null
+  expected:
+    dtype: ["Any"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar", "sequence", "mapping"]
+    shape: ["No mention"]
+    default: null
+  allow_subclasses:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  rtol:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  atol:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  equal_nan:
+    dtype: ["bool", "str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  check_device:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  check_dtype:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  check_layout:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  check_stride:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  msg:
+    dtype: ["str", "callable"]
+    range: ["No mention"]
+    structure: ["scalar", "callable"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "rtol"
+    Parameter 2: "atol"
+    Constraint: "(rtol is None) == (atol is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.testing.assert_close in a complex way */
+import torch

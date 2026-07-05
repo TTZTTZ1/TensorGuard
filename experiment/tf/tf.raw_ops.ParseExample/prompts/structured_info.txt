@@ -1,0 +1,74 @@
+params:
+  serialized:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "null"
+  names:
+    dtype: ["string"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["1"]
+    default: "null"
+  sparse_keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  dense_keys:
+    dtype: ["string"]
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  dense_defaults:
+    dtype: ["float32", "int64", "string"]
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  sparse_types:
+    dtype: ["tf.float32", "tf.int64", "tf.string"]
+    range: ["tf.float32", "tf.int64", "tf.string"]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  dense_shapes:
+    dtype: "No mention"
+    range: [null]
+    structure: ["list"]
+    shape: "No mention"
+    default: "null"
+  name:
+    dtype: "No mention"
+    range: [null]
+    structure: "No mention"
+    shape: "No mention"
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "names"
+    Parameter 2: "serialized"
+    Constraint: "tf.shape(names)[0] == 0 or tf.shape(names)[0] == tf.shape(serialized)[0]"
+  2:
+    Parameter 1: "sparse_keys"
+    Parameter 2: "sparse_types"
+    Constraint: "len(sparse_keys) == len(sparse_types)"
+  3:
+    Parameter 1: "dense_keys"
+    Parameter 2: "dense_shapes"
+    Constraint: "len(dense_keys) == len(dense_shapes)"
+  4:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_keys"
+    Constraint: "len(dense_defaults) == len(dense_keys)"
+  5:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_shapes"
+    Constraint: "all(tf.reduce_all(tf.equal(tf.shape(dense_defaults[j]), dense_shapes[j])) for j in range(len(dense_defaults)) if tf.size(dense_defaults[j]) > 0 and all(dim != -1 for dim in dense_shapes[j]))"
+  6:
+    Parameter 1: "dense_defaults"
+    Parameter 2: "dense_shapes"
+    Constraint: "all(tf.equal(tf.size(dense_defaults[j]), 1) for j in range(len(dense_defaults)) if dense_shapes[j][0] == -1)"

@@ -1,0 +1,40 @@
+params:
+  x:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  axis:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["any"]
+    default: "None"
+  epsilon:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-12"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "epsilon"
+    Parameter 2: "epsilon"
+    Constraint: "epsilon >= 0"
+  2:
+    Parameter 1: "axis"
+    Parameter 2: "x"
+    Constraint: "axis is None or (tf.rank(x) > 0 and tf.reduce_all(tf.logical_and(axis >= -tf.rank(x), axis < tf.rank(x))))"

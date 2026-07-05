@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `tf.autodiff.GradientTape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.GradientTape` is a TensorFlow context manager for automatic differentiation, enabling gradient computation of operations recorded within its scope.
+
+**Key Features:**
+- **Automatic Tracking:** By default, it watches all trainable variables (`tf.Variable` with `trainable=True`). Manual tracking via `watch()` is also supported.
+- **Gradient Computation:** Use `gradient(target, sources)` to compute gradients of a target with respect to specified sources.
+- **Higher-Order Derivatives:** Nested tapes allow computation of higher-order derivatives.
+- **Persistent Mode:** Set `persistent=True` to compute multiple gradients from the same tape (released upon garbage collection).
+- **Jacobian Support:** Methods `jacobian()` and `batch_jacobian()` compute Jacobian matrices efficiently.
+- **Control Over Tracking:** Disable automatic variable tracking with `watch_accessed_variables=False` for fine-grained control.
+
+**Common Use Cases:**
+- Custom training loops
+- Gradient-based optimization
+- Computing higher-order derivatives (e.g., for Hessians)
+- Gradient analysis in neural networks
+
+**Important Notes:**
+- By default, a non-persistent tape can only compute gradients once.
+- Use `@tf.function` for better performance with Jacobian computations.
+- Only tensors with real or complex dtypes are differentiable.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  persistent:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  watch_accessed_variables:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  target:
+    dtype: ["Tensor", "Variable", "CompositeTensor", "RaggedTensor"]
+    range: [null]
+    structure: ["scalar", "list", "nested structure"]
+    shape: [null]
+    default: null
+  sources:
+    dtype: ["Tensor", "Variable", "CompositeTensor", "RaggedTensor"]
+    range: [null]
+    structure: ["scalar", "list", "nested structure"]
+    shape: [null]
+    default: null
+  output_gradients:
+    dtype: ["Tensor", "None"]
+    range: [null]
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  unconnected_gradients:
+    dtype: ["string"]
+    range: [["none", "zero"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "tf.UnconnectedGradients.NONE"
+  parallel_iterations:
+    dtype: ["int", "None"]
+    range: [null]
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  experimental_use_pfor:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  tensor:
+    dtype: ["Tensor", "Variable"]
+    range: [null]
+    structure: ["scalar", "list"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: "persistent"
+    Parameter 2: "watch_accessed_variables"
+    Constraint: "persistent == False or watch_accessed_variables == True or watch_accessed_variables == False"
+  2:
+    Parameter 1: "target"
+    Parameter 2: "sources"
+    Constraint: "type(target) in [Tensor, Variable, CompositeTensor, RaggedTensor, list, tuple] and type(sources) in [Tensor, Variable, CompositeTensor, RaggedTensor, list, tuple]"
+  3:
+    Parameter 1: "experimental_use_pfor"
+    Parameter 2: "persistent"
+    Constraint: "experimental_use_pfor == True or persistent == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.autodiff.GradientTape in a complex way */
+import tensorflow as tf

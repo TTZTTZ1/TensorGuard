@@ -1,0 +1,101 @@
+
+# You are a Python code generation assistant for the `torch.optim.RAdam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RAdam (Rectified Adam)** is a PyTorch optimizer that adaptively adjusts learning rates to reduce variance in early training stages. It combines ideas from Adam with a rectification term to stabilize adaptive learning rates.
+
+### **Key Features:**
+- **Algorithm**: Modifies Adam by adding a rectification term (`r_t`) to the adaptive learning rate when the variance is deemed reliable (when `ρ_t > 5`).
+- **Weight Decay Options**:
+  - `decoupled_weight_decay=False` (default): Applies L2 penalty to gradients (Adam-style).
+  - `decoupled_weight_decay=True`: Applies weight decay directly to parameters (AdamW-style), often preferred for better regularization.
+- **Performance Optimizations**: Supports `foreach` implementation for faster computation on CUDA (with higher memory usage) and `capturable` mode for CUDA graphs/torch.compile.
+- **Flexibility**: Includes standard optimizer features like parameter groups, state dict serialization, hooks, and gradient management.
+
+### **Main Parameters:**
+- `lr` (float, default=1e-3): Learning rate.
+- `betas` (tuple, default=(0.9, 0.999)): Coefficients for moving averages of gradient and its square.
+- `eps` (float, default=1e-8): Term added to denominators for numerical stability.
+- `weight_decay` (float, default=0): L2 penalty coefficient.
+- `decoupled_weight_decay` (bool, default=False): If True, uses AdamW-style weight decay.
+- `foreach` (bool, optional): Enables faster foreach implementation on CUDA (None = auto-select).
+- `maximize` (bool, default=False): Maximizes the objective instead of minimizing.
+- `capturable` (bool, default=False): Enables safe capture in CUDA graphs/torch.compile.
+- `differentiable` (bool, default=False): Allows autograd through the optimizer step (impairs performance).
+
+### **Typical Usage:**
+```python
+optimizer = torch.optim.RAdam(model.parameters(), lr=0.001, weight_decay=1e-4)
+```
+For AdamW-style weight decay (recommended):
+```python
+optimizer = torch.optim.RAdam(model.parameters(), lr=0.001, weight_decay=1e-4, decoupled_weight_decay=True)
+```
+
+### **Use Case:**
+RAdam is particularly useful when training deep neural networks with adaptive learning rates, as it mitigates unstable variance in early iterations, often leading to more consistent convergence. It’s a drop-in replacement for Adam/AdamW with minimal overhead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.001"
+  betas:
+    dtype: ["float"]
+    range: null
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach:
+    dtype: ["bool", "null"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.RAdam in a complex way */
+import torch

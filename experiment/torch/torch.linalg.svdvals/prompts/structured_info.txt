@@ -1,0 +1,24 @@
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  driver:
+    dtype: ["string"]
+    range: [["None", "gesvd", "gesvdj", "gesvda"]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  out:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, min(m, n))"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: driver
+    Parameter 2: A
+    Constraint: "driver is None or A.device.type == 'cuda'"

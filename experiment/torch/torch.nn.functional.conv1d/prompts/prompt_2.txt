@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.conv1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.conv1d` performs a 1D convolution over an input tensor. It applies learnable filters (kernels) to extract features from sequential data, such as time series or signals.
+
+**Key parameters:**
+- `input`: Shape `(batch, in_channels, width)`
+- `weight`: Shape `(out_channels, in_channels/groups, kernel_width)`
+- `stride`, `padding`, `dilation`: Control the convolution's step size, border handling, and kernel spacing
+- `groups`: Enables grouped convolutions for channel separation
+
+**Features:**
+- Supports optional bias, complex data types, and TensorFloat32
+- Includes padding modes (`'valid'` for no padding, `'same'` for output matching input width with stride 1)
+- May use nondeterministic CUDA algorithms unless explicitly configured otherwise
+
+**Example:**
+```python
+inputs = torch.randn(33, 16, 30)   # 33 samples, 16 channels, width 30
+filters = torch.randn(20, 16, 5)   # 20 output channels, 5-width kernel
+output = F.conv1d(inputs, filters) # Result shape: (33, 20, output_width)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  weight:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  bias:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: "None"
+  stride:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [0,1]
+    default: "1"
+  padding:
+    dtype: ["No mention"]
+    range: ["valid", "same"]
+    structure: ["string", "scalar", "tuple"]
+    shape: [0,1]
+    default: "0"
+  dilation:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: [0,1]
+    default: "1"
+  groups:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "groups"
+    Constraint: "input.shape[1] % groups == 0"
+  2:
+    Parameter 1: "padding"
+    Parameter 2: "stride"
+    Constraint: "padding != 'same' or stride == 1 or stride == (1,)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.conv1d in a complex way */
+import torch

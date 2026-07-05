@@ -1,0 +1,111 @@
+
+# You are a Python code generation assistant for the `torch.optim.AdamW` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.AdamW` class implements the **AdamW optimizer**, which is a variant of Adam that decouples weight decay from the gradient-based update steps. This prevents weight decay from accumulating in the momentum and variance estimates, often leading to better generalization.
+
+**Key Features:**
+- **Decoupled Weight Decay:** Weight decay is applied directly to parameters before the adaptive gradient update, separate from momentum and variance accumulation.
+- **Adaptive Learning Rates:** Uses running averages of gradients (first moment) and squared gradients (second moment) to adjust learning rates per parameter.
+- **AMSGrad Variant:** Optional AMSGrad mode ensures non-increasing variance estimates for improved convergence.
+- **Performance Optimizations:** Supports `foreach` (vectorized) and `fused` (CUDA kernel fusion) implementations for faster execution, with automatic selection favoring `foreach` on CUDA when possible.
+- **Flexible Configuration:** Includes options for maximization, gradient capture for CUDA graphs, differentiable optimization steps, and memory-efficient gradient zeroing.
+
+**Main Parameters:**
+- `params`: Model parameters to optimize.
+- `lr` (default 1e-3): Learning rate.
+- `betas` (default (0.9, 0.999)): Coefficients for computing gradient momentum and squared gradient averages.
+- `weight_decay` (default 1e-2): Weight decay coefficient.
+- `eps` (default 1e-8): Term added to denominator for numerical stability.
+- `amsgrad` (default False): Enables the AMSGrad variant.
+- `maximize` (default False): Maximizes the objective instead of minimizing.
+- `foreach`, `fused`, `capturable`, `differentiable`: Advanced performance and functionality flags.
+
+**Core Methods:**
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad(set_to_none=True)`: Resets gradients, with an option to set them to `None` for reduced memory usage.
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state.
+- `add_param_group()`: Adds new parameter groups dynamically.
+
+**Use Case:** AdamW is widely used for training deep learning models, particularly in transformer-based architectures, due to its effective handling of weight decay and adaptive learning rates.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: "No mention"
+    default: "1e-3"
+  betas:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: "No mention"
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "1e-2"
+  amsgrad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  foreach:
+    dtype: ["bool"]
+    range: ["None", "True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  capturable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  fused:
+    dtype: ["bool"]
+    range: ["None", "True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "lr"
+    Parameter 2: "fused"
+    Constraint: "not isinstance(lr, torch.Tensor) or fused == True or capturable == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.AdamW in a complex way */
+import torch

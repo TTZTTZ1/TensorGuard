@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.HalfStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous, one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like shape, stride, and dtype to interpret that data.
+
+**Key Points:**
+- **Purpose:** Stores the actual bytes of tensor data. Multiple tensors (e.g., views) can share the same storage.
+- **Access:** Use `tensor.untyped_storage()` to get a tensor's storage.
+- **Identification:** The `data_ptr()` method provides a unique identifier for the storage.
+- **Manipulation:** Includes methods like `clone()`, `fill_()`, `copy_()`, `pin_memory()`, and device transfer methods (e.g., `cuda()`, `cpu()`).
+- **Special Cases:** Tensors with gradients have separate storages for data and grad. Tensors on `"meta"` device or FakeTensors have no actual storage.
+- **Legacy Note:** Typed storage classes (e.g., `torch.FloatStorage`) are deprecated. Use `torch.UntypedStorage` for all new code.
+
+**Warning:** Direct storage manipulation is a low-level, risky operation. Standard tensor methods (e.g., `clone()`, `fill_()`) should be preferred for safety and clarity.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.float16"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.float16"
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: dtype
+    Parameter 2: 
+    Constraint: "dtype == torch.float16"
+  2:
+    Parameter 1: wrap_storage
+    Parameter 2: *args
+    Constraint: "wrap_storage is not None implies len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.HalfStorage in a complex way */
+import torch

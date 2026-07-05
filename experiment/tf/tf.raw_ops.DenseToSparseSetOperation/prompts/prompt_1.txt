@@ -1,0 +1,81 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DenseToSparseSetOperation` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DenseToSparseSetOperation` performs set operations between a dense tensor (`set1`) and a sparse tensor (`set2`), applied along their last dimension. The operation outputs a sparse tensor representing the result.
+
+**Key Points:**
+- **Inputs:** `set1` is a dense tensor; `set2` is defined by its indices, values, and shape as a sparse tensor.
+- **Rank Requirement:** The first `n-1` dimensions of both inputs must match, where `n` is their rank.
+- **Set Operations:** The `set_operation` argument specifies the type of set operation (e.g., union, intersection, difference).
+- **Output:** Returns a sparse tensor (indices, values, shape) with the same first `n-1` dimensions as the inputs, and the last dimension containing the set operation result.
+- **Validation:** Optional validation of `set2` indices can be controlled via `validate_indices`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  set1:
+    dtype: ["int8", "int16", "int32", "int64", "uint8", "uint16", "string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  set2_indices:
+    dtype: ["int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  set2_values:
+    dtype: ["int8", "int16", "int32", "int64", "uint8", "uint16", "string"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  set2_shape:
+    dtype: ["int64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  set_operation:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  validate_indices:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: set1
+    Parameter 2: set2_values
+    Constraint: "set1.dtype == set2_values.dtype"
+  2:
+    Parameter 1: set1
+    Parameter 2: set2_shape
+    Constraint: "len(set1.shape) == len(set2_shape) and all(set1.shape[i] == set2_shape[i] for i in range(len(set2_shape)-1))"
+  3:
+    Parameter 1: set2_indices
+    Parameter 2: set2_shape
+    Constraint: "set2_indices.shape[1] == len(set2_shape)"
+  4:
+    Parameter 1: set2_indices
+    Parameter 2: set2_values
+    Constraint: "set2_indices.shape[0] == set2_values.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DenseToSparseSetOperation in a complex way */
+import tensorflow as tf

@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `tf.ragged.map_flat_values` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.ragged.map_flat_values` applies a given operation (`op`) to the flattened values of one or more RaggedTensors while preserving their original ragged structure. It collapses all ragged dimensions into a single flat tensor, runs the operation, and then reconstructs the result using the input's nested row splits.
+
+**Key points:**
+- Used for **elementwise operations** on RaggedTensor values.
+- All input RaggedTensors must have identical `nested_row_splits`.
+- **Not suitable for row-wise operations** (use `tf.map_fn` instead).
+- Returns a RaggedTensor with the same ragged rank as the inputs.
+
+**Example:**
+```python
+rt = tf.ragged.constant([[1, 2], [3]])
+tf.ragged.map_flat_values(tf.add, rt, 5)  
+# Result: <tf.RaggedTensor [[6, 7], [8]]>
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  op:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["sequence"]
+    shape: ["variable"]
+    default: null
+  kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dict"]
+    shape: ["variable"]
+    default: null
+constraints:
+  1:
+    Parameter 1: args
+    Parameter 2: args
+    Constraint: "any(isinstance(arg, tf.RaggedTensor) for arg in args)"
+  2:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "len({rt.nested_row_splits for rt in [arg for arg in args if isinstance(arg, tf.RaggedTensor)] + [v for v in kwargs.values() if isinstance(v, tf.RaggedTensor)]}) <= 1"
+  3:
+    Parameter 1: op
+    Parameter 2: args
+    Constraint: "all(op(rt.flat_values).shape[0] == rt.flat_values.shape[0] for rt in [arg for arg in args if isinstance(arg, tf.RaggedTensor)] + [v for v in kwargs.values() if isinstance(v, tf.RaggedTensor)])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.ragged.map_flat_values in a complex way */
+import tensorflow as tf

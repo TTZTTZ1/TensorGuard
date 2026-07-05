@@ -1,0 +1,65 @@
+# tf.raw_ops.ResourceSparseApplyFtrlV2
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ResourceSparseApplyFtrlV2](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ResourceSparseApplyFtrlV2)
+
+---
+
+Update relevant entries in '\*var' according to the Ftrl-proximal scheme.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.ResourceSparseApplyFtrlV2`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/ResourceSparseApplyFtrlV2)
+
+```
+tf.raw_ops.ResourceSparseApplyFtrlV2(
+    var,
+    accum,
+    linear,
+    grad,
+    indices,
+    lr,
+    l1,
+    l2,
+    l2_shrinkage,
+    lr_power,
+    use_locking=False,
+    multiply_linear_by_lr=False,
+    name=None
+)
+```
+
+That is for rows we have grad for, we update var, accum and linear as follows:
+grad\_with\_shrinkage = grad + 2 \* l2\_shrinkage \* var
+accum\_new = accum + grad\_with\_shrinkage \* grad\_with\_shrinkage
+linear += grad\_with\_shrinkage +
+(accum\_new^(-lr\_power) - accum^(-lr\_power)) / lr \* var
+quadratic = 1.0 / (accum\_new^(lr\_power) \* lr) + 2 \* l2
+var = (sign(linear) \* l1 - linear) / quadratic if |linear| > l1 else 0.0
+accum = accum\_new
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `var` | A `Tensor` of type `resource`. Should be from a Variable(). |
+| `accum` | A `Tensor` of type `resource`. Should be from a Variable(). |
+| `linear` | A `Tensor` of type `resource`. Should be from a Variable(). |
+| `grad` | A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `qint16`, `quint16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`. The gradient. |
+| `indices` | A `Tensor`. Must be one of the following types: `int32`, `int64`. A vector of indices into the first dimension of var and accum. |
+| `lr` | A `Tensor`. Must have the same type as `grad`. Scaling factor. Must be a scalar. |
+| `l1` | A `Tensor`. Must have the same type as `grad`. L1 regularization. Must be a scalar. |
+| `l2` | A `Tensor`. Must have the same type as `grad`. L2 shrinkage regularization. Must be a scalar. |
+| `l2_shrinkage` | A `Tensor`. Must have the same type as `grad`. |
+| `lr_power` | A `Tensor`. Must have the same type as `grad`. Scaling factor. Must be a scalar. |
+| `use_locking` | An optional `bool`. Defaults to `False`. If `True`, updating of the var and accum tensors will be protected by a lock; otherwise the behavior is undefined, but may exhibit less contention. |
+| `multiply_linear_by_lr` | An optional `bool`. Defaults to `False`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| The created Operation. | |

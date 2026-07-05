@@ -1,0 +1,34 @@
+params:
+  fn:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["callable"]
+    shape: ["No mention"]
+    default: null
+  elems:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "nested sequence of tensors"]
+    shape: ["any"]
+    default: null
+  fallback_to_while_loop:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  warn:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: "fn"
+    Parameter 2: "elems"
+    Constraint: "callable(fn) and tf.nest.is_nested(elems) == tf.nest.is_nested(fn_arg) for fn_arg derived from elems"
+  2:
+    Parameter 1: "elems"
+    Parameter 2: "elems"
+    Constraint: "len({tensor.shape[0] for tensor in tf.nest.flatten(elems) if hasattr(tensor, 'shape') and tensor.shape[0] != 1}) <= 1"

@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `tf.nn.dilation2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.dilation2d` performs grayscale morphological dilation on a 4-D input tensor using a 3-D filter. It computes a max-sum correlation where each output element is the maximum over a sliding window of the sum of input values and corresponding filter values.
+
+**Key Parameters:**
+- **input**: 4-D tensor of shape `[batch, height, width, depth]`
+- **filters**: 3-D tensor of shape `[filter_height, filter_width, depth]`
+- **strides**: Must be `[1, stride_height, stride_width, 1]`
+- **dilations**: Must be `[1, rate_height, rate_width, 1]`
+- **padding**: `"SAME"` or `"VALID"`
+- **data_format**: Currently only supports `"NHWC"`
+
+**Operation:**
+```
+output[b, y, x, c] = max_{dy, dx} (input[b, strides[1]*y + rates[1]*dy, 
+                                          strides[2]*x + rates[2]*dx, c] 
+                                   + filters[dy, dx, c])
+```
+
+**Note:** Max-pooling is a special case when the filter contains all zeros. The function supports various numeric types and has a duality relationship with erosion operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filters:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [4]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["SAME", "VALID"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: [["NHWC"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dilations:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: [4]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "input.dtype == filters.dtype"
+  2:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.dilation2d in a complex way */
+import tensorflow as tf

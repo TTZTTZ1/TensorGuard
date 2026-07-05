@@ -1,0 +1,132 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.StringLookup` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.StringLookup` is a preprocessing layer that maps string inputs to integer indices or encoded representations (e.g., one-hot, multi-hot, TF-IDF). It is commonly used for converting categorical string data into numerical formats suitable for neural networks.
+
+**Key Features:**
+- **Vocabulary Handling:** The vocabulary can be provided explicitly via `vocabulary` or learned from data using `adapt()`.
+- **Output Modes:** Supports multiple output formats: `"int"` (indices), `"one_hot"`, `"multi_hot"`, `"count"`, and `"tf_idf"`.
+- **Special Tokens:** Configurable OOV (out-of-vocabulary) and mask tokens.
+- **Inverse Lookup:** Can map indices back to strings when `invert=True`.
+
+**Common Use Cases:**
+- Encoding categorical features in structured data.
+- Building vocabularies from text data (without tokenization).
+- Converting string labels to integer targets.
+
+**Example Workflow:**
+1. **Initialize** the layer (optionally with a known vocabulary).
+2. **Adapt** to data (if vocabulary is not pre-defined).
+3. **Call** the layer to transform strings into indices or encoded vectors.
+
+This layer is safe to use in `tf.data` pipelines and is essential for preprocessing string-based features in TensorFlow models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  max_tokens:
+    dtype: ["int", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  num_oov_indices:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1"
+  mask_token:
+    dtype: ["string", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  oov_token:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: '"[UNK]"'
+  vocabulary:
+    dtype: ["int", "string"]
+    range: "No mention"
+    structure: ["list", "tuple", "array", "tensor", "string"]
+    shape: "No mention"
+    default: "None"
+  vocabulary_dtype:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: '"int64"'
+  idf_weights:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["list", "tuple", "array", "tensor"]
+    shape: ["1D"]
+    default: "None"
+  invert:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  output_mode:
+    dtype: ["string"]
+    range: ["int", "one_hot", "multi_hot", "count", "tf_idf"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: '"int"'
+  pad_to_max_tokens:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  sparse:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  encoding:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: '"utf-8"'
+  name:
+    dtype: ["string", "None"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "invert"
+    Parameter 2: "output_mode"
+    Constraint: "invert == True implies output_mode == 'int'"
+  2:
+    Parameter 1: "pad_to_max_tokens"
+    Parameter 2: "output_mode"
+    Constraint: "pad_to_max_tokens == True implies output_mode in ['multi_hot', 'count', 'tf_idf']"
+  3:
+    Parameter 1: "sparse"
+    Parameter 2: "output_mode"
+    Constraint: "sparse == True implies output_mode in ['multi_hot', 'count', 'tf_idf']"
+  4:
+    Parameter 1: "idf_weights"
+    Parameter 2: "output_mode"
+    Constraint: "idf_weights is not None implies output_mode == 'tf_idf'"
+  5:
+    Parameter 1: "vocabulary"
+    Parameter 2: "output_mode"
+    Constraint: "(vocabulary is not None and output_mode == 'tf_idf') implies idf_weights is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.StringLookup in a complex way */
+import tensorflow as tf

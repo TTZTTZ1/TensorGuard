@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BoostedTreesAggregateStats` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.BoostedTreesAggregateStats` operation aggregates gradient and hessian statistics for a batch of data in boosted trees training. It computes summary statistics for each node, feature, and bucket, which are essential for determining optimal splits during tree construction.
+
+**Key inputs:**
+- `node_ids`: Node indices for each example.
+- `gradients` and `hessians`: First- and second-order derivatives per example.
+- `feature`: Feature values for each example.
+- `max_splits`: Maximum number of splits allowed in the tree.
+- `num_buckets`: Maximum bucket index for bucketized features.
+
+**Output:**  
+A float32 tensor containing aggregated stats (gradients and hessians) structured by node, feature, and bucket.
+
+This low-level op is used internally in TensorFlow's boosted tree algorithms to accumulate sufficient statistics for split candidate evaluation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  node_ids:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size]"]
+    default: null
+  gradients:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, logits_dimension]"]
+    default: null
+  hessians:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, hessian_dimension]"]
+    default: null
+  feature:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, feature_dimension]"]
+    default: null
+  max_splits:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  num_buckets:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: max_splits
+    Parameter 2: max_splits
+    Constraint: "max_splits >= 1"
+  2:
+    Parameter 1: num_buckets
+    Parameter 2: num_buckets
+    Constraint: "num_buckets >= 1"
+  3:
+    Parameter 1: node_ids
+    Parameter 2: gradients
+    Constraint: "tf.shape(node_ids)[0] == tf.shape(gradients)[0]"
+  4:
+    Parameter 1: node_ids
+    Parameter 2: hessians
+    Constraint: "tf.shape(node_ids)[0] == tf.shape(hessians)[0]"
+  5:
+    Parameter 1: node_ids
+    Parameter 2: feature
+    Constraint: "tf.shape(node_ids)[0] == tf.shape(feature)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BoostedTreesAggregateStats in a complex way */
+import tensorflow as tf

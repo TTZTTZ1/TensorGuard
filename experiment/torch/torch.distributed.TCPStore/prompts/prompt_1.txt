@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `torch.distributed.TCPStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables distributed training across multiple processes and machines. It provides communication primitives (collectives, point-to-point) and supports backends like NCCL (for CUDA GPUs), Gloo (for CPU), and XCCL (for XPU GPUs). Key features include:
+
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group.
+- **Backends**: Choose based on hardware (NCCL for GPU, Gloo for CPU, XCCL for XPU).
+- **Collective Operations**: Synchronous/asynchronous functions like `all_reduce`, `broadcast`, `all_gather`, etc.
+- **Point-to-Point**: `send`/`recv` and async variants (`isend`/`irecv`).
+- **Groups**: Create sub-groups with `new_group()` for fine-grained communication.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional process groups.
+- **Key-Value Store**: `TCPStore`, `FileStore`, `HashStore` for coordination.
+- **Debugging**: Tools like `monitored_barrier`, `TORCH_DISTRIBUTED_DEBUG`, and `breakpoint()`.
+- **Launch Utilities**: `torch.distributed.launch` (deprecated, use `torchrun`) and `torch.multiprocessing.spawn` for multi-process startup.
+
+The package is essential for scaling PyTorch models across multiple GPUs/nodes, with optimizations like Copy Engine Collectives (offloading to GPU DMA engines) and support for third-party backends.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  host_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  port:
+    dtype: ["int"]
+    range: [[0, 65535]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  world_size:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  is_master:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  timeout:
+    dtype: ["datetime.timedelta"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "datetime.timedelta(seconds=300)"
+  wait_for_workers:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  multi_tenant:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  master_listen_fd:
+    dtype: ["int", "null"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  use_libuv:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+  1:
+    Parameter 1: world_size
+    Parameter 2: wait_for_workers
+    Constraint: "world_size is not None or wait_for_workers == True"
+  2:
+    Parameter 1: master_listen_fd
+    Parameter 2: port
+    Constraint: "master_listen_fd is None or (isinstance(master_listen_fd, int) and master_listen_fd >= 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.TCPStore in a complex way */
+import torch

@@ -1,0 +1,102 @@
+
+# You are a Python code generation assistant for the `tf.queue.QueueBase` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.queue.QueueBase` is the base class for TensorFlow queue implementations, which are data structures that store tensors across multiple steps in a computation graph. It provides thread-safe operations for enqueuing and dequeuing tensors, supporting both single elements and batches.
+
+**Key Features:**
+- **Element Structure:** Each queue element is a tuple of tensors with defined dtypes and optional shape constraints.
+- **Core Operations:** 
+  - `enqueue`/`enqueue_many`: Add single or batched elements.
+  - `dequeue`/`dequeue_many`/`dequeue_up_to`: Remove elements, with blocking behavior if the queue is empty.
+- **Queue Management:** 
+  - `close()`: Prevents further enqueues and can cancel pending operations.
+  - `size()`: Returns the current number of elements.
+  - `is_closed()`: Checks if the queue is closed.
+- **Use Cases:** Commonly used for asynchronous data feeding in input pipelines, such as with `tf.queue.FIFOQueue` and `tf.queue.RandomShuffleQueue`.
+
+**Important Notes:**
+- Queues must be created within a TensorFlow graph (e.g., using `tf.compat.v1.Session` in TF1.x or `tf.function` in TF2.x).
+- Operations block when the queue is full (enqueue) or empty (dequeue), unless closed.
+- Errors like `tf.errors.OutOfRangeError` or `tf.errors.CancelledError` may be raised upon closure or session termination.
+
+This class is foundational for building efficient, stateful data input mechanisms in TensorFlow, especially in legacy graph-based workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dtypes:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  shapes:
+    dtype: ["list", "None"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  names:
+    dtype: ["None", "list", "tuple"]
+    range: "No mention"
+    structure: ["list", "tuple"]
+    shape: "No mention"
+    default: "No mention"
+  queue_ref:
+    dtype: "No mention"
+    range: "No mention"
+    structure: "No mention"
+    shape: "No mention"
+    default: "No mention"
+  cancel_pending_enqueues:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "No mention"
+  n:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "No mention"
+  vals:
+    dtype: ["tensor", "list", "tuple", "dictionary"]
+    range: "No mention"
+    structure: ["tensor", "list", "tuple", "dictionary"]
+    shape: "No mention"
+    default: "No mention"
+  index:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "No mention"
+  queues:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "names"
+    Parameter 2: "dtypes"
+    Constraint: "names is None or (isinstance(names, (list, tuple)) and len(names) == len(dtypes))"
+  2:
+    Parameter 1: "shapes"
+    Parameter 2: "dtypes"
+    Constraint: "shapes is None or (isinstance(shapes, list) and len(shapes) == len(dtypes))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.queue.QueueBase in a complex way */
+import tensorflow as tf

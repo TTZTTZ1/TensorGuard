@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.DynamicPartition` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.DynamicPartition` splits a tensor into multiple partitions based on provided indices. It uses the `partitions` tensor to assign each slice of `data` to one of `num_partitions` output tensors. The output at index `i` contains all slices where `partitions` equals `i`, preserving the order of the original data.
+
+**Key Points:**
+- **Inputs:**  
+  - `data`: Tensor to be partitioned.  
+  - `partitions`: Integer tensor (same leading shape as `data`) with indices in `[0, num_partitions)`.  
+  - `num_partitions`: Number of output tensors.  
+- **Output:** A list of `num_partitions` tensors, each containing slices of `data` corresponding to matching partition indices.  
+- **Error Cases:**  
+  - Invalid indices in `partitions`.  
+  - Shape mismatch between `partitions` and `data`.  
+- **Use Case:** Often paired with `dynamic_stitch` to reconstruct the original tensor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  partitions:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_partitions:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "partitions"
+    Parameter 2: "num_partitions"
+    Constraint: "tf.reduce_all(tf.logical_and(partitions >= 0, partitions < num_partitions))"
+  2:
+    Parameter 1: "data"
+    Parameter 2: "partitions"
+    Constraint: "data.shape[:partitions.ndim] == partitions.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.DynamicPartition in a complex way */
+import tensorflow as tf

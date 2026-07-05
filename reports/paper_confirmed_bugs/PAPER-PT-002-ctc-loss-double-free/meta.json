@@ -1,0 +1,24 @@
+{
+  "id": "PAPER-PT-002",
+  "title": "ctc_loss backward triggers double free corruption",
+  "framework": "PyTorch",
+  "api": "torch.nn.functional.ctc_loss",
+  "related_apis": [],
+  "bug_type": "Crash / memory corruption",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例"
+  },
+  "trigger": "Call ctc_loss with targets containing an out-of-range class index, then run backward.",
+  "expected": "PyTorch should raise a clear framework-level exception for invalid CTC targets.",
+  "observed": "The process aborts with double free or corruption.",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["pytorch", "crash", "memory-corruption", "autograd", "ctc-loss"]
+}

@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `tf.io.decode_csv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.decode_csv` converts CSV-formatted strings into tensors, with each column mapped to a separate tensor. It expects RFC 4180 format and supports optional handling of quotes, custom delimiters, NA values, and column selection.
+
+**Key Parameters:**
+- `records`: String tensor where each element is a CSV row.
+- `record_defaults`: List of tensors specifying the data type and default value for each column.
+- `field_delim`: Field separator (default: `,`).
+- `use_quote_delim`: Whether to treat quotes as special characters (default: `True`).
+- `na_value`: String to interpret as missing values.
+- `select_cols`: Optional list of column indices to parse.
+
+**Returns:** A list of tensors matching the types in `record_defaults`, each with the same number of rows as `records`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  records:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  record_defaults:
+    dtype: ["float32", "float64", "int32", "int64", "string"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  field_delim:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ","
+  use_quote_delim:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  na_value:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ""
+  select_cols:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "records"
+    Parameter 2: null
+    Constraint: "isinstance(records, tf.Tensor) and records.dtype == tf.string"
+  2:
+    Parameter 1: "record_defaults"
+    Parameter 2: null
+    Constraint: "all(isinstance(t, tf.Tensor) and t.dtype in [tf.float32, tf.float64, tf.int32, tf.int64, tf.string] for t in record_defaults)"
+  3:
+    Parameter 1: "select_cols"
+    Parameter 2: "record_defaults"
+    Constraint: "select_cols is None or (sorted(select_cols) == select_cols and all(0 <= i < len(record_defaults) for i in select_cols))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.decode_csv in a complex way */
+import tensorflow as tf

@@ -1,0 +1,74 @@
+params:
+  backend:
+    dtype: ["string", "Backend"]
+    range: [["gloo", "nccl", "mpi", "xccl", "ucc"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  init_method:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "env://"
+  timeout:
+    dtype: ["timedelta"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  world_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  store:
+    dtype: ["Store"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group_name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: ""
+  pg_options:
+    dtype: ["ProcessGroupOptions"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  device_id:
+    dtype: ["torch.device", "int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _ranks:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: init_method
+    Parameter 2: store
+    Constraint: "init_method is None or store is None"
+  2:
+    Parameter 1: store
+    Parameter 2: world_size
+    Constraint: "store is None or world_size != -1"
+  3:
+    Parameter 1: store
+    Parameter 2: rank
+    Constraint: "store is None or rank != -1"

@@ -1,0 +1,62 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  weight:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  bias:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: [1]
+    default: "None"
+  stride:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "1"
+  padding:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "0"
+  output_padding:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "0"
+  groups:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  dilation:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: groups
+    Constraint: "input.size(1) % groups == 0"
+  2:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.size(1) == weight.size(0)"
+  3:
+    Parameter 1: bias
+    Parameter 2: weight
+    Constraint: "bias is None or bias.size(0) == weight.size(1) * groups"

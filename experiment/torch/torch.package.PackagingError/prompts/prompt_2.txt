@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.package.PackagingError` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.package` is a PyTorch module for creating self-contained, portable packages that bundle both model artifacts (e.g., pickled objects, tensors) and the Python source code they depend on. These packages can be saved, shared, and later loaded in isolated environments, ensuring reproducibility and enabling deployment (e.g., via `torch::deploy`).
+
+### **Key Features**
+- **Packaging**: Capture code dependencies automatically by analyzing pickled objects and module imports.
+- **Isolation**: Loaded packages run in a hermetic environment, separate from the system’s Python modules.
+- **Resource Inclusion**: Save and load pickled objects, text, and binary data alongside code.
+- **Dependency Management**: Control how dependencies are handled (`intern`, `extern`, `mock`, `deny`).
+- **Inspection**: Explore package contents via ZIP tools or the `file_structure()` API.
+
+### **Core Workflow**
+1. **Export** with `PackageExporter`:
+   - Use `save_pickle()`, `save_module()`, etc., to add code and data.
+   - Define dependency actions (e.g., `intern("my_module.**")`, `extern("numpy")`).
+2. **Import** with `PackageImporter`:
+   - Load packages from `.pt` files.
+   - Access resources via `load_pickle()`, `import_module()`, or standard `importlib.resources`.
+
+### **Important Notes**
+- **Security**: Relies on `pickle`; only load trusted packages.
+- **Dependency Resolution**: Uses static analysis (AST parsing) — dynamic imports may not be detected.
+- **Isolation**: Packaged modules are name-mangled (e.g., `<torch_package_0>.foo.bar`) to prevent conflicts.
+
+### **Use Cases**
+- Reproducible model sharing.
+- Deployment to production with fixed dependencies.
+- Bundling custom code and data for transfer learning.
+
+For a hands-on tutorial, see the [Colab notebook](https://colab.research.google.com/drive/1lFZkLyViGfXxB-m3jqlyTQuYToo3XLo-).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dependency_graph:
+    dtype: ["object"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  debug:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  []
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.package.PackagingError in a complex way */
+import torch

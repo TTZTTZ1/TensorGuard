@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.optim.RMSprop` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RMSprop** is a PyTorch optimizer that adapts learning rates per parameter using a moving average of squared gradients. It is particularly effective for non-stationary objectives and recurrent neural networks.
+
+### Key Features:
+- **Adaptive Learning Rates**: Each parameter's learning rate is scaled by the root of its exponentially decaying average of squared gradients.
+- **Optional Momentum**: Can incorporate momentum to accelerate convergence.
+- **Centered Variant**: Optionally normalizes gradients by an estimate of their variance for stability.
+- **Weight Decay**: Supports L2 regularization.
+
+### Main Parameters:
+- `params`: Iterable of parameters to optimize.
+- `lr` (default=0.01): Learning rate.
+- `alpha` (default=0.99): Smoothing constant for gradient average.
+- `eps` (default=1e-8): Added to denominator for numerical stability.
+- `weight_decay` (default=0): L2 penalty coefficient.
+- `momentum` (default=0): Momentum factor.
+- `centered` (default=False): If `True`, uses centered RMSProp (subtracts gradient mean estimate).
+- `foreach` (default=None): Enables faster foreach implementation on CUDA (uses more memory).
+- `maximize` (default=False): Maximizes the objective instead of minimizing.
+- `differentiable` (default=False): Allows autograd through the optimizer step (impairs performance).
+
+### Core Algorithm Steps:
+1. Compute gradient \( g_t \).
+2. Apply weight decay if \( \lambda \neq 0 \).
+3. Update squared gradient average: \( v_t = \alpha v_{t-1} + (1 - \alpha) g_t^2 \).
+4. If `centered=True`, adjust \( v_t \) using a moving average of gradients.
+5. Apply momentum if \( \mu > 0 \), else update parameters directly using the adaptive learning rate.
+
+### Additional Methods:
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` for lower memory usage).
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state.
+- `add_param_group()`: Add new parameter groups dynamically.
+- Various hooks for customizing state dict and step behavior.
+
+### Use Case:
+Ideal for problems with noisy or sparse gradients, such as training RNNs, and when adaptive learning rates are beneficial. The centered version offers improved stability by accounting for gradient variance.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "0.01"
+  alpha:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0.99"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  momentum:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  centered:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.RMSprop in a complex way */
+import torch

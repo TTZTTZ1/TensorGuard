@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyAdadelta` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseApplyAdadelta` is a low-level TensorFlow operation that implements the sparse Adadelta optimization algorithm. It updates only the specified slices of a variable (`var`) and its associated accumulators (`accum`, `accum_update`) using gradients (`grad`) at given `indices`.
+
+**Key Functionality:**
+- Applies the Adadelta update rule sparsely, meaning updates are performed only for the rows (or slices) of the variable and accumulators corresponding to the provided `indices`.
+- Requires mutable tensors for `var`, `accum`, and `accum_update` (typically from `tf.Variable`).
+- Uses hyperparameters: learning rate (`lr`), decay factor (`rho`), and a small constant (`epsilon`) for numerical stability.
+- Supports optional locking (`use_locking`) to prevent race conditions during concurrent updates.
+
+**Inputs:**
+- `var`, `accum`, `accum_update`: Mutable tensors (same data type) representing the variable and its accumulators.
+- `lr`, `rho`, `epsilon`: Scalar tensors (same type as `var`) for learning rate, decay factor, and epsilon.
+- `grad`: Gradient tensor (same type as `var`).
+- `indices`: 1-D integer tensor specifying which slices of `var` and accumulators to update.
+
+**Output:**
+- Returns an updated version of `var` (same shape and type), with modifications only at the specified `indices`.
+
+**Use Case:** Efficiently training models with sparse gradients or embeddings, where only a subset of parameters is updated per step.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum_update:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  rho:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  epsilon:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: accum
+    Parameter 2: var
+    Constraint: "accum.dtype == var.dtype"
+  2:
+    Parameter 1: accum_update
+    Parameter 2: var
+    Constraint: "accum_update.dtype == var.dtype"
+  3:
+    Parameter 1: lr
+    Parameter 2: var
+    Constraint: "lr.dtype == var.dtype"
+  4:
+    Parameter 1: rho
+    Parameter 2: var
+    Constraint: "rho.dtype == var.dtype"
+  5:
+    Parameter 1: epsilon
+    Parameter 2: var
+    Constraint: "epsilon.dtype == var.dtype"
+  6:
+    Parameter 1: grad
+    Parameter 2: var
+    Constraint: "grad.dtype == var.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyAdadelta in a complex way */
+import tensorflow as tf

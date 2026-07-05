@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.nn.GRU` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.GRU` module implements a multi-layer Gated Recurrent Unit (GRU) for sequence processing. It applies the GRU equations to compute hidden states over time, supporting stacked layers, dropout, and bidirectional processing.
+
+**Key Parameters:**
+- `input_size`: Number of input features.
+- `hidden_size`: Number of hidden state features.
+- `num_layers`: Number of stacked GRU layers (default: 1).
+- `batch_first`: If `True`, input/output tensors have shape (batch, seq, feature) instead of (seq, batch, feature).
+- `bidirectional`: Enables bidirectional processing (default: `False`).
+- `dropout`: Dropout probability between layers (except last).
+
+**Inputs:**
+- `input`: Sequence tensor of shape `(L, N, H_in)` (or `(N, L, H_in)` if `batch_first=True`).
+- `h_0`: Initial hidden state (optional); defaults to zeros.
+
+**Outputs:**
+- `output`: Output features for each time step from the last layer.
+- `h_n`: Final hidden state for the sequence.
+
+**Notes:**
+- Weights are initialized uniformly from `U(-√k, √k)` where `k = 1/hidden_size`.
+- PyTorch’s GRU implementation differs slightly from the original paper for efficiency (order of operations in the new gate calculation).
+- Supports packed sequences for variable-length inputs via `torch.nn.utils.rnn.pack_padded_sequence()`.
+
+**Example:**
+```python
+rnn = nn.GRU(10, 20, 2)  # input_size=10, hidden_size=20, num_layers=2
+input = torch.randn(5, 3, 10)  # (seq_len, batch, input_size)
+h0 = torch.randn(2, 3, 20)     # (num_layers, batch, hidden_size)
+output, hn = rnn(input, h0)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  hidden_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_layers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  batch_first:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  dropout:
+    dtype: ["float"]
+    range: [0.0, 1.0]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  bidirectional:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  device:
+    dtype: ["string", "torch.device"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.GRU in a complex way */
+import torch

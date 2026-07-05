@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SpaceToBatchND` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SpaceToBatchND` operation transforms an input tensor by dividing its spatial dimensions into blocks and interleaving them with the batch dimension. It is commonly used to convert atrous (dilated) convolutions into regular convolutions.
+
+**Key Functionality:**
+- Divides spatial dimensions into a grid defined by `block_shape`.
+- Optionally pads spatial dimensions using `paddings` before blocking.
+- Rearranges blocks to combine spatial block positions with the original batch dimension.
+
+**Parameters:**
+- `input`: N-D tensor with shape `[batch] + spatial_shape + remaining_shape`.
+- `block_shape`: 1-D tensor specifying block sizes for each spatial dimension (must be ≥1).
+- `paddings`: 2-D tensor defining padding for each spatial dimension (must be ≥0).
+- `name` (optional): Operation name.
+
+**Returns:** A tensor of the same type as `input`, with reshaped dimensions where the batch size is multiplied by the product of `block_shape`.
+
+**Example Use Case:**  
+For an input of shape `[1, 2, 2, 1]` with `block_shape = [2, 2]` and no padding, the output shape becomes `[4, 1, 1, 1]`, effectively flattening spatial blocks into the batch dimension.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  block_shape:
+    dtype: ["int32", "int64"]
+    range: "[1, inf]"
+    structure: ["tensor"]
+    shape: ["[M]"]
+    default: "null"
+  paddings:
+    dtype: ["int32", "int64"]
+    range: "[0, inf]"
+    structure: ["tensor"]
+    shape: ["[M, 2]"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "block_shape"
+    Parameter 2: "paddings"
+    Constraint: "paddings.shape[0] == block_shape.shape[0]"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "block_shape"
+    Constraint: "all((input.shape[i+1] + paddings[i,0] + paddings[i,1]) % block_shape[i] == 0 for i in range(block_shape.shape[0]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SpaceToBatchND in a complex way */
+import tensorflow as tf

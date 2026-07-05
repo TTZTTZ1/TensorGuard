@@ -1,0 +1,43 @@
+
+# You are a Python code generation assistant for the `tf.data.experimental.make_saveable_from_iterator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.data.experimental.make_saveable_from_iterator` is a deprecated utility for creating a `SaveableObject` that enables saving and restoring the state of a TensorFlow dataset iterator using the legacy `tf.compat.v1.Saver` API (primarily for TF1). It is not compatible with TF2's `tf.train.Checkpoint`.
+
+**Key Points:**
+*   **Purpose:** Makes an iterator's state saveable/restorable via `tf.compat.v1.Saver`.
+*   **Status:** Deprecated. For TF2, use `tf.train.Checkpoint` instead.
+*   **Usage:** The created `SaveableObject` must be added to the `tf.GraphKeys.SAVEABLE_OBJECTS` collection so `Saver` can manage it.
+*   **Important Caveats:**
+    1.  Upon restoration, the iterator's *entire current state is replaced* by the saved state. Any runtime modifications to the dataset graph are lost.
+    2.  Not all iterators support checkpointing; attempting to save an unsupported iterator raises an error.
+*   **Parameter:** `external_state_policy` controls how to handle pipelines dependent on external state (e.g., random number generators), with options `'ignore'`, `'warn'`, or `'fail'` (default).
+
+**In short:** This function is a legacy bridge for checkpointing dataset iterators with TF1's `Saver` and should not be used in new TF2 code.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  iterator:
+    dtype: ["iterator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  external_state_policy:
+    dtype: ["string"]
+    range: [["ignore", "warn", "fail"]]
+    structure: ["scalar"]
+    shape: null
+    default: "fail"
+constraints:
+  1.
+    Parameter 1: external_state_policy
+    Parameter 2: "none"
+    Constraint: "external_state_policy in ['ignore', 'warn', 'fail']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.data.experimental.make_saveable_from_iterator in a complex way */
+import tensorflow as tf

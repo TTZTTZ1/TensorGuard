@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.configure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timers provide a mechanism to automatically terminate ("reap") worker processes that become stuck during distributed training. Here's a concise summary:
+
+## **Purpose**
+- Detect and kill stuck workers to enable automatic retries in distributed PyTorch jobs.
+- Prevents hanging processes from blocking entire training jobs.
+
+## **Core Components**
+
+### **Timer Client** (Worker-side)
+- Used within training scripts via `with timer.expires(after=seconds):`
+- Acquires a countdown timer for a code block
+- Automatically releases timer when block completes
+- If timer expires, worker becomes eligible for termination
+
+### **Timer Server** (Agent-side)
+- Monitors active timers across workers
+- Terminates workers whose timers have expired
+- Runs locally on each host
+
+## **Usage Pattern**
+1. Start timer server alongside elastic agent
+2. Configure timer client in worker processes
+3. Wrap potentially stuck operations with expiration context
+
+## **Provided Implementations**
+1. **LocalTimerServer/Client** - Uses multiprocessing Queue
+2. **FileTimerServer/Client** - Uses named pipe (FIFO)
+
+## **Key Features**
+- Worker termination isn't guaranteed at exact expiry time (server decides)
+- Supports custom server/client implementations
+- Each host manages its own local workers
+- Enables resilient distributed training with automatic fault recovery
+
+This system ensures that temporary worker hangs don't permanently stall distributed training jobs, improving overall job reliability.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+    timer_client:
+        dtype: ["object"]
+        range: null
+        structure: ["scalar"]
+        shape: null
+        default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.configure in a complex way */
+import torch

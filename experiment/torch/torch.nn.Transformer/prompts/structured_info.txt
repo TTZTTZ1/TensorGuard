@@ -1,0 +1,198 @@
+params:
+  d_model:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "512"
+  nhead:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "8"
+  num_encoder_layers:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "6"
+  num_decoder_layers:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "6"
+  dim_feedforward:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "2048"
+  dropout:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "0.1"
+  activation:
+    dtype: ["string", "Callable"]
+    range: ["relu", "gelu"]
+    structure: ["scalar", "callable"]
+    shape: ["1", "No mention"]
+    default: "relu"
+  custom_encoder:
+    dtype: ["Any", "None"]
+    range: ["No mention"]
+    structure: ["object", "None"]
+    shape: ["No mention"]
+    default: "None"
+  custom_decoder:
+    dtype: ["Any", "None"]
+    range: ["No mention"]
+    structure: ["object", "None"]
+    shape: ["No mention"]
+    default: "None"
+  layer_norm_eps:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "1e-05"
+  batch_first:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+  norm_first:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+  bias:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "True"
+  device:
+    dtype: ["device", "None"]
+    range: ["No mention"]
+    structure: ["object", "None"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["dtype", "None"]
+    range: ["No mention"]
+    structure: ["object", "None"]
+    shape: ["No mention"]
+    default: "None"
+  src:
+    dtype: ["Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(S,E)", "(S,N,E)", "(N,S,E)"]
+    default: "null"
+  tgt:
+    dtype: ["Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["(T,E)", "(T,N,E)", "(N,T,E)"]
+    default: "null"
+  src_mask:
+    dtype: ["Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(S,S)", "(N⋅num_heads,S,S)"]
+    default: "None"
+  tgt_mask:
+    dtype: ["Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(T,T)", "(N⋅num_heads,T,T)"]
+    default: "None"
+  memory_mask:
+    dtype: ["Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(T,S)"]
+    default: "None"
+  src_key_padding_mask:
+    dtype: ["Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(S)", "(N,S)"]
+    default: "None"
+  tgt_key_padding_mask:
+    dtype: ["Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(T)", "(N,T)"]
+    default: "None"
+  memory_key_padding_mask:
+    dtype: ["Tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: ["(S)", "(N,S)"]
+    default: "None"
+  src_is_causal:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  tgt_is_causal:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  memory_is_causal:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "batch_first"
+    Parameter 2: "src"
+    Constraint: "src.ndim in [2,3] and (batch_first implies (src.ndim == 3 and src.shape[0] == N)) and (not batch_first implies (src.ndim == 2 or (src.ndim == 3 and src.shape[1] == N)))"
+  2:
+    Parameter 1: "batch_first"
+    Parameter 2: "tgt"
+    Constraint: "tgt.ndim in [2,3] and (batch_first implies (tgt.ndim == 3 and tgt.shape[0] == N)) and (not batch_first implies (tgt.ndim == 2 or (tgt.ndim == 3 and tgt.shape[1] == N)))"
+  3:
+    Parameter 1: "src_mask"
+    Parameter 2: "src"
+    Constraint: "src_mask is None or (src_mask.shape[-2] == (src.shape[0] if src.ndim == 2 or (src.ndim == 3 and not batch_first) else src.shape[1]) and src_mask.shape[-1] == (src.shape[0] if src.ndim == 2 or (src.ndim == 3 and not batch_first) else src.shape[1]))"
+  4:
+    Parameter 1: "tgt_mask"
+    Parameter 2: "tgt"
+    Constraint: "tgt_mask is None or (tgt_mask.shape[-2] == (tgt.shape[0] if tgt.ndim == 2 or (tgt.ndim == 3 and not batch_first) else tgt.shape[1]) and tgt_mask.shape[-1] == (tgt.shape[0] if tgt.ndim == 2 or (tgt.ndim == 3 and not batch_first) else tgt.shape[1]))"
+  5:
+    Parameter 1: "memory_mask"
+    Parameter 2: "src"
+    Constraint: "memory_mask is None or (memory_mask.shape[-1] == (src.shape[0] if src.ndim == 2 or (src.ndim == 3 and not batch_first) else src.shape[1]))"
+  6:
+    Parameter 1: "memory_mask"
+    Parameter 2: "tgt"
+    Constraint: "memory_mask is None or (memory_mask.shape[-2] == (tgt.shape[0] if tgt.ndim == 2 or (tgt.ndim == 3 and not batch_first) else tgt.shape[1]))"
+  7:
+    Parameter 1: "src_key_padding_mask"
+    Parameter 2: "src"
+    Constraint: "src_key_padding_mask is None or (src_key_padding_mask.shape[-1] == (src.shape[0] if src.ndim == 2 or (src.ndim == 3 and not batch_first) else src.shape[1]))"
+  8:
+    Parameter 1: "tgt_key_padding_mask"
+    Parameter 2: "tgt"
+    Constraint: "tgt_key_padding_mask is None or (tgt_key_padding_mask.shape[-1] == (tgt.shape[0] if tgt.ndim == 2 or (tgt.ndim == 3 and not batch_first) else tgt.shape[1]))"
+  9:
+    Parameter 1: "memory_key_padding_mask"
+    Parameter 2: "src"
+    Constraint: "memory_key_padding_mask is None or (memory_key_padding_mask.shape[-1] == (src.shape[0] if src.ndim == 2 or (src.ndim == 3 and not batch_first) else src.shape[1]))"
+  10:
+    Parameter 1: "nhead"
+    Parameter 2: "src_mask"
+    Constraint: "src_mask is None or (len(src_mask.shape) == 3 and src_mask.shape[0] == N * nhead) or (len(src_mask.shape) == 2)"

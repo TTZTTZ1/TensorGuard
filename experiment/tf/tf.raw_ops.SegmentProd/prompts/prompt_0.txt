@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SegmentProd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SegmentProd` function computes the element-wise product for segments of a tensor. It groups rows of the input tensor `data` based on `segment_ids` and multiplies the values within each group.
+
+**Key Points:**
+- **Inputs:**  
+  - `data`: A tensor with supported numeric types.  
+  - `segment_ids`: A 1-D integer tensor mapping each row of `data` to a segment ID. Values must be sorted (validated on CPU, not on GPU).  
+- **Output:** A tensor where each row `i` contains the product of all rows in `data` belonging to segment `i`.  
+- **Empty Segments:** If a segment has no rows, its output is `1`.  
+- **Example:**  
+  For `data = [[1,2,3,4], [4,3,2,1], [5,6,7,8]]` and `segment_ids = [0, 0, 1]`, the result is `[[4,6,6,4], [5,6,7,8]]` (rows 0 and 1 are multiplied for segment 0, row 2 is alone in segment 1).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: data
+    Parameter 2: segment_ids
+    Constraint: "len(data.shape) >= 1 and len(segment_ids.shape) == 1 and segment_ids.shape[0] == data.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SegmentProd in a complex way */
+import tensorflow as tf

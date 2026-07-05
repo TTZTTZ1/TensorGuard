@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.pca_lowrank` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.pca_lowrank` performs approximate Principal Component Analysis (PCA) on a low‑rank matrix, batch of matrices, or sparse matrix. It returns a tuple `(U, S, V)` representing a nearly optimal low‑rank SVD of the (optionally centered) input matrix `A`, such that `A ≈ U @ diag(S) @ V^H`.
+
+**Key points:**
+- **Input:** Tensor `A` of shape `(*, m, n)` where `m` is the number of samples and `n` the number of features.
+- **Parameters:**
+  - `q`: Over‑estimated rank (default `min(6, m, n)`).
+  - `center`: If `True`, centers the data by subtracting the mean.
+  - `niter`: Number of subspace iterations (default 2).
+- **Output dimensions:** `U` is `m × q`, `S` is a length‑`q` vector, `V` is `n × q`.
+- **PCA relation:** Columns of `V` are principal directions; `S**2/(m-1)` gives eigenvalues of the covariance matrix; `A @ V[:, :k]` projects data onto the top‑`k` principal components.
+- **Note:** For reproducibility, set the random seed before calling.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [["*", "m", "n"]]
+    default: null
+  q:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "min(6, m, n)"
+  center:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  niter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "2"
+constraints:
+  1:
+    Parameter 1: "q"
+    Parameter 2: "A"
+    Constraint: "1 <= q <= min(A.size(-2), A.size(-1))"
+  2:
+    Parameter 1: "niter"
+    Parameter 2: "niter"
+    Constraint: "niter >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.pca_lowrank in a complex way */
+import torch

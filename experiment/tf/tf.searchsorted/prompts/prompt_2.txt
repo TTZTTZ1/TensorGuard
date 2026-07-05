@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.searchsorted` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.searchsorted` finds the insertion positions for given values into a sorted sequence along the innermost dimension. It returns the indices where each value would be placed to maintain the sorted order, with the `side` argument determining behavior for exact matches ('left' for lower bound, 'right' for upper bound). This is commonly used for binning or discretization tasks. The operation requires the input sequence to be sorted along the last axis, but does not enforce this—unsorted inputs produce undefined results.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sorted_sequence:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  values:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  side:
+    dtype: ["string"]
+    range: [["left", "right"]]
+    structure: ["scalar"]
+    shape: []
+    default: "left"
+  out_type:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "int32"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: sorted_sequence
+    Parameter 2: sorted_sequence
+    Constraint: "sorted_sequence.shape[-1] < 2**31 - 1"
+  2:
+    Parameter 1: values
+    Parameter 2: values
+    Constraint: "tf.size(values) < 2**31 - 1"
+  3:
+    Parameter 1: sorted_sequence
+    Parameter 2: values
+    Constraint: "len(sorted_sequence.shape) == len(values.shape) and all(sorted_sequence.shape[i] == values.shape[i] for i in range(len(sorted_sequence.shape)-1))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.searchsorted in a complex way */
+import tensorflow as tf

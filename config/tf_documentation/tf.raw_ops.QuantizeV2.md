@@ -1,0 +1,172 @@
+# tf.raw_ops.QuantizeV2
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QuantizeV2](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QuantizeV2)
+
+---
+
+Quantize the 'input' tensor of type float to 'output' tensor of type 'T'.
+
+#### View aliases
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.raw_ops.QuantizeV2`](https://tensorflow.google.cn/api_docs/python/tf/raw_ops/QuantizeV2)
+
+```
+tf.raw_ops.QuantizeV2(
+    input,
+    min_range,
+    max_range,
+    T,
+    mode='MIN_COMBINED',
+    round_mode='HALF_AWAY_FROM_ZERO',
+    narrow_range=False,
+    axis=-1,
+    ensure_minimum_range=0.01,
+    name=None
+)
+```
+
+[min\_range, max\_range] are scalar floats that specify the range for
+the 'input' data. The 'mode' attribute controls exactly which calculations are
+used to convert the float values to their quantized equivalents. The
+'round\_mode' attribute controls which rounding tie-breaking algorithm is used
+when rounding float values to their quantized equivalents.
+
+In 'MIN\_COMBINED' mode, each value of the tensor will undergo the following:
+
+```
+out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
+if T == qint8: out[i] -= (range(T) + 1) / 2.0
+```
+
+here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
+
+*MIN\_COMBINED Mode Example*
+
+Assume the input is type float and has a possible range of [0.0, 6.0] and the
+output type is quint8 ([0, 255]). The min\_range and max\_range values should be
+specified as 0.0 and 6.0. Quantizing from float to quint8 will multiply each
+value of the input by 255/6 and cast to quint8.
+
+If the output type was qint8 ([-128, 127]), the operation will additionally
+subtract each value by 128 prior to casting, so that the range of values aligns
+with the range of qint8.
+
+If the mode is 'MIN\_FIRST', then this approach is used:
+
+```
+num_discrete_values = 1 << (# of bits in T)
+range_adjust = num_discrete_values / (num_discrete_values - 1)
+range = (range_max - range_min) * range_adjust
+range_scale = num_discrete_values / range
+quantized = round(input * range_scale) - round(range_min * range_scale) +
+  numeric_limits<T>::min()
+quantized = max(quantized, numeric_limits<T>::min())
+quantized = min(quantized, numeric_limits<T>::max())
+```
+
+The biggest difference between this and MIN\_COMBINED is that the minimum range
+is rounded first, before it's subtracted from the rounded value. With
+MIN\_COMBINED, a small bias is introduced where repeated iterations of quantizing
+and dequantizing will introduce a larger and larger error.
+
+*SCALED mode Example*
+
+`SCALED` mode matches the quantization approach used in
+`QuantizeAndDequantize{V2|V3}`.
+
+If the mode is `SCALED`, the quantization is performed by multiplying each
+input value by a scaling\_factor.
+The scaling\_factor is determined from `min_range` and `max_range` to be as large
+as possible such that the range from `min_range` to `max_range` is representable
+within values of type T.
+
+```
+  const int min_T = std::numeric_limits<T>::min();
+  const int max_T = std::numeric_limits<T>::max();
+  const float max_float = std::numeric_limits<float>::max();
+
+  const float scale_factor_from_min_side =
+      (min_T * min_range > 0) ? min_T / min_range : max_float;
+  const float scale_factor_from_max_side =
+      (max_T * max_range > 0) ? max_T / max_range : max_float;
+
+  const float scale_factor = std::min(scale_factor_from_min_side,
+                                      scale_factor_from_max_side);
+```
+
+We next use the scale\_factor to adjust min\_range and max\_range as follows:
+
+```
+      min_range = min_T / scale_factor;
+      max_range = max_T / scale_factor;
+```
+
+e.g. if T = qint8, and initially min\_range = -10, and max\_range = 9, we would
+compare -128/-10.0 = 12.8 to 127/9.0 = 14.11, and set scaling\_factor = 12.8
+In this case, min\_range would remain -10, but max\_range would be adjusted to
+127 / 12.8 = 9.921875
+
+So we will quantize input values in the range (-10, 9.921875) to (-128, 127).
+
+The input tensor can now be quantized by clipping values to the range
+`min_range` to `max_range`, then multiplying by scale\_factor as follows:
+
+```
+result = round(min(max_range, max(min_range, input)) * scale_factor)
+```
+
+The adjusted `min_range` and `max_range` are returned as outputs 2 and 3 of
+this operation. These outputs should be used as the range for any further
+calculations.
+
+*narrow\_range (bool) attribute*
+
+If true, we do not use the minimum quantized value.
+i.e. for int8 the quantized output, it would be restricted to the range
+-127..127 instead of the full -128..127 range.
+This is provided for compatibility with certain inference backends.
+(Only applies to SCALED mode)
+
+*axis (int) attribute*
+
+An optional `axis` attribute can specify a dimension index of the input tensor,
+such that quantization ranges will be calculated and applied separately for each
+slice of the tensor along that dimension. This is useful for per-channel
+quantization.
+
+If axis is specified, min\_range and max\_range
+
+if `axis`=None, per-tensor quantization is performed as normal.
+
+*ensure\_minimum\_range (float) attribute*
+
+Ensures the minimum quantization range is at least this value.
+The legacy default value for this is 0.01, but it is strongly suggested to
+set it to 0 for new uses.
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `input` | A `Tensor` of type `float32`. |
+| `min_range` | A `Tensor` of type `float32`. The minimum value of the quantization range. This value may be adjusted by the op depending on other parameters. The adjusted value is written to `output_min`. If the `axis` attribute is specified, this must be a 1-D tensor whose size matches the `axis` dimension of the input and output tensors. |
+| `max_range` | A `Tensor` of type `float32`. The maximum value of the quantization range. This value may be adjusted by the op depending on other parameters. The adjusted value is written to `output_max`. If the `axis` attribute is specified, this must be a 1-D tensor whose size matches the `axis` dimension of the input and output tensors. |
+| `T` | A [`tf.DType`](https://tensorflow.google.cn/api_docs/python/tf/dtypes/DType) from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`. |
+| `mode` | An optional `string` from: `"MIN_COMBINED", "MIN_FIRST", "SCALED"`. Defaults to `"MIN_COMBINED"`. |
+| `round_mode` | An optional `string` from: `"HALF_AWAY_FROM_ZERO", "HALF_TO_EVEN"`. Defaults to `"HALF_AWAY_FROM_ZERO"`. |
+| `narrow_range` | An optional `bool`. Defaults to `False`. |
+| `axis` | An optional `int`. Defaults to `-1`. |
+| `ensure_minimum_range` | An optional `float`. Defaults to `0.01`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A tuple of `Tensor` objects (output, output\_min, output\_max). | |
+| `output` | A `Tensor` of type `T`. |
+| `output_min` | A `Tensor` of type `float32`. |
+| `output_max` | A `Tensor` of type `float32`. |

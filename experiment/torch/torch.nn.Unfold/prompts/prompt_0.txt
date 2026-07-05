@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.nn.Unfold` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.Unfold` extracts sliding local blocks from a batched input tensor, commonly used for operations like `im2col`. It flattens each kernel-sized block across spatial dimensions into columns, producing a 3D output where the last dimension indexes all values within a block.
+
+**Key Parameters:**
+- `kernel_size`: Size of sliding blocks.
+- `stride`: Stride for sliding blocks.
+- `padding`: Implicit zero-padding added to input.
+- `dilation`: Spacing between kernel points.
+
+**Input/Output Shapes:**
+- **Input:** `(N, C, *)` where `*` denotes spatial dimensions.
+- **Output:** `(N, C × ∏(kernel_size), L)` where `L` is the total number of extracted blocks.
+
+**Notes:**
+- Designed for 4-D inputs (batched image-like tensors).
+- With `Fold`, they are approximate inverses up to a scaling factor (`divisor`).
+- Useful for implementing convolution manually via unfolding, matrix multiplication, and folding.
+
+**Example Use Case:**
+```python
+unfold = nn.Unfold(kernel_size=(2, 3))
+input = torch.randn(2, 5, 3, 4)  # (N, C, H, W)
+output = unfold(input)  # (2, 30, 4)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: null
+  dilation:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "1"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "0"
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.Unfold in a complex way */
+import torch

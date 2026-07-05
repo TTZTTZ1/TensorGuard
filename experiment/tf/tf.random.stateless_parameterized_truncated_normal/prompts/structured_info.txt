@@ -1,0 +1,60 @@
+params:
+  shape:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tensor", "array"]
+    shape: ["1-D"]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  means:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "0.0"
+  stddevs:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "1.0"
+  minvals:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "-2.0"
+  maxvals:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "2.0"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "seed"
+    Parameter 2: "seed"
+    Constraint: "seed.dtype == tf.int32 or seed.dtype == tf.int64"
+  2:
+    Parameter 1: "seed"
+    Parameter 2: "seed"
+    Constraint: "seed.shape.as_list() == [2]"
+  3:
+    Parameter 1: "means"
+    Parameter 2: "stddevs"
+    Constraint: "tf.broadcast_dynamic_shape(means, stddevs, minvals, maxvals) is not None"
+  4:
+    Parameter 1: "means"
+    Parameter 2: "shape"
+    Constraint: "bc = tf.broadcast_dynamic_shape(means, stddevs, minvals, maxvals); tf.reduce_all(tf.less_equal(bc, shape[-tf.size(bc):]))"

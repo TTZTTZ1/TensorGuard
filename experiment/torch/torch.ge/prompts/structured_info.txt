@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["bool"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "not isinstance(other, torch.Tensor) or all(a == b or a == 1 or b == 1 for a, b in zip(reversed(input.shape), reversed(other.shape)))"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or out.shape == (input.shape if not isinstance(other, torch.Tensor) else torch.broadcast_shapes(input.shape, other.shape))"

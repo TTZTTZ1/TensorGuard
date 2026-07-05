@@ -1,0 +1,112 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyFtrl` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceApplyFtrl` is a low-level TensorFlow operation that updates a variable using the FTRL (Follow The Regularized Leader) proximal optimization algorithm. It is designed for resource-based variables (e.g., `tf.Variable`) and is commonly used for training models with L1 and L2 regularization, such as in large-scale linear models.
+
+### Key Functionality:
+- **Updates variables** (`var`), accumulation (`accum`), and linear terms (`linear`) based on the provided gradient (`grad`).
+- **Applies L1 and L2 regularization** to the variable update, promoting sparsity (via L1) and preventing overfitting (via L2).
+- **Uses resource tensors** for `var`, `accum`, and `linear`, making it suitable for GPU/TPU execution and distributed training.
+
+### Main Parameters:
+- `var`, `accum`, `linear`: Resource handles to the variable and its auxiliary accumulators.
+- `grad`: The gradient tensor for the update.
+- `lr`, `l1`, `l2`, `lr_power`: Scalar hyperparameters for learning rate, regularization strengths, and scaling.
+- `use_locking`: Optional lock to prevent race conditions during concurrent updates.
+
+### Typical Use Case:
+Primarily employed in training scenarios where efficient, regularized updates are needed, such as in logistic regression or recommendation systems with sparse features. It is a lower-level op often wrapped by higher-level optimizers like `tf.keras.optimizers.Ftrl`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  linear:
+    dtype: ["resource"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l1:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  l2:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  lr_power:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "False"
+  multiply_linear_by_lr:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: grad
+    Parameter 2: lr
+    Constraint: "grad.dtype == lr.dtype"
+  2:
+    Parameter 1: grad
+    Parameter 2: l1
+    Constraint: "grad.dtype == l1.dtype"
+  3:
+    Parameter 1: grad
+    Parameter 2: l2
+    Constraint: "grad.dtype == l2.dtype"
+  4:
+    Parameter 1: grad
+    Parameter 2: lr_power
+    Constraint: "grad.dtype == lr_power.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyFtrl in a complex way */
+import tensorflow as tf

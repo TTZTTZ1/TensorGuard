@@ -1,0 +1,44 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.ChainedScheduler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**ChainedScheduler** is a PyTorch learning rate scheduler that sequentially applies multiple schedulers in a single call. It takes a list of chainable schedulers and executes their `step()` methods consecutively when its own `step()` is called.
+
+**Key Features:**
+- **Chaining**: Combines multiple schedulers (e.g., `ConstantLR` followed by `ExponentialLR`) into one sequential pipeline.
+- **Single Step Call**: All chained schedulers are updated with one `scheduler.step()` call per epoch.
+- **State Management**: Includes `state_dict()` and `load_state_dict()` for saving/loading the state of all chained schedulers.
+- **LR Inspection**: Provides `get_last_lr()` to retrieve the most recent learning rates and `get_lr()` to compute the next ones.
+
+**Example Use Case:**
+```python
+scheduler1 = ConstantLR(optimizer, factor=0.1, total_iters=20)
+scheduler2 = ExponentialLR(optimizer, gamma=0.9)
+chained_scheduler = ChainedScheduler([scheduler1, scheduler2], optimizer)
+# Each epoch: chained_scheduler.step() updates both schedulers sequentially.
+```
+
+**Purpose**: Simplifies the application of complex, multi-stage learning rate schedules by consolidating multiple scheduler updates into a unified interface.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  schedulers:
+    dtype: ["list", "tuple"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+  optimizer:
+    dtype: ["Optimizer", "None"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.ChainedScheduler in a complex way */
+import torch

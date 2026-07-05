@@ -1,0 +1,46 @@
+params:
+  input:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, mn, k)"]
+    default: null
+  tau:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, min(mn, k))"]
+    default: null
+  other:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  left:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  transpose:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.shape[:-2] == other.shape[:-2] and ((left and input.shape[-2] == other.shape[-2]) or (not left and input.shape[-2] == other.shape[-1]))"
+  2:
+    Parameter 1: tau
+    Parameter 2: input
+    Constraint: "tau.shape[:-1] == input.shape[:-2] and tau.shape[-1] == min(input.shape[-2], input.shape[-1])"

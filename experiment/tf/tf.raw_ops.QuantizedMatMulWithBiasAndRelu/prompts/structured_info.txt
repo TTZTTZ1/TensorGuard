@@ -1,0 +1,82 @@
+params:
+  a:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[*, *]"]
+    default: null
+  b:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[*, *]"]
+    default: null
+  bias:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[n]"]
+    default: null
+  min_a:
+    dtype: ["float32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  max_a:
+    dtype: ["float32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  min_b:
+    dtype: ["float32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  max_b:
+    dtype: ["float32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  Toutput:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: [["qint8", "quint8", "qint32", "qint16", "quint16"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "tf.qint32"
+  transpose_a:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "False"
+  input_quant_mode:
+    dtype: ["string"]
+    range: [["MIN_FIRST", "SCALED"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "MIN_FIRST"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: a
+    Parameter 2: b
+    Constraint: "(a.shape[1] if not transpose_a else a.shape[0]) == (b.shape[0] if not transpose_b else b.shape[1])"
+  2:
+    Parameter 1: bias
+    Parameter 2: b
+    Constraint: "bias.shape[0] == (b.shape[1] if not transpose_b else b.shape[0])"

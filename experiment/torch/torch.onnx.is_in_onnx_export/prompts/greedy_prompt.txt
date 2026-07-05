@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.onnx.is_in_onnx_export` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.onnx.export` function (with `dynamo=True` by default) converts PyTorch models to ONNX format using the modern `torch.export` engine. It traces the model's tensor operations into a normalized, static graph while capturing dynamic shape constraints.
+
+**Key Features:**
+- **Modern Export:** Uses `torch.export.ExportedProgram` for AOT graph capture, eliminating Python control flow and normalizing operators.
+- **Dynamic Shapes:** Supports dynamic dimensions via `dynamic_shapes` parameter.
+- **Metadata:** Preserves debugging info (stack traces, node origins, graph signatures) in the ONNX model.
+- **Optimization:** Includes built-in graph optimization (enabled by default).
+- **Flexible Output:** Returns an `ONNXProgram` object for programmatic access, serialization, and validation.
+
+**Basic Usage:**
+```python
+import torch
+
+# Export model
+onnx_program = torch.onnx.export(
+    model,
+    example_args,
+    dynamic_shapes=dynamic_spec,  # Optional
+    input_names=["input"],
+    output_names=["output"],
+)
+
+# Save to file
+onnx_program.save("model.onnx")
+```
+
+**Parameters of Note:**
+- `dynamo=True`: Uses the new exporter (default).
+- `dynamic_shapes`: Preferred for dynamic dimensions when `dynamo=True`.
+- `report=True`: Generates a debug report if export fails.
+- `verify=True`: Validates the export using ONNX Runtime.
+
+**Output (`ONNXProgram`):**
+- Contains the ONNX model (`model_proto`) and the original `ExportedProgram`.
+- Methods to save, optimize, run inference, and manipulate weights.
+- Controls serialization behavior (include/keep initializers, external data).
+
+**Dependencies:** Requires `onnx` and `onnxscript` packages.
+
+This exporter is the recommended approach for converting PyTorch models to ONNX, offering improved performance, better dynamic shape support, and enhanced debugging capabilities compared to the legacy TorchScript-based exporter.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.onnx.is_in_onnx_export in a complex way */
+import torch

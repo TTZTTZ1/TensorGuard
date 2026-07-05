@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.nn.GaussianNLLLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`GaussianNLLLoss` is a PyTorch loss function that models targets as samples from Gaussian distributions, where the network predicts both the mean (`input`) and variance (`var`). The loss is computed as the negative log likelihood of the target given the predicted Gaussian parameters.
+
+**Key Features:**
+- **Loss Formula**:  
+  \( \text{loss} = \frac{1}{2} \left( \log(\max(\text{var}, \text{eps})) + \frac{(\text{input} - \text{target})^2}{\max(\text{var}, \text{eps})} \right) + \text{const.} \)  
+  The constant term is included only if `full=True`.
+- **Parameters**:
+  - `full`: Whether to include the constant term (default: `False`).
+  - `eps`: Small value to clamp variance for numerical stability (default: 1e-6).
+  - `reduction`: Reduction method (`'none'`, `'mean'`, `'sum'`; default: `'mean'`).
+- **Input Shapes**:
+  - `input` and `target`: Same shape `(N, *)` or `(*)`.
+  - `var`: Same shape as `input`, or broadcastable (e.g., with a trailing dimension of 1, or one fewer dimension for homoscedastic variance).
+- **Use Cases**: Suitable for regression tasks where uncertainty estimation is needed, such as predicting both a value and its confidence.
+
+**Example Usage**:
+```python
+loss_fn = nn.GaussianNLLLoss()
+input = torch.randn(5, 2, requires_grad=True)
+target = torch.randn(5, 2)
+var = torch.ones(5, 2, requires_grad=True)  # Heteroscedastic variance
+output = loss_fn(input, target, var)
+output.backward()
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  full:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-06"
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "mean"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.GaussianNLLLoss in a complex way */
+import torch

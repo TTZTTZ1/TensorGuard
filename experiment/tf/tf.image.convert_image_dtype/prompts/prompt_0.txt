@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.image.convert_image_dtype` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.convert_image_dtype` converts an image tensor to a specified data type, automatically scaling values when necessary. It supports integer (`uint8`, `int16`, etc.) and floating-point (`float16`, `float32`, etc.) types.
+
+**Key behaviors:**
+- **Integer → Float:** Values are normalized to [0, 1) by dividing by the input type's maximum value (e.g., `int8` values are divided by 127).
+- **Float → Integer:** Values are scaled to the target integer range, which may cause precision loss.
+- **Integer → Integer:** Values are scaled proportionally between the input and output ranges; downscaling can be lossy.
+- **Float → Float:** Only a direct cast is performed, no scaling.
+
+**Parameters:**
+- `image`: Input image tensor.
+- `dtype`: Target data type.
+- `saturate`: If `True`, clips values to the valid range before casting (useful to prevent overflow when converting to integer/unsigned types).
+- `name`: Optional operation name.
+
+**Note:** The function assumes integer images have values in `[0, MAX]` and floating-point images in `[0, 1)`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  image:
+    dtype: ["uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64", "float16", "float32", "float64", "bfloat16"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["string"]
+    range: [["uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64", "float16", "float32", "float64", "bfloat16"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+  saturate:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "image"
+    Parameter 2: "dtype"
+    Constraint: "image.dtype in [tf.uint8, tf.uint16, tf.uint32, tf.uint64, tf.int8, tf.int16, tf.int32, tf.int64, tf.float16, tf.float32, tf.float64, tf.bfloat16] and dtype in [tf.uint8, tf.uint16, tf.uint32, tf.uint64, tf.int8, tf.int16, tf.int32, tf.int64, tf.float16, tf.float32, tf.float64, tf.bfloat16]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.convert_image_dtype in a complex way */
+import tensorflow as tf

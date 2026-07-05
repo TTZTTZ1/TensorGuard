@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant` is a TensorFlow class that represents a **circulant matrix** as a linear operator without explicitly storing the full matrix. It leverages the Fourier transform for efficient operations.
+
+### **Key Features:**
+- **Efficiency**: Uses FFT-based algorithms, making matrix multiplication (`matmul`) and solving (`solve`) operations **O(N log N)** per column.
+- **Batch Support**: Handles batches of circulant matrices with shape `[B1,...,Bb, N, N]`.
+- **Spectral Representation**: Defined by its frequency-domain `spectrum` (the DFT of the convolution kernel), which determines properties like self-adjointness and positive definiteness.
+
+### **Main Properties:**
+- **Self-adjoint**: If the `spectrum` is real.
+- **Positive definite**: If the real part of the `spectrum` is positive.
+- **Real-valued matrix**: If the `spectrum` is Hermitian.
+
+### **Common Use Cases:**
+1. **Fast linear transforms**: Multiply by a circulant matrix efficiently.
+2. **Solving circulant systems**: Solve equations using FFT-based methods.
+3. **Real/Hermitian enforcement**: Use Hermitian spectra to ensure real-valued operators.
+
+### **Example:**
+```python
+spectrum = [6., 4, 2]  # Real spectrum → self-adjoint operator
+operator = tf.linalg.LinearOperatorCirculant(spectrum)
+operator.to_dense()  # Explicit circulant matrix
+```
+
+### **Key Methods:**
+- `matmul(x)`: Compute `A @ x` efficiently.
+- `solve(rhs)`: Solve `A X = rhs` efficiently.
+- `convolution_kernel()`: Get the time-domain kernel (inverse FFT of `spectrum`).
+- `to_dense()`: Materialize the full matrix (avoid for large `N`).
+
+This operator is ideal for large-scale circulant operations where explicit matrix storage is impractical.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N]"]
+    default: null
+  input_output_dtype:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'LinearOperatorCirculant'"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant in a complex way */
+import tensorflow as tf

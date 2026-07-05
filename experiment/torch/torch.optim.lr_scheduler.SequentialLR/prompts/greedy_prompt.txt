@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.SequentialLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**SequentialLR** is a PyTorch learning rate scheduler that chains multiple schedulers to be applied sequentially at specified milestone epochs.
+
+**Key Features:**
+- **Sequential Execution**: Applies each scheduler in the provided list one after another based on milestone points.
+- **Milestone-Based Switching**: Transitions between schedulers at exact epoch intervals defined by `milestones`.
+
+**Parameters:**
+- `optimizer`: The optimizer to wrap.
+- `schedulers`: List of schedulers to execute in sequence.
+- `milestones`: List of epoch indices where transitions occur (must have length `len(schedulers) - 1`).
+- `last_epoch`: Starting epoch index (default: -1).
+
+**Example Usage:**
+```python
+scheduler1 = ConstantLR(optimizer, factor=0.1, total_iters=20)
+scheduler2 = ExponentialLR(optimizer, gamma=0.9)
+scheduler = SequentialLR(
+    optimizer,
+    schedulers=[scheduler1, scheduler2],
+    milestones=[20]  # Switch from scheduler1 to scheduler2 at epoch 20
+)
+```
+
+**Behavior:**
+- Before the first milestone: Uses `schedulers[0]`
+- Between milestone `i-1` and `i`: Uses `schedulers[i]`
+- After the last milestone: Uses the final scheduler
+
+**Key Methods:**
+- `step()`: Updates learning rates at each epoch
+- `get_last_lr()`: Returns current learning rates
+- `state_dict()` / `load_state_dict()`: Save/restore scheduler state
+
+**Use Case**: Ideal for training regimes requiring different LR schedules at different phases (e.g., warmup followed by decay).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  schedulers:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  milestones:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: schedulers
+    Parameter 2: milestones
+    Constraint: "len(milestones) == len(schedulers) - 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.SequentialLR in a complex way */
+import torch

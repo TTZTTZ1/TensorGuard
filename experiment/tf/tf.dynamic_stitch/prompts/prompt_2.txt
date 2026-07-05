@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `tf.dynamic_stitch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.dynamic_stitch` interleaves values from multiple tensors into a single merged tensor using specified indices. It builds an output where `merged[indices[m][i, ...]] = data[m][i, ...]`. 
+
+**Key points:**
+- Each `data[i].shape` must start with the corresponding `indices[i].shape`.
+- Output shape: `[max(indices) + 1] + constant` (where `constant` is the trailing shape of `data` entries).
+- Merging is order-sensitive: if the same index appears in multiple positions, the later one overwrites earlier values.
+- Commonly used with `tf.dynamic_partition` to reconstruct tensors after partitioned operations.
+
+**Example:**
+```python
+indices = [6, [4, 1], [[5, 2], [0, 3]]]
+data = [[61, 62], [[41, 42], [11, 12]], [[[51, 52], [21, 22]], [[1, 2], [31, 32]]]]
+merged = [[1, 2], [11, 12], [21, 22], [31, 32], [41, 42], [51, 52], [61, 62]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  data:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: indices
+    Constraint: "len(indices) >= 1"
+  2:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "len(indices) == len(data)"
+  3:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "all(data[i].shape[:len(indices[i].shape)] == indices[i].shape for i in range(len(indices))) and len(set(tuple(data[i].shape[len(indices[i].shape):]) for i in range(len(indices)))) == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.dynamic_stitch in a complex way */
+import tensorflow as tf

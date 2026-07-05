@@ -1,0 +1,62 @@
+params:
+  arr:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "ragged_tensor", "sparse_tensor"]
+    shape: ["No mention"]
+    default: "null"
+  weights:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  minlength:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  maxlength:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.int32"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: [null, 0, -1]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  binary_output:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "weights"
+    Parameter 2: "binary_output"
+    Constraint: "weights is None or not binary_output"
+  2:
+    Parameter 1: "arr"
+    Parameter 2: "axis"
+    Constraint: "axis != -1 or tf.rank(arr) == 2"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "arr"
+    Constraint: "weights is None or tf.shape(weights) == tf.shape(arr)"

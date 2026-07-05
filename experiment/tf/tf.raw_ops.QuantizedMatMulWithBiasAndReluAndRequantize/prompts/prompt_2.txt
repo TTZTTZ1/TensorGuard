@@ -1,0 +1,108 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.QuantizedMatMulWithBiasAndReluAndRequantize` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.QuantizedMatMulWithBiasAndReluAndRequantize` performs a fused quantized operation that combines matrix multiplication, bias addition, ReLU activation, and requantization into a single step. It takes quantized input matrices `a` and `b`, along with their respective min/max quantization ranges, a bias vector, and output quantization bounds. The result is a requantized uint8 (or other quantized type) output with its new min/max range, after applying ReLU to ensure non-negative values. This fusion optimizes performance for quantized neural network layers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  b:
+    dtype: ["qint8", "quint8", "qint32", "qint16", "quint16"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  bias:
+    dtype: ["float32", "qint32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  min_a:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  max_a:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  min_b:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  max_b:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  min_freezed_output:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  max_freezed_output:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [0]
+    default: null
+  Toutput:
+    dtype: ["string"]
+    range: ["tf.qint8", "tf.quint8", "tf.qint32", "tf.qint16", "tf.quint16"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.quint8"
+  transpose_a:
+    dtype: ["bool"]
+    range: [false, true]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  transpose_b:
+    dtype: ["bool"]
+    range: [false, true]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  input_quant_mode:
+    dtype: ["string"]
+    range: ["MIN_FIRST", "SCALED"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "MIN_FIRST"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: a
+    Parameter 2: b
+    Constraint: "(a.shape[1] if not transpose_a else a.shape[0]) == (b.shape[0] if not transpose_b else b.shape[1])"
+  2:
+    Parameter 1: bias
+    Parameter 2: b
+    Constraint: "bias.shape[0] == (b.shape[1] if not transpose_b else b.shape[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.QuantizedMatMulWithBiasAndReluAndRequantize in a complex way */
+import tensorflow as tf

@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseReduceSum` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseReduceSum` performs a sum reduction across specified dimensions of a sparse tensor, returning a dense tensor as output. It is the sparse equivalent of `tf.reduce_sum`.
+
+**Key Parameters:**
+- `input_indices`, `input_values`, `input_shape`: Define the sparse tensor.
+- `reduction_axes`: Dimensions along which to sum.
+- `keep_dims`: If `True`, retains reduced dimensions with size 1.
+
+**Behavior:**
+- Reduces the sparse tensor along the given axes.
+- If `reduction_axes` is empty, sums all elements to a single scalar.
+- Supports negative axis indexing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["2-D"]
+    default: null
+  input_values:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  input_shape:
+    dtype: ["int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  reduction_axes:
+    dtype: ["int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  keep_dims:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input_indices
+    Parameter 2: input_values
+    Constraint: "input_indices.shape[0] == input_values.shape[0]"
+  2:
+    Parameter 1: input_indices
+    Parameter 2: input_shape
+    Constraint: "input_indices.shape[1] == input_shape.shape[0]"
+  3:
+    Parameter 1: reduction_axes
+    Parameter 2: input_shape
+    Constraint: "all(-input_shape.shape[0] <= axis < input_shape.shape[0] for axis in reduction_axes)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseReduceSum in a complex way */
+import tensorflow as tf

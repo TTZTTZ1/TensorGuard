@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `torch.QUInt4x2Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like shape, stride, and data type to interpret that storage.
+
+### Key Points:
+- **Purpose**: Stores the actual bytes of tensor data. A single storage can be shared by multiple tensors (e.g., tensor views).
+- **Access**: Use `tensor.untyped_storage()` to get a tensor's storage.
+- **Identification**: Each storage has a unique `data_ptr()` (memory address).
+- **Manipulation**: Provides low-level methods like `fill_()`, `clone()`, `copy_()`, and `pin_memory()`, but direct modification is discouraged—use tensor-level operations when possible.
+- **Device & Memory**: Can reside on CPU, CUDA, or other devices; supports memory-mapped files via `from_file()` and shared memory via `share_memory_()`.
+- **Special Cases**: Tensors on `"meta"` device or FakeTensors have no storage; tensors with gradients have separate storages for data and grad.
+- **Legacy Note**: Typed storage classes (e.g., `torch.FloatStorage`) are deprecated; `torch.UntypedStorage` is the modern, untyped byte array used internally.
+
+### When to Use:
+- Rarely needed in typical workflows. Use tensor APIs for safety and efficiency.
+- Potentially useful for advanced memory management, inter-process sharing, or debugging storage relationships.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  *args:
+    dtype: ["int", "iterable"]
+    range: [null]
+    structure: ["scalar", "tuple", "list"]
+    shape: [null]
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "torch.TypedStorage"]
+    range: [null]
+    structure: ["object"]
+    shape: [null]
+    default: null
+  dtype:
+    dtype: ["torch.dtype"]
+    range: [["torch.quint4x2"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.quint4x2"
+  device:
+    dtype: ["torch.device", "string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: null
+    Constraint: "dtype == torch.quint4x2"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "dtype"
+    Constraint: "wrap_storage is None or wrap_storage.dtype == torch.quint4x2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QUInt4x2Storage in a complex way */
+import torch

@@ -1,0 +1,66 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.MultiplicativeLR` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**MultiplicativeLR** is a PyTorch learning rate scheduler that multiplies the learning rate of each parameter group by a factor determined by a user-defined function (or list of functions) at each epoch.
+
+**Key Features:**
+- **Purpose:** Adjusts learning rates by multiplying the current LR with a factor computed from `lr_lambda`.
+- **Parameters:**
+  - `optimizer`: The wrapped optimizer (e.g., SGD, Adam).
+  - `lr_lambda`: A function (or list of functions) that takes the epoch index as input and returns a multiplicative factor.
+  - `last_epoch`: The index of the last epoch (default: -1, which sets the initial LR as the base LR).
+- **Usage:**
+  1. Define a lambda function (or list) that returns the multiplicative factor per epoch.
+  2. Create the scheduler with the optimizer and lambda.
+  3. Call `scheduler.step()` after each epoch (typically after validation).
+
+**Example:**
+```python
+lmbda = lambda epoch: 0.95  # Decay LR by 5% each epoch
+scheduler = MultiplicativeLR(optimizer, lr_lambda=lmbda)
+for epoch in range(epochs):
+    train(...)
+    validate(...)
+    scheduler.step()
+```
+
+**Important Methods:**
+- `step()`: Updates the learning rates (call once per epoch).
+- `get_last_lr()`: Returns the most recent computed learning rates.
+- `state_dict()` / `load_state_dict()`: Save and restore scheduler state.
+
+**Note:** The scheduler should be stepped **after** the optimizer’s update (i.e., after `optimizer.step()`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  lr_lambda:
+    dtype: ["function", "list"]
+    range: null
+    structure: ["single", "list"]
+    shape: null
+    default: null
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+  1:
+    Parameter 1: lr_lambda
+    Parameter 2: optimizer
+    Constraint: "(not isinstance(lr_lambda, list)) or (len(lr_lambda) == len(optimizer.param_groups))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.MultiplicativeLR in a complex way */
+import torch

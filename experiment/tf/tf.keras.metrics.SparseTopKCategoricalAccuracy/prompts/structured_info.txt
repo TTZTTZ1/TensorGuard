@@ -1,0 +1,58 @@
+params:
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "5"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'sparse_top_k_categorical_accuracy'"
+  dtype:
+    dtype: ["string", "dtype"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  y_true:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: ["[batch_size]", "[None]"]
+    default: "null"
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor", "array"]
+    shape: ["[batch_size, num_classes]", "[None, None]"]
+    default: "null"
+  sample_weight:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor", "array", "scalar"]
+    shape: ["[batch_size]", "[None]", "[]"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "k"
+    Parameter 2: "k"
+    Constraint: "k > 0"
+  2:
+    Parameter 1: "y_true"
+    Parameter 2: "y_true"
+    Constraint: "tf.reduce_all(y_true >= 0)"
+  3:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "y_true.shape[0] == y_pred.shape[0]"
+  4:
+    Parameter 1: "k"
+    Parameter 2: "y_pred"
+    Constraint: "k <= y_pred.shape[-1]"
+  5:
+    Parameter 1: "sample_weight"
+    Parameter 2: "y_true"
+    Constraint: "sample_weight is None or tf.broadcast_to(sample_weight, y_true.shape) is not None"

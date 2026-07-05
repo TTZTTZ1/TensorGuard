@@ -1,0 +1,46 @@
+
+# You are a Python code generation assistant for the `tf.dynamic_stitch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.dynamic_stitch` interleaves values from multiple tensors into a single merged tensor based on given indices. It assigns each slice from `data[m]` to the position specified by `indices[m]` in the output. The output shape is determined by the maximum index plus one, followed by the constant shape suffix from the data tensors. Merging occurs sequentially, so later indices can overwrite earlier ones if they overlap. This function is commonly used to reconstruct tensors after operations like `dynamic_partition`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  data:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: indices
+    Constraint: "len(indices) >= 1"
+  2:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "len(indices) == len(data)"
+  3:
+    Parameter 1: indices
+    Parameter 2: data
+    Constraint: "all(data[i].shape[:len(indices[i].shape)] == indices[i].shape for i in range(len(indices))) and len(set(tuple(data[i].shape[len(indices[i].shape):]) for i in range(len(indices)))) == 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.dynamic_stitch in a complex way */
+import tensorflow as tf

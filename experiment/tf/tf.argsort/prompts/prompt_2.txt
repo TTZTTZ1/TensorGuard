@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.argsort` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.argsort` returns the indices that would sort a tensor along a specified axis, allowing you to reorder elements without directly sorting the values.  
+
+**Key features:**  
+- **Input:** A numeric tensor (1D or higher).  
+- **Axis:** Sorts along a given axis (default: last axis).  
+- **Direction:** `'ASCENDING'` (default) or `'DESCENDING'`.  
+- **Stability:** Optionally stable sort (equal elements keep original order).  
+- **Output:** An int32 tensor of indices with the same shape as the input.  
+
+**Common use:**  
+Use `tf.gather` with the returned indices to obtain the sorted tensor.  
+
+**Example:**  
+```python
+values = [1, 10, 26.9, 2.8, 166.32, 62.3]
+indices = tf.argsort(values)  # [0, 3, 1, 2, 5, 4]
+sorted_values = tf.gather(values, indices)  # Sorted order
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  values:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  direction:
+    dtype: ["string"]
+    range: [["ASCENDING", "DESCENDING"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'ASCENDING'"
+  stable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: values
+    Parameter 2: axis
+    Constraint: "axis >= -tf.rank(values) and axis < tf.rank(values)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.argsort in a complex way */
+import tensorflow as tf

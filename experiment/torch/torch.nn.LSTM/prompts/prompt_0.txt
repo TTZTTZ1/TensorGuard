@@ -1,0 +1,117 @@
+
+# You are a Python code generation assistant for the `torch.nn.LSTM` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.LSTM` module implements a multi-layer Long Short-Term Memory (LSTM) recurrent neural network. It processes input sequences by applying LSTM cells across time steps and layers.
+
+**Key Parameters:**
+- `input_size`: Number of features in input `x`
+- `hidden_size`: Number of features in hidden state `h`
+- `num_layers`: Number of stacked LSTM layers (default: 1)
+- `batch_first`: If `True`, input/output shape is `(batch, seq, feature)` instead of `(seq, batch, feature)`
+- `bidirectional`: If `True`, becomes bidirectional LSTM (default: `False`)
+- `proj_size`: If >0, uses LSTM with projections (must be < `hidden_size`)
+- `dropout`: Dropout probability between layers (except last layer)
+
+**Input/Output Shapes:**
+- **Input**: `(L, N, H_in)` or `(N, L, H_in)` if `batch_first=True`
+- **Hidden states**: `(D*num_layers, N, H_out)` for `h_n`, `(D*num_layers, N, H_cell)` for `c_n`
+- **Output**: `(L, N, D*H_out)` or `(N, L, D*H_out)` if `batch_first=True`
+
+Where:
+- `N`: batch size, `L`: sequence length
+- `D`: 2 if bidirectional else 1
+- `H_in` = `input_size`
+- `H_cell` = `hidden_size`
+- `H_out` = `proj_size` if >0 else `hidden_size`
+
+**Key Features:**
+- Supports packed sequences for variable-length inputs
+- Includes optional dropout between layers
+- Provides projection capability (when `proj_size > 0`)
+- Initializes weights from uniform distribution `U(-√k, √k)` where `k = 1/hidden_size`
+- Has known non-determinism issues on CUDA/cuDNN (environment variables can enforce determinism)
+
+**Example:**
+```python
+rnn = nn.LSTM(10, 20, 2)  # 10 input features, 20 hidden, 2 layers
+input = torch.randn(5, 3, 10)  # (seq_len, batch, input_size)
+h0 = torch.randn(2, 3, 20)  # (num_layers, batch, hidden_size)
+c0 = torch.randn(2, 3, 20)
+output, (hn, cn) = rnn(input, (h0, c0))
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  hidden_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_layers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  bias:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  batch_first:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  dropout:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  bidirectional:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  proj_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  device:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dtype:
+    dtype: ["str", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "proj_size"
+    Parameter 2: "hidden_size"
+    Constraint: "proj_size < hidden_size"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.LSTM in a complex way */
+import torch

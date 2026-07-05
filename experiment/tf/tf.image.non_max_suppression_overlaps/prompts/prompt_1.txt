@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.image.non_max_suppression_overlaps` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.image.non_max_suppression_overlaps` performs greedy non-maximum suppression (NMS) using a precomputed square overlap matrix.
+
+**Key Functionality:**
+- Inputs an N×N matrix of pairwise box overlaps (e.g., IoU) and corresponding scores.
+- Selects a subset of boxes in descending score order, pruning boxes that exceed a specified overlap threshold with previously selected boxes.
+- Returns indices of the selected boxes.
+
+**Main Parameters:**
+- `overlaps`: 2D `[num_boxes, num_boxes]` tensor of overlap values.
+- `scores`: 1D tensor of box scores.
+- `max_output_size`: Maximum number of boxes to return.
+- `overlap_threshold`: Overlap cutoff for suppression (default 0.5).
+- `score_threshold`: Minimum score to consider (default -∞).
+
+**Typical Usage:**
+```python
+selected_indices = tf.image.non_max_suppression_overlaps(overlaps, scores, max_output_size)
+selected_boxes = tf.gather(boxes, selected_indices)
+```
+
+This is useful when overlap calculations are already available, avoiding redundant computations during NMS.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  overlaps
+    dtype: ["float"]
+    range: null
+    structure: ["matrix"]
+    shape: ["[num_boxes, num_boxes]"]
+    default: null
+  scores
+    dtype: ["float"]
+    range: null
+    structure: ["vector"]
+    shape: ["[num_boxes]"]
+    default: null
+  max_output_size
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: null
+  overlap_threshold
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "0.5"
+  score_threshold
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "float('-inf')"
+  name
+    dtype: ["string", "None"]
+    range: null
+    structure: ["string"]
+    shape: null
+    default: "None"
+constraints:
+  1
+    Parameter 1: overlaps
+    Parameter 2: scores
+    Constraint: "overlaps.shape[0] == scores.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.image.non_max_suppression_overlaps in a complex way */
+import tensorflow as tf

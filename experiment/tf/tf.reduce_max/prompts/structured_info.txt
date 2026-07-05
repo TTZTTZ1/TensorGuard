@@ -1,0 +1,34 @@
+params:
+  input_tensor:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  axis:
+    dtype: ["int", "list", "tuple", "None"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: [null]
+    default: "None"
+  keepdims:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input_tensor
+    Constraint: "axis is None or all(ax >= -tf.rank(input_tensor) and ax < tf.rank(input_tensor) for ax in (axis if isinstance(axis, (list, tuple)) else [axis]))"
+  2:
+    Parameter 1: axis
+    Parameter 2: axis
+    Constraint: "axis is None or (isinstance(axis, (list, tuple)) and len(set(axis)) == len(axis)) or (not isinstance(axis, (list, tuple)))"

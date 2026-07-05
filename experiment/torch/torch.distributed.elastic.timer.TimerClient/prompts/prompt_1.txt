@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.timer.TimerClient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Elastic Expiration Timer system provides a mechanism to detect and handle stuck workers in distributed training by using countdown timers. Here's a concise summary:
+
+## **Purpose**
+Prevent worker processes from hanging indefinitely by setting time limits on critical code blocks. If a timer expires, the worker is terminated and can be restarted.
+
+## **Core Components**
+
+### **Client-Side API**
+- `configure(timer_client)`: Must be called before using timers
+- `expires(after, scope=None, client=None)`: Context manager that sets a timer
+  ```python
+  with expires(after=60):  # 60-second timeout
+      # Critical operation
+  ```
+
+### **Built-in Implementations**
+1. **LocalTimer (multiprocessing.Queue-based)**
+   - `LocalTimerServer`: Manages timers for local workers
+   - `LocalTimerClient`: Uses process ID for worker identification
+
+2. **FileTimer (named pipe/FIFO-based)**
+   - `FileTimerServer`: Uses file system for communication
+   - `FileTimerClient`: Sends requests via named pipe
+
+## **Key Concepts**
+- **Timer Acquisition**: When entering a critical section, a timer is set
+- **Timer Release**: Successful completion releases the timer
+- **Expiration**: If timer isn't released in time, the worker is "reaped" (typically terminated)
+- **Server-Client Pair**: Must use matching implementations (they communicate via a protocol)
+
+## **Usage Pattern**
+1. Start a timer server on each host
+2. Configure workers with the appropriate timer client
+3. Wrap potentially stuck operations with `expires()`
+4. Server monitors and terminates expired workers
+
+## **Customization**
+Can implement custom servers/clients by extending:
+- `TimerServer` (abstract base class)
+- `TimerClient` (abstract base class)
+- Use `TimerRequest` objects for communication
+
+## **Typical Scenario**
+In distributed training, wrap communication operations (like `all_reduce`) with timers to detect network hangs, allowing the system to recover by restarting affected workers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scope_id:
+    dtype: ["string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  expiration_time:
+    dtype: ["int", "float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time > 0 for acquire requests"
+  2:
+    Parameter 1: scope_id
+    Parameter 2: expiration_time
+    Constraint: "expiration_time < 0 for release requests"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.timer.TimerClient in a complex way */
+import torch

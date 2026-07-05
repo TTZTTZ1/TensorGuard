@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.nn.init.dirac_` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.nn.init` module provides functions to initialize neural network parameters. All functions operate in `torch.no_grad()` mode and do not affect autograd.
+
+**Key Functions:**
+
+1. **Basic Initializers:**
+   - `uniform_`, `normal_`, `constant_`, `ones_`, `zeros_`, `eye_`, `dirac_`, `trunc_normal_`
+
+2. **Advanced Initializers (common in deep learning):**
+   - `xavier_uniform_`, `xavier_normal_` (Glorot initialization)
+   - `kaiming_uniform_`, `kaiming_normal_` (He initialization)
+   - `orthogonal_`, `sparse_`
+
+3. **Utility:**
+   - `calculate_gain()`: Returns recommended gain values for various nonlinearities (e.g., ReLU: √2, Tanh: 5/3).
+
+**Usage Pattern:**
+Apply in-place to tensors (usually weight matrices):
+```python
+w = torch.empty(3, 5)
+nn.init.xavier_uniform_(w, gain=nn.init.calculate_gain('relu'))
+```
+
+**Important Notes:**
+- Functions preserve identity where possible (`eye_` for linear layers, `dirac_` for convolutional layers).
+- Kaiming/Xavier initializers assume weight matrices are used in transposed form (`x @ w.T`). Use `w.T` if your convention differs.
+- Special handling for SELU: use `nonlinearity='linear'` for self-normalizing networks instead of default SELU gain.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: [3, 4, 5]
+    default: null
+  groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: tensor
+    Parameter 2: 
+    Constraint: "tensor.dim() in [3, 4, 5]"
+  2:
+    Parameter 1: groups
+    Parameter 2: 
+    Constraint: "groups > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.init.dirac_ in a complex way */
+import torch

@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.tensor` creates a new tensor by copying data from an array-like input (list, tuple, NumPy array, scalar, etc.). It returns a leaf tensor with no autograd history.
+
+**Key points:**
+- **No autograd history:** Equivalent to `t.detach().clone()` for an existing tensor `t`.
+- **Data inference:** Infers data type from input if `dtype` is not specified.
+- **Flexible device placement:** Uses the input tensor's device if provided, otherwise defaults to the current device.
+- **Common use cases:** Converting Python data to tensors, creating scalar tensors, or explicitly copying tensors without gradients.
+
+**Alternatives to consider:**
+- Use `torch.as_tensor()` to preserve autograd and avoid copies when possible.
+- Use `torch.from_numpy()` to share memory with NumPy arrays.
+- For existing tensors, prefer `.clone()`, `.detach()`, or `.requires_grad_()` for clearer intent.
+
+**Example:**
+```python
+torch.tensor([1, 2, 3])                    # Creates tensor from list
+torch.tensor(existing_tensor)              # Copies tensor, detaches from graph
+torch.tensor(5.0)                          # Creates scalar tensor
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["list", "tuple", "ndarray", "scalar", "tensor"]
+    range: null
+    structure: ["scalar", "list", "tuple", "ndarray"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  requires_grad:
+    dtype: ["bool"]
+    range: [["False", "True"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  pin_memory:
+    dtype: ["bool"]
+    range: [["False", "True"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: pin_memory
+    Parameter 2: device
+    Constraint: "not pin_memory or device is None or (hasattr(device, 'type') and device.type == 'cpu')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.tensor in a complex way */
+import torch

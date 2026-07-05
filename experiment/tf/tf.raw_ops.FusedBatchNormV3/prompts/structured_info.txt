@@ -1,0 +1,98 @@
+params:
+  x:
+    dtype: ["half", "bfloat16", "float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["4D"]
+    default: null
+  scale:
+    dtype: ["bfloat16", "float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  offset:
+    dtype: ["bfloat16", "float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  mean:
+    dtype: ["bfloat16", "float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  variance:
+    dtype: ["bfloat16", "float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1D"]
+    default: null
+  epsilon:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.0001"
+  exponential_avg_factor:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NDHWC", "NCDHW"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "NHWC"
+  is_training:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: offset
+    Parameter 2: scale
+    Constraint: offset.dtype == scale.dtype
+  2:
+    Parameter 1: mean
+    Parameter 2: scale
+    Constraint: mean.dtype == scale.dtype
+  3:
+    Parameter 1: variance
+    Parameter 2: scale
+    Constraint: variance.dtype == scale.dtype
+  4:
+    Parameter 1: scale
+    Parameter 2: x
+    Constraint: scale.shape[0] == (x.shape[-1] if data_format in ['NHWC', 'NDHWC'] else x.shape[1])
+  5:
+    Parameter 1: offset
+    Parameter 2: x
+    Constraint: offset.shape[0] == (x.shape[-1] if data_format in ['NHWC', 'NDHWC'] else x.shape[1])
+  6:
+    Parameter 1: mean
+    Parameter 2: x
+    Constraint: mean.shape[0] == (x.shape[-1] if data_format in ['NHWC', 'NDHWC'] else x.shape[1])
+  7:
+    Parameter 1: variance
+    Parameter 2: x
+    Constraint: variance.shape[0] == (x.shape[-1] if data_format in ['NHWC', 'NDHWC'] else x.shape[1])
+  8:
+    Parameter 1: mean
+    Parameter 2: is_training
+    Constraint: not is_training or mean.shape[0] == 0
+  9:
+    Parameter 1: variance
+    Parameter 2: is_training
+    Constraint: not is_training or variance.shape[0] == 0

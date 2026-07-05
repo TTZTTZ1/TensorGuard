@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.nn.atrous_conv2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.atrous_conv2d` performs **2-D atrous (dilated) convolution**, which expands the receptive field without increasing parameters or computation by inserting zeros between filter elements. It is a simplified wrapper for `tf.nn.convolution`.
+
+**Key features:**
+- **Inputs:** 4-D tensors `value` (NHWC format) and `filters` (same dtype as value).
+- **Parameter:** `rate` controls dilation; `rate=1` equals standard convolution.
+- **Padding:** Supports `'VALID'` and `'SAME'` (same as standard convolution).
+- **Use cases:** Dense prediction tasks like semantic segmentation, optical flow, or depth estimation, often as an alternative to transposed convolution.
+
+**Implementation:** Internally reduces to `space_to_batch` → `conv2d` → `batch_to_space` operations. For multiple consecutive atrous convolutions with the same `rate` and `'SAME'` padding, optimization via single `space_to_batch`/`batch_to_space` wrapping is recommended.
+
+**Output shape:**
+- `'VALID'`: `[batch, height - rate*(filter_width-1), width - rate*(filter_height-1), out_channels]`
+- `'SAME'`: `[batch, height, width, out_channels]`
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  filters:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  rate:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: [["VALID", "SAME"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: value
+    Parameter 2: filters
+    Constraint: "value.shape[3] == filters.shape[2]"
+  2:
+    Parameter 1: rate
+    Parameter 2: rate
+    Constraint: "rate > 0"
+  3:
+    Parameter 1: padding
+    Parameter 2: padding
+    Constraint: 'padding in ["VALID", "SAME"]'
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.atrous_conv2d in a complex way */
+import tensorflow as tf

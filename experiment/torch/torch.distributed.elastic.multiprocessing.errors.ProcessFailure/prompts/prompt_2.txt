@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.multiprocessing.errors.ProcessFailure` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The documentation describes PyTorch TorchElastic's error propagation mechanism for distributed training jobs. Key points:
+
+- **Purpose**: Propagates errors from worker processes to the scheduler for proper job state reporting and retry policies.
+- **Error Categories**: 
+  - User Error (e.g., invalid API inputs)
+  - Worker Failure (failures in user-provided training scripts)
+  - Platform Error (agent failures)
+  - Infra Error (external failures like host issues)
+
+- **Core Mechanism**: Uses `@record` decorator and error files for inter-process error propagation. Workers write uncaught exceptions to a file specified by `TORCHELASTIC_ERROR_FILE`, and the agent aggregates these to propagate the first error.
+
+- **Key Components**:
+  - `record()`: Decorator to capture exceptions in worker processes and write them to error files.
+  - `ChildFailedError`: Exception raised by the agent when a child process fails, propagating the root cause error.
+  - `ErrorHandler`: Base class for writing structured error information to JSON files.
+  - `ProcessFailure`: Represents a failed process result, reading error details from the error file.
+
+- **Usage**: Decorate the main entry point with `@record` to enable error propagation. The system automatically handles error aggregation and reporting, ensuring that the scheduler receives accurate failure information for debugging and retry logic.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  local_rank:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  pid:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  exitcode:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  error_file:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.multiprocessing.errors.ProcessFailure in a complex way */
+import torch

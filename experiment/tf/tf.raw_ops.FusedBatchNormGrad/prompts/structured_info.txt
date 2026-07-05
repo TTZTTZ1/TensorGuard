@@ -1,0 +1,84 @@
+params:
+  y_backprop:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: "No mention"
+  x:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: "No mention"
+  scale:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "No mention"
+  reserve_space_1:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "No mention"
+  reserve_space_2:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "No mention"
+  epsilon:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0.0001"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'NHWC'"
+  is_training:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "x"
+    Parameter 2: "y_backprop"
+    Constraint: "x.dtype == y_backprop.dtype"
+  2:
+    Parameter 1: "scale"
+    Parameter 2: "y_backprop"
+    Constraint: "scale.dtype == y_backprop.dtype"
+  3:
+    Parameter 1: "reserve_space_1"
+    Parameter 2: "y_backprop"
+    Constraint: "reserve_space_1.dtype == y_backprop.dtype"
+  4:
+    Parameter 1: "reserve_space_2"
+    Parameter 2: "y_backprop"
+    Constraint: "reserve_space_2.dtype == y_backprop.dtype"
+  5:
+    Parameter 1: "scale"
+    Parameter 2: "x"
+    Constraint: "scale.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"
+  6:
+    Parameter 1: "reserve_space_1"
+    Parameter 2: "x"
+    Constraint: "reserve_space_1.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"
+  7:
+    Parameter 1: "reserve_space_2"
+    Parameter 2: "x"
+    Constraint: "reserve_space_2.shape[0] == (x.shape[3] if data_format == 'NHWC' else x.shape[1])"

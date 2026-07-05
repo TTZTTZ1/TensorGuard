@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.EnqueueTPUEmbeddingSparseBatch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.EnqueueTPUEmbeddingSparseBatch` is a low-level TensorFlow operation that enqueues sparse embedding input data (indices and weights) for processing on a TPU. It is designed to handle inputs from `SparseTensor` format, facilitating the migration of code using `embedding_lookup_sparse()` to TPU environments.
+
+**Key Functionality:**
+- Accepts three lists of tensors (`sample_indices`, `embedding_indices`, `aggregation_weights`) that correspond to the components of a sparse tensor, each list containing rank-1 tensors of matching shapes.
+- Supports overriding the execution mode (e.g., 'training' or 'inference') via `mode_override`.
+- Allows specification of the TPU device (`device_ordinal`) and aggregation methods (`combiners`, such as 'sum', 'mean', or 'sqrtn') per embedding table.
+
+**Usage Notes:**
+- Only one call to this op is permitted per training step.
+- Preprocessing of `SparseTensor` inputs is required to split them into the three separate lists expected by the op.
+- It returns a `tf.Operation` that enqueues the data for TPU embedding computations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sample_indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  embedding_indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  aggregation_weights:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  mode_override:
+    dtype: ["string"]
+    range: ["unspecified", "inference", "training", "backward_pass_only"]
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "No mention"
+  device_ordinal:
+    dtype: ["int"]
+    range: ["-1 or >=0"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  combiners:
+    dtype: ["string"]
+    range: ["mean", "sum", "sqrtn"]
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "embedding_indices"
+    Parameter 2: "sample_indices"
+    Constraint: "len(embedding_indices) == len(sample_indices)"
+  2:
+    Parameter 1: "aggregation_weights"
+    Parameter 2: "sample_indices"
+    Constraint: "len(aggregation_weights) == len(sample_indices)"
+  3:
+    Parameter 1: "sample_indices"
+    Parameter 2: "sample_indices"
+    Constraint: "len(sample_indices) >= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.EnqueueTPUEmbeddingSparseBatch in a complex way */
+import tensorflow as tf

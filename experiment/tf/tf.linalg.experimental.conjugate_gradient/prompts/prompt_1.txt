@@ -1,0 +1,97 @@
+
+# You are a Python code generation assistant for the `tf.linalg.experimental.conjugate_gradient` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.linalg.experimental.conjugate_gradient` function is an iterative solver for linear systems of the form **A*x = rhs**, where **A** is a self-adjoint, positive definite matrix. It is designed to work efficiently with large, sparse systems by using a matrix-free approach, meaning it only requires the ability to compute the matrix-vector product via a `LinearOperator` rather than storing the full matrix.
+
+### Key Features:
+- **Solves** `A*x = rhs` for self-adjoint, positive definite `A`.
+- **Iterative method**: Uses the Conjugate Gradient algorithm.
+- **Matrix-free**: Relies on an `operator` representing the action of `A`.
+- **Supports preconditioning**: Optional `preconditioner` to accelerate convergence.
+- **Stopping criteria**: Iterations stop when the residual norm is reduced to `tol` times its initial value or when `max_iter` is reached.
+
+### Parameters:
+- **`operator`**: A `LinearOperator` representing `A` (must be self-adjoint and positive definite).
+- **`rhs`**: Right-hand side vector (possibly batched).
+- **`preconditioner`**: Optional `LinearOperator` approximating `A^{-1}` to improve convergence.
+- **`x`**: Optional initial guess for the solution.
+- **`tol`**: Convergence tolerance (default: `1e-05`).
+- **`max_iter`**: Maximum number of iterations (default: `20`).
+- **`name`**: Scope name for the operation.
+
+### Returns:
+A namedtuple with fields:
+- **`i`**: Number of iterations performed.
+- **`x`**: The computed solution.
+- **`r`**: The final residual vector.
+- **`p`**: The final `A`-conjugate basis vector.
+- **`gamma`**: Scalar value related to the residual (equal to `||r||_2^2` when no preconditioner is used).
+
+### Use Case:
+Ideal for solving large-scale linear systems where `A` is symmetric positive definite and can be efficiently applied as an operator, especially in scenarios involving sparse matrices or implicit matrix representations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  operator:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["LinearOperator"]
+    shape: null
+    default: null
+  rhs:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., N]"]
+    default: null
+  preconditioner:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["LinearOperator", "None"]
+    shape: null
+    default: "None"
+  x:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., N]"]
+    default: "None"
+  tol:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "1e-05"
+  max_iter:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "20"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'conjugate_gradient'"
+constraints:
+  1:
+    Parameter 1: operator
+    Parameter 2: rhs
+    Constraint: "operator.shape[-1] == rhs.shape[-1]"
+  2:
+    Parameter 1: x
+    Parameter 2: rhs
+    Constraint: "x is None or x.shape == rhs.shape"
+  3:
+    Parameter 1: preconditioner
+    Parameter 2: operator
+    Constraint: "preconditioner is None or preconditioner.shape == operator.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.experimental.conjugate_gradient in a complex way */
+import tensorflow as tf

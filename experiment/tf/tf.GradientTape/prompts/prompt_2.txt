@@ -1,0 +1,125 @@
+
+# You are a Python code generation assistant for the `tf.GradientTape` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.GradientTape` is a TensorFlow context manager that records operations for automatic differentiation. It enables gradient computation by tracing operations on watched tensors, supporting both first-order and higher-order derivatives.
+
+**Key Features:**
+- **Automatic Variable Tracking:** By default, it watches all trainable variables (e.g., `tf.Variable` objects) accessed within its context.
+- **Manual Tensor Watching:** Use `watch(tensor)` to explicitly track non-variable tensors.
+- **Persistent Mode:** Set `persistent=True` to compute multiple gradients from the same tape (released via garbage collection).
+- **Fine-Grained Control:** Disable automatic tracking with `watch_accessed_variables=False` to manually specify watched tensors.
+
+**Core Methods:**
+- `gradient(target, sources)`: Computes gradients of `target` with respect to `sources`.
+- `jacobian(target, sources)`: Computes the Jacobian matrix for vector-valued outputs.
+- `batch_jacobian(target, source)`: Efficiently computes per-example Jacobians under independence assumptions.
+- `reset()`: Clears all recorded operations without exiting the context.
+- `stop_recording()`: Temporarily suspends operation recording to reduce memory usage.
+
+**Usage Example:**
+```python
+x = tf.constant(3.0)
+with tf.GradientTape() as tape:
+    tape.watch(x)
+    y = x * x
+dy_dx = tape.gradient(y, x)  # Returns 6.0
+```
+
+**Notes:**
+- Non-persistent tapes can only compute gradients once.
+- Supports nested tapes for higher-order derivatives.
+- For better performance, wrap tape operations in `@tf.function`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  persistent:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  watch_accessed_variables:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  target:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "list", "nested structure"]
+    shape: "No mention"
+    default: "null"
+  sources:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "list", "nested structure"]
+    shape: "No mention"
+    default: "null"
+  source:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  output_gradients:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "None"
+  unconnected_gradients:
+    dtype: ["string", "enum"]
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "tf.UnconnectedGradients.NONE"
+  parallel_iterations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  experimental_use_pfor:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  tensor:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor", "list"]
+    shape: "No mention"
+    default: "null"
+  typ:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  value:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  traceback:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "target"
+    Parameter 2: "source"
+    Constraint: "target.shape[0] == source.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.GradientTape in a complex way */
+import tensorflow as tf

@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.nn.in_top_k` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.in_top_k` (also available as `tf.math.in_top_k`) is a TensorFlow function that checks whether the true class labels (targets) are within the top `k` predicted probabilities for each example in a batch.
+
+**Key points:**
+- **Inputs:**  
+  - `targets`: A 1D tensor of class IDs (int32/int64) with shape `[batch_size]`.  
+  - `predictions`: A 2D tensor of predicted scores (float32) with shape `[batch_size, num_classes]`.  
+  - `k`: An integer specifying how many top predictions to consider.  
+- **Output:** A boolean tensor of shape `[batch_size]`, where each element indicates if the true class for that example is among the top `k` predictions.  
+- **Behavior:**  
+  - Predictions need not be normalized (e.g., softmax outputs).  
+  - Handles ties inclusively: if multiple classes share the same prediction score at the top-`k` boundary, all are considered "in top k".  
+  - Returns `False` if the target’s prediction is non-finite (inf, -inf, or nan).  
+
+**Example use case:** Evaluating classification accuracy by checking if the true label is in the top-k predicted classes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  targets:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: [None]
+    default: null
+  predictions:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [None, None]
+    default: null
+  k:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: targets
+    Parameter 2: predictions
+    Constraint: "tf.shape(targets)[0] == tf.shape(predictions)[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.in_top_k in a complex way */
+import tensorflow as tf

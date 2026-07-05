@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseMatrixMul` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `tf.raw_ops.SparseMatrixMul`  
+**Purpose:** Performs element-wise multiplication between a sparse matrix and a dense tensor, returning a sparse matrix result.
+
+**Key Details:**
+- **Inputs:**
+  - `a`: A sparse matrix in `CSRSparseMatrix` format (type `variant`).
+  - `b`: A dense tensor (scalar or shaped `[batch_size, 1, 1]` for broadcasting).
+- **Behavior:**
+  - If `b` is a scalar, it multiplies all non-zero elements of `a`.
+  - If `b` is a tensor, `a` must be a rank-3 sparse matrix (batched), and `b` must have shape `[batch_size, 1, 1]` to broadcast across each matrix in the batch.
+- **Note:** The output retains the same sparsity structure as `a`, even if `b` is zero.
+- **Output:** A `variant` tensor representing the resulting sparse matrix.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["variant"]
+    range: null
+    structure: ["sparse_matrix"]
+    shape: null
+    default: null
+  b:
+    dtype: ["float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: a
+    Parameter 2: b
+    Constraint: "tf.rank(b) == 0 or (tf.rank(a) == 3 and tf.rank(b) == 3 and tf.shape(b)[1] == 1 and tf.shape(b)[2] == 1 and tf.shape(b)[0] == tf.shape(a)[0])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseMatrixMul in a complex way */
+import tensorflow as tf

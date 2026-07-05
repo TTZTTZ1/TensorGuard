@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.utils.checkpoint.checkpoint_sequential` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.checkpoint` module provides **activation checkpointing**, a technique that trades compute for memory by recomputing intermediate activations during the backward pass instead of storing them.
+
+### Key Functions:
+
+1. **`checkpoint(function, *args, use_reentrant=False, **kwargs)`**  
+   - **Purpose**: Checkpoints a model or part of it to reduce memory usage during training.
+   - **How it works**: Instead of saving all intermediate tensors from the forward pass, only the inputs are stored. During backward propagation, the checkpointed segment is recomputed as needed.
+   - **Important parameters**:
+     - `use_reentrant`: Should be set to `False` (recommended) for better flexibility and support (e.g., works with `torch.autograd.grad`, keyword arguments, nested structures).
+     - `preserve_rng_state`: Controls RNG state handling for deterministic operations like dropout (default `True`).
+     - `context_fn`: Enables selective checkpointing via `create_selective_checkpoint_contexts`.
+     - `determinism_check`: Validates recomputation correctness (default `"default"`).
+     - `debug`: Prints debug traces for errors.
+     - `early_stop`: Stops recomputation once needed tensors are available (non-reentrant only).
+
+2. **`checkpoint_sequential(functions, segments, input, **kwargs)`**  
+   - **Purpose**: Checkpoints a sequential model (e.g., `nn.Sequential`) by splitting it into segments, each checkpointed separately.
+
+### Selective Checkpointing:
+- **`create_selective_checkpoint_contexts(policy_fn_or_list)`**  
+  Allows fine-grained control over which operations are recomputed vs. saved, using a policy function or a list of operations to save.
+
+### Important Notes:
+- **Reentrant vs. Non-reentrant**:  
+  Use `use_reentrant=False` for broader compatibility (supports `autograd.grad`, keyword args, detached tensors, and nested structures). The reentrant variant (`use_reentrant=True`) has limitations (e.g., requires `requires_grad` on inputs, doesn’t support nested autograd).
+- **RNG State**: By default, checkpointing preserves RNG states for determinism (can be disabled with `preserve_rng_state=False`).
+- **Device Awareness**: Checkpointing handles device-specific RNG states but may not guarantee determinism if tensors are moved within the checkpointed function.
+- **Debugging**: Use `set_checkpoint_debug_enabled` or the `debug` flag to trace forward/recompute steps.
+
+### Use Case:
+Ideal for training large models (e.g., transformers, CNNs) where memory savings outweigh the recomputation cost. Selective checkpointing further optimizes this trade-off by saving specific expensive operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  functions:
+    dtype: ["torch.nn.Sequential", "list"]
+    range: null
+    structure: ["object", "list"]
+    shape: null
+    default: null
+  segments:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  input:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  preserve_rng_state:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  use_reentrant:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: functions
+    Parameter 2: segments
+    Constraint: "isinstance(functions, (torch.nn.Sequential, list)) and segments > 0 and segments <= len(functions) if isinstance(functions, list) else len(list(functions.children()))"
+  2:
+    Parameter 1: use_reentrant
+    Parameter 2: null
+    Constraint: "use_reentrant is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.checkpoint.checkpoint_sequential in a complex way */
+import torch

@@ -1,0 +1,103 @@
+
+# You are a Python code generation assistant for the `torch.optim.Adadelta` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Adadelta Optimizer (PyTorch)**
+
+**Purpose:**  
+Implements the Adadelta adaptive learning rate algorithm, which automatically adjusts learning rates during training without requiring manual tuning.
+
+**Key Features:**
+- **Adaptive Learning Rates:** Uses accumulated past gradients and update magnitudes to scale learning rates per parameter.
+- **No Global Learning Rate Sensitivity:** The base learning rate (`lr`) defaults to 1.0 and often requires less tuning.
+- **Memory Efficient:** Maintains two moving averages (gradient squares and update squares) per parameter.
+
+**Algorithm Highlights:**
+1. Accumulates squared gradients over time with decay factor `rho`.
+2. Computes parameter updates using the ratio of accumulated updates to gradients (with numerical stability term `eps`).
+3. Applies updates scaled by `lr`.
+
+**Parameters:**
+- `params`: Model parameters to optimize.
+- `lr` (default=1.0): Scaling factor for updates.
+- `rho` (default=0.9): Decay factor for moving averages (higher → slower adaptation).
+- `eps` (default=1e-6): Added to denominators for numerical stability.
+- `weight_decay` (default=0): L2 penalty coefficient.
+- `foreach` (optional): Use faster foreach implementation on CUDA (higher memory).
+- `capturable` (default=False): Enable CUDA graph/torch.compile support.
+- `maximize` (default=False): Maximize objective instead of minimizing.
+- `differentiable` (default=False): Allow autograd through optimizer step.
+
+**Common Methods:**
+- `step(closure)`: Performs a single optimization step.
+- `zero_grad(set_to_none=True)`: Resets gradients (set to `None` to save memory).
+- `state_dict()` / `load_state_dict()`: Save/load optimizer state.
+- `add_param_group()`: Add new parameter groups dynamically.
+
+**Use Case:**  
+Suitable for training deep neural networks, especially when manual learning rate scheduling is undesirable. It often works well with default hyperparameters.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float", "torch.Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "1.0"
+  rho:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.9"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-06"
+  weight_decay:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  foreach:
+    dtype: ["bool", "None"]
+    range: [["True", "False", "None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  capturable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Adadelta in a complex way */
+import torch

@@ -1,0 +1,74 @@
+params:
+  name:
+    dtype: ["str"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  entrypoint:
+    dtype: ["Callable"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  args:
+    dtype: ["dict"]
+    range: ["keys are int, values are tuple"]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "No mention"
+  envs:
+    dtype: ["dict"]
+    range: ["keys are int, values are dict[str, str]"]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "No mention"
+  start_method:
+    dtype: ["str"]
+    range: ["spawn", "fork", "forkserver"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  logs_specs:
+    dtype: ["LogsSpecs"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  log_line_prefixes:
+    dtype: ["null"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  numa_options:
+    dtype: ["null"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "null"
+  duplicate_stdout_filters:
+    dtype: ["list", "null"]
+    range: ["list of str"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+  duplicate_stderr_filters:
+    dtype: ["list", "null"]
+    range: ["list of str"]
+    structure: ["list"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "set(args.keys()) == set(envs.keys())"
+  2:
+    Parameter 1: "args"
+    Parameter 2: "envs"
+    Constraint: "len(args) == len(envs) and max(args.keys()) == len(args) - 1 and min(args.keys()) == 0"
+  3:
+    Parameter 1: "entrypoint"
+    Parameter 2: "args"
+    Constraint: "not (isinstance(entrypoint, str) and not all(isinstance(arg, str) for arg in args.values()))"

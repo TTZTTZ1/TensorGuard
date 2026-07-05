@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.resnet_v2.ResNet101V2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `ResNet101V2` function in TensorFlow/Keras creates a ResNet-101 Version 2 model, which is a deep convolutional neural network for image classification. It is based on the architecture described in the paper "Identity Mappings in Deep Residual Networks."
+
+**Key Features:**
+- **Input Preprocessing:** Requires scaling pixel values to the range [-1, 1] using `keras.applications.resnet_v2.preprocess_input`.
+- **Flexible Configuration:** Allows customization through parameters like `include_top` (to include/exclude the final classification layer), `weights` (for loading pretrained ImageNet weights or custom weights), and `input_shape`.
+- **Use Cases:** Suitable for both image classification (with the top layer) and transfer learning/feature extraction (without the top layer, optionally with pooling).
+
+**Common Parameters:**
+- `include_top`: Boolean to include the final fully-connected classification layer.
+- `weights`: Set to `'imagenet'` for pretrained weights, `None` for random initialization, or a file path for custom weights.
+- `input_shape`: Required if `include_top=False`; must be at least 32x32 with 3 channels.
+- `pooling`: Optional pooling (`'avg'` or `'max'`) applied when `include_top=False` to convert 4D features to 2D.
+- `classes`: Number of output classes (only used if `include_top=True` and no weights are loaded).
+- `classifier_activation`: Activation function for the top layer (default is `'softmax'`).
+
+**Output:** Returns a Keras Model instance configured according to the specified parameters.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  weights:
+    dtype: ["string", "None"]
+    range: [None, "imagenet", "path to weights file"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with exactly 3 channels, width and height >= 32"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["string", "None"]
+    range: [None, "avg", "max"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  classes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable", "None"]
+    range: [None, "softmax", "other strings or callables"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "input_shape"
+    Parameter 2: "include_top"
+    Constraint: "input_shape is not None implies include_top == False"
+  2:
+    Parameter 1: "classes"
+    Parameter 2: "include_top"
+    Constraint: "classes != 1000 implies include_top == True"
+  3:
+    Parameter 1: "classes"
+    Parameter 2: "weights"
+    Constraint: "classes != 1000 implies weights is None"
+  4:
+    Parameter 1: "classifier_activation"
+    Parameter 2: "weights"
+    Constraint: "weights is not None implies (classifier_activation is None or classifier_activation == 'softmax')"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.resnet_v2.ResNet101V2 in a complex way */
+import tensorflow as tf

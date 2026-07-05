@@ -1,0 +1,52 @@
+params:
+  input:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  num_groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  weight:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  bias:
+    dtype: ["float", "double"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "1e-05"
+constraints:
+  1:
+    Parameter 1: num_groups
+    Parameter 2: num_groups
+    Constraint: "num_groups > 0"
+  2:
+    Parameter 1: input
+    Parameter 2: num_groups
+    Constraint: "input.dim() >= 2 and input.size(1) % num_groups == 0"
+  3:
+    Parameter 1: eps
+    Parameter 2: eps
+    Constraint: "eps > 0"
+  4:
+    Parameter 1: weight
+    Parameter 2: input
+    Constraint: "weight is None or weight.size(0) == input.size(1)"
+  5:
+    Parameter 1: bias
+    Parameter 2: input
+    Constraint: "bias is None or bias.size(0) == input.size(1)"

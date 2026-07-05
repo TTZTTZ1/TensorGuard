@@ -1,0 +1,161 @@
+
+# You are a Python code generation assistant for the `torch.utils.cpp_extension.load_inline` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.cpp_extension` module provides tools for building and loading PyTorch C++ extensions, supporting CPU, CUDA, and SYCL code. Key components include:
+
+- **Extension Classes**:  
+  - `CppExtension`: Creates a `setuptools.Extension` for C++ code.  
+  - `CUDAExtension`: For CUDA/C++ extensions, automatically handles CUDA paths and libraries. Supports compute capability specification via `TORCH_CUDA_ARCH_LIST` and relocatable device code (RDC) linking.  
+  - `SyclExtension`: For SYCL/C++ extensions (e.g., Intel GPUs), with architecture control via `TORCH_XPU_ARCH_LIST`.
+
+- **Build System**:  
+  - `BuildExtension`: A custom `setuptools` build extension that manages compiler flags and mixed C++/CUDA/SYCL compilation. Uses Ninja by default for faster builds.
+
+- **JIT Loading**:  
+  - `load()`: Compiles and loads an extension from source files just-in-time.  
+  - `load_inline()`: Similar to `load()` but accepts source code as strings, auto-generating bindings if needed.
+
+- **Utilities**:  
+  - `include_paths()`: Returns necessary include paths.  
+  - `verify_ninja_availability()` / `is_ninja_available()`: Check for Ninja build system.  
+  - `get_compiler_abi_compatibility_and_version()`: Validates compiler compatibility.
+
+**Key Notes**:  
+- Extensions can be built via `setup.py` (using `CppExtension`/`CUDAExtension`/`SyclExtension` with `BuildExtension`) or loaded dynamically at runtime with `load()`/`load_inline()`.  
+- Mixed C++/CUDA/SYCL compilation is supported.  
+- Ninja is required for CUDA extensions with RDC linking and for SYCL extensions.  
+- Avoid `py_limited_api=True` if using PyTorch’s Python bindings.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  cpp_sources:
+    dtype: ["string", "list"]
+    range: [null]
+    structure: ["scalar", "list"]
+    shape: [null]
+    default: null
+  cuda_sources:
+    dtype: ["string", "list", "None"]
+    range: [null]
+    structure: ["scalar", "list", "None"]
+    shape: [null]
+    default: "None"
+  sycl_sources:
+    dtype: ["string", "list", "None"]
+    range: [null]
+    structure: ["scalar", "list", "None"]
+    shape: [null]
+    default: "None"
+  functions:
+    dtype: ["list", "dict", "None"]
+    range: [null]
+    structure: ["list", "dict", "None"]
+    shape: [null]
+    default: "None"
+  extra_cflags:
+    dtype: ["list", "None"]
+    range: [null]
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  extra_cuda_cflags:
+    dtype: ["list", "None"]
+    range: [null]
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  extra_sycl_cflags:
+    dtype: ["list", "None"]
+    range: [null]
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  extra_ldflags:
+    dtype: ["list", "None"]
+    range: [null]
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  extra_include_paths:
+    dtype: ["list", "None"]
+    range: [null]
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  build_directory:
+    dtype: ["string", "None"]
+    range: [null]
+    structure: ["scalar", "None"]
+    shape: [null]
+    default: "None"
+  verbose:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "false"
+  with_cuda:
+    dtype: ["bool", "None"]
+    range: [[false, true, null]]
+    structure: ["scalar", "None"]
+    shape: [null]
+    default: "None"
+  with_sycl:
+    dtype: ["bool", "None"]
+    range: [[false, true, null]]
+    structure: ["scalar", "None"]
+    shape: [null]
+    default: "None"
+  is_python_module:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "true"
+  with_pytorch_error_handling:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "true"
+  keep_intermediates:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "true"
+  use_pch:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "false"
+  no_implicit_headers:
+    dtype: ["bool"]
+    range: [[false, true]]
+    structure: ["scalar"]
+    shape: [null]
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "with_cuda"
+    Parameter 2: "cuda_sources"
+    Constraint: "with_cuda is None or with_cuda == (cuda_sources is not None)"
+  2:
+    Parameter 1: "with_sycl"
+    Parameter 2: "sycl_sources"
+    Constraint: "with_sycl is None or with_sycl == (sycl_sources is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.cpp_extension.load_inline in a complex way */
+import torch

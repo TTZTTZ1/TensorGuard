@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.random_split` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential tools for efficient data loading and processing in PyTorch. At its core is the `DataLoader` class, which creates an iterable over a dataset with features like automatic batching, multi-process loading, and memory pinning.
+
+**Key Components:**
+
+1. **Dataset Types:**
+   - **Map-style:** Implements `__getitem__()` and `__len__()`, allowing random access via indices (e.g., `dataset[idx]`).
+   - **Iterable-style:** Implements `__iter__()`, suitable for streaming data (e.g., from databases or real-time logs).
+
+2. **Data Loading Order:**
+   - For map-style datasets, `Sampler` objects define the index sequence (e.g., random or sequential).
+   - For iterable datasets, order is controlled by the user-defined iterator.
+
+3. **Batching:**
+   - Automatic batching (default) collates samples into batches using `collate_fn`.
+   - Can be disabled for manual batching or individual sample processing.
+
+4. **Multi-process Loading:**
+   - Set `num_workers > 0` to parallelize data loading across multiple processes.
+   - Requires careful handling to avoid duplicated data in iterable datasets.
+
+5. **Memory Pinning:**
+   - `pin_memory=True` accelerates data transfer to GPU by using pinned (page-locked) memory.
+
+**Common Classes:**
+- `DataLoader`: Main class for creating data iterators.
+- `Dataset` / `IterableDataset`: Base classes for custom datasets.
+- `TensorDataset`, `ConcatDataset`, `Subset`: Utility datasets.
+- `Sampler`, `RandomSampler`, `BatchSampler`: Control sample ordering and batching.
+
+**Usage Example:**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+class CustomDataset(Dataset):
+    def __len__(self): ...
+    def __getitem__(self, idx): ...
+
+dataset = CustomDataset()
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
+
+for batch in dataloader:
+    # Training loop
+```
+
+This module is fundamental for handling large-scale datasets efficiently in PyTorch workflows.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dataset:
+    dtype: ["Dataset"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  lengths:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["list", "tuple"]
+    shape: null
+    default: null
+  generator:
+    dtype: ["Generator"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: "torch.Generator()"
+constraints:
+  1:
+    Parameter 1: lengths
+    Parameter 2: dataset
+    Constraint: "isinstance(lengths, (list, tuple)) and all(isinstance(l, (int, float)) for l in lengths) and all(l > 0 for l in lengths) and ((all(isinstance(l, int) for l in lengths) and sum(lengths) == len(dataset)) or (all(isinstance(l, float) for l in lengths) and abs(sum(lengths) - 1) < 1e-9))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.random_split in a complex way */
+import torch

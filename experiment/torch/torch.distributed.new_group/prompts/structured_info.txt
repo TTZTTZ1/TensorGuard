@@ -1,0 +1,52 @@
+params:
+  ranks:
+    dtype: ["list[int]", "None"]
+    range: null
+    structure: ["list", "None"]
+    shape: [null]
+    default: "None"
+  timeout:
+    dtype: ["timedelta", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  backend:
+    dtype: ["string", "Backend", "None"]
+    range: [["gloo", "nccl"]]
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  pg_options:
+    dtype: ["ProcessGroupOptions", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  use_local_synchronization:
+    dtype: ["bool", "None"]
+    range: [["True", "False"]]
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "False"
+  group_desc:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+  device_id:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "ranks"
+    Parameter 2: "world_size"
+    Constraint: "if ranks is not None, then for all rank in ranks, 0 <= rank < world_size"
+  2:
+    Parameter 1: "use_local_synchronization"
+    Parameter 2: "backend"
+    Constraint: "not (use_local_synchronization == True and backend == 'mpi')"

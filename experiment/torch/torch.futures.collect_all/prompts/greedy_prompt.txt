@@ -1,0 +1,45 @@
+
+# You are a Python code generation assistant for the `torch.futures.collect_all` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.futures` module provides a `Future` class for managing asynchronous operations, primarily used with PyTorch's Distributed RPC Framework. A `Future` encapsulates the result of an asynchronous execution, allowing you to attach callbacks, wait for completion, and handle results or exceptions.
+
+**Key Features:**
+
+- **Asynchronous Result Handling**: `Future` objects represent pending results from async operations like `rpc_async()`.
+- **Completion Detection**: Use `done()` to check if the `Future` has finished (with a result or exception).
+- **Result Setting**: Manually set results with `set_result()` or exceptions with `set_exception()`.
+- **Callback Support**: Attach callbacks via `add_done_callback()` (fire-and-forget) or `then()` (returns a new `Future` for chaining).
+- **Waiting for Results**: Block until ready with `wait()` (performs GPU sync if needed) or get the value directly with `value()` (only after completion).
+- **GPU Support (beta)**: Handles GPU tensors with proper stream synchronization in callbacks and `wait()`.
+
+**Utility Functions:**
+
+- `collect_all(futures)`: Combines multiple `Future` objects into one that completes when all sub-futures finish.
+- `wait_all(futures)`: Waits for all futures to complete and returns their results; exits early on any error.
+
+**Usage Example:**
+```python
+fut = torch.futures.Future()
+fut.then(lambda x: print(f"Result: {x.wait()}"))
+fut.set_result(42)  # Triggers callback and prints "Result: 42"
+```
+
+**Note**: Callbacks execute in an undefined order unless explicitly chained. Error handling in callbacks must be managed carefully to avoid unmarked failed futures.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  futures:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.futures.collect_all in a complex way */
+import torch

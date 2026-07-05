@@ -1,0 +1,36 @@
+params:
+  tensor:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  a:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  mode:
+    dtype: ["string"]
+    range: [["fan_in", "fan_out"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'fan_in'"
+  nonlinearity:
+    dtype: ["string"]
+    range: [["linear", "conv1d", "conv2d", "conv3d", "conv_transpose1d", "conv_transpose2d", "conv_transpose3d", "sigmoid", "tanh", "relu", "leaky_relu", "selu"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'leaky_relu'"
+  generator:
+    dtype: ["torch.Generator", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "nonlinearity"
+    Parameter 2: "a"
+    Constraint: "nonlinearity == 'leaky_relu' or a == 0.0"

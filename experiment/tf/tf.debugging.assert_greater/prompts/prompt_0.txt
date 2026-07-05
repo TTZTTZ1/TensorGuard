@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.debugging.assert_greater` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.debugging.assert_greater` is a TensorFlow debugging operation that asserts the element-wise condition `x > y` holds for two numeric tensors `x` and `y`. If the condition fails, it raises an `InvalidArgumentError` and optionally prints a custom message along with a summary of the tensor values.
+
+**Key points:**
+- **Purpose:** Validate that all elements in `x` are greater than corresponding elements in `y` (with broadcasting).
+- **Usage:** Commonly used inside `tf.function` with `tf.control_dependencies` to ensure the assertion executes in the correct order.
+- **Behavior:** In eager execution, it returns `None`; in graph mode, it returns an op that triggers the error when executed.
+- **Parameters:** Accepts optional `message`, `summarize` (to limit printed tensor entries), and `name`.
+- **Error:** Raises `InvalidArgumentError` immediately if the condition is false during eager execution or when tensors are statically known.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x:
+    dtype: ["numeric"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  y:
+    dtype: ["numeric"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  message:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  summarize:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "assert_greater"
+constraints:
+  1:
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "x.dtype == y.dtype and tf.broadcast_static_shape(x.shape, y.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.debugging.assert_greater in a complex way */
+import tensorflow as tf

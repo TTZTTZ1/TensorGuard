@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `tf.assert_equal` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.assert_equal` (aliased as `tf.debugging.assert_equal`) is an assertion operation that checks whether two tensors `x` and `y` are equal element-wise, supporting broadcasting. If the condition fails, it raises an `InvalidArgumentError` and optionally prints a custom message along with a summarized view of the tensors.
+
+**Key points:**
+- **Purpose:** Validate that `x[i] == y[i]` for all elements.
+- **Usage in `tf.function`:** Should be wrapped with `tf.control_dependencies` to ensure proper execution order.
+- **Output:** Returns an op that raises an error on failure; returns `None` during eager execution.
+- **Parameters:** Accepts optional `message`, `summarize` (to limit printed tensor entries), and `name`.
+
+**Example:**
+```python
+with tf.control_dependencies([tf.assert_equal(tf.size(x), 3)]):
+    # Proceed only if assertion passes
+    y = x + 1
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  x
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  y
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  message
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  summarize
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "assert_equal"
+constraints:
+  1
+    Parameter 1: x
+    Parameter 2: y
+    Constraint: "x.dtype == y.dtype and tf.broadcast_static_shape(x.shape, y.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.assert_equal in a complex way */
+import tensorflow as tf

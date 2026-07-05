@@ -1,0 +1,123 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyCenteredRMSProp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.ResourceApplyCenteredRMSProp` operator implements the **centered RMSProp optimization algorithm** for updating variables using resource tensors. It is an enhanced version of RMSProp that normalizes gradients using an estimate of the variance (centered second moment) rather than just the uncentered second moment, which can improve training stability at a slightly higher computational cost.
+
+### Key Features:
+- **Update Rule**: Adjusts the variable (`var`) based on moving averages of the gradient (`mg`), squared gradient (`ms`), and momentum (`mom`).
+- **Sparse Update Handling**: In sparse implementations, `mg`, `ms`, and `mom` are only updated when the gradient is non-zero.
+- **Resource Tensors**: All state variables (`var`, `mg`, `ms`, `mom`) are passed as resource tensors, making it suitable for use with `tf.Variable`.
+- **Locking Option**: Supports optional locking (`use_locking`) to prevent contention during concurrent updates.
+
+### Parameters:
+- **State Tensors**: `var` (variable to optimize), `mg` (mean gradient), `ms` (mean squared gradient), `mom` (momentum).
+- **Hyperparameters**: `lr` (learning rate), `rho` (decay rate), `momentum`, `epsilon` (small constant for numerical stability).
+- **Gradient**: `grad` (the gradient tensor).
+- **Optional**: `use_locking` (for thread safety), `name` (operation name).
+
+### Mathematical Formulation:
+1. Update mean gradient:  
+   \( mg \leftarrow \rho \cdot mg + (1 - \rho) \cdot grad \)
+2. Update mean squared gradient:  
+   \( ms \leftarrow \rho \cdot ms + (1 - \rho) \cdot grad^2 \)
+3. Update momentum:  
+   \( mom \leftarrow momentum \cdot mom + \frac{lr \cdot grad}{\sqrt{ms - mg^2 + \epsilon}} \)
+4. Update variable:  
+   \( var \leftarrow var - mom \)
+
+### Use Case:
+Primarily used in custom training loops or low-level TensorFlow implementations where fine-grained control over optimization steps is required, especially with sparse gradients.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  mg:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  ms:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  mom:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  rho:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  momentum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  epsilon:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: lr
+    Parameter 2: rho
+    Constraint: "lr.dtype == rho.dtype"
+  2:
+    Parameter 1: lr
+    Parameter 2: momentum
+    Constraint: "lr.dtype == momentum.dtype"
+  3:
+    Parameter 1: lr
+    Parameter 2: epsilon
+    Constraint: "lr.dtype == epsilon.dtype"
+  4:
+    Parameter 1: lr
+    Parameter 2: grad
+    Constraint: "lr.dtype == grad.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyCenteredRMSProp in a complex way */
+import tensorflow as tf

@@ -1,0 +1,22 @@
+params:
+  y_true:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+  y_pred:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[batch_size, d0, .. dN]"]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_true
+    Parameter 2: y_pred
+    Constraint: "y_true.shape == y_pred.shape"
+  2:
+    Parameter 1: y_true
+    Parameter 2: y_true
+    Constraint: "tf.reduce_all(tf.logical_or(tf.equal(y_true, -1), tf.equal(y_true, 1))) or tf.reduce_all(tf.logical_or(tf.equal(y_true, 0), tf.equal(y_true, 1)))"

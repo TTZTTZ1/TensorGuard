@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["float", "int", "bool", "string"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "null"
+constraints:
+  1:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "all(-len(input.shape) <= a < len(input.shape) for a in axis)"
+  2:
+    Parameter 1: axis
+    Parameter 2: input
+    Constraint: "all(input.shape[a if a >= 0 else a + len(input.shape)] == 1 for a in axis)"

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.distributions.relaxed_bernoulli.RelaxedBernoulli` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive set of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimation for optimization. It supports two primary gradient estimation methods: the score function estimator (REINFORCE) and the pathwise derivative estimator (reparameterization trick).
+
+### Key Components:
+- **Distributions**: Includes common distributions (e.g., `Normal`, `Bernoulli`, `Categorical`, `Beta`, `Gamma`, `MultivariateNormal`) with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, and `cdf()`.
+- **Transforms**: Bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) for mapping between constrained and unconstrained spaces, used in `TransformedDistribution`.
+- **Constraints**: Define valid parameter ranges (e.g., `positive`, `simplex`, `interval`) and are linked to transforms via registries (`biject_to`, `transform_to`).
+- **KL Divergence**: Computes Kullback-Leibler divergence between distributions, with registered implementations for many distribution pairs.
+
+### Main Use Cases:
+1. **Stochastic Gradient Estimation**:
+   - **Score Function**: Use `sample()` and `log_prob()` for REINFORCE (common in reinforcement learning).
+   - **Pathwise Derivative**: Use `rsample()` for reparameterized gradients (common in variational autoencoders).
+2. **Probabilistic Modeling**: Construct complex distributions via `TransformedDistribution` or `MixtureSameFamily`.
+3. **Constrained Optimization**: Use `transform_to` to map constrained parameters to unconstrained spaces for optimization.
+4. **Hamiltonian Monte Carlo**: Use `biject_to` to transform constrained samples to unconstrained spaces for HMC.
+
+### Example Workflow:
+```python
+# Create a distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sample and compute log probability
+sample = dist.sample()
+log_prob = dist.log_prob(sample)
+
+# Reparameterized sampling (for pathwise derivatives)
+reparam_sample = dist.rsample()
+
+# Transform a constrained parameter (e.g., scale > 0)
+unconstrained = torch.tensor(0.5, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+The package is designed for flexibility, supporting custom distributions, transforms, and constraints, and integrates seamlessly with PyTorch's autograd for gradient-based optimization.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  temperature:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  probs:
+    dtype: ["Number", "Tensor"]
+    range: [[0, 1]]
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "null"
+  logits:
+    dtype: ["Number", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: "null"
+  validate_args:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.relaxed_bernoulli.RelaxedBernoulli in a complex way */
+import torch

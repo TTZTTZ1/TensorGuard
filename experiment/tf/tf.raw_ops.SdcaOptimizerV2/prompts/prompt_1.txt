@@ -1,0 +1,92 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SdcaOptimizerV2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SdcaOptimizerV2` is a distributed implementation of the Stochastic Dual Coordinate Ascent (SDCA) optimizer for linear models with L1 and L2 regularization. It operates by updating dual variables one example at a time, sampling uniformly, and achieves linear convergence due to the strongly convex global objective.
+
+**Key Features:**
+- Supports both sparse and dense features via separate input lists.
+- Handles multiple loss types: logistic, squared, hinge, smooth hinge, and Poisson.
+- Regularization parameters `l1` and `l2` control the strength of L1 and L2 regularization.
+- Uses a dual optimization approach, updating model weights indirectly through example-state data.
+- Offers an adaptive variant for the inner loop via the `adaptive` flag.
+
+**Inputs:**
+- Feature data: `sparse_example_indices`, `sparse_feature_indices`, `sparse_feature_values` for sparse features; `dense_features` for dense features.
+- Example information: `example_weights`, `example_labels`.
+- Model weights: `sparse_weights`, `dense_weights`.
+- Optimization state: `example_state_data`.
+- Hyperparameters: `loss_type`, `l1`, `l2`, `num_loss_partitions`, `num_inner_iterations`.
+
+**Outputs:**
+- Updated `out_example_state_data`.
+- Weight deltas: `out_delta_sparse_weights` and `out_delta_dense_weights`, which should be added to the current weights.
+
+**Typical Use Case:** Efficient large-scale linear model training with dual coordinate ascent, particularly suitable for high-dimensional sparse datasets common in ML tasks like classification or regression.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sparse_example_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  sparse_feature_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  sparse_feature_values:
+    dtype: ["float32"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  dense_features:
+    dtype: ["float32"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  example_weights:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  example_labels:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  sparse_indices:
+    dtype: ["int64"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  sparse_weights:
+    dtype: ["float32"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  dense_weights:
+    dtype: ["float32"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  example_state_data:
+    dtype: ["float32"]
+    range: null
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SdcaOptimizerV2 in a complex way */
+import tensorflow as tf

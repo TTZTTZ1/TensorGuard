@@ -1,0 +1,87 @@
+
+# You are a Python code generation assistant for the `torch.distributed.reduce_scatter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (CPU/optional GPU). NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations.
+- **Process Groups**: Default "world" group includes all processes; sub-groups can be created with `new_group()`.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+
+## **Key Features**
+- **Collective Operations**: `broadcast`, `all_reduce`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, `barrier`
+- **Point-to-Point**: `send`/`recv` (synchronous) and `isend`/`irecv` (asynchronous)
+- **Object Collectives**: Python object communication (`broadcast_object_list`, `all_gather_object`, etc.)
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for coordination
+- **Synchronous/Asynchronous**: All collectives support both modes via `async_op` flag
+
+## **Initialization Methods**
+1. **Environment Variables** (default): `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK`
+2. **TCP**: `init_method='tcp://10.1.1.20:23456'`
+3. **Shared File System**: `init_method='file:///mnt/nfs/sharedfile'`
+
+## **Best Practices**
+- Use NCCL for CUDA GPU training, Gloo for CPU
+- Call `destroy_process_group()` for cleanup
+- Set `torch.cuda.set_device()` before NCCL operations
+- Use `DistributedDataParallel` wrapper for model parallelism
+- Enable debugging with `TORCH_DISTRIBUTED_DEBUG` and `TORCH_CPP_LOG_LEVEL`
+
+## **Debugging Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout reporting
+- `breakpoint()`: Rank-specific debugging
+- Debug HTTP server for runtime inspection
+- Custom exception types for distributed errors
+
+## **Launch Utilities**
+- `torch.distributed.launch` (deprecated, use `torchrun`)
+- `torch.multiprocessing.spawn` for single-node multi-process
+
+The package enables scalable distributed training with support for various network interconnects and hardware configurations, while providing tools for performance optimization and debugging.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  output:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  input_list:
+    dtype: ["list[Tensor]"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: null
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM"]]
+    structure: ["scalar"]
+    shape: null
+    default: "ReduceOp.SUM"
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: input_list
+    Parameter 2: output
+    Constraint: "len(input_list) == (group.size() if group is not None else torch.distributed.get_world_size()) and all(tensor.shape == output.shape for tensor in input_list)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.reduce_scatter in a complex way */
+import torch

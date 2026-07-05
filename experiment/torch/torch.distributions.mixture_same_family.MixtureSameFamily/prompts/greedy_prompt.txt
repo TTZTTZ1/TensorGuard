@@ -1,0 +1,119 @@
+
+# You are a Python code generation assistant for the `torch.distributions.mixture_same_family.MixtureSameFamily` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable Distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Gradient Estimation**: Two main methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  - **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling
+
+## **Main Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with common methods:
+  - `sample()` / `rsample()`: Sampling (with/without reparameterization)
+  - `log_prob()`: Log probability density/mass
+  - `entropy()`: Distribution entropy
+  - `mean`, `variance`, `mode`: Distribution statistics
+  - `cdf()` / `icdf()`: Cumulative/inverse cumulative functions
+
+### **2. Available Distributions**
+**Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+
+**Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, RelaxedBernoulli (Gumbel-Softmax), etc.
+
+### **3. Key Features**
+- **Batch/Event Shapes**: Support for batched distributions with clear shape semantics
+- **ExponentialFamily**: Specialized class for distributions in exponential family form
+- **Constraint System**: Automatic parameter validation (e.g., probabilities in [0,1])
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Transforms**: Bijective transformations for reparameterization (Affine, Exp, Sigmoid, etc.)
+
+### **4. Constraint Registry System**
+- `transform_to(constraint)`: Gets transforms for unconstrained optimization
+- `biject_to(constraint)`: Gets bijective transforms for HMC sampling
+- Extensible system for custom constraints and transforms
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Construction**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.rsample((100,))  # 100 samples
+
+# Transformed distribution (e.g., LogNormal)
+base = Normal(loc, scale)
+log_normal = TransformedDistribution(base, [ExpTransform()])
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions design
+- Enables stochastic computation graphs
+- Provides both score function and pathwise gradient estimators
+- Supports automatic differentiation through distribution operations
+- Modular with clear separation between distributions, transforms, and constraints
+
+This package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mixture_distribution:
+    dtype: ["Categorical"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+  component_distribution:
+    dtype: ["Distribution"]
+    range: [null]
+    structure: ["instance"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: mixture_distribution
+    Parameter 2: null
+    Constraint: "isinstance(mixture_distribution, Categorical)"
+  2:
+    Parameter 1: component_distribution
+    Parameter 2: null
+    Constraint: "isinstance(component_distribution, Distribution)"
+  3:
+    Parameter 1: mixture_distribution
+    Parameter 2: component_distribution
+    Constraint: "mixture_distribution.event_shape == torch.Size([]) and mixture_distribution.param_shape[-1] == component_distribution.batch_shape[-1]"
+  4:
+    Parameter 1: mixture_distribution
+    Parameter 2: component_distribution
+    Constraint: "mixture_distribution.batch_shape == torch.Size([]) or mixture_distribution.batch_shape == component_distribution.batch_shape[:-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.mixture_same_family.MixtureSameFamily in a complex way */
+import torch

@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.distributed.reduce` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi‑process parallelism across multiple machines or GPUs. It supports synchronous distributed training, enabling efficient large‑scale model training.
+
+## Key Features
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), MPI, and custom backends.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group.
+- **Communication Primitives**:
+  - Point‑to‑point: `send`, `recv`, `isend`, `irecv`
+  - Collectives: `broadcast`, `all_reduce`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, `barrier`
+  - Object collectives: Support Python objects (with performance caveats).
+- **Groups**: Create sub‑groups with `new_group()` for fine‑grained communication.
+- **DeviceMesh**: Higher‑level abstraction for managing multi‑dimensional device topologies.
+- **Key‑Value Store**: `TCPStore`, `FileStore`, `HashStore` for coordination and initialization.
+- **Launch Utilities**: `torch.distributed.launch` and `torch.multiprocessing.spawn` for multi‑process startup.
+- **Debugging**: Tools like `monitored_barrier`, `TORCH_DISTRIBUTED_DEBUG`, and `torch.distributed.breakpoint` for debugging hangs and synchronization issues.
+
+## Typical Workflow
+1. Initialize the process group (e.g., via environment variables).
+2. Use collective or point‑to‑point communication.
+3. Wrap models with `DistributedDataParallel` for data‑parallel training.
+4. Clean up with `destroy_process_group()`.
+
+## Best Practices
+- Use NCCL for CUDA GPU training, Gloo for CPU.
+- Ensure each GPU is exclusive to one process when using NCCL.
+- Set `async_op=True` for overlapping communication with computation.
+- Be cautious with object collectives due to serialization overhead.
+- Use `TORCH_DISTRIBUTED_DEBUG` and `torch.distributed.breakpoint` for troubleshooting.
+
+This package is essential for scaling PyTorch training across multiple nodes and GPUs, offering both low‑level communication APIs and high‑level abstractions like `DeviceMesh` and `DistributedDataParallel`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: [0, "world_size-1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  op:
+    dtype: ["ReduceOp"]
+    range: [["SUM", "PRODUCT", "MIN", "MAX", "BAND", "BOR", "BXOR", "PREMUL_SUM"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "SUM"
+  group:
+    dtype: ["ProcessGroup"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  async_op:
+    dtype: ["bool"]
+    range: [[true, false]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+  group_dst:
+    dtype: ["int"]
+    range: [0, "group_size-1"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is None or group_dst is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.reduce in a complex way */
+import torch

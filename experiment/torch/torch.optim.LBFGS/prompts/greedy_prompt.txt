@@ -1,0 +1,89 @@
+
+# You are a Python code generation assistant for the `torch.optim.LBFGS` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.LBFGS` class implements the L-BFGS optimization algorithm, a memory-efficient quasi-Newton method suitable for smooth, unconstrained optimization problems.
+
+**Key Features:**
+- **Memory Intensive**: Requires additional memory proportional to `param_bytes * (history_size + 1)`.
+- **Single Device**: All parameters must reside on one device (limitation in current version).
+- **No Parameter Groups**: Does not support per-parameter options or multiple parameter groups.
+
+**Primary Parameters:**
+- `params`: Iterable of real-valued parameters to optimize.
+- `lr`: Learning rate (default: 1).
+- `max_iter`: Maximum iterations per optimization step (default: 20).
+- `max_eval`: Maximum function evaluations per step (default: `max_iter * 1.25`).
+- `tolerance_grad`: Termination tolerance on gradient norm (default: 1e-7).
+- `tolerance_change`: Termination tolerance on function/parameter changes (default: 1e-9).
+- `history_size`: Update history size affecting memory usage (default: 100).
+- `line_search_fn`: Optional line search method ('strong_wolfe' or None).
+
+**Essential Methods:**
+- `step(closure)`: Performs a single optimization step, requiring a closure that recomputes the loss.
+- `zero_grad(set_to_none=True)`: Resets gradients, with an option to set them to `None` for reduced memory usage.
+- `state_dict()` / `load_state_dict()`: Save and load optimizer state.
+
+**Important Notes:**
+- The optimizer is heavily inspired by the `minFunc` library.
+- Use a closure in `step()` to allow multiple function evaluations per iteration.
+- Consider reducing `history_size` if memory constraints arise.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  max_iter:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "20"
+  max_eval:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "max_iter * 1.25"
+  tolerance_grad:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-7"
+  tolerance_change:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-9"
+  history_size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "100"
+  line_search_fn:
+    dtype: ["str", "None"]
+    range: [["strong_wolfe"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.LBFGS in a complex way */
+import torch

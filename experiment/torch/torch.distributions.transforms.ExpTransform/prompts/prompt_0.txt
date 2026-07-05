@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.ExpTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs and gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - Abstract base class with methods like:
+  - `sample()`, `rsample()` (reparameterized sampling)
+  - `log_prob()`, `cdf()`, `icdf()`
+  - `entropy()`, `mean`, `variance`, `mode`
+
+- **Common Distributions**:
+  - Univariate: `Bernoulli`, `Normal`, `Uniform`, `Exponential`, `Gamma`, `Beta`, etc.
+  - Multivariate: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`
+  - Discrete: `Categorical`, `Binomial`, `Poisson`, `Geometric`
+  - Specialized: `LKJCholesky`, `Wishart`, `VonMises`
+
+### **2. Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**:
+  - Score function: Uses `sample()` + `log_prob()` (e.g., REINFORCE)
+  - Pathwise derivative: Uses `rsample()` (reparameterization trick)
+- **Exponential Family**: `ExponentialFamily` base class for distributions with special entropy/KL properties
+
+### **3. Advanced Constructs**
+- `TransformedDistribution`: Apply transforms to base distributions
+- `Independent`: Reinterpret batch dimensions as event dimensions
+- `MixtureSameFamily`: Mixture distributions with same component type
+- `KL Divergence`: Pre-registered KL computations between distributions
+
+### **4. Transforms & Constraints**
+- **Transforms**: `AffineTransform`, `ExpTransform`, `SigmoidTransform`, etc.
+- **Constraints**: Define valid parameter ranges (e.g., `simplex`, `positive_definite`)
+- **Constraint Registry**: `biject_to()` and `transform_to()` for unconstrained optimization
+
+## **Typical Usage Patterns**
+
+### **REINFORCE (Score Function)**
+```python
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (Pathwise)**
+```python
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Creation**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+
+# With transforms
+log_normal = LogNormal(loc=0.0, scale=1.0)  # = exp(Normal(0, 1))
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions design
+- Separates batch and event shapes
+- Provides both exact and approximate gradient estimators
+- Supports constrained parameters via transforms
+- Enables composition through `TransformedDistribution`
+
+This package is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  cache_size:
+    dtype: ["int"]
+    range: [0, 1]
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.ExpTransform in a complex way */
+import torch

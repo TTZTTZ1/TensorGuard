@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.Recall` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.metrics.Recall` class computes the recall metric for classification tasks, measuring the proportion of actual positive cases correctly identified. It inherits from `tf.keras.Metric` and is commonly used in binary or multi-class classification, especially with imbalanced datasets.
+
+**Key Features:**
+- Calculates recall as:  
+  `recall = true_positives / (true_positives + false_negatives)`
+- Supports optional parameters:
+  - `thresholds`: Decision threshold(s) for binarizing predictions (default=0.5).
+  - `top_k`: Considers only the top-k predictions.
+  - `class_id`: Computes recall for a specific class only.
+- Handles sample weighting and masked values.
+
+**Usage Example:**
+```python
+metric = tf.keras.metrics.Recall()
+metric.update_state([0, 1, 1, 1], [1, 0, 1, 1])  # y_true, y_pred
+print(metric.result().numpy())  # Output: 0.6666667
+```
+
+**Integration with `compile()`:**
+```python
+model.compile(
+    optimizer='sgd',
+    loss='binary_crossentropy',
+    metrics=[tf.keras.metrics.Recall()]
+)
+```
+
+**Notes:**
+- When using `from_logits=True` loss functions, set `thresholds=0`.
+- The metric maintains internal state variables (`true_positives`, `false_negatives`) across batches, which can be reset via `reset_state()`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  thresholds:
+    dtype: ["float", "list", "tuple"]
+    range: ["[0, 1]"]
+    structure: ["scalar", "list", "tuple"]
+    shape: ["1", "any"]
+    default: "None"
+  top_k:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  class_id:
+    dtype: ["int"]
+    range: ["[0, num_classes)"]
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+  dtype:
+    dtype: ["dtype", "string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["1"]
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.Recall in a complex way */
+import tensorflow as tf

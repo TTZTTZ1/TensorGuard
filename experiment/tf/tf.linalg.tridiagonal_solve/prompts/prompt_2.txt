@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.linalg.tridiagonal_solve` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.tridiagonal_solve` solves linear systems with tridiagonal matrices. It supports multiple input formats (`compact`, `sequence`, or `matrix`) for the diagonals and can handle batched inputs and multiple right-hand sides. The function uses Gaussian elimination with optional partial pivoting on CPU and cuSPARSE on GPU. Key options include controlling pivoting for stability and perturbing near-singular matrices for numerical robustness. Performance is best with the `compact` diagonals format, and caution is advised for singular matrices as results may be undefined.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  diagonals:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: [null]
+    structure: ["tensor", "tuple"]
+    shape: ["[..., M, M] for matrix format", "tuple of three tensors with shapes [..., N], [..., M], [..., N] for sequence format", "[..., 3, M] for compact format"]
+    default: null
+  rhs:
+    dtype: ["float32", "float64", "complex64", "complex128"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["[..., M]", "[..., M, K]"]
+    default: null
+  diagonals_format:
+    dtype: ["string"]
+    range: ["matrix", "sequence", "compact"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "compact"
+  transpose_rhs:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  conjugate_rhs:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  partial_pivoting:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  perturb_singular:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "diagonals"
+    Parameter 2: "rhs"
+    Constraint: "diagonals.dtype == rhs.dtype"
+  2:
+    Parameter 1: "diagonals"
+    Parameter 2: "rhs"
+    Constraint: "diagonals.shape.as_list()[:-2] == rhs.shape.as_list()[:-1] or diagonals.shape.as_list()[:-2] == rhs.shape.as_list()[:-2]"
+  3:
+    Parameter 1: "partial_pivoting"
+    Parameter 2: "perturb_singular"
+    Constraint: "not perturb_singular or partial_pivoting"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.tridiagonal_solve in a complex way */
+import tensorflow as tf

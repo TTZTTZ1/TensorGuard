@@ -1,0 +1,56 @@
+params:
+  input:
+    dtype: ["float16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 3"]
+    default: null
+  filters:
+    dtype: ["float16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 3"]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: "1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "filters"
+    Constraint: "input.dtype == filters.dtype"
+  2:
+    Parameter 1: "data_format"
+    Parameter 2: "data_format"
+    Constraint: 'data_format in ["NWC", "NCW"]'
+  3:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: 'not (isinstance(dilations, list) and len(dilations) == 3) or (dilations[0] == 1 and ((data_format == "NWC" and dilations[2] == 1) or (data_format == "NCW" and dilations[1] == 1)))'

@@ -1,0 +1,48 @@
+
+# You are a Python code generation assistant for the `tf.math.unsorted_segment_prod` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.math.unsorted_segment_prod` computes the product of elements in a tensor grouped by segment IDs. It multiplies all entries in `data` that share the same segment ID, producing an output where each segment's result is the product of its corresponding values. If a segment has no entries, the output is 1. Negative segment IDs are ignored. The function requires specifying `num_segments` to define the output size. Note that segment ID validation differs between CPU (strict bounds checking) and GPU (no guarantees for out-of-bounds indices).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  data:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  segment_ids:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  num_segments:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["string"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: segment_ids
+    Parameter 2: data
+    Constraint: "len(segment_ids.shape) <= len(data.shape) and all(segment_ids.shape[i] == data.shape[i] for i in range(len(segment_ids.shape)))"
+  2:
+    Parameter 1: segment_ids
+    Parameter 2: num_segments
+    Constraint: "tf.reduce_all(segment_ids < num_segments)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.math.unsorted_segment_prod in a complex way */
+import tensorflow as tf

@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `torch.nn.functional.conv_transpose3d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.nn.functional.conv_transpose3d` applies a 3D transposed convolution (often called "deconvolution") to an input tensor. It expands the spatial dimensions by applying learnable filters, effectively performing the inverse of a regular convolution.
+
+**Key parameters:**
+- **input**: Shape `(minibatch, in_channels, depth, height, width)`
+- **weight**: Shape `(in_channels, out_channels/groups, kernel_depth, kernel_height, kernel_width)`
+- **stride**: Controls the spacing between kernel positions (single value or tuple).
+- **padding**: Adds zero-padding to the input before the operation.
+- **output_padding**: Adjusts the output size along each dimension.
+- **dilation**: Spacing between kernel elements.
+- **groups**: Splits input into groups for grouped convolution.
+
+**Example:**
+```python
+inputs = torch.randn(20, 16, 50, 10, 20)
+weights = torch.randn(16, 33, 3, 3, 3)
+output = F.conv_transpose3d(inputs, weights)
+```
+
+**Note:** On CUDA with CuDNN, the operation may be nondeterministic by default for performance; set `torch.backends.cudnn.deterministic = True` for reproducibility.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  weight:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [5]
+    default: null
+  bias:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "None"]
+    shape: [1]
+    default: "None"
+  stride:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "1"
+  padding:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "0"
+  output_padding:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "0"
+  groups:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  dilation:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "1"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: groups
+    Constraint: "input.size(1) % groups == 0"
+  2:
+    Parameter 1: input
+    Parameter 2: weight
+    Constraint: "input.size(1) == weight.size(0)"
+  3:
+    Parameter 1: bias
+    Parameter 2: weight
+    Constraint: "bias is None or bias.size(0) == weight.size(1) * groups"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.functional.conv_transpose3d in a complex way */
+import torch

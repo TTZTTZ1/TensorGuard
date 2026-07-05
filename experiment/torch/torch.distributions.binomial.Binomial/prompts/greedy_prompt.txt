@@ -1,0 +1,108 @@
+
+# You are a Python code generation assistant for the `torch.distributions.binomial.Binomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key functionality:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Base Class**
+- Abstract base class for all probability distributions
+- Common methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+### **2. Available Distributions**
+**Continuous**: Normal, Uniform, Exponential, Gamma, Beta, Cauchy, Laplace, StudentT, Gumbel, etc.
+**Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, NegativeBinomial, etc.
+**Multivariate**: MultivariateNormal, Dirichlet, Wishart, LKJCholesky, etc.
+**Specialized**: MixtureSameFamily, TransformedDistribution, Independent, etc.
+
+### **3. Key Features**
+- **Parameterization**: Most distributions accept either `probs` or `logits` parameters
+- **Batch Support**: All distributions support batched parameters
+- **Gradient Estimation**: 
+  - `sample()` + `log_prob()` for REINFORCE
+  - `rsample()` for reparameterization trick (where available)
+- **Validation**: Optional argument validation via `validate_args`
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.)
+- **Constraints**: Define valid parameter ranges (simplex, positive, interval, etc.)
+- **Registry System**: `transform_to()` and `biject_to()` for constrained optimization
+
+### **5. KL Divergence**
+- Pre-registered KL divergences between many distribution pairs
+- Extensible via `register_kl()` decorator
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients using REINFORCE
+2. **Variational Inference**: Reparameterization trick for VAEs
+3. **Probabilistic Modeling**: Building complex hierarchical models
+4. **Constrained Optimization**: Using transforms for parameter constraints
+
+## **Example Patterns**
+```python
+# REINFORCE (score function estimator)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (pathwise derivative)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+```
+
+The package follows TensorFlow Distributions design and provides a flexible, extensible foundation for probabilistic programming in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["int", "Tensor"]
+    range: [">=0"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "1"
+  probs:
+    dtype: ["Tensor"]
+    range: ["[0,1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  logits:
+    dtype: ["Tensor"]
+    range: ["Real"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: probs
+    Constraint: "torch.broadcast_shapes(torch.as_tensor(total_count).shape, torch.as_tensor(probs).shape) is not None"
+  2:
+    Parameter 1: total_count
+    Parameter 2: logits
+    Constraint: "torch.broadcast_shapes(torch.as_tensor(total_count).shape, torch.as_tensor(logits).shape) is not None"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.binomial.Binomial in a complex way */
+import torch

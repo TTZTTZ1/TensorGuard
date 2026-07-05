@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.JoinHook` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Generic Join Context Manager** in PyTorch enables distributed training with uneven inputs across processes, preventing hangs or errors when some processes finish earlier than others.
+
+### **Core Components:**
+
+1. **`Join`** – Context manager that coordinates the join process.
+   - Takes a list of `Joinable` objects.
+   - Calls hooks to shadow collective communications for joined processes.
+   - Options:
+     - `enable`: Enable/disable uneven input detection.
+     - `throw_on_early_termination`: Throw an exception if uneven inputs are detected.
+
+2. **`Joinable`** – Abstract base class for objects that can participate in the join process.
+   - Must implement:
+     - `join_hook()`: Returns a `JoinHook` instance.
+     - `join_device`: Device for collective communications.
+     - `join_process_group`: Process group for join coordination.
+
+3. **`JoinHook`** – Defines hooks called during the join process.
+   - `main_hook()`: Called repeatedly while some processes are still active (shadows collective communications).
+   - `post_hook(is_last_joiner)`: Called after all processes have joined.
+
+### **Key Usage Notes:**
+
+- **Required Call**: Each `Joinable` must call `Join.notify_join_context()` before its per-iteration collective communications (e.g., at the start of the forward pass in `DistributedDataParallel`).
+- **Process Group Consistency**: All `JoinHook` objects must use the same process group.
+- **Device**: Uses the device of the first `JoinHook` for coordination.
+
+### **Example Workflow:**
+```python
+with Join([model, optimizer]):
+    for input in uneven_inputs:
+        Join.notify_join_context(model)  # Notify before collectives
+        # Training step (forward/backward/optimizer)
+```
+This ensures all processes complete without hanging, even with different input sizes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  is_last_joiner:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.JoinHook in a complex way */
+import torch

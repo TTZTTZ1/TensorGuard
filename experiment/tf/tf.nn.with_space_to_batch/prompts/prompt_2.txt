@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `tf.nn.with_space_to_batch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.with_space_to_batch` is a TensorFlow function that transforms a given operation (`op`) to work on the space-to-batch representation of an input tensor. This effectively converts sliding window operations (like convolution or pooling) into their dilated ("atrous") equivalents, where the input is sampled according to a specified `dilation_rate`.
+
+### Key Functionality:
+- If `dilation_rate` is uniformly 1, it directly applies `op` to the input.
+- Otherwise, it internally uses `space_to_batch_nd` and `batch_to_space_nd` to adjust the input and output, enabling dilated operations.
+- Supports both `"VALID"` and `"SAME"` padding schemes.
+- Allows optimization by combining multiple operations with identical `dilation_rate` and padding into a single call.
+
+### Main Parameters:
+- **`input`**: Input tensor with rank greater than the maximum spatial dimension.
+- **`dilation_rate`**: 1D tensor specifying the dilation rate for each spatial dimension.
+- **`padding`**: Either `"VALID"` or `"SAME"`.
+- **`op`**: A function that takes `(input, num_spatial_dims, padding)` and returns a tensor.
+- **`filter_shape`**: Required for `"SAME"` padding; defines the kernel/window shape.
+- **`spatial_dims`**: Specifies which dimensions are spatial (defaults to `range(1, num_spatial_dims+1)`).
+- **`data_format`**: Specifies the channel dimension layout (e.g., `"NHWC"` or `"NCHW"`).
+
+### Use Case:
+Primarily used to implement dilated convolutions or other dilated spatial operations efficiently by handling the necessary tensor transformations automatically.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dilation_rate:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[num_spatial_dims]"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+  op:
+    dtype: ["function"]
+    range: ["No mention"]
+    structure: ["function"]
+    shape: ["No mention"]
+    default: null
+  filter_shape:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["[>=num_spatial_dims]"]
+    default: null
+  spatial_dims:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["sequence"]
+    shape: ["[num_spatial_dims]"]
+    default: "range(1, num_spatial_dims+1)"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", None]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: spatial_dims
+    Constraint: "tf.rank(input) > max(spatial_dims)"
+  2:
+    Parameter 1: dilation_rate
+    Parameter 2: spatial_dims
+    Constraint: "dilation_rate.shape[0] == len(spatial_dims)"
+  3:
+    Parameter 1: padding
+    Parameter 2: padding
+    Constraint: "padding in ['VALID', 'SAME']"
+  4:
+    Parameter 1: spatial_dims
+    Parameter 2: spatial_dims
+    Constraint: "all(spatial_dims[i] < spatial_dims[i+1] for i in range(len(spatial_dims)-1)) and all(dim >= 1 for dim in spatial_dims)"
+  5:
+    Parameter 1: padding
+    Parameter 2: filter_shape
+    Constraint: "(padding == 'VALID') or (padding == 'SAME' and filter_shape is not None and filter_shape.shape[0] >= len(spatial_dims))"
+  6:
+    Parameter 1: data_format
+    Parameter 2: spatial_dims
+    Constraint: "data_format is None or ( (data_format in ['NWC', 'NCW'] and len(spatial_dims) == 1) or (data_format in ['NHWC', 'NCHW'] and len(spatial_dims) == 2) or (data_format in ['NDHWC', 'NCDHW'] and len(spatial_dims) == 3) )"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.with_space_to_batch in a complex way */
+import tensorflow as tf

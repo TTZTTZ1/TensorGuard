@@ -1,0 +1,54 @@
+params:
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  amount:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  t:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  default_mask:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  importance_scores:
+    dtype: ["torch.Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "amount"
+    Parameter 2: "amount"
+    Constraint: "(isinstance(amount, float) and 0.0 <= amount <= 1.0) or isinstance(amount, int)"
+  2:
+    Parameter 1: "importance_scores"
+    Parameter 2: "t"
+    Constraint: "importance_scores is None or importance_scores.shape == t.shape"
+  3:
+    Parameter 1: "default_mask"
+    Parameter 2: "t"
+    Constraint: "default_mask is None or default_mask.shape == t.shape"
+  4:
+    Parameter 1: "name"
+    Parameter 2: "module"
+    Constraint: "hasattr(module, name)"

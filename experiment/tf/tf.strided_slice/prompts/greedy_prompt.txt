@@ -1,0 +1,94 @@
+
+# You are a Python code generation assistant for the `tf.strided_slice` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.strided_slice` is a low-level TensorFlow operation for extracting strided slices from a tensor, implementing generalized Python-style array indexing. It allows flexible slicing with start (`begin`), stop (`end`), and step (`stride`) parameters for each dimension, supporting features like reverse slicing (negative strides), automatic range selection via masks, dimension insertion (`new_axis_mask`), and dimension removal (`shrink_axis_mask`). While direct usage is uncommon (NumPy-style syntax via `tensor[...]` is preferred), this op provides precise control over slicing behavior, especially for dynamic or programmatically generated slices.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  begin:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  end:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  strides:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "None"
+  begin_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  end_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  ellipsis_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  new_axis_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  shrink_axis_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  var:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["variable", "None"]
+    shape: ["No mention"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1.
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "tf.math.reduce_all(tf.math.not_equal(strides, 0))"
+  2.
+    Parameter 1: "ellipsis_mask"
+    Parameter 2: "ellipsis_mask"
+    Constraint: "ellipsis_mask == 0 or (ellipsis_mask & (ellipsis_mask - 1)) == 0"
+  3.
+    Parameter 1: "begin"
+    Parameter 2: "end"
+    Constraint: "strides is None or (tf.size(begin) == tf.size(end) and tf.size(begin) == tf.size(strides))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.strided_slice in a complex way */
+import tensorflow as tf

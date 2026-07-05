@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.CosineAnnealingWarmRestarts` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CosineAnnealingWarmRestarts** is a PyTorch learning rate scheduler that implements a cosine annealing schedule with periodic warm restarts, as proposed in the SGDR paper.
+
+**Key Features:**
+- **Cosine Annealing**: Learning rate follows a cosine curve from the initial LR (`η_max`) down to a minimum (`η_min`).
+- **Warm Restarts**: Periodically resets the learning rate back to the initial value (`η_max`) and restarts the cosine annealing cycle.
+- **Cycle Expansion**: After each restart, the cycle length can be multiplied by `T_mult` (default: 1, no expansion).
+
+**Parameters:**
+- `optimizer`: The optimizer to wrap
+- `T_0`: Number of iterations/epochs for the first cycle
+- `T_mult`: Multiplicative factor for cycle length after each restart (≥1)
+- `eta_min`: Minimum learning rate (default: 0)
+- `last_epoch`: Starting epoch index (default: -1)
+
+**Usage:**
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
+scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=20)
+
+for epoch in range(100):
+    train(...)
+    validate(...)
+    scheduler.step()  # Can be called per epoch or per batch
+```
+
+**Behavior:**
+- Learning rate follows: `η_t = η_min + 0.5*(η_max - η_min)*(1 + cos(π * T_cur/T_i))`
+- `T_cur`: Iterations since last restart
+- `T_i`: Current cycle length
+- When `T_cur = T_i`, LR reaches `η_min` and restarts
+- After restart, `T_i` becomes `T_i * T_mult`
+
+**Common Methods:**
+- `step()`: Update scheduler state (can accept epoch parameter)
+- `get_last_lr()`: Get current learning rates
+- `state_dict()` / `load_state_dict()`: Save/load scheduler state
+
+This scheduler helps escape local minima by periodically "warming" the learning rate, potentially improving convergence in deep learning training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  T_0:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  T_mult:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  eta_min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.CosineAnnealingWarmRestarts in a complex way */
+import torch

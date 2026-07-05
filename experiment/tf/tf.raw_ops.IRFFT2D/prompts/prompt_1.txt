@@ -1,0 +1,55 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.IRFFT2D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.IRFFT2D` function computes the inverse 2D real-valued fast Fourier transform, converting a complex-valued frequency-domain signal back to a real-valued time-domain signal. It operates on the inner-most two dimensions of the input tensor, which is expected to be the output of a forward `RFFT2D` transform.
+
+**Key Parameters:**
+- **`input`**: A complex tensor (`complex64` or `complex128`) representing the frequency-domain data.
+- **`fft_length`**: An `int32` tensor of shape `[2]` specifying the FFT length for each dimension. If not provided, it is inferred from the input size, but must be explicitly given when the original FFT length was odd.
+- **`Treal`**: Optional output data type (`float32` or `float64`), defaulting to `float32`.
+
+**Behavior:**
+- If `fft_length` is smaller than the corresponding input dimension, the dimension is cropped; if larger, it is padded with zeros.
+- The inner-most dimension of `input` should have `fft_length[1] / 2 + 1` unique frequency components.
+
+**Returns:** A real-valued tensor of type `Treal` representing the reconstructed time-domain signal.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  fft_length:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: "null"
+  Treal:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.float32"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "fft_length"
+    Constraint: "input.shape[-2] == fft_length[0] and input.shape[-1] == fft_length[1] // 2 + 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.IRFFT2D in a complex way */
+import tensorflow as tf

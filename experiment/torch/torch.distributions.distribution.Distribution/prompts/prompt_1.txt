@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `torch.distributions.distribution.Distribution` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Parameterizable Distributions**: Supports various probability distributions (Bernoulli, Normal, Gamma, etc.) with parameterizable properties.
+- **Gradient Estimation**: Implements two main methods for backpropagation through random samples:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods
+  - **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## **Main Components**
+
+### **1. Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+- Batch and event shape handling
+
+### **2. Available Distributions**
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, MultivariateNormal, LowRankMultivariateNormal, Wishart
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Pareto, Weibull (via `TransformedDistribution`)
+- **Specialized**: MixtureSameFamily, RelaxedBernoulli, LKJCholesky, VonMises
+
+### **3. Key Methods**
+- **`sample()` / `rsample()`**: Generate samples (latter is reparameterized)
+- **`log_prob(value)`**: Compute log probability density/mass
+- **`entropy()`**: Calculate distribution entropy
+- **`cdf()` / `icdf()`**: Cumulative distribution and inverse CDF
+
+### **4. Transforms & Constraints**
+- **Transforms**: Bijective transformations (Affine, Exp, Sigmoid, Softmax, etc.) for reparameterization
+- **Constraints**: Define valid parameter ranges (simplex, positive, interval, etc.)
+- **Registry System**: `transform_to()` and `biject_to()` for mapping constraints to transforms
+
+### **5. KL Divergence**
+- `kl_divergence(p, q)` computes KL divergence between distributions
+- Extensive registry of implemented KL pairs
+
+## **Common Use Cases**
+1. **Reinforcement Learning**: Policy gradients using REINFORCE
+2. **Variational Inference**: Reparameterization trick for VAEs
+3. **Probabilistic Modeling**: Building complex distributions via transformations
+4. **Bayesian Methods**: Prior/posterior distributions with gradient-based optimization
+
+## **Example Patterns**
+```python
+# REINFORCE (Score Function)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (Pathwise)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+```
+
+The module follows TensorFlow Distributions design and integrates seamlessly with PyTorch's autograd system, making it suitable for modern deep learning applications requiring probabilistic reasoning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  batch_shape:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  event_shape:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.distribution.Distribution in a complex way */
+import torch

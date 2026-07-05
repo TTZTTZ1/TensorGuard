@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `tf.DeviceSpec` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.DeviceSpec` is a TensorFlow class used to specify the device placement for operations and variables. It allows you to define or parse device specifications programmatically, supporting components like job, replica, task, device type, and device index.
+
+### Key Features:
+- **Device Specification**: Represents where computations or data are placed (e.g., `/job:ps/device:GPU:0`).
+- **String Parsing**: Can construct a `DeviceSpec` from a string or convert it to a string representation.
+- **Merging and Overriding**: Supports merging specs (inner scopes override outer ones) and creating new specs by overriding fields.
+- **Immutable in TF 2.x**: In TensorFlow 2.x, `DeviceSpec` objects are immutable; modifications return a new instance.
+
+### Main Components (all optional):
+- `job`: Job name.
+- `replica`: Replica index.
+- `task`: Task index.
+- `device_type`: Device type (e.g., `"CPU"` or `"GPU"`).
+- `device_index`: Device index.
+
+### Common Methods:
+- `from_string(spec)`: Creates a `DeviceSpec` from a string.
+- `to_string()`: Converts the `DeviceSpec` to a string.
+- `make_merged_spec(dev)`: Merges another `DeviceSpec` into the current one (the argument takes precedence).
+- `replace(**kwargs)`: Returns a new `DeviceSpec` with updated fields.
+- `parse_from_string(spec)`: Parses a string to update the spec (deprecated in TF 2.x; use `from_string` instead).
+
+### Usage Example:
+```python
+# Define a device specification
+spec = tf.DeviceSpec(job="ps", device_type="GPU", device_index=0)
+with tf.device(spec.to_string()):  # or just `spec` in TF 1.x/compat modes
+    my_var = tf.Variable(...)  # Placed on /job:ps/device:GPU:0
+```
+
+### Note:
+- In TensorFlow 2.x with eager execution enabled, use `to_string()` when passing `DeviceSpec` to `tf.device()`.
+- For partial specifications, TensorFlow merges specs hierarchically (inner scope overrides outer).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  job:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  replica:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  task:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  device_type:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  device_index:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.DeviceSpec in a complex way */
+import tensorflow as tf

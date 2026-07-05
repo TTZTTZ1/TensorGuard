@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.StatelessRandomBinomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.StatelessRandomBinomial` generates deterministic pseudorandom numbers from a binomial distribution, where the output is fully determined by the input parameters. It requires specifying the output tensor shape, a 2-element seed, counts (number of trials), and success probabilities. The `counts` and `probs` tensors must be broadcastable with each other and with the rightmost dimensions of `shape`. The output data type defaults to `int64` but can be customized. This operation is stateless, ensuring reproducibility given the same inputs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  shape:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  counts:
+    dtype: ["half", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  probs:
+    dtype: ["half", "float32", "float64", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  dtype:
+    dtype: ["half", "float32", "float64", "int32", "int64"]
+    range: ["half", "float32", "float64", "int32", "int64"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "tf.int64"
+  name:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "counts"
+    Parameter 2: "probs"
+    Constraint: "probs.dtype == counts.dtype"
+  2:
+    Parameter 1: "counts"
+    Parameter 2: "probs"
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip(reversed(counts.shape), reversed(probs.shape)))"
+  3:
+    Parameter 1: "counts"
+    Parameter 2: "shape"
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip(reversed(counts.shape), reversed(shape.shape[-len(counts.shape):])))"
+  4:
+    Parameter 1: "probs"
+    Parameter 2: "shape"
+    Constraint: "all((a == b or a == 1 or b == 1) for a, b in zip(reversed(probs.shape), reversed(shape.shape[-len(probs.shape):])))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.StatelessRandomBinomial in a complex way */
+import tensorflow as tf

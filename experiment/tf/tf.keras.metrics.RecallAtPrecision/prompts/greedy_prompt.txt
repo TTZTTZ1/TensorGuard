@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `tf.keras.metrics.RecallAtPrecision` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.metrics.RecallAtPrecision` is a metric that calculates the **highest possible recall** while ensuring precision is at least a specified target value. It is useful for tasks where maintaining a minimum precision level is critical.
+
+**Key Features:**
+- **Inputs:** Requires a target `precision` value between 0 and 1.
+- **Operation:** Computes precision and recall across multiple thresholds (default 200) to find the threshold that meets the precision target, then returns the corresponding recall.
+- **Handles Impossibility:** Returns `0.0` if the target precision cannot be achieved.
+- **Usage:** Can be applied to binary or multi-class classification (with `class_id` for per-class evaluation).
+- **Integration:** Compatible with Keras' `compile()` API for model training.
+
+**Example:**
+```python
+metric = tf.keras.metrics.RecallAtPrecision(precision=0.8)
+metric.update_state([0, 1, 1, 0], [0.2, 0.6, 0.8, 0.3])  # y_true, y_pred
+print(metric.result())  # Output: best recall where precision >= 0.8
+```
+
+**Main Methods:**
+- `update_state()`: Accumulates prediction statistics.
+- `result()`: Computes and returns the metric value.
+- `reset_state()`: Clears accumulated state.
+
+This metric is ideal for optimizing recall under precision constraints, such as in medical diagnostics or quality control.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  precision:
+    dtype: ["No mention"]
+    range: ["[0, 1]"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_thresholds:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "200"
+  class_id:
+    dtype: ["int"]
+    range: ["half-open interval [0, num_classes)"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  dtype:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: precision
+    Parameter 2: precision
+    Constraint: "precision >= 0 and precision <= 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.metrics.RecallAtPrecision in a complex way */
+import tensorflow as tf

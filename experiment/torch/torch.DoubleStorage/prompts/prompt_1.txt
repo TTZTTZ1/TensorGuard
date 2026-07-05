@@ -1,0 +1,79 @@
+
+# You are a Python code generation assistant for the `torch.DoubleStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch documentation describes **torch.Storage** as the low-level data container for tensors. Here's a concise summary:
+
+### Core Concept
+A **torch.UntypedStorage** is a contiguous, one-dimensional byte array that holds the actual data for tensors. It's independent of data type (`dtype`) and shape, allowing multiple tensors with different dtypes/shapes to share the same underlying storage.
+
+### Key Relationships
+- **Tensor ↔ Storage**: A tensor's data is stored in an `UntypedStorage`, accessible via `tensor.untyped_storage()`.
+- **Storage Sharing**: Tensor views (e.g., from `.view()` or slicing) share the same storage as the original tensor.
+- **Data Pointer**: `storage.data_ptr()` provides a unique identifier for the storage's memory location.
+
+### Main Functionality
+- **Creation**: Can be created from tensors, cloned, or memory-mapped from files (`from_file()`).
+- **Device Management**: Supports CPU, CUDA, MPS, HPU devices with methods like `.cuda()`, `.cpu()`.
+- **Memory Operations**: Can be pinned (`pin_memory()`), moved to shared memory (`share_memory_()`), or copied.
+- **Type Casting**: Methods like `.float()`, `.int()` for dtype conversion (returns new typed storage).
+- **Low-level Manipulation**: Direct storage modification is possible but discouraged in favor of tensor-level operations.
+
+### Important Notes
+1. **Legacy APIs**: `torch.TypedStorage` and type-specific storages (e.g., `torch.FloatStorage`) are deprecated.
+2. **Special Cases**: Meta device tensors and FakeTensors have no actual storage.
+3. **Gradients**: Tensors with gradients have separate storages for data and grad attributes.
+4. **Warning**: Direct storage manipulation is a low-level operation; tensor methods are preferred for safety.
+
+### When to Use
+Storage-level operations are rarely needed in typical workflows. The API exists primarily for:
+- Advanced memory management
+- Interoperability with low-level systems
+- Understanding PyTorch's internal data representation
+
+The documentation emphasizes that most users should work with tensor-level APIs rather than directly manipulating storages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["int", "list", "torch.Tensor"]
+    range: null
+    structure: ["variable"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  device:
+    dtype: ["torch.device", "None", "int", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1.
+    Parameter 1: dtype
+    Parameter 2: None
+    Constraint: "dtype is None or dtype == torch.float64"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.DoubleStorage in a complex way */
+import torch

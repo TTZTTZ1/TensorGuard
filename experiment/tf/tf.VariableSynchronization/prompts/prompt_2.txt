@@ -1,0 +1,36 @@
+
+# You are a Python code generation assistant for the `tf.VariableSynchronization` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.VariableSynchronization` is an enumeration that defines when a distributed TensorFlow variable should be synchronized across devices. It is primarily used in distributed training to control how variable updates are propagated.
+
+**Key synchronization modes:**
+- **AUTO**: Synchronization behavior is automatically determined by the current `DistributionStrategy` (e.g., `ON_WRITE` for `MirroredStrategy`).
+- **NONE**: No synchronization is needed, as there is only one copy of the variable.
+- **ON_WRITE**: The variable is synchronized across devices immediately after every write operation.
+- **ON_READ**: Synchronization occurs only when the variable is read (e.g., during checkpointing or evaluation), often using aggregation methods like `MEAN`.
+
+**Usage example:**
+```python
+tf.Variable([0.], 
+            synchronization=tf.VariableSynchronization.ON_READ,
+            aggregation=tf.VariableAggregation.MEAN)
+```
+This is commonly applied in distributed settings to manage gradient updates or model parameters efficiently.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  synchronization:
+    dtype: ["int", "enum"]
+    range: [["AUTO", "NONE", "ON_WRITE", "ON_READ"]]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.VariableSynchronization in a complex way */
+import tensorflow as tf

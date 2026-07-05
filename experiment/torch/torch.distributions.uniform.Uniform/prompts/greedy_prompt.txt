@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.distributions.uniform.Uniform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like:
+   - `sample()`, `rsample()`: Sampling with/without reparameterization
+   - `log_prob()`: Log probability density/mass function
+   - `entropy()`, `mean`, `variance`: Statistical properties
+   - `cdf()`, `icdf()`: Cumulative distribution functions
+
+2. **Common Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Cauchy, Chi2, Dirichlet, Exponential, Gamma, Geometric, Gumbel, Laplace, LogNormal, Multinomial, MultivariateNormal, Normal, Poisson, StudentT, Uniform, and many others.
+
+3. **Specialized Classes**:
+   - `ExponentialFamily`: Base for exponential family distributions
+   - `TransformedDistribution`: Applies transforms to base distributions
+   - `Independent`: Reinterprets batch dims as event dims
+   - `MixtureSameFamily`: Mixture distributions with same component type
+
+4. **Transforms**: Bijective transformations (AbsTransform, AffineTransform, ExpTransform, SigmoidTransform, etc.) for constrained parameter optimization.
+
+5. **Constraints**: Define valid parameter regions (interval, simplex, positive definite, etc.) with registry system (`biject_to`, `transform_to`) for unconstrained optimization.
+
+6. **KL Divergence**: Pre-registered KL divergence computations between distribution pairs.
+
+**Typical Usage:**
+```python
+# Create distribution
+dist = Normal(loc=0.0, scale=1.0)
+
+# Sampling
+samples = dist.sample([100])  # Regular sampling
+reparam_samples = dist.rsample([100])  # Differentiable sampling
+
+# Probability evaluation
+log_probs = dist.log_prob(samples)
+
+# Gradient estimation
+loss = -dist.log_prob(action) * reward  # REINFORCE
+loss.backward()
+```
+
+The package follows TensorFlow Distributions design and is essential for variational inference, reinforcement learning, and probabilistic modeling in PyTorch.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  low:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  high:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: low
+    Parameter 2: high
+    Constraint: "low < high"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.uniform.Uniform in a complex way */
+import torch

@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.autodiff.ForwardAccumulator` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.autodiff.ForwardAccumulator` is a TensorFlow tool for computing **Jacobian-vector products (JVPs)** using **forward-mode automatic differentiation**. It is particularly useful for functions with many outputs and few inputs, offering memory efficiency by not storing intermediate activations.
+
+### Key Features:
+- **Purpose**: Computes JVPs (forward-mode) as opposed to `tf.GradientTape`, which computes vector-Jacobian products (reverse-mode/backpropagation).
+- **Use Case**: Efficient for functions with many outputs and few inputs (e.g., computing Hessian-vector products).
+- **Memory Efficiency**: Does not retain intermediate activations, making it suitable for high-dimensional output scenarios.
+
+### Usage:
+1. **Initialization**: Provide `primals` (tensors/variables to differentiate) and `tangents` (the "vector" in JVP).
+2. **Context Manager**: Use within a `with` block to compute JVPs for operations inside.
+3. **Retrieve JVPs**: Call `.jvp(primals)` to fetch precomputed JVPs without additional computation.
+
+### Example:
+```python
+with tf.autodiff.ForwardAccumulator(primals, tangents) as acc:
+    # Perform operations
+    output = function(primals)
+jvp_result = acc.jvp(output)  # Fetch JVP
+```
+
+### Important Notes:
+- **Nesting**: Accumulators must be strictly nested; inner accumulators do not see JVPs from outer ones.
+- **Combination with GradientTape**: Enables efficient forward-over-backward computation (e.g., Hessian-vector products).
+- **Error Handling**: Raises `ValueError` if duplicate tensors are provided in `primals`.
+
+### Comparison with `tf.GradientTape`:
+- **ForwardAccumulator**: Computes one **column** of the Jacobian per forward pass (ideal for many outputs).
+- **GradientTape**: Computes one **row** of the Jacobian per backward pass (ideal for many inputs, e.g., neural network training).
+
+This tool is valuable for specialized differentiation tasks where forward-mode autodiff offers computational or memory advantages.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  primals_constructor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  tangents:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "nested structure of tensors"]
+    shape: No mention
+    default: No mention
+  primals_jvp:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor", "structure of tensors"]
+    shape: No mention
+    default: No mention
+  unconnected_gradients:
+    dtype: No mention
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "none"
+constraints:
+  1:
+    Parameter 1: primals_constructor
+    Parameter 2: tangents
+    Constraint: "tf.nest.is_nested(primals_constructor) == tf.nest.is_nested(tangents) and all(tf.size(t) == tf.size(p) for t, p in zip(tf.nest.flatten(tangents), tf.nest.flatten(primals_constructor)))"
+  2:
+    Parameter 1: primals_constructor
+    Parameter 2: primals_constructor
+    Constraint: "len(set(id(t) for t in tf.nest.flatten(primals_constructor))) == len(tf.nest.flatten(primals_constructor))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.autodiff.ForwardAccumulator in a complex way */
+import tensorflow as tf

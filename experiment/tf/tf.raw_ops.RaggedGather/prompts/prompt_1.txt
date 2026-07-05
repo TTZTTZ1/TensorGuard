@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.RaggedGather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.RaggedGather` gathers slices from a ragged tensor (`params`) along its outermost dimension (axis 0) based on specified `indices`. It outputs a new ragged tensor with structure defined by the provided `OUTPUT_RAGGED_RANK`.
+
+**Key Points:**
+- **Inputs:**  
+  - `params_nested_splits`: Row-partitioning tensors for the input ragged tensor.  
+  - `params_dense_values`: The flat values of the input ragged tensor.  
+  - `indices`: Dense tensor (int32/int64) selecting slices from `params`.  
+  - `OUTPUT_RAGGED_RANK`: Determines the ragged rank of the output.  
+
+- **Output:**  
+  A tuple containing `output_nested_splits` (row-partitioning tensors) and `output_dense_values` (gathered flat values).
+
+- **Relationship:**  
+  Implements the core logic for `tf.ragged.gather`, supporting ragged `params` but not ragged `indices`.
+
+- **Formula:**  
+  Output shape = `indices.shape + params.shape[1:]`, and output values are selected as `params[indices[i...j], ...]`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params_nested_splits:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: null
+  params_dense_values:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  OUTPUT_RAGGED_RANK:
+    dtype: ["int"]
+    range: [0, null]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "params_nested_splits"
+    Parameter 2: "params_nested_splits"
+    Constraint: "len(params_nested_splits) >= 1 and all(tensor.dtype in ['int32', 'int64'] for tensor in params_nested_splits) and len(set(tensor.dtype for tensor in params_nested_splits)) == 1"
+  2:
+    Parameter 1: "OUTPUT_RAGGED_RANK"
+    Parameter 2: "indices"
+    Constraint: "OUTPUT_RAGGED_RANK == indices.ndim + len(params_nested_splits) - 1"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.RaggedGather in a complex way */
+import tensorflow as tf

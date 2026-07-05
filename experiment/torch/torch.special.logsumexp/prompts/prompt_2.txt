@@ -1,0 +1,71 @@
+
+# You are a Python code generation assistant for the `torch.special.logsumexp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.special` module provides a comprehensive collection of special mathematical functions modeled after SciPy's `special` module. It includes:
+
+**Key Functions:**
+- **Bessel functions**: `airy_ai`, `bessel_j0/j1`, `bessel_y0/y1`, `i0/i1`, `modified_bessel_i0/i1/k0/k1`
+- **Error functions**: `erf`, `erfc`, `erfcx`, `erfinv`
+- **Gamma functions**: `gammainc`, `gammaincc`, `gammaln`, `digamma`, `polygamma`
+- **Exponential/logarithmic**: `exp2`, `expit`, `expm1`, `log1p`, `xlogy`, `xlog1py`
+- **Polynomials**: Chebyshev (`chebyshev_polynomial_t/u/v/w`), Hermite, Legendre, Laguerre
+- **Statistical**: `ndtr`, `ndtri`, `log_ndtr`, `entr`
+- **Other**: `sinc`, `zeta`, `multigammaln`, `logit`, `softmax`, `log_softmax`
+
+**Common Features:**
+- All functions accept input tensors and support broadcasting
+- Optional `out` parameter for output tensor specification
+- Float input support with consistent NaN/infinity handling
+- Many functions provide numerical stability improvements over naive implementations
+
+**Usage Pattern:**
+```python
+import torch.special
+result = torch.special.function_name(input_tensor, *args, **kwargs)
+```
+
+The module is particularly useful for scientific computing, statistical analysis, and machine learning applications requiring specialized mathematical operations beyond basic arithmetic.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64", "float16", "bfloat16", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  keepdim:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  out:
+    dtype: ["tensor", "none"]
+    range: null
+    structure: ["tensor", "none"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -input.ndim and dim < input.ndim"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or (out.dtype == input.dtype and out.device == input.device and out.shape == (input.shape if keepdim else tuple(input.shape[i] for i in range(input.ndim) if i != dim)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.special.logsumexp in a complex way */
+import torch

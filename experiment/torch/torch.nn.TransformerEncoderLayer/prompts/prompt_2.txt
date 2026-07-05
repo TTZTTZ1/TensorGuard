@@ -1,0 +1,137 @@
+
+# You are a Python code generation assistant for the `torch.nn.TransformerEncoderLayer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**TransformerEncoderLayer** is a PyTorch module implementing a single transformer encoder layer as described in the "Attention Is All You Need" paper. It consists of a multi-head self-attention mechanism followed by a feedforward network, with optional layer normalization and dropout.
+
+**Key Parameters:**
+- `d_model`: Input feature dimension
+- `nhead`: Number of attention heads
+- `dim_feedforward`: Hidden dimension of feedforward network (default: 2048)
+- `dropout`: Dropout probability (default: 0.1)
+- `batch_first`: If True, input shape is (batch, seq, feature); otherwise (seq, batch, feature)
+- `norm_first`: If True, applies layer norm before attention/feedforward operations
+
+**Usage Example:**
+```python
+encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)
+src = torch.rand(10, 32, 512)  # (seq_len, batch, features)
+out = encoder_layer(src)
+```
+
+**Optimized Path:** When conditions are met (inference mode, batched input with `batch_first=True`, etc.), it uses FlashAttention for faster computation and supports NestedTensor for efficient padding handling.
+
+**Forward Method:** Accepts source tensor plus optional masks (`src_mask`, `src_key_padding_mask`) and supports causal masking via `is_causal`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  d_model:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  nhead:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  dim_feedforward:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "2048"
+  dropout:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "0.1"
+  activation:
+    dtype: ["string", "callable"]
+    range: ["relu", "gelu"]
+    structure: ["scalar", "callable"]
+    shape: ["No mention"]
+    default: "relu"
+  layer_norm_eps:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1e-05"
+  batch_first:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  norm_first:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  bias:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  device:
+    dtype: ["object", "None"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["object", "None"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  src:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  src_mask:
+    dtype: ["tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  src_key_padding_mask:
+    dtype: ["tensor", "None"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  is_causal:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "src_mask"
+    Parameter 2: "src_key_padding_mask"
+    Constraint: "src_mask is None or src_key_padding_mask is None"
+  2:
+    Parameter 1: "src"
+    Parameter 2: "src_mask"
+    Constraint: "not (isinstance(src, NestedTensor) and src_mask is not None)"
+  3:
+    Parameter 1: "src"
+    Parameter 2: "src_key_padding_mask"
+    Constraint: "not (isinstance(src, NestedTensor) and src_key_padding_mask is not None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.TransformerEncoderLayer in a complex way */
+import torch

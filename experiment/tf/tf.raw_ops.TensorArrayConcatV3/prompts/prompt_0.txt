@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorArrayConcatV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorArrayConcatV3` concatenates elements from a TensorArray into a single tensor along the first dimension. It requires all elements to share the same shape except for their leading dimension. The operation returns both the concatenated tensor and a 1D tensor containing the lengths of each original element along that first dimension.
+
+**Key parameters:**
+- `handle`: Resource handle to the TensorArray.
+- `flow_in`: Float scalar ensuring operation sequencing.
+- `dtype`: Data type of the output tensor.
+- `element_shape_except0`: Optional expected shape of elements (excluding the first dimension) for validation.
+
+**Returns:** A tuple `(value, lengths)` where `value` is the concatenated result and `lengths` records the size contribution of each original element.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  handle:
+    dtype: ["resource"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  flow_in:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: []
+    default: null
+  dtype:
+    dtype: ["tf.DType"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  element_shape_except0:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["TensorShape", "list"]
+    shape: "No mention"
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: handle
+    Parameter 2: element_shape_except0
+    Constraint: "element_shape_except0 is None or tf.reduce_all([tf.equal(tf.shape(tf.raw_ops.TensorArrayRead(handle, i, flow_in))[1:], element_shape_except0) for i in range(tf.raw_ops.TensorArraySize(handle))])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorArrayConcatV3 in a complex way */
+import tensorflow as tf

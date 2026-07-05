@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.reduce_all` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.reduce_all` (or `tf.math.reduce_all`) performs a logical AND reduction across specified dimensions of a boolean tensor. It returns `True` only if all elements in the reduced dimensions are `True`. 
+
+**Key parameters:**
+- `input_tensor`: The boolean tensor to reduce.
+- `axis`: Dimensions to reduce; if `None`, reduces all dimensions.
+- `keepdims`: If `True`, retains reduced dimensions with size 1.
+- `name`: Optional operation name.
+
+**Example:**
+```python
+x = tf.constant([[True, True], [False, False]])
+tf.reduce_all(x)               # False
+tf.reduce_all(x, axis=0)       # [False, False]
+tf.reduce_all(x, axis=1)       # [True, False]
+```
+
+**Note:** Equivalent to NumPy's `np.all`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_tensor:
+    dtype: ["bool"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int", "tuple", "None"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: null
+    default: "None"
+  keepdims:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input_tensor
+    Parameter 2: axis
+    Constraint: "axis is None or all(-len(input_tensor.shape) <= a < len(input_tensor.shape) for a in (axis if isinstance(axis, (list, tuple)) else [axis]))"
+  2:
+    Parameter 1: axis
+    Parameter 2: axis
+    Constraint: "axis is None or isinstance(axis, int) or (isinstance(axis, (list, tuple)) and len(axis) == len(set(axis)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.reduce_all in a complex way */
+import tensorflow as tf

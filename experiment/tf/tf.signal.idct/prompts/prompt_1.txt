@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `tf.signal.idct` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.signal.idct` function computes the 1D Inverse Discrete Cosine Transform (IDCT) of an input tensor. It supports Types I, II, III, and IV transforms, where Type III is the inverse of Type II (and vice versa).
+
+**Key parameters:**
+- `input`: A float tensor with shape `[..., samples]`.
+- `type`: The IDCT type (1, 2, 3, or 4).
+- `norm`: Normalization mode—`None` for no normalization or `'ortho'` for orthonormal normalization. Without `'ortho'`, rescaling by `1/(2n)` is needed for exact inversion.
+- `n`, `axis`: Currently restricted to `None` and `-1`, respectively, for future compatibility.
+
+**Important note:**  
+When `norm='ortho'`, the transform is perfectly invertible:  
+`signal == idct(dct(signal, norm='ortho'), norm='ortho')`.  
+Otherwise, manual rescaling is required:  
+`signal == idct(dct(signal)) * 0.5 / signal.shape[-1]`.
+
+The function matches SciPy’s `scipy.fftpack.idct` behavior for all supported types.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["Tensor"]
+    shape: [null]
+    default: null
+  type:
+    dtype: ["int"]
+    range: [[1, 2, 3, 4]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "2"
+  n:
+    dtype: ["NoneType"]
+    range: [["None"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  axis:
+    dtype: ["int"]
+    range: [[-1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+  norm:
+    dtype: ["str", "NoneType"]
+    range: [["None", "ortho"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "type"
+    Parameter 2: "type"
+    Constraint: "type in [1, 2, 3, 4]"
+  2:
+    Parameter 1: "n"
+    Parameter 2: "n"
+    Constraint: "n is None"
+  3:
+    Parameter 1: "axis"
+    Parameter 2: "axis"
+    Constraint: "axis == -1"
+  4:
+    Parameter 1: "norm"
+    Parameter 2: "norm"
+    Constraint: "norm in [None, 'ortho']"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.signal.idct in a complex way */
+import tensorflow as tf

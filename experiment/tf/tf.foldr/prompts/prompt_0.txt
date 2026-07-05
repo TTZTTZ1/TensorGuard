@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `tf.foldr` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.foldr` is a TensorFlow function that applies a given callable `fn` cumulatively from the last element to the first along the first dimension of `elems`. It can be used to perform reductions (like sum, product) or other sequential operations on tensors.
+
+**Key Points:**
+- **Operation:** Applies `fn(accumulator, element)` repeatedly, starting from the last element.
+- **Input:** `elems` can be a single tensor or a nested structure of tensors, each unpacked along their first dimension.
+- **Initializer:** Optional; if not provided, the first element of `elems` is used as the starting value.
+- **Output:** Returns a tensor (or nested structure) with the same shape as `fn(initializer, elems[0])`.
+- **Deprecated:** The argument `back_prop=False` is deprecated; use `tf.stop_gradient` instead.
+
+**Example:**
+```python
+elems = [1, 2, 3, 4, 5, 6]
+sum_result = tf.foldr(lambda a, x: a + x, elems)  # Returns 21
+```
+
+**Use Case:** Suitable for sequential processing where order matters (right-to-left), such as custom reductions or recurrent-style operations on tensor sequences.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  fn:
+    dtype: ["function"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  elems:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor", "sequence"]
+    shape: null
+    default: null
+  initializer:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor", "sequence"]
+    shape: null
+    default: null
+  parallel_iterations:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "10"
+  back_prop:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  swap_memory:
+    dtype: ["bool"]
+    range: [["true", "false"]]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: initializer
+    Parameter 2: elems
+    Constraint: "initializer is not None or len(elems) > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.foldr in a complex way */
+import tensorflow as tf

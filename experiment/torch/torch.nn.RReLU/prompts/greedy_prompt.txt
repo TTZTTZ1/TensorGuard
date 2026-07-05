@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `torch.nn.RReLU` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**RReLU (Randomized Leaky ReLU)**  
+A PyTorch activation function that applies a randomized negative slope during training and a fixed average slope during evaluation.
+
+**Key Features:**
+- **Training:** For negative inputs, multiplies by a random value sampled uniformly from `[lower, upper]`.
+- **Evaluation:** Uses a fixed slope equal to the average of `lower` and `upper`.
+- Default bounds: `lower=0.125`, `upper=0.333`.
+- Supports in-place operation via `inplace` parameter.
+
+**Function Definition:**
+```
+RReLU(x) = x if x ≥ 0, else a * x
+where a ~ U(lower, upper) during training
+      a = (lower + upper)/2 during evaluation
+```
+
+**Usage Example:**
+```python
+m = nn.RReLU(0.1, 0.3)  # Random slope between 0.1 and 0.3 during training
+output = m(input)       # Input/output shape: (*)
+```
+
+**Use Case:**  
+Introduces stochasticity during training as a regularization technique, potentially improving generalization in convolutional networks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  lower:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.125"
+  upper:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.3333333333333333"
+  inplace:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "lower"
+    Parameter 2: "upper"
+    Constraint: "lower <= upper"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.RReLU in a complex way */
+import torch

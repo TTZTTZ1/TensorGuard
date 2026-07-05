@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.optim.SGD` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim.SGD` class implements stochastic gradient descent (SGD) with optional momentum, weight decay, and Nesterov acceleration. It is a versatile optimizer widely used for training neural networks.
+
+**Key Features:**
+- **Basic SGD**: Updates parameters using gradients scaled by a learning rate.
+- **Momentum**: Accumulates a velocity buffer to smooth updates and accelerate convergence.
+- **Nesterov Momentum**: A variant that applies momentum before the gradient step for improved stability.
+- **Weight Decay**: Applies L2 regularization to prevent overfitting.
+- **Maximization**: Can maximize the objective instead of minimizing (useful for certain tasks like reinforcement learning).
+
+**Important Implementation Details:**
+- PyTorch's momentum implementation differs from some other frameworks: the learning rate is applied to the velocity term during the parameter update, not during velocity accumulation.
+- The momentum buffer is initialized with the first gradient (not zeros), meaning dampening is applied starting from the second step.
+- Supports performance-optimized implementations (`foreach` and `fused`), with `foreach` being the default on CUDA for better speed.
+
+**Common Usage:**
+```python
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-4)
+```
+Followed by the typical training loop: `zero_grad()`, `backward()`, `step()`.
+
+**Additional Capabilities:**
+- Supports parameter groups for fine-grained control (e.g., different learning rates per layer).
+- Provides hooks for customizing state saving/loading and step execution.
+- Includes memory-efficient gradient zeroing (set to `None` instead of zero).
+
+SGD is a fundamental optimizer that, especially with momentum, remains a popular choice for deep learning due to its simplicity and effectiveness across many tasks.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: "No mention"
+    structure: ["iterable"]
+    shape: "No mention"
+    default: null
+  lr:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["scalar", "any"]
+    default: "1e-3"
+  momentum:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  dampening:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  weight_decay:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  nesterov:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  fused:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "nesterov"
+    Parameter 2: "momentum"
+    Constraint: "not nesterov or momentum != 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.SGD in a complex way */
+import torch

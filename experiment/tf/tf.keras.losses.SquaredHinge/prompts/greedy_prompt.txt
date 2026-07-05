@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.keras.losses.SquaredHinge` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.losses.SquaredHinge` is a loss function that computes the **squared hinge loss** between true labels (`y_true`) and predictions (`y_pred`).  
+
+**Key points:**  
+- **Formula:** `loss = square(maximum(1 - y_true * y_pred, 0))`  
+- **Labels:** Expects `y_true` values as **-1 or 1**. If binary labels (0 or 1) are given, they are automatically converted to -1 or 1.  
+- **Usage:** Commonly used for classification tasks, especially with margin-based models like SVMs.  
+- **Reduction options:** Supports `"sum_over_batch_size"` (default), `"sum"`, or `None`.  
+- **Methods:** Includes standard loss class methods (`call`, `from_config`, `get_config`, `__call__`).  
+
+This loss penalizes predictions that are on the wrong side of the margin more heavily than the standard hinge loss due to the squaring operation.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  reduction:
+    dtype: ["string"]
+    range: ["sum", "sum_over_batch_size", null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "sum_over_batch_size"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "squared_hinge"
+  y_true:
+    dtype: ["No mention"]
+    range: [-1, 0, 1]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  y_pred:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "y_true"
+    Parameter 2: "None"
+    Constraint: "tf.reduce_all(tf.logical_or(tf.equal(y_true, -1), tf.logical_or(tf.equal(y_true, 0), tf.equal(y_true, 1))))"
+  2:
+    Parameter 1: "y_true"
+    Parameter 2: "y_pred"
+    Constraint: "tf.broadcast_static_shape(y_true.shape, y_pred.shape) is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.losses.SquaredHinge in a complex way */
+import tensorflow as tf

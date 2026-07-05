@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.NonMaxSuppression` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.NonMaxSuppression` performs greedy non-maximum suppression (NMS) to filter overlapping bounding boxes based on their scores and Intersection over Union (IoU). It selects boxes in descending score order, removing those with IoU exceeding a specified threshold relative to higher-scoring selections.
+
+**Key Parameters:**
+- **boxes**: 2D float tensor `[num_boxes, 4]` with format `[y1, x1, y2, x2]` (normalized or absolute coordinates).
+- **scores**: 1D float tensor `[num_boxes]` containing confidence scores per box.
+- **max_output_size**: Scalar integer specifying the maximum number of boxes to return.
+- **iou_threshold** (default 0.5): IoU threshold for overlap suppression.
+
+**Returns:** A 1D integer tensor of selected box indices.
+
+**Note:** The algorithm is coordinate-invariant (robust to translations/reflections). Use `tf.gather` with the returned indices to extract the corresponding box coordinates.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  boxes:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1, 4]]
+    default: null
+  scores:
+    dtype: ["float32"]
+    range: null
+    structure: ["tensor"]
+    shape: [[-1]]
+    default: null
+  max_output_size:
+    dtype: ["int32"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+  iou_threshold:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: "0.5"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [[]]
+    default: null
+constraints:
+  1:
+    Parameter 1: boxes
+    Parameter 2: scores
+    Constraint: "boxes.shape[0] == scores.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.NonMaxSuppression in a complex way */
+import tensorflow as tf

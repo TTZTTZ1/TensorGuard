@@ -1,0 +1,75 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceScatterNdSub` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceScatterNdSub` performs **sparse subtraction** on a resource-based variable by subtracting values at specified indices. It is used for efficient in-place updates of variables with sparse data.
+
+**Key Points:**
+- **Purpose:** Subtracts `updates` from the variable `ref` at positions defined by `indices`.
+- **Inputs:**
+  - `ref`: A resource handle (from `VarHandleOp`).
+  - `indices`: Integer tensor of indices into `ref`.
+  - `updates`: Values to subtract (same dtype as `ref`).
+- **Behavior:** The operation updates `ref` in-place. If `use_locking=True` (default), updates are thread-safe.
+- **Use Case:** Efficiently modify selected elements/slices of a variable without rewriting the entire tensor.
+
+**Example:**
+```python
+ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8], use_resource=True)
+indices = tf.constant([[4], [3], [1], [7]])
+updates = tf.constant([9, 10, 11, 12])
+# Result: ref becomes [1, -9, 3, -6, -4, 6, 7, -4]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ref:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["same as ref"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: ref
+    Constraint: "indices.shape[-1] > 0 and indices.shape[-1] <= ref.ndim"
+  2:
+    Parameter 1: updates
+    Parameter 2: ref
+    Constraint: "updates.dtype == ref.dtype"
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.ndim == indices.ndim - 1 + ref.ndim - indices.shape[-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceScatterNdSub in a complex way */
+import tensorflow as tf

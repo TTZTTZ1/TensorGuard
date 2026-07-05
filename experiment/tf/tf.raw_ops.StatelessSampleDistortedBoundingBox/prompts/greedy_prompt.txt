@@ -1,0 +1,125 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.StatelessSampleDistortedBoundingBox` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.StatelessSampleDistortedBoundingBox` is a deterministic operation that generates a randomly distorted bounding box for data augmentation in image tasks. Given an input image size, bounding boxes, constraints, and a fixed seed, it outputs a cropped region of the image that meets specified criteria (e.g., aspect ratio, area coverage). The result is guaranteed to be reproducible for the same seed.
+
+**Key Features:**
+- **Deterministic Output:** Produces identical results for the same `seed`, independent of global random settings.
+- **Outputs:** Returns three tensors: `begin` and `size` (for cropping via `tf.slice`) and `bboxes` (for visualization via `tf.image.draw_bounding_boxes`).
+- **Constraints:** Allows control over cropped area via `min_object_covered`, `aspect_ratio_range`, and `area_range`.
+- **Use Case:** Primarily used for data augmentation in object localization or image recognition by applying random but reproducible distortions.
+
+**Parameters:**
+- `image_size`: Image dimensions `[height, width, channels]`.
+- `bounding_boxes`: Bounding boxes in `[y_min, x_min, y_max, x_max]` format (normalized to `[0, 1]`).
+- `min_object_covered`: Minimum fraction of any bounding box that must be included in the crop.
+- `seed`: A 2-element seed tensor for deterministic random number generation.
+- Optional constraints: `aspect_ratio_range`, `area_range`, `max_attempts`, and `use_image_if_no_bounding_boxes`.
+
+**Example:** Used to crop an image randomly while preserving content, aiding in model training through augmented data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  image_size:
+    dtype: ["uint8", "int8", "int16", "int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  bounding_boxes:
+    dtype: ["float32"]
+    range: "[0.0, 1.0]"
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  min_object_covered:
+    dtype: ["float32"]
+    range: ">=0"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: null
+  seed:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  aspect_ratio_range:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [2]
+    default: "[0.75, 1.33]"
+  area_range:
+    dtype: ["float"]
+    range: "No mention"
+    structure: ["list"]
+    shape: [2]
+    default: "[0.05, 1]"
+  max_attempts:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "100"
+  use_image_if_no_bounding_boxes:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "min_object_covered"
+    Parameter 2: "min_object_covered"
+    Constraint: "min_object_covered >= 0"
+  2:
+    Parameter 1: "seed"
+    Parameter 2: "seed"
+    Constraint: "seed.dtype in [tf.int32, tf.int64]"
+  3:
+    Parameter 1: "seed"
+    Parameter 2: "seed"
+    Constraint: "tf.shape(seed) == [2]"
+  4:
+    Parameter 1: "image_size"
+    Parameter 2: "image_size"
+    Constraint: "tf.shape(image_size) == [3]"
+  5:
+    Parameter 1: "bounding_boxes"
+    Parameter 2: "bounding_boxes"
+    Constraint: "tf.shape(bounding_boxes)[2] == 4"
+  6:
+    Parameter 1: "bounding_boxes"
+    Parameter 2: "bounding_boxes"
+    Constraint: "tf.reduce_all(bounding_boxes >= 0.0) and tf.reduce_all(bounding_boxes <= 1.0)"
+  7:
+    Parameter 1: "aspect_ratio_range"
+    Parameter 2: "aspect_ratio_range"
+    Constraint: "len(aspect_ratio_range) == 2 and aspect_ratio_range[0] < aspect_ratio_range[1]"
+  8:
+    Parameter 1: "area_range"
+    Parameter 2: "area_range"
+    Constraint: "len(area_range) == 2 and area_range[0] < area_range[1]"
+  9:
+    Parameter 1: "bounding_boxes"
+    Parameter 2: "use_image_if_no_bounding_boxes"
+    Constraint: "use_image_if_no_bounding_boxes or tf.shape(bounding_boxes)[1] > 0"
+  10:
+    Parameter 1: "max_attempts"
+    Parameter 2: "max_attempts"
+    Constraint: "max_attempts > 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.StatelessSampleDistortedBoundingBox in a complex way */
+import tensorflow as tf

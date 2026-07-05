@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `torch.distributions.transforms.StackTransform` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimators for optimization. It supports two main gradient estimation methods:
+
+**Key Features:**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients in reinforcement learning
+- **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling in variational autoencoders
+
+**Core Components:**
+1. **Distribution**: Abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`, `mean`, `variance`
+2. **Distributions**: Includes Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Dirichlet, MultivariateNormal, Poisson, Uniform, etc.
+3. **Transforms**: Bijective transformations for constrained parameter spaces (e.g., `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform`)
+4. **Constraints**: Define valid parameter ranges (e.g., `positive`, `simplex`, `interval`)
+5. **KL Divergence**: Computes KL divergence between distribution pairs
+6. **Constraint Registry**: Maps constraints to transforms (`biject_to`, `transform_to`) for unconstrained optimization
+
+**Common Use Cases:**
+- **REINFORCE** (discrete actions):
+  ```python
+  m = Categorical(probs)
+  action = m.sample()
+  loss = -m.log_prob(action) * reward
+  ```
+- **Reparameterization** (continuous actions):
+  ```python
+  m = Normal(*params)
+  action = m.rsample()
+  loss = -reward
+  ```
+
+**Design Benefits:**
+- Follows TensorFlow Distributions design patterns
+- Enables stochastic gradient estimation
+- Supports both discrete and continuous distributions
+- Provides transforms for constrained optimization
+- Includes exponential family distributions for efficient entropy/KL calculations
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tseq:
+    dtype: ["list", "tuple"]
+    range: null
+    structure: ["sequence"]
+    shape: null
+    default: null
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  cache_size:
+    dtype: ["int"]
+    range: [[0, 1]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.transforms.StackTransform in a complex way */
+import torch

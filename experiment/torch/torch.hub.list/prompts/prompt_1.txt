@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.hub.list` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**PyTorch Hub** is a repository for sharing and loading pre-trained models to promote research reproducibility.  
+
+### **Key Functions**
+
+- **`torch.hub.list(github)`** – Lists all available entrypoints (models/tools) in a GitHub repo.  
+- **`torch.hub.help(github, model)`** – Shows the docstring and usage instructions for a specific model.  
+- **`torch.hub.load(repo_or_dir, model, *args, **kwargs)`** – Loads a model (or other callable) from a GitHub repo or local directory.  
+
+### **Publishing a Model**  
+To share a model on PyTorch Hub:  
+1. Add a `hubconf.py` file to your GitHub repository.  
+2. Define **entrypoint functions** (e.g., a model loader) in `hubconf.py`.  
+3. Include a `dependencies` list (e.g., `['torch']`) and clear docstrings.  
+4. Models should be stored in a **release/tag/branch** (not a random commit).  
+
+### **Loading a Model**  
+Example:  
+```python
+model = torch.hub.load('pytorch/vision', 'resnet18', pretrained=True)
+```  
+- Supports both GitHub repos (`source='github'`) and local directories (`source='local'`).  
+- Arguments (`*args`, `**kwargs`) are passed to the model’s entrypoint function.  
+
+### **Security & Caching**  
+- **`trust_repo`** parameter controls whether to prompt before loading untrusted repos (default will become `"check"` in v2.0).  
+- Downloaded models are cached (default location: `~/.cache/torch/hub`). Use `force_reload=True` to refresh.  
+
+### **Utilities**  
+- **`torch.hub.load_state_dict_from_url(url)`** – Loads weights from a URL.  
+- **`torch.hub.download_url_to_file(url, dst)`** – Downloads a file from a URL.  
+- **`torch.hub.set_dir(path)`** – Customizes the cache directory.  
+
+### **Limitations**  
+- Cannot load two different branches of the same repo in the same Python process.  
+- Import conflicts may occur if different repos use the same subpackage names.  
+
+PyTorch Hub simplifies model sharing and reuse, with built-in caching, security checks, and tools for exploring available models.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  github:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  force_reload:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  skip_validation:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  trust_repo:
+    dtype: ["bool", "str", "None"]
+    range: ["check", True, False, None]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  verbose:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.hub.list in a complex way */
+import torch

@@ -1,0 +1,46 @@
+params:
+  a:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  b:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  axes:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list", "tensor"]
+    shape: ["scalar", "[2, k]"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "a.dtype == b.dtype"
+  2:
+    Parameter 1: "axes"
+    Parameter 2: "a"
+    Constraint: "if not isinstance(axes, int): all(axis < tf.rank(a) for axis in axes[0])"
+  3:
+    Parameter 1: "axes"
+    Parameter 2: "b"
+    Constraint: "if not isinstance(axes, int): all(axis < tf.rank(b) for axis in axes[1])"
+  4:
+    Parameter 1: "axes"
+    Parameter 2: "axes"
+    Constraint: "if not isinstance(axes, int): len(axes[0]) == len(axes[1])"
+  5:
+    Parameter 1: "a"
+    Parameter 2: "b"
+    Constraint: "if isinstance(axes, int): all(a.shape[-i] == b.shape[i-1] for i in range(1, axes+1)) else: all(a.shape[axis_a] == b.shape[axis_b] for axis_a, axis_b in zip(axes[0], axes[1]))"

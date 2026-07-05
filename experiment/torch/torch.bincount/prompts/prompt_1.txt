@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.bincount` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.bincount` counts the occurrences of each integer value in a 1‑D input tensor of non‑negative ints.  
+
+**Key points:**  
+- Output size is `max(input) + 1` by default, or at least `minlength` if given.  
+- If `weights` is provided, each bin accumulates the corresponding weight instead of incrementing by 1.  
+- Empty input returns a zero tensor of size 0 (or `minlength` if specified).  
+- On CUDA, gradients may be nondeterministic.  
+
+**Example:**  
+```python
+torch.bincount(tensor([1, 3, 3, 0])) → tensor([1, 1, 0, 2])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-d"]
+    default: null
+  weights:
+    dtype: ["float", "int"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-d"]
+    default: "None"
+  minlength:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: None
+    Constraint: "input.numel() == 0 or torch.all(input >= 0)"
+  2:
+    Parameter 1: weights
+    Parameter 2: input
+    Constraint: "weights is None or weights.shape == input.shape"
+  3:
+    Parameter 1: minlength
+    Parameter 2: None
+    Constraint: "minlength >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.bincount in a complex way */
+import torch

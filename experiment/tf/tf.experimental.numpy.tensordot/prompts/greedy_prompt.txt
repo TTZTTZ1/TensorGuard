@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `tf.experimental.numpy.tensordot` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.experimental.numpy.tensordot` is TensorFlow's implementation of NumPy's `tensordot` function, which computes the tensor dot product (contraction) between two arrays along specified axes.
+
+**Key Points:**
+- **Purpose:** Performs generalized tensor contraction, generalizing matrix multiplication to higher-dimensional arrays.
+- **Parameters:**
+  - `a`, `b`: Input tensors.
+  - `axes`: Specifies the axes to contract. Can be an integer (number of axes to contract from the last dimensions of `a` and first dimensions of `b`) or a pair of sequences (explicit axes for `a` and `b`).
+- **Behavior:** Matches NumPy's `numpy.tensordot` functionality, allowing flexible tensor operations.
+- **Use Case:** Useful for operations like batch matrix multiplication, tensor contractions in physics, or any computation requiring contraction over specific indices.
+
+**Example:** Contracting the last axis of `a` with the first axis of `b` (like a dot product over vectors or matrices).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  a:
+    dtype: ["int", "float", "complex"]
+    range: null
+    structure: ["array"]
+    shape: null
+    default: null
+  b:
+    dtype: ["int", "float", "complex"]
+    range: null
+    structure: ["array"]
+    shape: null
+    default: null
+  axes:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: null
+    default: "2"
+constraints:
+  1:
+    Parameter 1: axes
+    Parameter 2: a
+    Constraint: "isinstance(axes, int) and axes >= 0 and axes <= min(a.ndim, b.ndim)"
+  2:
+    Parameter 1: axes
+    Parameter 2: a
+    Constraint: "isinstance(axes, (list, tuple)) and len(axes) == 2 and all(isinstance(i, (list, tuple)) for i in axes) and len(axes[0]) == len(axes[1]) and all(shape(a)[axes[0][j]] == shape(b)[axes[1][j]] for j in range(len(axes[0])))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.numpy.tensordot in a complex way */
+import tensorflow as tf

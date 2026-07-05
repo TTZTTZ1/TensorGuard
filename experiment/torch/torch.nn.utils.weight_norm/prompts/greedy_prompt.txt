@@ -1,0 +1,47 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.weight_norm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Summary:**  
+`torch.nn.utils.weight_norm` is a **deprecated** function that applies weight normalization to a specified parameter (default `'weight'`) in a PyTorch module. It reparameterizes the weight tensor by splitting it into **magnitude** (`weight_g`) and **direction** (`weight_v`) components, which are combined as \( w = g \frac{v}{\|v\|} \) before each forward pass.  
+
+**Key Points:**  
+- **Purpose:** Decouples weight magnitude from direction to potentially improve training stability/optimization.  
+- **Default behavior:** Normalizes per output channel (`dim=0`); use `dim=None` for full tensor normalization.  
+- **Deprecation:** Replaced by `torch.nn.utils.parametrizations.weight_norm`, which uses PyTorch’s modern parametrization API but remains compatible with old state dictionaries.  
+- **Migration:** New version stores parameters differently and recomputes weight on every access (vs. only during forward). Use `cached()` to mimic old behavior if needed.  
+
+**Example:**  
+```python
+m = weight_norm(nn.Linear(20, 40), name='weight')
+# m.weight_g and m.weight_v replace m.weight
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  module:
+    dtype: ["torch.nn.Module"]
+    range: null
+    structure: ["object"]
+    shape: null
+    default: null
+  name:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "'weight'"
+  dim:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.weight_norm in a complex way */
+import torch

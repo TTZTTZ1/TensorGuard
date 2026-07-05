@@ -1,0 +1,56 @@
+
+# You are a Python code generation assistant for the `tf.nn.ctc_greedy_decoder` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.ctc_greedy_decoder` performs greedy decoding on input logits to find the most probable output sequence, commonly used in tasks like speech or handwriting recognition. It selects the class with the highest logit at each time step.
+
+**Key parameters:**
+- `inputs`: 3-D logits tensor of shape `[max_time, batch_size, num_classes]`.
+- `sequence_length`: 1-D vector specifying the valid length for each sequence in the batch.
+- `merge_repeated`: If `True`, merges consecutive repeated non-blank labels in the output.
+- `blank_index`: Defines the class index for the blank symbol (default is `num_classes - 1`).
+
+**Returns:**
+- `decoded`: A single-element list containing a `SparseTensor` with decoded indices, values, and shape.
+- `neg_sum_logits`: A matrix with the negative sum of the highest logits per timeframe for each sequence.
+
+**Note:** Unlike beam search decoding, this method treats blank symbols as regular elements when computing sequence probabilities.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  inputs:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [3]
+    default: null
+  sequence_length:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  merge_repeated:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "True"
+  blank_index:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "num_classes - 1"
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: sequence_length
+    Constraint: "inputs.shape[1] == sequence_length.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.ctc_greedy_decoder in a complex way */
+import tensorflow as tf

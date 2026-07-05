@@ -1,0 +1,70 @@
+
+# You are a Python code generation assistant for the `torch.unique` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.unique` returns the distinct elements from an input tensor, optionally sorting them and providing additional mapping information.  
+
+**Key parameters:**  
+- `sorted`: If `True`, output is sorted in ascending order (note: currently always sorted internally).  
+- `return_inverse`: Returns indices mapping original elements to unique output positions.  
+- `return_counts`: Returns frequency counts for each unique element.  
+- `dim`: If specified, finds unique slices along that dimension; otherwise flattens the tensor.  
+
+**Returns:**  
+- `output`: Unique elements (or slices).  
+- `inverse_indices` (optional): Same shape as input, showing where each original element appears in `output`.  
+- `counts` (optional): Number of occurrences per unique element.  
+
+**Note:**  
+- Removes all duplicate values, not just consecutive ones (unlike `torch.unique_consecutive`).  
+- Internally sorts the tensor even if `sorted=False` in current implementations, so for pre‑sorted data, `torch.unique_consecutive` is more efficient.  
+
+**Example use:**  
+```python
+output, inv, counts = torch.unique(tensor, return_inverse=True, return_counts=True)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  sorted:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  return_inverse:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  return_counts:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  dim:
+    dtype: ["int", "NoneType"]
+    range: null
+    structure: ["scalar", "None"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: dim
+    Constraint: "dim is None or (dim >= -input.ndim and dim < input.ndim)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.unique in a complex way */
+import torch

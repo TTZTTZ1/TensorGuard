@@ -1,0 +1,52 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ResourceApplyProximalAdagrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ResourceApplyProximalAdagrad` is a low-level TensorFlow operation that updates a variable (`var`) and its accumulator (`accum`) using the **Proximal Adagrad** optimization algorithm. This method combines **Adagrad's adaptive learning rate** with **L1 and L2 regularization** (proximal steps) to handle sparse updates effectively.
+
+### Key Features:
+- **Adaptive Learning Rate**: Uses an accumulator (`accum`) to scale gradients based on historical squared gradients.
+- **Proximal Regularization**: Applies L1 and L2 regularization directly during the update, making it suitable for models with sparsity constraints (e.g., linear models with L1 regularization).
+- **Resource-based Inputs**: Operates directly on resource handles (`var` and `accum`), which are typically used for variables stored in persistent memory (e.g., GPUs/TPUs).
+
+### Update Rules:
+1. **Accumulator Update**:  
+   `accum += grad * grad`
+2. **Proximal Variable Calculation**:  
+   `prox_v = var - lr * grad * (1 / sqrt(accum))`
+3. **Regularized Update**:  
+   `var = sign(prox_v) / (1 + lr * l2) * max{|prox_v| - lr * l1, 0}`
+
+### Arguments:
+- `var`, `accum`: Resource handles to the variable and its accumulator.
+- `lr`: Learning rate (scalar).
+- `l1`, `l2`: L1 and L2 regularization strengths (scalars).
+- `grad`: Gradient tensor.
+- `use_locking`: (Optional) If `True`, locks the variable update to prevent race conditions.
+
+### Typical Use Case:
+Ideal for training sparse models (e.g., recommendation systems or linear classifiers) where regularization is critical, and gradients are infrequent. It is a lower-level op, so users often interact with higher-level APIs like `tf.keras.optimizers.Adagrad` with proximal options instead.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  accum:
+    dtype: ["resource"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16",
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ResourceApplyProximalAdagrad in a complex way */
+import tensorflow as tf

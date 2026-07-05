@@ -1,0 +1,38 @@
+params:
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  index:
+    dtype: ["torch.int64", "torch.int32"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  source:
+    dtype: ["tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  alpha:
+    dtype: ["int", "float"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "1"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: self
+    Constraint: "0 <= dim < self.dim()"
+  2:
+    Parameter 1: source
+    Parameter 2: index
+    Constraint: "source.size(dim) == index.size(0) and index.ndim == 1"
+  3:
+    Parameter 1: source
+    Parameter 2: self
+    Constraint: "source.dim() == self.dim() and all(source.size(i) == self.size(i) for i in range(source.dim()) if i != dim)"

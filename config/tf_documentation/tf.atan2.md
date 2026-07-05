@@ -1,0 +1,65 @@
+# tf.atan2
+
+**Source URL:** [https://tensorflow.google.cn/api_docs/python/tf/atan2](https://tensorflow.google.cn/api_docs/python/tf/atan2)
+
+---
+
+Computes arctangent of `y/x` element-wise, respecting signs of the arguments.
+
+#### View aliases
+
+**Main aliases**
+
+[`tf.atan2`](https://tensorflow.google.cn/api_docs/python/tf/math/atan2)
+
+**Compat aliases for migration**
+
+See
+[Migration guide](https://tensorflow.google.cn/guide/migrate) for
+more details.
+
+[`tf.compat.v1.atan2`](https://tensorflow.google.cn/api_docs/python/tf/math/atan2), [`tf.compat.v1.math.atan2`](https://tensorflow.google.cn/api_docs/python/tf/math/atan2)
+
+```
+tf.math.atan2(
+    y: Annotated[Any, tf.raw_ops.Any],
+    x: Annotated[Any, tf.raw_ops.Any],
+    name=None
+) -> Annotated[Any, tf.raw_ops.Any]
+
+tf.raw_ops.Any
+tf.raw_ops.Any
+tf.raw_ops.Any
+```
+
+### Used in the notebooks
+
+| Used in the tutorials |
+| --- |
+| * [TFP Release Notes notebook (0.12.1)](https://tensorflow.google.cn/probability/examples/TFP_Release_Notebook_0_12_1) |
+
+This is the angle \( \theta \in [-\pi, \pi] \) such that
+\[ x = r \cos(\theta) \]
+and
+\[ y = r \sin(\theta) \]
+where \(r = \sqrt{x^2 + y^2} \).
+
+#### For example:
+
+```
+>>> x = [1., 1.]
+>>> y = [1., -1.]
+>>> print((tf.math.atan2(y,x) * (180 / np.pi)).numpy())
+[ 45. -45.]
+```
+
+| Args | |
+
+|  |  |
+| --- | --- |
+| `y` | A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`. |
+| `x` | A `Tensor`. Must have the same type as `y`. |
+| `name` | A name for the operation (optional). |
+
+| Returns | |
+| A `Tensor`. Has the same type as `y`. | |

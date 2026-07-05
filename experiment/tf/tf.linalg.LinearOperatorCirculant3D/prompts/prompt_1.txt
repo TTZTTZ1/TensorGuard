@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant3D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant3D` is a TensorFlow class representing a linear operator that behaves like a nested block circulant matrix in 3D, defined by its frequency spectrum rather than storing the full matrix explicitly. It efficiently performs operations like matrix multiplication and solving linear systems using 3D FFTs, making it suitable for large-scale problems.
+
+**Key Features:**
+- **Efficiency:** Operations (matmul, solve) have \(O(N \log N)\) complexity via FFT.
+- **Spectral Definition:** The operator is defined by a `spectrum` tensor (shape `[B1,...,Bb, N0, N1, N2]`), where the 3D DFT of the spectrum corresponds to the operator's action.
+- **Batch Support:** Handles batch dimensions naturally.
+- **Matrix Properties:** Allows hints (e.g., `is_self_adjoint`, `is_positive_definite`) to enable optimizations.
+
+**Common Use Cases:**
+- Solving linear systems with 3D circulant structure.
+- Performing convolutions or correlations in frequency domain.
+- Modeling spatially invariant systems in 3D.
+
+**Example Workflow:**
+1. **Initialize** with a spectrum tensor.
+2. **Apply** operations like `matmul`, `solve`, or `determinant`.
+3. **Leverage** FFT-based efficiency for large 3D data.
+
+This operator is ideal for applications in signal processing, image analysis, or scientific computing where 3D circulant structures arise.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["[B1,...,Bb, N0, N1, N2]"]
+    default: null
+  input_output_dtype:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_square:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'LinearOperatorCirculant3D'"
+constraints:
+  1:
+    Parameter 1: spectrum
+    Parameter 2: is_self_adjoint
+    Constraint: "not (spectrum.dtype in ['float16', 'float32', 'float64'] and is_self_adjoint == False)"
+  2:
+    Parameter 1: spectrum
+    Parameter 2: is_positive_definite
+    Constraint: "not (is_positive_definite == True and tf.reduce_any(tf.math.real(spectrum) <= 0))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant3D in a complex way */
+import tensorflow as tf

@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.distributed.isend` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication primitives for multi-process parallelism across multiple machines or GPUs. Key aspects include:
+
+## **Backends**
+- **Gloo**: Best for CPU training, supports Ethernet/InfiniBand (with IP over IB).
+- **NCCL**: Recommended for CUDA GPU training, especially with InfiniBand or Ethernet.
+- **XCCL**: For XPU GPU training.
+- **MPI**: Optional backend requiring source build.
+
+## **Initialization**
+- Use `init_process_group()` or `init_device_mesh()` to initialize the distributed environment.
+- Common methods: TCP, shared file-system, or environment variables (`MASTER_ADDR`, `MASTER_PORT`).
+
+## **Core Concepts**
+- **Process Groups**: Default group (world) or custom groups via `new_group()`.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups.
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous variants (`isend`/`irecv`).
+
+## **Key Functions**
+- **Environment Setup**: `get_rank()`, `get_world_size()`, `get_backend()`.
+- **Collectives**: `all_reduce`, `broadcast`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, `barrier`.
+- **Groups**: `new_group()`, `get_group_rank()`, `get_global_rank()`.
+
+## **Advanced Features**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines for better computation overlap (requires NCCL ≥2.28).
+- **Debugging**: Use `TORCH_DISTRIBUTED_DEBUG` for detailed logs, `monitored_barrier()` for timeout-aware synchronization, and `torch.distributed.breakpoint()` for interactive debugging.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, `HashStore` for distributed coordination.
+
+## **Best Practices**
+- Use NCCL for GPU training, Gloo for CPU.
+- Ensure proper cleanup with `destroy_process_group()`.
+- Avoid object collectives for performance-critical paths due to serialization overhead.
+- Set `async_op=True` for overlapping communication with computation.
+
+## **Launching**
+- Use `torch.distributed.launch` or `torchrun` for multi-process training.
+- Each process should handle `--local-rank` argument for device assignment.
+
+This package enables scalable distributed training with support for various network interconnects and hardware configurations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["Tensor"]
+    shape: null
+    default: null
+  dst:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tag:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+  group_dst:
+    dtype: ["int", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: dst is not None and group_dst is not None
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.isend in a complex way */
+import torch

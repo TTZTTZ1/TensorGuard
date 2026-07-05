@@ -1,0 +1,59 @@
+
+# You are a Python code generation assistant for the `tf.ragged.map_flat_values` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.ragged.map_flat_values` applies a given operation (`op`) to the flattened values of one or more RaggedTensors, preserving their original ragged structure. It is primarily used for elementwise operations, where the operation is performed on the flat values and the result is reconstructed using the input RaggedTensors' nested row splits.
+
+**Key points:**
+- **Purpose:** Efficiently apply elementwise operations to RaggedTensor values without altering the ragged structure.
+- **Input:** Accepts an operation (`op`) and arguments containing RaggedTensors (which must have identical nested row splits).
+- **Behavior:** Flattens all RaggedTensor inputs, applies `op` to the combined flat values, and rebuilds a RaggedTensor with the same structure.
+- **Limitation:** Not suitable for non-elementwise operations (e.g., row-wise reductions); use `tf.map_fn` instead for such cases.
+- **Example use:** Elementwise arithmetic, transformations, or any operation that maintains the outer dimension size of the flat values.
+
+**Example:**
+```python
+rt = tf.ragged.constant([[1, 2], [3]])
+tf.ragged.map_flat_values(tf.multiply, rt, rt)  # Returns [[1, 4], [9]]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  op:
+    dtype: ["callable"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  args:
+    dtype: ["any"]
+    range: null
+    structure: ["sequence"]
+    shape: ["variable"]
+    default: null
+  kwargs:
+    dtype: ["any"]
+    range: null
+    structure: ["dict"]
+    shape: ["variable"]
+    default: null
+constraints:
+  1:
+    Parameter 1: args
+    Parameter 2: args
+    Constraint: "any(isinstance(arg, tf.RaggedTensor) for arg in args)"
+  2:
+    Parameter 1: args
+    Parameter 2: kwargs
+    Constraint: "len({rt.nested_row_splits for rt in [arg for arg in args if isinstance(arg, tf.RaggedTensor)] + [v for v in kwargs.values() if isinstance(v, tf.RaggedTensor)]}) <= 1"
+  3:
+    Parameter 1: op
+    Parameter 2: args
+    Constraint: "all(op(rt.flat_values).shape[0] == rt.flat_values.shape[0] for rt in [arg for arg in args if isinstance(arg, tf.RaggedTensor)] + [v for v in kwargs.values() if isinstance(v, tf.RaggedTensor)])"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.ragged.map_flat_values in a complex way */
+import tensorflow as tf

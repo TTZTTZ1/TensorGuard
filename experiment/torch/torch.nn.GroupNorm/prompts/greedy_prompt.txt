@@ -1,0 +1,63 @@
+
+# You are a Python code generation assistant for the `torch.nn.GroupNorm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**GroupNorm** is a normalization layer that divides input channels into groups and normalizes each group separately. It computes mean and variance per group, applying a learnable affine transformation if enabled. Unlike batch normalization, it uses input statistics in both training and evaluation modes.
+
+**Key parameters:**
+- `num_groups`: Number of groups (must divide `num_channels`)
+- `num_channels`: Total channels in input
+- `eps`: Small constant for numerical stability
+- `affine`: Enables learnable scale (γ) and shift (β) parameters
+
+**Usage:**
+- Input shape: `(N, C, *)`
+- Output shape: Same as input
+- Special cases:
+  - `num_groups = 1` → equivalent to LayerNorm
+  - `num_groups = num_channels` → equivalent to InstanceNorm
+
+**Example:**
+```python
+m = nn.GroupNorm(3, 6)  # 6 channels divided into 3 groups
+output = m(input)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  num_groups:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  num_channels:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  eps:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-05"
+  affine:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+constraints:
+  1:
+    Parameter 1: num_groups
+    Parameter 2: num_channels
+    Constraint: "num_channels % num_groups == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.GroupNorm in a complex way */
+import torch

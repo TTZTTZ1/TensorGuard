@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.scatter_nd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.scatter_nd` scatters values from `updates` into a zero-initialized tensor of a specified `shape` based on given `indices`. It is the inverse operation of `tf.gather_nd`.
+
+**Key points:**
+- **Purpose:** Constructs a new tensor by placing `updates` at positions defined by `indices`.
+- **Indices:** An integer tensor where the last dimension determines how many axes of `shape` are indexed (element or slice updates).
+- **Updates shape:** Must match `indices.shape[:-1] + shape[indices.shape[-1]:]`.
+- **Duplicates:** If indices repeat, corresponding updates are summed.
+- **Initialization:** Output tensor starts as all zeros (equivalent to `tf.tensor_scatter_nd_add(tf.zeros(...), indices, updates)`).
+- **Out-of-bounds:** On CPU, throws an error; on GPU, ignores invalid indices.
+- **Non-determinism:** For floating-point types, output order may vary unless determinism is enabled.
+
+**Example:**
+```python
+indices = [[4], [3], [1], [7]]
+updates = [9, 10, 11, 12]
+shape = [8]
+# Result: [0, 11, 0, 10, 9, 0, 0, 12]
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["int16", "int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  updates:
+    dtype: [null]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  shape:
+    dtype: ["int16", "int32", "int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: shape
+    Constraint: indices.dtype == shape.dtype
+  2:
+    Parameter 1: indices
+    Parameter 2: shape
+    Constraint: indices.shape[-1] <= shape.shape[0]
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: updates.shape == indices.shape[:-1] + shape[indices.shape[-1]:]
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.scatter_nd in a complex way */
+import tensorflow as tf

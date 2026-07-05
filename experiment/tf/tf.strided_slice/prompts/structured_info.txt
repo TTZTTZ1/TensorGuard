@@ -1,0 +1,80 @@
+params:
+  input_:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  begin:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  end:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  strides:
+    dtype: ["int32", "int64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "None"
+  begin_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  end_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  ellipsis_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  new_axis_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  shrink_axis_mask:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  var:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["variable", "None"]
+    shape: ["No mention"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "tf.math.reduce_all(tf.math.not_equal(strides, 0))"
+  2:
+    Parameter 1: "ellipsis_mask"
+    Parameter 2: "ellipsis_mask"
+    Constraint: "ellipsis_mask == 0 or (ellipsis_mask & (ellipsis_mask - 1)) == 0"
+  3:
+    Parameter 1: "begin"
+    Parameter 2: "end"
+    Constraint: "strides is None or (tf.size(begin) == tf.size(end) and tf.size(begin) == tf.size(strides))"

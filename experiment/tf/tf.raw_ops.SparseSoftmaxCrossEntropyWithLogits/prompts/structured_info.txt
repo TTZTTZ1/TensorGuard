@@ -1,0 +1,28 @@
+params:
+  features:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: [[null, null]]
+    default: null
+  labels:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "labels"
+    Parameter 2: "features"
+    Constraint: "tf.shape(labels)[0] == tf.shape(features)[0]"
+  2:
+    Parameter 1: "labels"
+    Parameter 2: "features"
+    Constraint: "tf.logical_and(tf.reduce_all(labels >= 0), tf.reduce_all(labels < tf.shape(features)[1]))"

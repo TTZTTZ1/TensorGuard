@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.distributed.get_world_size` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package enables distributed parallel training across multiple processes and machines. Here’s a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Backends**: Supports `gloo` (CPU/GPU), `nccl` (CUDA GPU), `xccl` (XPU GPU), and `mpi` (optional). Choose based on hardware:
+  - Use **NCCL** for CUDA GPU training (best performance).
+  - Use **Gloo** for CPU training or as a fallback.
+  - Use **XCCL** for XPU GPU training.
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations. Supports TCP, shared file-system, or environment variable (`env://`) initialization.
+- **Process Groups**: Default group (`WORLD`) includes all processes. Use `new_group()` to create subgroups for finer-grained communication.
+- **DeviceMesh**: Higher-level abstraction for managing multi-dimensional device layouts and process groups (e.g., for 2D parallelism).
+
+### **Key APIs**
+- **Collective Communication**:
+  - `broadcast`, `all_reduce`, `all_gather`, `scatter`, etc.
+  - Support synchronous (`async_op=False`) and asynchronous (`async_op=True`) operations.
+- **Point-to-Point Communication**:
+  - `send`/`recv` (blocking), `isend`/`irecv` (non-blocking).
+  - `batch_isend_irecv` for batched async operations.
+- **Key-Value Stores**:
+  - `TCPStore`, `FileStore`, `HashStore` for sharing connection info.
+- **Utility Functions**:
+  - `get_rank()`, `get_world_size()`, `get_backend()`.
+  - `destroy_process_group()` for cleanup.
+
+### **Initialization Example**
+```python
+import torch.distributed as dist
+dist.init_process_group(
+    backend="nccl",  # Use "gloo" for CPU
+    init_method="env://"
+)
+rank = dist.get_rank()
+world_size = dist.get_world_size()
+```
+
+### **Best Practices**
+1. **Backend Selection**: Follow the "rule of thumb" for your hardware.
+2. **Environment Variables**: Use `MASTER_ADDR`, `MASTER_PORT`, `WORLD_SIZE`, `RANK` for `env://` initialization.
+3. **NCCL Tuning**: Set `NCCL_SOCKET_IFNAME` to specify network interface; use `NCCL_DEBUG=INFO` for debugging.
+4. **Cleanup**: Call `destroy_process_group()` at the end to avoid hangs.
+5. **Debugging**: Use `TORCH_DISTRIBUTED_DEBUG=INFO` or `DETAIL` for detailed logs; `torch.distributed.breakpoint()` for interactive debugging.
+
+### **Advanced Features**
+- **Copy Engine Collectives**: Offload communication to GPU DMA engines for better compute/communication overlap (requires NCCL ≥2.28 and P2P GPU access).
+- **Object Collectives**: `broadcast_object_list`, `all_gather_object`, etc., for Python objects (but beware of performance overhead).
+- **Third-Party Backends**: Register custom backends via `Backend.register_backend()`.
+- **Launch Utilities**: Use `torch.distributed.launch` or `torchrun` for multi-process spawning (deprecated in favor of `torchrun`).
+
+### **Debugging Tools**
+- `monitored_barrier()`: Reports ranks that fail to synchronize.
+- `TORCH_DISTRIBUTED_DEBUG`: Enables additional logging and consistency checks.
+- HTTP debug server: `start_debug_server()` for runtime diagnostics.
+
+### **Notes**
+- Distributed training is **SPMD** (same program runs on all ranks).
+- Ensure tensors are on the correct device (e.g., GPU for NCCL).
+- Avoid thread-unsafe initialization; call `init_process_group()` from a single thread.
+
+This package is essential for scaling PyTorch models across multiple GPUs/machines, with optimizations for performance and debuggability.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  group:
+    dtype: ["ProcessGroup", "None"]
+    range: [null]
+    structure: ["object", "scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: group
+    Parameter 2: null
+    Constraint: "group is None or isinstance(group, ProcessGroup)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.get_world_size in a complex way */
+import torch

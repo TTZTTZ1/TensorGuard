@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.ComplexDoubleStorage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.Storage` documentation describes the low-level data container that underlies tensors. Here's a concise summary:
+
+### Core Concept
+- **Storage** is a contiguous, one-dimensional array of bytes that holds the actual data for a tensor.
+- A tensor is defined by its storage plus metadata: `dtype`, `shape`, `stride`, and `offset`.
+
+### Untyped Storage (`torch.UntypedStorage`)
+- The modern, recommended storage type (legacy typed storages are deprecated).
+- Multiple tensors can share the same underlying storage (e.g., tensor views).
+- Accessed via `tensor.untyped_storage()`.
+- Key attributes/methods:
+  - `data_ptr()`: Unique identifier for the storage
+  - `device`, `is_cuda`, `filename`: Storage properties
+  - `clone()`, `copy_()`, `fill_()`: Manipulation methods
+  - `share_memory_()`: Move to shared memory for multiprocessing
+  - `from_file()`: Create storage from memory-mapped file
+
+### Important Notes
+1. **Storage Sharing**: Tensor views share storage with their base tensor
+2. **Gradients**: Tensors with gradients have separate storages for data and grad
+3. **Special Cases**: Meta device tensors and FakeTensors have no actual storage
+4. **Warning**: Direct storage manipulation is low-level and risky; prefer tensor-level operations
+
+### Legacy Typed Storage
+- Deprecated classes like `torch.FloatStorage`, `torch.IntStorage`, etc.
+- Being phased out in favor of `torch.UntypedStorage`
+- `torch.TypedStorage` wraps an untyped storage with dtype information
+
+### Practical Usage
+- Most users don't need to work directly with storage
+- Primary use cases: advanced memory management, multiprocessing, memory-mapped files
+- When needed, use `torch.UntypedStorage` and avoid legacy typed storage APIs
+
+The storage system provides the foundation for PyTorch's tensor operations but is typically abstracted away in normal usage.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["variable"]
+    range: null
+    structure: ["variable_length_tuple"]
+    shape: null
+    default: null
+  wrap_storage:
+    dtype: ["torch.UntypedStorage", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["torch.dtype", "None"]
+    range: [["torch.complex128"]]
+    structure: ["scalar"]
+    shape: null
+    default: "torch.complex128"
+  device:
+    dtype: ["torch.device", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  _internal:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1. Parameter 1: dtype
+     Parameter 2: None
+     Constraint: "dtype in [None, torch.complex128]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.ComplexDoubleStorage in a complex way */
+import torch

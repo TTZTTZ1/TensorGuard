@@ -1,0 +1,32 @@
+params:
+  ary:
+    dtype: ["int", "float", "complex", "bool"]
+    range: null
+    structure: ["array"]
+    shape: ["any"]
+    default: null
+  indices_or_sections:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "list", "tuple"]
+    shape: null
+    default: null
+  axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "0"
+constraints:
+  1:
+    Parameter 1: ary
+    Parameter 2: axis
+    Constraint: "0 <= axis < len(ary.shape)"
+  2:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, int) and indices_or_sections > 0 and ary.shape[axis] % indices_or_sections == 0"
+  3:
+    Parameter 1: ary
+    Parameter 2: indices_or_sections
+    Constraint: "isinstance(indices_or_sections, (list, tuple)) and all(0 <= i < ary.shape[axis] for i in indices_or_sections) and list(indices_or_sections) == sorted(indices_or_sections)"

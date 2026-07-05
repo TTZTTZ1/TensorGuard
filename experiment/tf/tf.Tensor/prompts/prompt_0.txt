@@ -1,0 +1,128 @@
+
+# You are a Python code generation assistant for the `tf.Tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.Tensor` class in TensorFlow represents a multidimensional array with elements of a single data type (e.g., float32, int32). It is the core object manipulated in TensorFlow programs and has two key properties: **data type** (`dtype`) and **shape**.
+
+### Key Features:
+- **Eager vs. Graph Execution**: In eager mode (default), operations execute immediately; in graph mode (via `tf.function`), a computational graph is built for later evaluation.
+- **Shape Handling**: Shapes may be fully known or partially unknown (e.g., `None` dimensions in `tf.function`). Use `tf.shape(tensor)` for runtime shape or `tensor.shape`/`get_shape()` for static shape.
+- **Specialized Tensors**: Includes `tf.Variable`, `tf.constant`, `tf.sparse.SparseTensor`, and `tf.RaggedTensor`.
+
+### Important Methods:
+- **`eval(feed_dict=None, session=None)`**: Evaluates the tensor in a session (legacy, mainly for graph execution).
+- **`get_shape()`**: Returns a `tf.TensorShape` representing the tensor's shape.
+- **`set_shape(shape)`**: Updates the shape (use `tf.ensure_shape` for better error checking).
+- **`ref()`**: Returns a hashable reference for use in sets/dictionaries (since tensors are unhashable).
+- **`numpy()`**: Converts an eager tensor to a NumPy array.
+
+### Operator Overloading:
+Supports common Python operators (e.g., `+`, `-`, `*`, `@` for matrix multiplication) and comparisons, enabling intuitive syntax similar to NumPy.
+
+### Caveats:
+- **Buffer Reuse**: Constructing a tensor from a NumPy array may share the underlying buffer (changes to the array affect the tensor).
+- **Unhashable**: Tensors cannot be directly used as dictionary keys or in sets; use `tensor.ref()` instead.
+- **No Boolean Conversion**: Tensors cannot be used as booleans (e.g., in `if` statements); this raises a `TypeError`.
+
+### Example:
+```python
+c = tf.constant([[1.0, 2.0], [3.0, 4.0]])
+d = tf.constant([[1.0, 1.0], [0.0, 1.0]])
+e = c @ d  # Matrix multiplication
+print(e.numpy())  # Convert to NumPy array
+```
+
+In summary, `tf.Tensor` is the fundamental data structure in TensorFlow, providing a flexible interface for numerical computations with support for both eager and graph execution modes.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dtype:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  name_attr:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  ndim:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  shape:
+    dtype: ["TensorShape"]
+    range: "No mention"
+    structure: ["TensorShape"]
+    shape: ["any"]
+    default: "No mention"
+  feed_dict:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["dict"]
+    shape: "No mention"
+    default: "None"
+  session:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["Session object"]
+    shape: "No mention"
+    default: "None"
+  set_shape_shape:
+    dtype: ["TensorShape", "list", "tuple", "NoneType"]
+    range: "No mention"
+    structure: ["TensorShape", "list", "tuple", "None"]
+    shape: ["any"]
+    default: "No mention"
+  operator_y:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "int64", "bfloat16", "uint16", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "No mention"
+  operator_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  getitem_slice_spec:
+    dtype: ["int", "slice", "ellipsis", "None", "int32", "int64"]
+    range: "No mention"
+    structure: ["scalar", "slice", "ellipsis", "tensor"]
+    shape: ["scalar"]
+    default: "No mention"
+  getitem_var:
+    dtype: ["Variable object"]
+    range: "No mention"
+    structure: ["object"]
+    shape: "No mention"
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "set_shape_shape"
+    Parameter 2: "shape"
+    Constraint: "set_shape_shape is compatible with shape"
+  2:
+    Parameter 1: "operator_y"
+    Parameter 2: "dtype"
+    Constraint: "operator_y.dtype == dtype"
+  3:
+    Parameter 1: "shape"
+    Parameter 2: "operator_y"
+    Constraint: "tf.broadcast_static_shape(shape, operator_y.shape) is not None"
+  4:
+    Parameter 1: "getitem_slice_spec"
+    Parameter 2: "shape"
+    Constraint: "getitem_slice_spec is valid index for shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.Tensor in a complex way */
+import tensorflow as tf

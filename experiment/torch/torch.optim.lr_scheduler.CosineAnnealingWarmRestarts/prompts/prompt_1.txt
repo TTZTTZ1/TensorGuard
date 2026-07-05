@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `torch.optim.lr_scheduler.CosineAnnealingWarmRestarts` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**CosineAnnealingWarmRestarts** is a PyTorch learning rate scheduler that implements a cosine annealing schedule with periodic warm restarts, as introduced in the SGDR paper.
+
+### Key Features:
+- **Cosine Annealing**: The learning rate decreases following a cosine curve from an initial maximum (`η_max`) to a specified minimum (`η_min`).
+- **Warm Restarts**: At regular intervals (`T_0` epochs for the first restart), the learning rate resets to `η_max` and the annealing cycle restarts.
+- **Cycle Length Scaling**: After each restart, the cycle length can be multiplied by a factor `T_mult` (default: 1, meaning constant cycle length).
+
+### Parameters:
+- `optimizer`: The optimizer to wrap.
+- `T_0`: Number of epochs until the first restart.
+- `T_mult`: Factor by which `T_i` (cycle length) increases after each restart.
+- `eta_min`: Minimum learning rate (default: 0).
+- `last_epoch`: The index of the last epoch (default: -1).
+
+### Usage:
+Typically called after each epoch (`scheduler.step()`), but can also be called after each batch by passing a fractional epoch value (e.g., `epoch + i / iters`).
+
+### Behavior:
+- At the start of each cycle (`T_cur = 0`), LR = `η_max`.
+- At the end of each cycle (`T_cur = T_i`), LR = `η_min`.
+- After `T_i` epochs, a restart occurs: `T_cur` resets to 0, and `T_i` becomes `T_i * T_mult` for the next cycle.
+
+This approach helps models escape local minima and can improve convergence by periodically "reheating" the learning rate.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  optimizer:
+    dtype: ["Optimizer"]
+    range: null
+    structure: ["instance"]
+    shape: null
+    default: null
+  T_0:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  T_mult:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  eta_min:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0"
+  last_epoch:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.lr_scheduler.CosineAnnealingWarmRestarts in a complex way */
+import torch

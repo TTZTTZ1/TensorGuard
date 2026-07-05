@@ -1,0 +1,44 @@
+params:
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[1], [2], [3]]
+    default: null
+  scale_factor:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [[1], [2], [3]]
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["nearest", "linear", "bilinear", "bicubic", "trilinear"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "nearest"
+  align_corners:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  recompute_scale_factor:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: size
+    Parameter 2: scale_factor
+    Constraint: "size is None or scale_factor is None"
+  2:
+    Parameter 1: align_corners
+    Parameter 2: mode
+    Constraint: "not (align_corners == True and mode not in ['linear', 'bilinear', 'bicubic', 'trilinear'])"
+  3:
+    Parameter 1: recompute_scale_factor
+    Parameter 2: scale_factor
+    Constraint: "not (recompute_scale_factor == True and scale_factor is None)"

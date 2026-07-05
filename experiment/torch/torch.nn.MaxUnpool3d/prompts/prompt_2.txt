@@ -1,0 +1,49 @@
+
+# You are a Python code generation assistant for the `torch.nn.MaxUnpool3d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`MaxUnpool3d` performs a partial inverse of `MaxPool3d` by reconstructing a 3D tensor from pooled output and corresponding indices. It restores only the maximal values to their original positions, setting all other entries to zero.
+
+**Key points:**
+- **Purpose:** Reverses `MaxPool3d` using stored indices to place max values back, filling non‑max positions with zeros.
+- **Inputs:** Requires both the pooled `input` tensor and the `indices` from `MaxPool3d`. An optional `output_size` can resolve ambiguous output dimensions.
+- **Output shape:** Typically computed via the formula:  
+  \( D_{out} = (D_{in} - 1) \times \text{stride}[0] - 2 \times \text{padding}[0] + \text{kernel\_size}[0] \) (similarly for height and width), unless `output_size` is provided.
+- **Note:** Non‑deterministic if indices have repeated values; not fully invertible since non‑maximal values are lost during pooling.
+
+**Example:**
+```python
+pool = nn.MaxPool3d(3, stride=2, return_indices=True)
+unpool = nn.MaxUnpool3d(3, stride=2)
+output, indices = pool(input_tensor)
+reconstructed = unpool(output, indices)  # shape matches original input
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kernel_size:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: null
+  stride:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "null"
+  padding:
+    dtype: ["int", "tuple"]
+    range: null
+    structure: ["scalar", "tuple"]
+    shape: [1, 3]
+    default: "0"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.MaxUnpool3d in a complex way */
+import torch

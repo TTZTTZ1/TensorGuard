@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.optim.Optimizer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.optim` module provides a comprehensive suite of optimization algorithms for training neural networks in PyTorch. Here is a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Optimizer Object**: Holds the current state and updates model parameters based on computed gradients.
+- **Parameter Groups**: Supports both global and per-parameter optimization settings (e.g., layer-specific learning rates, weight decay).
+- **Step Methods**: 
+  - Standard `optimizer.step()` after gradient computation.
+  - Closure-based `optimizer.step(closure)` for algorithms like LBFGS that require multiple reevaluations.
+
+### **Supported Algorithms**
+Includes popular optimizers such as:
+- **SGD** (with/without momentum)
+- **Adam**, **AdamW**
+- **RMSprop**, **Adagrad**
+- **Adadelta**, **NAdam**, **RAdam**
+- **LBFGS**, **ASGD**, and others
+
+### **Implementation Variants**
+Each algorithm may have multiple implementations for performance:
+- **for-loop**: Baseline, sequential updates.
+- **foreach (multi-tensor)**: Default in most cases; fuses operations across parameters for efficiency.
+- **fused**: Further vertical fusion for maximum speed (availability varies by algorithm and device).
+
+### **Learning Rate Scheduling**
+- **`lr_scheduler` Module**: Provides schedulers (e.g., `StepLR`, `CosineAnnealingLR`, `ReduceLROnPlateau`) to adjust learning rates during training.
+- **Usage Note**: Schedulers should be called **after** `optimizer.step()` (post-PyTorch 1.1.0).
+
+### **Advanced Features**
+1. **Weight Averaging**:
+   - **SWA (Stochastic Weight Averaging)**: Averages model weights post-training for better generalization.
+   - **EMA (Exponential Moving Average)**: Maintains a smoothed version of weights during training.
+   - Utilities: `AveragedModel`, `SWALR` scheduler, `update_bn()` for updating batch norm statistics.
+
+2. **State Dict Handling**:
+   - Supports saving/loading optimizer state (`state_dict`/`load_state_dict`).
+   - Enables flexible state transfer between models with different architectures via custom pre-hooks.
+
+### **Basic Usage Pattern**
+```python
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
+
+for epoch in range(epochs):
+    for batch in dataloader:
+        optimizer.zero_grad()
+        loss = model(batch)
+        loss.backward()
+        optimizer.step()
+    scheduler.step()
+```
+
+### **Key Notes**
+- Parameters must be provided in a **deterministic order** (e.g., list of tensors, not sets).
+- Per-parameter options allow fine-grained control (e.g., excluding biases from weight decay).
+- The `foreach` implementation is generally the default for balanced performance and stability.
+
+This module is designed to be both **user-friendly** for common cases and **extensible** for advanced research needs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["torch.Tensor", "dict"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+  defaults:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.Optimizer in a complex way */
+import torch

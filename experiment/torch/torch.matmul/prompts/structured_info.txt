@@ -1,0 +1,40 @@
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 1 or other.ndim != 1 or input.shape[0] == other.shape[0]"
+  2:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 2 or other.ndim != 2 or input.shape[1] == other.shape[0]"
+  3:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 1 or other.ndim != 2 or input.shape[0] == other.shape[0]"
+  4:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.ndim != 2 or other.ndim != 1 or input.shape[1] == other.shape[0]"
+  5:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "(input.ndim <= 2 and other.ndim <= 2) or (__import__('torch'); a = input if input.ndim >= 2 else input.unsqueeze(0); b = other if other.ndim >= 2 else other.unsqueeze(-1); torch.broadcast_shapes(a.shape[:-2], b.shape[:-2]) is not None and a.shape[-1] == b.shape[-2])"

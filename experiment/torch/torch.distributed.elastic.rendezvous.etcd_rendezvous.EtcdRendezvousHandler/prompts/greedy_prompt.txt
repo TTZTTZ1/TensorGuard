@@ -1,0 +1,109 @@
+
+# You are a Python code generation assistant for the `torch.distributed.elastic.rendezvous.etcd_rendezvous.EtcdRendezvousHandler` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Distributed Elastic Rendezvous system is a distributed synchronization and peer discovery mechanism used to coordinate nodes in a training job. It ensures that all participating nodes agree on the same list of participants, their roles (ranks), and when training can begin or resume.
+
+### Key Functionalities:
+1. **Barrier Synchronization**: Nodes block until at least `min_nodes` join, with an optional wait time to allow latecomers. If `max_nodes` is reached, the rendezvous completes immediately.
+2. **Exclusivity**: Prevents multiple independent groups from forming for the same job; late nodes wait until the current rendezvous is destroyed.
+3. **Consistency**: All members agree on job membership and assigned ranks (0 to world size), though ranks are not stable across re-rendezvous.
+4. **Fault Tolerance**: Handles node failures during rendezvous by automatically triggering a re-rendezvous with healthy nodes.
+5. **Shared Key-Value Store**: Provides a `torch.distributed.Store` for exchanging initialization data among members.
+
+### Core Components:
+- **RendezvousHandler**: Main interface for participating in rendezvous. Users typically use built-in implementations rather than custom ones.
+- **DynamicRendezvousHandler**: The primary handler, backend-agnostic and works with various backends:
+  - **C10dRendezvousBackend**: Uses PyTorch’s built-in store (TCPStore/FileStore), requiring no external dependencies.
+  - **EtcdRendezvousBackend**: Uses an etcd server for state management (legacy `EtcdRendezvousHandler` is deprecated).
+- **RendezvousParameters**: Holds configuration like backend type, endpoint, run ID, and node limits.
+
+### Usage Example:
+```python
+store = TCPStore("localhost")
+backend = C10dRendezvousBackend(store, "my_run_id")
+rdzv_handler = DynamicRendezvousHandler.from_backend(
+    run_id="my_run_id", store=store, backend=backend, min_nodes=2, max_nodes=4
+)
+store, rank, world_size = rdzv_handler.next_rendezvous()
+```
+
+### Additional Features:
+- **Waiting Workers**: Tracks late-arriving nodes for inclusion in the next rendezvous.
+- **Graceful Shutdown**: Methods to close the rendezvous and release resources.
+- **Timeout Configuration**: Configurable timeouts for joining, last call, closing, and heartbeats.
+
+### Backend Options:
+- **C10d Backend**: Simple, no external dependencies; supports TCPStore and FileStore.
+- **Etcd Backend**: For production with high availability; requires an etcd server.
+
+### Error Handling:
+Defines specific exceptions for closed rendezvous, timeouts, connection failures, and state corruption.
+
+### Legacy Note:
+The older `EtcdRendezvousHandler` is deprecated in favor of `DynamicRendezvousHandler` with `EtcdRendezvousBackend`.
+
+This system is essential for elastic training, allowing dynamic scaling and fault tolerance in distributed PyTorch jobs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  etcd_address:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  port:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  job_id:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  min_workers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  max_workers:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  timeout:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "600"
+  last_call_timeout:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "30"
+  etcd_prefix:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "/torchelastic/p2p"
+constraints:
+  1:
+    Parameter 1: min_workers
+    Parameter 2: max_workers
+    Constraint: "max_workers >= min_workers"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.elastic.rendezvous.etcd_rendezvous.EtcdRendezvousHandler in a complex way */
+import torch

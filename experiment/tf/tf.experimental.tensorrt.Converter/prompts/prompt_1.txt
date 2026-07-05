@@ -1,0 +1,124 @@
+
+# You are a Python code generation assistant for the `tf.experimental.tensorrt.Converter` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.experimental.tensorrt.Converter` is an offline tool for converting TensorFlow 2.0 SavedModels into TensorRT-optimized models to accelerate inference on NVIDIA GPUs.
+
+**Key Functionality:**
+- Converts supported subgraphs in a SavedModel into TensorRT engines (TRTEngineOps).
+- Supports multiple precision modes: FP32, FP16, and INT8 (with calibration).
+- Allows dynamic shape support for variable input dimensions.
+- Can pre-build and cache engines offline to avoid runtime overhead.
+
+**Main Usage Patterns:**
+1. **FP32/FP16 Conversion:** Basic conversion without engine building during conversion.
+2. **Pre-built Engines:** Convert and build engines offline using sample input data to cache engines for known shapes.
+3. **INT8 Calibration:** Convert with INT8 precision using a calibration dataset to quantize the model.
+4. **Dynamic Shapes:** Enable dynamic shape support and build profiles using an input function.
+
+**Core Methods:**
+- `convert()`: Performs the initial conversion, optionally using calibration data for INT8.
+- `build()`: Executes the converted graph with sample input to build and cache TensorRT engines.
+- `save()`: Saves the converted SavedModel, optionally including GPU-specific engines.
+- `summary()`: Provides a detailed report of the conversion results.
+
+**Important Notes:**
+- Conversion is platform-dependent (requires compatible GPU environment).
+- INT8 calibration requires representative input data.
+- Dynamic shape mode requires building profiles with an input function.
+- Windows support is experimental.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_saved_model_dir:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  input_saved_model_tags:
+    dtype: ["list"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "None"
+  input_saved_model_signature_key:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  use_dynamic_shape:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  dynamic_shape_profile_strategy:
+    dtype: ["string"]
+    range: ["Range", "Optimal", "Range+Optimal"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+  max_workspace_size_bytes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "DEFAULT_TRT_MAX_WORKSPACE_SIZE_BYTES"
+  precision_mode:
+    dtype: ["string"]
+    range: ["FP32", "FP16", "INT8"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "FP32"
+  minimum_segment_size:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "3"
+  maximum_cached_engines:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1"
+  use_calibration:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  allow_build_at_runtime:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  conversion_params:
+    dtype: ["object"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "precision_mode"
+    Parameter 2: "use_calibration"
+    Constraint: "use_calibration == True implies precision_mode == 'INT8'"
+  2:
+    Parameter 1: "precision_mode"
+    Parameter 2: "maximum_cached_engines"
+    Constraint: "precision_mode == 'INT8' implies maximum_cached_engines == 1"
+  3:
+    Parameter 1: "use_dynamic_shape"
+    Parameter 2: "dynamic_shape_profile_strategy"
+    Constraint: "dynamic_shape_profile_strategy is not None implies use_dynamic_shape == True"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.experimental.tensorrt.Converter in a complex way */
+import tensorflow as tf

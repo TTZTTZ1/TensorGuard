@@ -1,0 +1,131 @@
+
+# You are a Python code generation assistant for the `torch.nn.utils.prune.PruningContainer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **PruningContainer** class in PyTorch is a container that manages a sequence of pruning methods for iterative pruning. It tracks the order of applied pruning methods and combines successive pruning operations.
+
+**Key Functionality:**
+- **Iterative Pruning:** Allows multiple pruning methods to be applied sequentially to the same tensor.
+- **Mask Combination:** Automatically combines masks from previous pruning steps when computing new masks.
+- **Type Handling:** Supports unstructured, structured, and global pruning types.
+
+**Main Methods:**
+1. **`add_pruning_method(method)`** – Adds a new pruning method to the container.
+2. **`apply(module, name, ...)`** – Applies pruning to a module parameter and adds forward hooks for dynamic pruning.
+3. **`compute_mask(t, default_mask)`** – Computes a new mask based on previous masks and the latest pruning method.
+4. **`prune(t, ...)`** – Returns a pruned version of the input tensor using the combined pruning rules.
+5. **`remove(module)`** – Removes pruning reparameterization while keeping the parameter permanently pruned.
+
+**Usage:**  
+Useful when applying multiple pruning techniques (e.g., magnitude-based then connectivity-based) to the same parameter over time, ensuring masks are properly combined without manual intervention.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  __init__.args:
+    dtype: ["BasePruningMethod", "iterable"]
+    range: [null]
+    structure: ["object", "iterable"]
+    shape: ["any"]
+    default: "No mention"
+  add_pruning_method.method:
+    dtype: ["BasePruningMethod"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+  apply.module:
+    dtype: ["nn.Module"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+  apply.name:
+    dtype: ["str"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  apply.args:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tuple"]
+    shape: ["any"]
+    default: "No mention"
+  apply.importance_scores:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["same as module parameter"]
+    default: "None"
+  apply.kwargs:
+    dtype: ["any"]
+    range: [null]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "No mention"
+  apply_mask.module:
+    dtype: ["nn.Module"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+  compute_mask.t:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["same as default_mask"]
+    default: "No mention"
+  compute_mask.default_mask:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["same as t"]
+    default: "No mention"
+  prune.t:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["same as default_mask"]
+    default: "No mention"
+  prune.default_mask:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["same as t"]
+    default: "None"
+  prune.importance_scores:
+    dtype: ["torch.Tensor"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["same as t"]
+    default: "None"
+  remove.module:
+    dtype: ["nn.Module"]
+    range: [null]
+    structure: ["object"]
+    shape: ["any"]
+    default: "No mention"
+constraints:
+  1:
+    Parameter 1: "apply.importance_scores"
+    Parameter 2: "module parameter from apply.module and apply.name"
+    Constraint: "apply.importance_scores is None or apply.importance_scores.shape == getattr(apply.module, apply.name).shape"
+  2:
+    Parameter 1: "compute_mask.t"
+    Parameter 2: "compute_mask.default_mask"
+    Constraint: "compute_mask.t.shape == compute_mask.default_mask.shape"
+  3:
+    Parameter 1: "prune.t"
+    Parameter 2: "prune.default_mask"
+    Constraint: "prune.default_mask is None or prune.t.shape == prune.default_mask.shape"
+  4:
+    Parameter 1: "prune.importance_scores"
+    Parameter 2: "prune.t"
+    Constraint: "prune.importance_scores is None or prune.importance_scores.shape == prune.t.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.utils.prune.PruningContainer in a complex way */
+import torch

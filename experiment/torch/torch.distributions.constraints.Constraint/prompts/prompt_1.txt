@@ -1,0 +1,105 @@
+
+# You are a Python code generation assistant for the `torch.distributions.constraints.Constraint` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key features and usage:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with methods like:
+  - `sample()` / `rsample()` - sampling (regular and reparameterized)
+  - `log_prob()` - log probability density/mass function
+  - `entropy()` - distribution entropy
+  - `cdf()` / `icdf()` - cumulative/inverse cumulative distribution functions
+
+- **Available Distributions** (30+ implementations):
+  - Common univariate: `Normal`, `Bernoulli`, `Categorical`, `Uniform`, `Exponential`, `Gamma`, `Beta`, `Poisson`
+  - Multivariate: `MultivariateNormal`, `Dirichlet`, `LowRankMultivariateNormal`
+  - Transformed: `LogNormal`, `HalfNormal`, `Gumbel`, `Weibull`
+  - Specialized: `LKJCholesky`, `Wishart`, `VonMises`, `MixtureSameFamily`
+
+### **2. Gradient Estimation Methods**
+
+**Score Function (REINFORCE)**:
+```python
+# For policy gradients in RL
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+**Pathwise Derivative (Reparameterization)**:
+```python
+# For reparameterizable distributions (e.g., Normal)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+### **3. Transforms & Constraints**
+- **Transforms**: Bijective transformations for reparameterization (`ExpTransform`, `SigmoidTransform`, `AffineTransform`, etc.)
+- **Constraints**: Define valid parameter ranges (`Interval`, `Simplex`, `PositiveDefinite`, etc.)
+- **Registry System**: `biject_to()` and `transform_to()` for mapping constraints to transforms
+
+### **4. KL Divergence**
+- `kl_divergence(p, q)` computes KL(p∥q) between distributions
+- Pre-registered implementations for many distribution pairs
+- Extensible via `register_kl()` decorator
+
+### **5. Key Features**
+- **Batch Support**: All distributions support batched parameters
+- **Validation**: Optional argument validation via `validate_args`
+- **Exponential Family**: Specialized base class for exponential family distributions
+- **Independent Wrapper**: Reinterpret batch dimensions as event dimensions
+- **Transformed Distributions**: Compose base distributions with transforms
+
+## **Common Use Cases**
+1. **Variational Inference**: Using reparameterized distributions in VAEs
+2. **Reinforcement Learning**: Policy gradient methods with categorical distributions
+3. **Bayesian Modeling**: Building hierarchical models with various priors
+4. **Probabilistic Programming**: Constructing complex probabilistic models
+5. **Unconstrained Optimization**: Using transforms to optimize constrained parameters
+
+## **Design Philosophy**
+- Follows TensorFlow Distributions package design
+- Separates sampling from gradient estimation strategies
+- Emphasizes composability and extensibility
+- Provides both flexible and numerically stable implementations
+
+The package enables gradient-based optimization through stochastic nodes while maintaining mathematical rigor and computational efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  is_discrete:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  event_dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: "event_dim"
+    Parameter 2: "None"
+    Constraint: "event_dim >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.constraints.Constraint in a complex way */
+import torch

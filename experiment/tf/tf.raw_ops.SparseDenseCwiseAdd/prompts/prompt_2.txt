@@ -1,0 +1,68 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseDenseCwiseAdd` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.SparseDenseCwiseAdd` performs element-wise addition between a sparse tensor and a dense tensor, following specific broadcasting rules. The dense tensor is broadcast to match the sparse tensor's shape, but only the dense values at positions specified by the sparse tensor's indices are added to the corresponding sparse values. The output is a 1-D tensor of the resulting non-zero values, preserving the original sparse indices and shape.
+
+**Key Points:**
+- **Inputs:** Sparse tensor components (`sp_indices`, `sp_values`, `sp_shape`) and a dense tensor (`dense`).
+- **Behavior:** Adds only the overlapping values (where sparse indices point), with broadcasting of the dense side if needed.
+- **Output:** A tensor of updated non-zero values, same type as `sp_values`.
+- **Use Case:** Efficient sparse-dense operations where only non-zero entries participate.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sp_indices:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  sp_values:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  sp_shape:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  dense:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: dense
+    Parameter 2: sp_values
+    Constraint: "dense.dtype == sp_values.dtype"
+  2:
+    Parameter 1: sp_indices
+    Parameter 2: sp_values
+    Constraint: "sp_indices.shape[0] == sp_values.shape[0]"
+  3:
+    Parameter 1: sp_indices
+    Parameter 2: sp_shape
+    Constraint: "sp_indices.shape[1] == sp_shape.shape[0]"
+  4:
+    Parameter 1: dense
+    Parameter 2: sp_shape
+    Constraint: "len(dense.shape) == sp_shape.shape[0]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseDenseCwiseAdd in a complex way */
+import tensorflow as tf

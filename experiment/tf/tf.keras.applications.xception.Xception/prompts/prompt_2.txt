@@ -1,0 +1,96 @@
+
+# You are a Python code generation assistant for the `tf.keras.applications.xception.Xception` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.keras.applications.xception.Xception` function instantiates the Xception deep learning model, which is based on depthwise separable convolutions and was introduced in a 2017 CVPR paper. It is primarily used for image classification tasks.
+
+**Key Features:**
+- **Default Input Size:** 299x299 pixels with 3 color channels.
+- **Preprocessing:** Inputs should be scaled between -1 and 1 using `keras.applications.xception.preprocess_input`.
+- **Weights:** Can be loaded with ImageNet pretrained weights (`weights='imagenet'`), custom weights from a file path, or initialized randomly (`weights=None`).
+
+**Main Parameters:**
+- `include_top`: If `True`, includes the final fully connected classification layers; if `False`, allows for custom input shapes and pooling.
+- `input_shape`: Required if `include_top=False`; must be at least 71x71 with 3 channels.
+- `pooling`: Specifies pooling when `include_top=False` (`None`, `'avg'`, or `'max'`).
+- `classes`: Number of output classes (only used if `include_top=True` and no pretrained weights are loaded).
+- `classifier_activation`: Activation function for the top layer (default is `'softmax'`).
+
+**Use Cases:**
+- **Image Classification:** Direct use with pretrained ImageNet weights.
+- **Transfer Learning:** Remove the top layers (`include_top=False`) to extract features and add custom layers for new tasks.
+
+The function returns a configured Keras model instance ready for training or inference.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  include_top:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "True"
+  weights:
+    dtype: ["NoneType", "string"]
+    range: ["None", "imagenet", "string path"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "imagenet"
+  input_tensor:
+    dtype: ["tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "null"
+  input_shape:
+    dtype: ["tuple"]
+    range: ["tuple with 3 channels, height and width >=71"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "null"
+  pooling:
+    dtype: ["NoneType", "string"]
+    range: ["None", "avg", "max"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  classes:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "1000"
+  classifier_activation:
+    dtype: ["string", "callable"]
+    range: ["string or callable", "for pretrained weights: None or softmax"]
+    structure: ["scalar", "callable"]
+    shape: ["No mention"]
+    default: "softmax"
+constraints:
+  1:
+    Parameter 1: include_top
+    Parameter 2: input_shape
+    Constraint: input_shape is None or not include_top
+  2:
+    Parameter 1: include_top
+    Parameter 2: classes
+    Constraint: include_top or classes == 1000
+  3:
+    Parameter 1: weights
+    Parameter 2: classes
+    Constraint: weights is None or classes == 1000
+  4:
+    Parameter 1: include_top
+    Parameter 2: pooling
+    Constraint: not include_top or pooling is None
+  5:
+    Parameter 1: weights
+    Parameter 2: classifier_activation
+    Constraint: weights is None or classifier_activation in [None, 'softmax']
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.applications.xception.Xception in a complex way */
+import tensorflow as tf

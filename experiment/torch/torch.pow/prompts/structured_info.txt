@@ -1,0 +1,30 @@
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+  self:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  exponent:
+    dtype: No mention
+    range: No mention
+    structure: ["scalar", "tensor"]
+    shape: No mention
+    default: null
+  out:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: exponent
+    Constraint: not isinstance(exponent, torch.Tensor) or (hasattr(input, 'shape') and hasattr(exponent, 'shape') and all(a == b or a == 1 or b == 1 for a, b in zip(input.shape[::-1], exponent.shape[::-1])))

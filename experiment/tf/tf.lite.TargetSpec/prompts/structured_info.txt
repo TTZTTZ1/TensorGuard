@@ -1,0 +1,30 @@
+params:
+  supported_ops:
+    dtype: ["tf.lite.OpsSet"]
+    range: [["TFLITE_BUILTINS", "SELECT_TF_OPS"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "{tf.lite.OpsSet.TFLITE_BUILTINS}"
+  supported_types:
+    dtype: ["tf.dtypes.DType"]
+    range: [["float32", "float16", "int32", "int8", "uint8"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "set()"
+  experimental_select_user_tf_ops:
+    dtype: ["string"]
+    range: [["any"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "None"
+  experimental_supported_backends:
+    dtype: ["string"]
+    range: [["GPU"]]
+    structure: ["set"]
+    shape: ["dynamic"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: experimental_select_user_tf_ops
+    Parameter 2: supported_ops
+    Constraint: "not experimental_select_user_tf_ops or tf.lite.OpsSet.SELECT_TF_OPS in supported_ops"

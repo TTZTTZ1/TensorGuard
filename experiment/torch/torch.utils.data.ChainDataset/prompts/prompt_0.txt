@@ -1,0 +1,83 @@
+
+# You are a Python code generation assistant for the `torch.utils.data.ChainDataset` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.utils.data` module provides essential utilities for loading and batching data in PyTorch, centered around the `DataLoader` class. Here’s a concise overview of its core components and usage:
+
+### **Key Components**
+1. **`DataLoader`**  
+   - Primary class for iterating over datasets.
+   - Supports **map-style** (index-based) and **iterable-style** (stream-based) datasets.
+   - Configurable options: batching, shuffling, multi-process loading, memory pinning, etc.
+
+2. **Dataset Types**
+   - **Map-style**: Implements `__getitem__()` and `__len__()` (e.g., reading images from disk).
+   - **Iterable-style**: Implements `__iter__()` (e.g., streaming from a database or real-time logs).
+
+3. **Samplers**  
+   - Control data loading order for map-style datasets (e.g., `RandomSampler`, `SequentialSampler`).
+   - Custom samplers can be provided via the `sampler` or `batch_sampler` arguments.
+
+4. **Batching**
+   - **Automatic batching** (default): Combines samples into batches using `collate_fn`.
+   - **Manual batching**: Disable by setting `batch_size=None` and `batch_sampler=None`.
+   - Custom `collate_fn` can handle padding, custom data structures, etc.
+
+5. **Multi-process Loading**
+   - Set `num_workers > 0` to parallelize data loading.
+   - Workers duplicate the dataset; use `worker_init_fn` or `get_worker_info()` to avoid data duplication (especially for iterable datasets).
+   - Platform-specific behaviors (Unix: `fork()`; Windows/MacOS: `spawn()`) require careful script structuring.
+
+6. **Memory Pinning**
+   - Set `pin_memory=True` to speed up GPU data transfers by using pinned (page-locked) memory.
+   - Custom batch types need a `pin_memory()` method to enable pinning.
+
+### **Common Usage**
+```python
+from torch.utils.data import DataLoader, Dataset
+
+# Example with a map-style dataset
+loader = DataLoader(
+    dataset,
+    batch_size=32,
+    shuffle=True,
+    num_workers=4,
+    pin_memory=True,
+    drop_last=False
+)
+
+for batch in loader:
+    # Training loop
+    pass
+```
+
+### **Important Notes**
+- **IterableDataset with multi-processing**: Implement `__iter__()` to shard data across workers (use `get_worker_info()`).
+- **Custom collation**: Override `collate_fn` for non-standard batching logic.
+- **Randomness in workers**: Seed management may be needed to ensure reproducibility.
+- **Windows/MacOS compatibility**: Guard main script code with `if __name__ == '__main__':` and define functions at the top level.
+
+### **Utility Classes**
+- `TensorDataset`: Wraps tensors for simple use cases.
+- `ConcatDataset`, `ChainDataset`: Combine multiple datasets.
+- `Subset`, `random_split`: Create dataset subsets.
+- `Sampler` subclasses: Control sampling strategies (e.g., weighted, distributed).
+
+This module is designed for flexibility, supporting everything from simple in-memory data to large-scale streaming, with optimizations for performance in distributed and GPU-based training.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  datasets:
+    dtype: ["Iterable[IterableDataset]"]
+    range: null
+    structure: ["iterable"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.utils.data.ChainDataset in a complex way */
+import torch

@@ -1,0 +1,24 @@
+params:
+  features:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "feature_key_K"
+    Parameter 2: "data_type_T"
+    Constraint: "all(type(ex.features[K].value[0]) == T for ex in examples if K in ex.features and ex.features[K].value) and len({type(ex.features[K].value[0]) for ex in examples if K in ex.features and ex.features[K].value}) <= 1"
+  2:
+    Parameter 1: "feature_key_K"
+    Parameter 2: "list_size"
+    Constraint: "len(ex1.features[K].value) != len(ex2.features[K].value) is allowed for any examples ex1, ex2"
+  3:
+    Parameter 1: "feature_key_K"
+    Parameter 2: "default_value"
+    Constraint: "if K not in ex.features, default_value is used if configured"
+  4:
+    Parameter 1: "feature_key_K"
+    Parameter 2: "empty_list"
+    Constraint: "if K in ex.features and not ex.features[K].value, then no default is used and it represents an empty tensor"

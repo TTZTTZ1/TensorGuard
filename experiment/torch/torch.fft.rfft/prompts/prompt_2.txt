@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.fft.rfft` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.fft.rfft` computes the 1D Fourier transform of a **real-valued** input tensor. It returns only the positive frequencies (up to the Nyquist frequency), exploiting Hermitian symmetry to avoid redundant complex outputs. Key parameters include:
+
+- **input**: Real-valued tensor.
+- **n**: Optional length for zero-padding or trimming.
+- **dim**: Dimension along which to compute the FFT (default: last dimension).
+- **norm**: Normalization mode (`"backward"`, `"forward"`, or `"ortho"`).
+
+**Example**:
+```python
+t = torch.arange(4)
+torch.fft.rfft(t)  # Output: [6.+0.j, -2.+2.j, -2.+0.j]
+```
+Compared to `torch.fft.fft`, which returns all frequencies, `rfft` omits symmetric negative frequencies for efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  n:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  dim:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "-1"
+  norm:
+    dtype: ["str"]
+    range: [["forward", "backward", "ortho"]]
+    structure: ["scalar"]
+    shape: null
+    default: ""backward""
+  out:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dim
+    Parameter 2: input
+    Constraint: "dim >= -len(input.shape) and dim < len(input.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fft.rfft in a complex way */
+import torch

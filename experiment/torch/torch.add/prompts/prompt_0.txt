@@ -1,0 +1,62 @@
+
+# You are a Python code generation assistant for the `torch.add` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.add` performs element-wise addition between `input` and `other`, with an optional scaling factor `alpha` applied to `other`. It supports broadcasting, type promotion, and works with integer, float, and complex data types.
+
+**Parameters:**
+- `input` (Tensor): The base tensor.
+- `other` (Tensor or Number): The tensor or scalar to add to `input`.
+
+**Keyword arguments:**
+- `alpha` (Number): Multiplier for `other` before addition (default: 1).
+- `out` (Tensor, optional): Output tensor.
+
+**Formula:**  
+`output = input + alpha × other`
+
+**Example:**
+```python
+>>> a = torch.tensor([1, 2])
+>>> torch.add(a, 5, alpha=2)  # a + 2*5
+tensor([11, 12])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["int", "float", "complex"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  other:
+    dtype: ["int", "float", "complex"]
+    range: "No mention"
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "null"
+  alpha:
+    dtype: ["int", "float", "complex"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "1"
+  out:
+    dtype: ["int", "float", "complex"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "other"
+    Constraint: "not hasattr(other, 'shape') or all(si == so or si == 1 or so == 1 for si, so in zip(input.shape[::-1], other.shape[::-1]))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.add in a complex way */
+import torch

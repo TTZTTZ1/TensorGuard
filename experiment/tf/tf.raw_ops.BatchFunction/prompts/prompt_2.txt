@@ -1,0 +1,154 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.BatchFunction` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.BatchFunction` is a TensorFlow operation that batches input tensors for efficient computation by a given function. It is designed to aggregate multiple concurrent calls (e.g., from separate `session.run` invocations) into larger batches, improving throughput, particularly in inference scenarios.
+
+### Key Features:
+- **Batching**: Gathers and concatenates inputs along the first dimension non-deterministically.
+- **Captured Tensors**: Supports non-batched tensors (e.g., constants) that remain unchanged across calls.
+- **Dynamic Scheduling**: Uses configurable threads and timeouts to handle batch formation.
+- **Splitting**: Optional large-batch splitting for inputs exceeding allowed sizes.
+
+### Parameters:
+- **Core**: `in_tensors` (to batch), `captured_tensors` (static inputs), `f` (function to apply), `Tout` (output types).
+- **Batching Control**: `num_batch_threads`, `max_batch_size`, `batch_timeout_micros`.
+- **Advanced**: `allowed_batch_sizes`, `enable_large_batch_splitting`, priority settings, and queue options.
+
+### Use Case:
+Ideal for high-performance inference where multiple requests can be combined to utilize batch computation efficiently, reducing per-request overhead.
+
+### Limitations:
+- Does not support `SparseTensor`.
+- Output must be a `Tensor` or a list/tuple of `Tensor`s.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  in_tensors:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  captured_tensors:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  f:
+    dtype: ["function"]
+    range: "No mention"
+    structure: ["function"]
+    shape: ["scalar"]
+    default: null
+  num_batch_threads:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  max_batch_size:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  batch_timeout_micros:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  Tout:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: null
+  max_enqueued_batches:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "10"
+  allowed_batch_sizes:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  container:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ""
+  shared_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ""
+  batching_queue:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: ""
+  low_priority_max_batch_size:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  low_priority_batch_timeout_micros:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  low_priority_allowed_batch_sizes:
+    dtype: ["list"]
+    range: "No mention"
+    structure: ["list"]
+    shape: ["any"]
+    default: "[]"
+  low_priority_max_enqueued_batches:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "0"
+  enable_large_batch_splitting:
+    dtype: ["bool"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: "Tout"
+    Parameter 2: "Tout"
+    Constraint: "len(Tout) >= 1"
+  2:
+    Parameter 1: "allowed_batch_sizes"
+    Parameter 2: "allowed_batch_sizes"
+    Constraint: "all(allowed_batch_sizes[i] < allowed_batch_sizes[i+1] for i in range(len(allowed_batch_sizes)-1))"
+  3:
+    Parameter 1: "allowed_batch_sizes"
+    Parameter 2: "max_batch_size"
+    Constraint: "enable_large_batch_splitting or (len(allowed_batch_sizes) == 0 or allowed_batch_sizes[-1] == max_batch_size)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.BatchFunction in a complex way */
+import tensorflow as tf

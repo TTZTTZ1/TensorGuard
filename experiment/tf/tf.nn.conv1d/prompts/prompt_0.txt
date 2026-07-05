@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `tf.nn.conv1d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.conv1d` performs a 1‑D convolution on 3‑D input and filter tensors. It internally reshapes the tensors to use `tf.nn.conv2d` for computation.
+
+**Key parameters:**
+- **input**: Rank ≥ 3 tensor (`float16`, `float32`, or `float64`).
+- **filters**: Rank ≥ 3 tensor with same type as input, shape `[filter_width, in_channels, out_channels]`.
+- **stride**: Integer or list of length 1 or 3 (controls filter movement).
+- **padding**: `'SAME'` or `'VALID'`.
+- **data_format**: `'NWC'` (default, shape `batch + [width, channels]`) or `'NCW'` (shape `batch + [channels, width]`).
+- **dilations**: Integer or list of length 1 or 3 (default 1); dilation > 1 introduces spacing between filter elements.
+
+**Returns:**  
+A tensor of the same type as input, with shape depending on stride, padding, and data format.
+
+**Note:**  
+The operation reshapes input to `[batch, 1, width, channels]` and filter to `[1, filter_width, in_channels, out_channels]`, applies `conv2d`, then reshapes back.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 3"]
+    default: null
+  filters:
+    dtype: ["float16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["rank >= 3"]
+    default: null
+  stride:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  data_format:
+    dtype: ["string"]
+    range: ["NWC", "NCW"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NWC"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["any"]
+    default: "1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "filters"
+    Constraint: "input.dtype == filters.dtype"
+  2:
+    Parameter 1: "data_format"
+    Parameter 2: "data_format"
+    Constraint: 'data_format in ["NWC", "NCW"]'
+  3:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: 'not (isinstance(dilations, list) and len(dilations) == 3) or (dilations[0] == 1 and ((data_format == "NWC" and dilations[2] == 1) or (data_format == "NCW" and dilations[1] == 1)))'
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.conv1d in a complex way */
+import tensorflow as tf

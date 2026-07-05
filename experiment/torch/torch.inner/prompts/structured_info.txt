@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: other
+    Constraint: "input.dim() == 0 or other.dim() == 0 or input.size(-1) == other.size(-1)"
+  2:
+    Parameter 1: out
+    Parameter 2: input
+    Constraint: "out is None or out.shape == input.shape[:-1] + other.shape[:-1]"

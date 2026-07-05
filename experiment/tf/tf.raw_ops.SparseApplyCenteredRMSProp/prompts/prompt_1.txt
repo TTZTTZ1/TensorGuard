@@ -1,0 +1,137 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.SparseApplyCenteredRMSProp` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `tf.raw_ops.SparseApplyCenteredRMSProp` function implements a sparse version of the centered RMSProp optimization algorithm, which updates variables using gradient information only at specified indices. It is designed for training with sparse gradients, making it more efficient for certain tasks like embedding training.
+
+**Key Features:**
+- Updates variables (`var`) based on the centered RMSProp algorithm, which uses variance (centered second moment) for normalization, offering potential training benefits over standard RMSProp.
+- Operates sparsely: updates occur only for indices provided in the `indices` argument, skipping zero-gradient entries to save computation.
+- Requires four mutable tensors: `var` (variable to optimize), `mg` (mean gradient), `ms` (mean square), and `mom` (momentum).
+- Accepts hyperparameters: learning rate (`lr`), decay rate (`rho`), momentum, and epsilon (for numerical stability).
+
+**Arguments:**
+- **Mutable tensors** (`var`, `mg`, `ms`, `mom`): Must share the same data type (e.g., `float32`).
+- **Scalar parameters** (`lr`, `rho`, `momentum`, `epsilon`): Provided as tensors matching `var`'s type.
+- **Gradient and indices** (`grad`, `indices`): `grad` supplies gradient values; `indices` specifies which positions in the first dimension to update.
+- **Optional**: `use_locking` for thread-safe updates.
+
+**Returns:**  
+A mutable tensor with the same type as `var`, representing the updated variable.
+
+This operator is typically used in scenarios where gradients are sparse, such as training embeddings or models with large, sparse input features.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  var:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  mg:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  ms:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  mom:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  lr:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  rho:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  momentum:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  epsilon:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["scalar"]
+    default: "null"
+  grad:
+    dtype: ["float32", "float64", "int32", "uint8", "int16", "int8", "complex64", "int64", "qint8", "quint8", "qint32", "bfloat16", "qint16", "quint16", "uint16", "complex128", "half", "uint32", "uint64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "null"
+  indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: "null"
+  use_locking:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "var"
+    Parameter 2: "mg"
+    Constraint: "var.dtype == mg.dtype"
+  2:
+    Parameter 1: "var"
+    Parameter 2: "ms"
+    Constraint: "var.dtype == ms.dtype"
+  3:
+    Parameter 1: "var"
+    Parameter 2: "mom"
+    Constraint: "var.dtype == mom.dtype"
+  4:
+    Parameter 1: "var"
+    Parameter 2: "lr"
+    Constraint: "var.dtype == lr.dtype"
+  5:
+    Parameter 1: "var"
+    Parameter 2: "rho"
+    Constraint: "var.dtype == rho.dtype"
+  6:
+    Parameter 1: "var"
+    Parameter 2: "momentum"
+    Constraint: "var.dtype == momentum.dtype"
+  7:
+    Parameter 1: "var"
+    Parameter 2: "epsilon"
+    Constraint: "var.dtype == epsilon.dtype"
+  8:
+    Parameter 1: "var"
+    Parameter 2: "grad"
+    Constraint: "var.dtype == grad.dtype"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.SparseApplyCenteredRMSProp in a complex way */
+import tensorflow as tf

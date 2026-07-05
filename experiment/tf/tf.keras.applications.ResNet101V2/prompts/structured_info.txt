@@ -1,0 +1,56 @@
+params:
+  include_top:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "True"
+  weights:
+    dtype: ["No mention"]
+    range: ["None", "'imagenet'", "string"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "'imagenet'"
+  input_tensor:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  input_shape:
+    dtype: ["No mention"]
+    range: ["tuple of 3 integers with last two dimensions >= 32 for channels_last, or first dimension 3 and last two >= 32 for channels_first"]
+    structure: ["tuple"]
+    shape: [3]
+    default: "None"
+  pooling:
+    dtype: ["No mention"]
+    range: ["None", "'avg'", "'max'"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "None"
+  classes:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "1000"
+  classifier_activation:
+    dtype: ["str", "callable"]
+    range: ["None", "'softmax'", "str", "callable"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: "'softmax'"
+constraints:
+  1:
+    Parameter 1: "include_top"
+    Parameter 2: "input_shape"
+    Constraint: "include_top == False or input_shape is None"
+  2:
+    Parameter 1: "include_top"
+    Parameter 2: "weights"
+    Constraint: "(include_top == True and weights is None) or classes == 1000"
+  3:
+    Parameter 1: "weights"
+    Parameter 2: "classifier_activation"
+    Constraint: "weights is None or classifier_activation in [None, 'softmax']"

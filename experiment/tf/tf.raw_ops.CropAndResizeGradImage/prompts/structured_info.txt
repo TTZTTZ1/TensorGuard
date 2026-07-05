@@ -1,0 +1,64 @@
+params:
+  grads:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  boxes:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [2]
+    default: null
+  box_ind:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  image_size:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  T:
+    dtype: ["dtype"]
+    range: ["float32", "float16", "float64"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+  method:
+    dtype: ["string"]
+    range: ["bilinear", "nearest"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "bilinear"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: null
+constraints:
+  1:
+    Parameter 1: grads
+    Parameter 2: boxes
+    Constraint: "grads.shape[0] == boxes.shape[0]"
+  2:
+    Parameter 1: grads
+    Parameter 2: box_ind
+    Constraint: "grads.shape[0] == box_ind.shape[0]"
+  3:
+    Parameter 1: box_ind
+    Parameter 2: image_size
+    Constraint: "tf.reduce_all(tf.logical_and(box_ind >= 0, box_ind < image_size[0]))"
+  4:
+    Parameter 1: image_size
+    Parameter 2: image_size
+    Constraint: "image_size[1] > 0 and image_size[2] > 0"
+  5:
+    Parameter 1: grads
+    Parameter 2: image_size
+    Constraint: "grads.shape[3] == image_size[3]"

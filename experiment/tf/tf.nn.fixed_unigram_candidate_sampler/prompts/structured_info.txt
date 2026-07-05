@@ -1,0 +1,97 @@
+params:
+  true_classes:
+    dtype: ["int64"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["batch_size", "num_true"]
+    default: "No mention"
+  num_true:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  num_sampled:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  unique:
+    dtype: ["bool"]
+    range: [true, false]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  range_max:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "No mention"
+  vocab_file:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: ""
+  distortion:
+    dtype: ["float"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1.0"
+  num_reserved_ids:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  num_shards:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  shard:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  unigrams:
+    dtype: ["int", "float"]
+    range: [null]
+    structure: ["list", "tuple"]
+    shape: ["any"]
+    default: "()"
+  seed:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+
+constraints:
+  1:
+    Parameter 1: vocab_file
+    Parameter 2: unigrams
+    Constraint: (vocab_file != '') != (len(unigrams) != 0)
+  2:
+    Parameter 1: shard
+    Parameter 2: num_shards
+    Constraint: 0 <= shard < num_shards
+  3:
+    Parameter 1: num_reserved_ids
+    Parameter 2: range_max
+    Constraint: num_reserved_ids < range_max
+  4:
+    Parameter 1: true_classes
+    Parameter 2: num_true
+    Constraint: true_classes.shape[1] == num_true

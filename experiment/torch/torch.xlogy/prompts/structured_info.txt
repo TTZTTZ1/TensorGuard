@@ -1,0 +1,32 @@
+params:
+  input:
+    dtype: ["int", "float", "complex"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  other:
+    dtype: ["int", "float", "complex"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  out:
+    dtype: ["int", "float", "complex"]
+    range: [null]
+    structure: ["tensor"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "other"
+    Constraint: "input.shape == other.shape or (input.numel() == 1 and other.numel() >= 1) or (other.numel() == 1 and input.numel() >= 1) or (len(input.shape) == len(other.shape) and all((s1 == s2 or s1 == 1 or s2 == 1) for s1, s2 in zip(input.shape, other.shape)))"
+  2:
+    Parameter 1: "input"
+    Parameter 2: "out"
+    Constraint: "out is None or (torch.is_tensor(out) and out.dtype in [torch.float32, torch.float64, torch.complex64, torch.complex128] and out.shape == torch.broadcast_shapes(input.shape, other.shape))"
+  3:
+    Parameter 1: "other"
+    Parameter 2: "out"
+    Constraint: "out is None or (torch.is_tensor(out) and out.dtype in [torch.float32, torch.float64, torch.complex64, torch.complex128] and out.shape == torch.broadcast_shapes(input.shape, other.shape))"

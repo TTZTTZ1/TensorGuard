@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorScatterUpdate` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorScatterUpdate` scatters sparse `updates` into an existing `tensor` based on specified `indices`, modifying the tensor in-place where possible. It is similar to `tf.scatter_nd` but operates on a pre-existing tensor rather than a zero-initialized one.
+
+**Key Points:**
+- **Purpose:** Updates slices or elements of `tensor` with values from `updates` at positions given by `indices`.
+- **Indices:** Must have shape `(num_updates, index_depth)`, where `index_depth ≤ tensor.rank`. Duplicate indices result in the last update being applied.
+- **Behavior:** On CPU, out-of-bound indices cause an error; on GPU, they are ignored and updates may be nondeterministic if duplicates exist.
+- **Shape Compatibility:** `updates` shape must match `indices.shape[:-1] + tensor.shape[indices.shape[-1]:]`.
+
+**Use Case:** Efficient in-place modifications of tensors using sparse update operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  indices:
+    dtype: ["int16", "int32", "int64", "uint16"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  updates:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: No mention
+    range: No mention
+    structure: No mention
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: indices
+    Constraint: "len(indices.shape) >= 2"
+  2:
+    Parameter 1: indices
+    Parameter 2: tensor
+    Constraint: "indices.shape[-1] <= tensor.ndim"
+  3:
+    Parameter 1: updates
+    Parameter 2: tensor
+    Constraint: "updates.dtype == tensor.dtype"
+  4:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape[:-1] + tensor.shape[indices.shape[-1]:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorScatterUpdate in a complex way */
+import tensorflow as tf

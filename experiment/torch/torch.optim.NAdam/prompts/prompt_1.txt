@@ -1,0 +1,168 @@
+
+# You are a Python code generation assistant for the `torch.optim.NAdam` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**NAdam** is a PyTorch optimizer that combines **Nesterov momentum** with the **Adam** algorithm. It adapts learning rates per parameter using moving averages of gradients (first moment) and squared gradients (second moment), while incorporating lookahead momentum for improved convergence.
+
+### **Key Features:**
+- **Nesterov Momentum Integration**: Uses a momentum schedule (`μ_t`) based on `momentum_decay` for accelerated updates.
+- **Adam-like Adaptation**: Maintains bias-corrected first and second moment estimates.
+- **Weight Decay Options**:  
+  - Standard L2 penalty (added to gradient)  
+  - **Decoupled weight decay** (NAdamW variant) applied directly to parameters.
+- **Flexible Configuration**: Supports `foreach` (performance), `capturable` (CUDA graphs), `differentiable`, and `maximize` modes.
+
+### **Core Algorithm Steps:**
+1. Compute gradient `g_t`.
+2. Apply weight decay (coupled or decoupled).
+3. Update momentum terms `μ_t`, `μ_{t+1}` using `momentum_decay`.
+4. Update first (`m_t`) and second (`v_t`) moment estimates.
+5. Compute bias-corrected Nesterov momentum term `m̂_t`.
+6. Update parameters:  
+   `θ_t = θ_t - γ * m̂_t / (√v̂_t + ε)`
+
+### **Typical Usage:**
+```python
+optimizer = torch.optim.NAdam(
+    model.parameters(),
+    lr=0.002,
+    betas=(0.9, 0.999),
+    weight_decay=0.01,
+    momentum_decay=0.004,
+    decoupled_weight_decay=False  # Set True for NAdamW
+)
+```
+
+### **Key Parameters:**
+- `lr`: Learning rate (default: 2e-3)
+- `betas`: Coefficients for moment estimates
+- `momentum_decay`: Controls Nesterov momentum decay (default: 4e-3)
+- `decoupled_weight_decay`: Enables AdamW-style weight decay
+
+### **Advantages:**
+- Often converges faster than Adam in practice
+- Combines benefits of Nesterov momentum and adaptive learning rates
+- Compatible with PyTorch's optimizer utilities (schedulers, checkpointing, hooks)
+
+**Reference**: [Incorporating Nesterov Momentum into Adam](https://openreview.net/forum?id=OM0jvwB8jIp57ZJjtNEZ)
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  params:
+    dtype: ["iterable"]
+    range: ["No mention"]
+    structure: ["iterable"]
+    shape: ["No mention"]
+    default: "null"
+  lr:
+    dtype: ["float", "Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tensor"]
+    shape: [1, "any"]
+    default: "2e-3"
+  betas:
+    dtype: ["Tuple[float, float]"]
+    range: ["No mention"]
+    structure: ["tuple"]
+    shape: [2]
+    default: "(0.9, 0.999)"
+  eps:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "1e-8"
+  weight_decay:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "0"
+  momentum_decay:
+    dtype: ["float"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "4e-3"
+  decoupled_weight_decay:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  foreach:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  maximize:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  capturable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+  differentiable:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "params"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  2:
+    Parameter 1: "lr"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  3:
+    Parameter 1: "betas"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  4:
+    Parameter 1: "eps"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  5:
+    Parameter 1: "weight_decay"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  6:
+    Parameter 1: "momentum_decay"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  7:
+    Parameter 1: "decoupled_weight_decay"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  8:
+    Parameter 1: "foreach"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  9:
+    Parameter 1: "maximize"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  10:
+    Parameter 1: "capturable"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+  11:
+    Parameter 1: "differentiable"
+    Parameter 2: "No mention"
+    Constraint: "No mention"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.optim.NAdam in a complex way */
+import torch

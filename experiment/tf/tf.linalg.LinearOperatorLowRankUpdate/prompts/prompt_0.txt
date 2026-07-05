@@ -1,0 +1,115 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorLowRankUpdate` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorLowRankUpdate` is a TensorFlow class that represents a linear operator formed by adding a low-rank update to a base linear operator. It models a matrix `A = L + U D V^H`, where `L` is the base operator, and `U`, `D`, `V` are low-rank components.
+
+**Key Features:**
+- **Efficient Operations:** Leverages the low-rank structure for optimized matrix multiplications, solves, and determinant computations using identities like Woodbury and matrix determinant lemma.
+- **Shape Compatibility:** Supports batch operations with shape `[B1,...,Bb, M, N]`.
+- **Property Hints:** Allows specifying mathematical properties (e.g., `is_self_adjoint`, `is_positive_definite`) to enable performance optimizations.
+- **Common Use Cases:** Useful for perturbations, covariance updates, and other scenarios where a matrix is modified by a low-rank component.
+
+**Main Methods:**
+- `matmul(x)`: Computes `A @ x`.
+- `solve(rhs)`: Solves linear systems `A X = rhs`.
+- `determinant()` / `log_abs_determinant()`: Computes determinants efficiently.
+- `adjoint()`: Returns the adjoint operator.
+
+**Typical Workflow:**
+1. Define a base operator (e.g., diagonal, dense).
+2. Specify low-rank matrices `U`, `V` and diagonal `D`.
+3. Create the updated operator and perform linear algebra operations without explicitly forming the full matrix.
+
+This class is ideal for large-scale problems where full matrix representation is infeasible, offering both flexibility and computational efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  base_operator:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["LinearOperator"]
+    shape: ["[B1,...,Bb, M, N]"]
+    default: "null"
+  u:
+    dtype: ["same as base_operator"]
+    range: [null]
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, M, K]"]
+    default: "null"
+  diag_update:
+    dtype: ["same as base_operator"]
+    range: [null]
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, K]"]
+    default: "null"
+  v:
+    dtype: ["same as u"]
+    range: [null]
+    structure: ["Tensor"]
+    shape: ["[B1,...,Bb, N, K]"]
+    default: "null"
+  is_diag_update_positive:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  is_non_singular:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_self_adjoint:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_positive_definite:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "None"
+  is_square:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "'LinearOperatorLowRankUpdate'"
+constraints:
+  1:
+    Parameter 1: "base_operator"
+    Parameter 2: "u"
+    Constraint: "base_operator.batch_shape == u.shape[:-2] and base_operator.shape[-2] == u.shape[-2]"
+  2:
+    Parameter 1: "base_operator"
+    Parameter 2: "v"
+    Constraint: "v is None or (base_operator.batch_shape == v.shape[:-2] and base_operator.shape[-1] == v.shape[-2])"
+  3:
+    Parameter 1: "u"
+    Parameter 2: "v"
+    Constraint: "v is None or (u.shape[:-2] == v.shape[:-2] and u.shape[-1] == v.shape[-1])"
+  4:
+    Parameter 1: "u"
+    Parameter 2: "diag_update"
+    Constraint: "diag_update is None or (base_operator.batch_shape == diag_update.shape[:-1] and u.shape[-1] == diag_update.shape[-1])"
+  5:
+    Parameter 1: "base_operator"
+    Parameter 2: "v"
+    Constraint: "not (base_operator.shape[-2] != base_operator.shape[-1]) or v is not None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorLowRankUpdate in a complex way */
+import tensorflow as tf

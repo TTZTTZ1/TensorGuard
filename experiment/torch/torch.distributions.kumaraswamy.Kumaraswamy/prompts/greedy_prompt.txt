@@ -1,0 +1,99 @@
+
+# You are a Python code generation assistant for the `torch.distributions.kumaraswamy.Kumaraswamy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here’s a concise overview of its key components and usage:
+
+### **Core Concepts**
+- **Purpose**: Implements parameterizable probability distributions with sampling functions, supporting stochastic gradient estimators like REINFORCE (score function) and the reparameterization trick (pathwise derivative).
+- **Design**: Follows TensorFlow Distributions, allowing construction of stochastic computation graphs.
+
+### **Main Components**
+1. **Distribution Class**  
+   Abstract base class for all distributions. Key methods:
+   - `sample()` / `rsample()`: Draw samples (with reparameterization for `rsample`).
+   - `log_prob()`: Compute log probability density/mass.
+   - `entropy()`: Calculate distribution entropy.
+   - `mean`, `variance`, `mode`: Distribution statistics.
+
+2. **Implemented Distributions**  
+   Includes univariate (e.g., `Normal`, `Bernoulli`, `Exponential`) and multivariate (e.g., `MultivariateNormal`, `Dirichlet`) distributions, along with specialized ones like `LKJCholesky` for correlation matrices.
+
+3. **Transforms & Constraints**  
+   - **Transforms**: Bijective or non-bijective transformations (e.g., `ExpTransform`, `SigmoidTransform`) used to create complex distributions via `TransformedDistribution`.
+   - **Constraints**: Define valid parameter domains (e.g., `positive`, `simplex`). Registries (`biject_to`, `transform_to`) map constraints to transforms for unconstrained optimization.
+
+4. **KL Divergence**  
+   Utilities (`kl_divergence`) to compute Kullback-Leibler divergence between distributions, with registered implementations for many distribution pairs.
+
+### **Gradient Estimation Techniques**
+- **Score Function (REINFORCE)**: Uses `log_prob()` to estimate gradients through non-differentiable sampling. Common in reinforcement learning.
+  ```python
+  loss = -m.log_prob(action) * reward
+  ```
+- **Pathwise Derivative (Reparameterization)**: Uses `rsample()` to enable direct gradient propagation. Common in variational autoencoders.
+  ```python
+  action = m.rsample()  # Differentiable sample
+  ```
+
+### **Key Features**
+- **Batch/Event Shapes**: Supports batched parameters and multi-event distributions.
+- **ExponentialFamily**: Base class for distributions in exponential family form, enabling efficient entropy and KL calculations.
+- **Mixture Models**: `MixtureSameFamily` for mixtures of component distributions.
+- **Transformed Distributions**: `TransformedDistribution` chains transforms to create new distributions (e.g., `LogNormal` from `Normal`).
+
+### **Example Usage**
+```python
+# Create a normal distribution
+m = Normal(loc=0.0, scale=1.0)
+samples = m.rsample((100,))  # Differentiable samples
+log_prob = m.log_prob(samples)
+
+# Constrained parameter optimization via transforms
+scale_unconstrained = torch.tensor(0.5, requires_grad=True)
+scale = transform_to(Normal.arg_constraints["scale"])(scale_unconstrained)
+```
+
+### **Applications**
+- **Probabilistic Modeling**: Bayesian networks, variational inference.
+- **Reinforcement Learning**: Policy gradient methods.
+- **Generative Models**: VAEs, normalizing flows.
+
+The package seamlessly integrates with PyTorch’s autograd, making it suitable for gradient-based optimization in probabilistic deep learning.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  concentration1:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  concentration0:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "concentration1"
+    Parameter 2: "0.0"
+    Constraint: "concentration1 > 0.0"
+  2:
+    Parameter 1: "concentration0"
+    Parameter 2: "0.0"
+    Constraint: "con
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.kumaraswamy.Kumaraswamy in a complex way */
+import torch

@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `torch.distributed.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a distributed communication framework for multi-process parallelism across multiple machines. It supports synchronous distributed training and offers several backends (Gloo, NCCL, MPI, XCCL) with different capabilities for CPU and GPU operations.
+
+## Key Features:
+- **Backends**: 
+  - **NCCL**: Recommended for CUDA GPU training (best performance, supports InfiniBand/GPUDirect).
+  - **XCCL**: For XPU GPU training.
+  - **Gloo**: For CPU training or as a fallback for GPU.
+  - **MPI**: Optional, requires building from source.
+- **Initialization**: Use `init_process_group()` or `init_device_mesh()` to set up the process group. Methods include TCP, shared file-system, and environment variables.
+- **Collective Operations**: Supports synchronous/asynchronous operations like `broadcast`, `all_reduce`, `all_gather`, `scatter`, etc.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous `isend`/`irecv`.
+- **Groups**: Create sub-groups for fine-grained communication with `new_group()`.
+- **DeviceMesh**: Higher-level abstraction for managing process groups in multi-dimensional device topologies.
+- **Key-Value Store**: `TCPStore`, `FileStore`, and `HashStore` for sharing information between processes.
+- **Debugging Tools**: 
+  - `monitored_barrier()` for timeout-aware synchronization.
+  - `TORCH_DISTRIBUTED_DEBUG` environment variable for detailed logging.
+  - `torch.distributed.breakpoint()` for interactive debugging on a single rank.
+- **Launch Utilities**: `torch.distributed.launch` and `torch.multiprocessing.spawn` for multi-process training.
+
+## Common Usage:
+1. **Initialize** the process group (e.g., via environment variables).
+2. Use **collective operations** (e.g., `all_reduce`) for communication.
+3. Wrap models with `DistributedDataParallel` for synchronous training.
+4. Clean up with `destroy_process_group()`.
+
+## Best Practices:
+- Use NCCL for GPU training, Gloo for CPU.
+- Set `async_op=True` for overlapping communication/computation.
+- Ensure proper GPU isolation (one GPU per process with NCCL).
+- Leverage debugging tools (e.g., `TORCH_DISTRIBUTED_DEBUG`) for troubleshooting hangs or crashes.
+
+This package is essential for scaling PyTorch training across multiple nodes and GPUs, offering both low-level communication primitives and high-level abstractions like `DeviceMesh`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  gather_list:
+    dtype: ["list[Tensor]"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  group_dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is None or group_dst is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.gather in a complex way */
+import torch

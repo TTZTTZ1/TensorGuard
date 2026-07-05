@@ -1,0 +1,88 @@
+
+# You are a Python code generation assistant for the `tf.linalg.LinearOperatorCirculant2D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.linalg.LinearOperatorCirculant2D` is a TensorFlow class representing a **block circulant linear operator** defined by its 2D frequency spectrum. It efficiently performs operations like matrix multiplication and solving linear systems using FFT-based methods without explicitly constructing the full matrix.
+
+### **Key Features:**
+- **Efficient Operations**: Uses FFT (`O(N log N)` complexity) for `matmul`, `solve`, and `determinant` computations.
+- **Spectrum-Based**: Defined by a `spectrum` tensor (shape `[B1,...,Bb, N0, N1]`), where `N0 * N1 = N` is the operator size.
+- **Matrix Properties**: Supports hints like `is_self_adjoint` and `is_positive_definite` based on the spectrum (e.g., real or positive spectra).
+- **Batch Support**: Handles batch dimensions naturally.
+
+### **Common Use Cases:**
+1. **Real/Complex Matrices**: 
+   - Real convolution kernels → Hermitian spectrum → real operator.
+   - Self-adjoint operators from real spectra.
+2. **Fast Linear Algebra**: Solves systems `A x = b` efficiently for circulant-like structures.
+3. **Kernel Extraction**: Use `convolution_kernel()` to get the spatial-domain kernel.
+
+### **Example:**
+```python
+spectrum = [[1., 2., 3.], [4., 5., 6.], [7., 8., 9.]]  # Real spectrum
+operator = LinearOperatorCirculant2D(spectrum)
+operator.to_dense()  # 9x9 self-adjoint matrix (implicitly circulant-block)
+```
+
+### **Performance:**
+- Ideal for large `N`, leveraging FFT scalability.
+- Batch operations increase cost linearly with batch size.
+
+This operator is ideal for problems with **circulant structure** (e.g., signal processing, convolutional models), combining mathematical expressiveness with computational efficiency.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  spectrum:
+    dtype: ["float16", "float32", "float64", "complex64", "complex128"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input_output_dtype:
+    dtype: ["dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "tf.dtypes.complex64"
+  is_non_singular:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: [1]
+    default: None
+  is_self_adjoint:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: [1]
+    default: None
+  is_positive_definite:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: [1]
+    default: None
+  is_square:
+    dtype: ["bool"]
+    range: [True, False, None]
+    structure: ["scalar"]
+    shape: [1]
+    default: True
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [1]
+    default: "LinearOperatorCirculant2D"
+constraints:
+  1:
+    Parameter 1: spectrum
+    Parameter 2: is_self_adjoint
+    Constraint: "not (spectrum.dtype in ['float16', 'float32', 'float64'] and is_self_adjoint == False)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.linalg.LinearOperatorCirculant2D in a complex way */
+import tensorflow as tf

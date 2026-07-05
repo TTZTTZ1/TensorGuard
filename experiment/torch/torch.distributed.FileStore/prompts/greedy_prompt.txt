@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.distributed.FileStore` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides a distributed communication framework for multi‑process parallelism across multiple machines or GPUs. It supports synchronous distributed training, enabling efficient scaling of PyTorch models.
+
+## Key Features
+
+- **Backends**: Supports multiple backends (Gloo, NCCL, MPI, XCCL) with different device and operation compatibility.
+- **Initialization**: Requires explicit initialization via `init_process_group()` or `init_device_mesh()` before use.
+- **Collective Operations**: Includes point‑to‑point (send/recv) and collective operations (broadcast, all‑reduce, gather, scatter, etc.) with both synchronous and asynchronous modes.
+- **Process Groups**: Allows creation of sub‑groups for fine‑grained communication.
+- **DeviceMesh**: Higher‑level abstraction for managing multi‑dimensional device layouts and process groups.
+- **Key‑Value Store**: Provides distributed key‑value stores (TCPStore, FileStore, HashStore) for sharing information.
+- **Launch Utilities**: Includes `torch.distributed.launch` and `torch.multiprocessing.spawn` for easy multi‑process startup.
+- **Debugging Tools**: Offers debugging aids like `monitored_barrier`, environment‑variable‑controlled logging (`TORCH_DISTRIBUTED_DEBUG`), and a Python breakpoint wrapper.
+
+## Typical Usage Flow
+
+1. **Initialize** the process group (e.g., via environment variables or explicit parameters).
+2. **Perform** collective operations using the default or custom groups.
+3. **Clean up** with `destroy_process_group()`.
+
+## Backend Selection Guidelines
+
+- Use **NCCL** for CUDA GPU training (best performance).
+- Use **XCCL** for XPU GPU training.
+- Use **Gloo** for CPU‑based training or as a fallback for GPU.
+
+## Example Snippet
+
+```python
+import torch.distributed as dist
+
+dist.init_process_group(backend='nccl', init_method='env://')
+# Perform collective operations
+tensor = torch.ones(2, 2).cuda()
+dist.all_reduce(tensor, op=dist.ReduceOp.SUM)
+dist.destroy_process_group()
+```
+
+The package is essential for large‑scale distributed training, offering both low‑level communication primitives and high‑level abstractions like `DistributedDataParallel`.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  file_name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  world_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [1]
+    default: "-1"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.FileStore in a complex way */
+import torch

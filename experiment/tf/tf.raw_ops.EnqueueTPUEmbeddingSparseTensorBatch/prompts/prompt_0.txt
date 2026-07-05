@@ -1,0 +1,109 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.EnqueueTPUEmbeddingSparseTensorBatch` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.EnqueueTPUEmbeddingSparseTensorBatch` is a low-level TensorFlow operation that batches and enqueues sparse embedding tensors for processing on a TPU. It is designed to facilitate migration from `tf.nn.embedding_lookup_sparse()` to TPU-based embedding lookups.
+
+### Key Functionality:
+- **Inputs**: Accepts three parallel lists (`sample_indices`, `embedding_indices`, `aggregation_weights`), each representing a feature, along with a `table_ids` list to map features to specific embedding tables.
+- **Purpose**: Efficiently queues sparse embedding data (indices and weights) for batched lookup on TPU embedding tables.
+- **Use Case**: Primarily used in TPU-based training/inference pipelines to handle sparse embedding inputs, supporting modes like 'training' or 'inference' via `mode_override`.
+- **Parameters**: Includes optional settings like `combiners` (e.g., 'sum', 'mean') for weight normalization, `device_ordinal` for TPU core selection, and `max_sequence_lengths`/`num_features` for sequence-based embeddings.
+
+### Note:
+This is a raw operation intended for internal or advanced use; most users should prefer higher-level TPU embedding APIs.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  sample_indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  embedding_indices:
+    dtype: ["int32", "int64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  aggregation_weights:
+    dtype: ["float32", "float64"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  mode_override:
+    dtype: ["string"]
+    range: ["unspecified", "inference", "training", "backward_pass_only"]
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "No mention"
+  table_ids:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "No mention"
+  device_ordinal:
+    dtype: ["int"]
+    range: [">=0"]
+    structure: ["scalar"]
+    shape: []
+    default: "-1"
+  combiners:
+    dtype: ["string"]
+    range: ["mean", "sum", "sqrtn"]
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  max_sequence_lengths:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  num_features:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["list"]
+    shape: "No mention"
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: embedding_indices
+    Parameter 2: sample_indices
+    Constraint: "len(embedding_indices) == len(sample_indices)"
+  2:
+    Parameter 1: aggregation_weights
+    Parameter 2: sample_indices
+    Constraint: "len(aggregation_weights) == len(sample_indices)"
+  3:
+    Parameter 1: table_ids
+    Parameter 2: sample_indices
+    Constraint: "len(table_ids) == len(sample_indices)"
+  4:
+    Parameter 1: sample_indices
+    Parameter 2: embedding_indices
+    Constraint: "all(sample_indices[i].shape == embedding_indices[i].shape for i in range(len(sample_indices)))"
+  5:
+    Parameter 1: sample_indices
+    Parameter 2: aggregation_weights
+    Constraint: "all(sample_indices[i].shape == aggregation_weights[i].shape for i in range(len(sample_indices)))"
+  6:
+    Parameter 1: device_ordinal
+    Parameter 2: device_ordinal
+    Constraint: "device_ordinal >= 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.EnqueueTPUEmbeddingSparseTensorBatch in a complex way */
+import tensorflow as tf

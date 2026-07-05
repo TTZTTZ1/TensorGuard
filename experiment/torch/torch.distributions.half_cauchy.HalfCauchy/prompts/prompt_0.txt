@@ -1,0 +1,100 @@
+
+# You are a Python code generation assistant for the `torch.distributions.half_cauchy.HalfCauchy` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch, enabling stochastic computation graphs and gradient estimation for optimization. Here's a concise summary of its key aspects:
+
+## Core Concepts
+- **Parameterizable distributions**: Create distributions with learnable parameters (e.g., `Normal(loc, scale)`)
+- **Two gradient estimation methods**:
+  - **Score function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+  - **Pathwise derivative (reparameterization)**: Uses `rsample()` for differentiable sampling via reparameterization trick
+
+## Main Components
+
+### 1. **Distribution Base Class**
+- Abstract base class with common methods: `sample()`, `rsample()`, `log_prob()`, `entropy()`, `cdf()`, `icdf()`
+- Properties: `mean`, `variance`, `mode`, `support`
+- Batch and event shape handling
+
+### 2. **Available Distributions** (30+ types)
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, Wishart, etc.
+- **Transformed**: LogNormal, HalfNormal, HalfCauchy, Gumbel, Weibull, etc. (via `TransformedDistribution`)
+- **Specialized**: LKJCholesky (correlation matrices), MixtureSameFamily, RelaxedBernoulli (Gumbel-Softmax)
+
+### 3. **Key Functionalities**
+- **Sampling**: `sample()` for regular sampling, `rsample()` for reparameterized sampling
+- **Probability computation**: `log_prob()`, `cdf()`, `icdf()`
+- **Statistics**: `mean`, `variance`, `entropy()`, `mode`
+- **Batch operations**: Automatic broadcasting over batch dimensions
+
+### 4. **Transforms System**
+- Bijective transformations for constrained parameters (e.g., `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform`)
+- Compose transforms via `ComposeTransform`
+- Used internally by `TransformedDistribution`
+
+### 5. **Constraints System**
+- Define valid parameter ranges (e.g., `positive`, `simplex`, `interval`)
+- Automatic constraint enforcement via transforms
+- Registries: `biject_to()` (bijective) and `transform_to()` (general) for unconstrained optimization
+
+### 6. **KL Divergence**
+- Automatic computation between distribution pairs via `kl_divergence(p, q)`
+- Extensible registry for custom distributions
+
+## Common Use Cases
+1. **Variational Inference**: Reparameterized sampling for VAEs
+2. **Reinforcement Learning**: Policy gradients with categorical/continuous actions
+3. **Bayesian Modeling**: Priors and posteriors in probabilistic models
+4. **Statistical Modeling**: Flexible distributional assumptions
+5. **Unconstrained Optimization**: Transform constrained parameters via `transform_to()`
+
+## Example Patterns
+```python
+# REINFORCE (score function)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+
+# Reparameterization (pathwise)
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+
+# Distribution creation
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample([100])  # 100 samples
+log_probs = normal.log_prob(samples)
+```
+
+The package follows a design similar to TensorFlow Distributions and provides essential tools for probabilistic deep learning, with automatic differentiation compatibility and GPU support.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  scale:
+    dtype: ["float", "Tensor"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: []
+    default: null
+  validate_args:
+    dtype: ["bool", "None"]
+    range: [[True, False, None]]
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: scale
+    Parameter 2: 
+    Constraint: "scale > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.half_cauchy.HalfCauchy in a complex way */
+import torch

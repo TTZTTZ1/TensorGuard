@@ -1,0 +1,106 @@
+
+# You are a Python code generation assistant for the `torch.distributions.chi2.Chi2` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides a comprehensive framework for working with probability distributions in PyTorch. It enables the construction of stochastic computation graphs and supports gradient estimation for optimization through two primary methods:
+
+## **Key Features**
+
+### 1. **Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradient methods
+- **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling via deterministic transformations
+
+### 2. **Core Components**
+
+#### **Distribution Base Class**
+- Abstract base class for all probability distributions
+- Key methods: `sample()`, `rsample()`, `log_prob()`, `cdf()`, `icdf()`, `entropy()`
+- Properties: `mean`, `variance`, `mode`, `support`
+
+#### **Available Distributions** (30+ implementations)
+- **Continuous**: Normal, Beta, Gamma, Exponential, Dirichlet, etc.
+- **Discrete**: Bernoulli, Binomial, Categorical, Poisson, Geometric, etc.
+- **Multivariate**: MultivariateNormal, LowRankMultivariateNormal, Dirichlet
+- **Transformed**: LogNormal, HalfNormal, Gumbel, Weibull, etc.
+- **Specialized**: LKJCholesky, Wishart, VonMises, MixtureSameFamily
+
+### 3. **Transforms System**
+- **Transform**: Base class for invertible transformations with computable log determinants
+- **Common transforms**: Affine, Exp, Sigmoid, Softmax, StickBreaking, Cholesky
+- Used in `TransformedDistribution` to create new distributions via transformation
+
+### 4. **Constraints System**
+- Defines valid parameter domains for distributions
+- **Constraint**: Abstract base class for validity regions
+- **Registry system**: `biject_to()` and `transform_to()` for constrained optimization
+
+### 5. **KL Divergence**
+- `kl_divergence()` computes KL(p∥q) between distributions
+- Automatic registration system for custom distribution pairs
+
+## **Common Use Cases**
+
+### **REINFORCE (Policy Gradient)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization (VAEs)**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+```
+
+### **Distribution Construction**
+```python
+# Normal distribution
+normal = Normal(loc=0.0, scale=1.0)
+samples = normal.sample([100])
+
+# Transformed distribution
+base = Normal(0, 1)
+transforms = [ExpTransform()]
+log_normal = TransformedDistribution(base, transforms)
+```
+
+## **Design Principles**
+- Follows TensorFlow Distributions package design
+- Supports batch and event shapes for vectorized operations
+- Enables stochastic gradient estimators for optimization
+- Provides both exact and approximate inference capabilities
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable probability distributions within PyTorch's autograd system.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  df:
+    dtype: ["float", "Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  validate_args:
+    dtype: ["bool", "null"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "df"
+    Parameter 2: null
+    Constraint: "df > 0.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.chi2.Chi2 in a complex way */
+import torch

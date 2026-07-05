@@ -1,0 +1,51 @@
+
+# You are a Python code generation assistant for the `tf.train.SequenceExample` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.train.SequenceExample` is a TensorFlow data structure designed to represent sequential data with both time-independent and time-dependent features. It consists of two main components:
+
+- **Context**: A dictionary of features (`tf.train.Feature`) that apply to the entire example (e.g., user age, locale).
+- **Feature Lists**: A dictionary mapping keys to sequences of features (`tf.train.FeatureList`), where each sequence corresponds to time-dependent data (e.g., movie ratings over time).
+
+### Key Points:
+- **Purpose**: Ideal for sequential modeling tasks like video frames, time series, or sequence labeling.
+- **Data Types**: Features can be lists of bytes, integers (`int64`), or floats.
+- **Conventions**:
+  - All features in a `FeatureList` must have the same data type.
+  - `FeatureList` entries may be missing or empty, depending on parser configuration.
+  - For sequence modeling, all `FeatureList`s typically have the same length (one per time step).
+- **Parsing**: Use `tf.io.parse_sequence_example` to decode `SequenceExample` protos in TensorFlow.
+
+### Example Use Case:
+In a movie recommendation system:
+- **Context**: User's age, locale, favorite artists.
+- **Feature Lists**: Sequences of movie names, ratings, and actors for each movie the user rated.
+
+This structure enables efficient storage and processing of sequential data while maintaining associated global context.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  context:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: null
+  feature_lists:
+    dtype: ["dict"]
+    range: "No mention"
+    structure: ["dict"]
+    shape: ["any"]
+    default: null
+constraints:
+  1:
+    Parameter 1: feature_lists
+    Parameter 2: feature_lists
+    Constraint: "all( (all(f.bytes_list is not None for f in feature_lists[key]) or all(f.int64_list is not None for f in feature_lists[key]) or all(f.float_list is not None for f in feature_lists[key])) for key in feature_lists if feature_lists[key] and len(feature_lists[key]) > 0 )"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.train.SequenceExample in a complex way */
+import tensorflow as tf

@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.linalg.norm` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.linalg.norm` computes vector or matrix norms for real or complex tensors. It determines the norm type based on the `ord` parameter and whether `dim` is an integer (vector norm) or a 2‑tuple (matrix norm). If `dim` is unspecified, it defaults to flattening the input and computing the 2‑norm. Supported norms include Frobenius, nuclear, infinity, and various p‑norms. The function reduces specified dimensions unless `keepdim=True` and allows optional dtype casting. For clarity, `torch.linalg.vector_norm` or `torch.linalg.matrix_norm` are often preferred alternatives.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, n)", "(*, m, n)"]
+    default: null
+  ord:
+    dtype: ["int", "float", "str"]
+    range: [None, "fro", "nuc", inf, -inf]
+    structure: ["scalar", "str"]
+    shape: ["No mention"]
+    default: "None"
+  dim:
+    dtype: ["int", "tuple"]
+    range: [None, "int", "2-tuple of ints"]
+    structure: ["scalar", "tuple"]
+    shape: ["No mention"]
+    default: "None"
+  keepdim:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "False"
+  out:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "dim"
+    Parameter 2: "ord"
+    Constraint: "(dim is None and ord is not None) implies (len(A.shape) == 1 or len(A.shape) == 2)"
+  2:
+    Parameter 1: "ord"
+    Parameter 2: "dim"
+    Constraint: "ord in ['fro', 'nuc'] implies ((dim is not None and isinstance(dim, tuple) and len(dim) == 2) or (dim is None and len(A.shape) == 2))"
+  3:
+    Parameter 1: "ord"
+    Parameter 2: "dim"
+    Constraint: "ord == 0 implies not (isinstance(dim, tuple) and len(dim) == 2)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.norm in a complex way */
+import torch

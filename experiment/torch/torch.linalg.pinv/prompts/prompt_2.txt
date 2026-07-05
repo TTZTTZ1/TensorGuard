@@ -1,0 +1,84 @@
+
+# You are a Python code generation assistant for the `torch.linalg.pinv` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.linalg.pinv`  
+**Purpose:** Computes the Moore-Penrose pseudoinverse of a matrix (or batch of matrices).  
+
+**Key Features:**
+- Supports real and complex floating-point tensors, including batched inputs.
+- Uses SVD by default; if `hermitian=True`, it uses eigenvalue decomposition (assuming the matrix is Hermitian/symmetric).
+- Singular values/eigenvalues below `max(atol, σ₁·rtol)` are truncated to zero for numerical stability.
+- Default `rtol` is `max(m, n) * eps` (dtype-dependent) if not specified.
+
+**Parameters:**
+- `A`: Input tensor of shape `(*, m, n)`.
+- `atol` / `rtol`: Absolute/relative tolerance thresholds (float or tensor).
+- `hermitian`: If `True`, assumes `A` is Hermitian (complex) or symmetric (real).
+- `out` (optional): Output tensor.
+
+**Notes:**
+- Prefer `torch.linalg.lstsq` for solving linear systems (`A.pinv() @ B`), as it is faster and more stable.
+- Derivatives may be unstable due to internal use of SVD/eigenvalue decomposition.
+- Synchronizes CUDA device with CPU.
+
+**Example:**
+```python
+A = torch.randn(3, 5)
+A_pinv = torch.linalg.pinv(A)  # Pseudoinverse of shape (5, 3)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: "null"
+  rcond:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "None"
+  atol:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "None"
+  rtol:
+    dtype: ["float", "Tensor"]
+    range: "No mention"
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "None"
+  hermitian:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  out:
+    dtype: ["Tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["(*, n, m)"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "atol"
+    Parameter 2: "A"
+    Constraint: "atol is None or not isinstance(atol, torch.Tensor) or all(a == 1 or a == b for a, b in zip(atol.shape, A.shape[:-2] + (min(A.shape[-2], A.shape[-1]),)))"
+  2:
+    Parameter 1: "rtol"
+    Parameter 2: "A"
+    Constraint: "rtol is None or not isinstance(rtol, torch.Tensor) or all(a == 1 or a == b for a, b in zip(rtol.shape, A.shape[:-2] + (min(A.shape[-2], A.shape[-1]),)))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.pinv in a complex way */
+import torch

@@ -1,0 +1,38 @@
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["N-D with spatial_shape of M dimensions"]
+    default: null
+  block_shape:
+    dtype: ["int32", "int64"]
+    range: ["all values >= 1"]
+    structure: ["tensor"]
+    shape: ["[M]"]
+    default: null
+  paddings:
+    dtype: ["int32", "int64"]
+    range: ["all values >= 0"]
+    structure: ["tensor"]
+    shape: ["[M, 2]"]
+    default: null
+  name:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["No mention"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: block_shape
+    Parameter 2: block_shape
+    Constraint: "all(block_shape[i] >= 1 for i in range(block_shape.shape[0]))"
+  2:
+    Parameter 1: paddings
+    Parameter 2: paddings
+    Constraint: "all(paddings[i, j] >= 0 for i in range(paddings.shape[0]) for j in range(2))"
+  3:
+    Parameter 1: input
+    Parameter 2: block_shape
+    Constraint: "for i in range(block_shape.shape[0]), (input.shape[i + 1] + paddings[i, 0] + paddings[i, 1]) % block_shape[i] == 0"

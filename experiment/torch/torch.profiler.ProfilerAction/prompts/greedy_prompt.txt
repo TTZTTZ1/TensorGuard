@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.profiler.ProfilerAction` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch Profiler is a performance analysis tool for collecting metrics during model training and inference. It helps identify expensive operators, analyze input shapes, examine stack traces, and visualize execution traces.
+
+**Key Components:**
+
+1. **`torch.profiler.profile`** – Main context manager for profiling:
+   - Supports CPU, CUDA, and XPU activities.
+   - Optional scheduling via `schedule()` to control profiling cycles (wait/warmup/active phases).
+   - Callbacks (e.g., `on_trace_ready`) for processing traces.
+   - Features: shape recording, memory profiling, stack traces, FLOPs estimation, and module hierarchy (TorchScript only).
+
+2. **`torch.profiler._KinetoProfile`** – Lower-level profiler wrapper (experimental).
+
+3. **Output & Analysis**:
+   - Export traces in Chrome JSON format (`export_chrome_trace`).
+   - Generate TensorBoard logs (`tensorboard_trace_handler`).
+   - Aggregate results (`key_averages`) grouped by operator, shape, or stack.
+   - Memory timeline export (deprecated; use `torch.cuda.memory` APIs instead).
+
+4. **Intel ITT APIs** – For marking events and pushing/pop ranges in Intel tracing tools.
+
+**Basic Usage Example:**
+```python
+with torch.profiler.profile(activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA]) as prof:
+    # Code to profile
+    model(input)
+print(prof.key_averages().table(sort_by="cuda_time_total"))
+```
+
+**Scheduled Profiling Example:**
+```python
+schedule = torch.profiler.schedule(wait=1, warmup=1, active=2, repeat=1)
+with torch.profiler.profile(schedule=schedule, on_trace_ready=trace_handler) as prof:
+    for step in range(total_steps):
+        training_step(step)
+        prof.step()  # Signal next step
+```
+
+**Note:** Enabling features like `record_shapes` or `with_stack` adds overhead. The legacy `torch.autograd.profiler` is deprecated.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  value:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  (no constraints specified in the documentation)
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.profiler.ProfilerAction in a complex way */
+import torch

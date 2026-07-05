@@ -1,0 +1,76 @@
+params:
+  input:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["3", "4", "5"]
+    default: null
+  size:
+    dtype: ["int"]
+    range: No mention
+    structure: ["scalar", "tuple"]
+    shape: No mention
+    default: null
+  scale_factor:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar", "tuple"]
+    shape: No mention
+    default: null
+  mode:
+    dtype: ["string"]
+    range: ["nearest", "linear", "bilinear", "bicubic", "trilinear", "area", "nearest-exact"]
+    structure: ["scalar"]
+    shape: No mention
+    default: "nearest"
+  align_corners:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  recompute_scale_factor:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: null
+  antialias:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["scalar"]
+    shape: No mention
+    default: "False"
+constraints:
+  1:
+    Parameter 1: size
+    Parameter 2: scale_factor
+    Constraint: size is not None or scale_factor is not None
+  2:
+    Parameter 1: scale_factor
+    Parameter 2: input
+    Constraint: isinstance(scale_factor, tuple) and len(scale_factor) == input.dim() - 2
+  3:
+    Parameter 1: align_corners
+    Parameter 2: mode
+    Constraint: align_corners is not None implies mode in ['linear', 'bilinear', 'bicubic', 'trilinear']
+  4:
+    Parameter 1: antialias
+    Parameter 2: mode
+    Constraint: antialias == True implies mode in ['bilinear', 'bicubic']
+  5:
+    Parameter 1: recompute_scale_factor
+    Parameter 2: scale_factor
+    Constraint: recompute_scale_factor == True implies scale_factor is not None
+  6:
+    Parameter 1: mode
+    Parameter 2: input
+    Constraint: mode == 'linear' implies input.dim() == 3
+  7:
+    Parameter 1: mode
+    Parameter 2: input
+    Constraint: mode in ['bilinear', 'bicubic'] implies input.dim() == 4
+  8:
+    Parameter 1: mode
+    Parameter 2: input
+    Constraint: mode == 'trilinear' implies input.dim() == 5

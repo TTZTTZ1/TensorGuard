@@ -1,0 +1,74 @@
+
+# You are a Python code generation assistant for the `tf.reverse_sequence` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.reverse_sequence` reverses variable-length slices of a tensor along a specified sequence axis, with reversal lengths defined per batch entry.  
+
+**Key parameters:**  
+- `input`: The tensor to partially reverse.  
+- `seq_lengths`: 1‑D tensor specifying how many elements to reverse in each slice.  
+- `seq_axis`: The dimension along which elements are reversed.  
+- `batch_axis`: The dimension that indexes the slices (default 0).  
+
+**Behavior:**  
+For each slice `i` along `batch_axis`, the first `seq_lengths[i]` elements along `seq_axis` are reversed. The rest remain unchanged.  
+
+**Example:**  
+With `seq_lengths = [7, 2, 3, 5]` and `seq_axis=1`, the first 7 elements of row 0 are reversed, the first 2 of row 1, etc.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["any"]
+    range: null
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  seq_lengths:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  seq_axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+  batch_axis:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "0"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "null"
+constraints:
+  1:
+    Parameter 1: seq_lengths
+    Parameter 2: input
+    Constraint: "seq_lengths.shape[0] == input.shape[batch_axis]"
+  2:
+    Parameter 1: seq_lengths
+    Parameter 2: input
+    Constraint: "max(seq_lengths) <= input.shape[seq_axis]"
+  3:
+    Parameter 1: seq_axis
+    Parameter 2: input
+    Constraint: "0 <= seq_axis < len(input.shape)"
+  4:
+    Parameter 1: batch_axis
+    Parameter 2: input
+    Constraint: "0 <= batch_axis < len(input.shape)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.reverse_sequence in a complex way */
+import tensorflow as tf

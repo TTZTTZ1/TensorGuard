@@ -1,0 +1,77 @@
+
+# You are a Python code generation assistant for the `torch.nn.CrossEntropyLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `CrossEntropyLoss` function computes the cross-entropy loss between input logits and target labels, primarily for classification tasks with C classes.
+
+**Key Features:**
+- Accepts unnormalized logits as input (no need for softmax).
+- Supports both class indices (integer labels) and class probabilities (soft labels) as targets.
+- Includes optional class weighting for imbalanced datasets.
+- Allows ignoring specific target indices and label smoothing.
+
+**Parameters:**
+- `weight`: Optional tensor for class-wise weighting.
+- `ignore_index`: Target value to ignore in loss computation.
+- `reduction`: Specifies loss aggregation (`'none'`, `'mean'`, `'sum'`).
+- `label_smoothing`: Smoothing factor between 0 and 1.
+
+**Input/Output Shapes:**
+- **Input**: `(C)`, `(N, C)`, or `(N, C, d1, d2, ..., dK)` for K-dimensional data.
+- **Target**: For class indices: `()`, `(N)`, or `(N, d1, ..., dK)`; for probabilities: same shape as input.
+- **Output**: Loss per element if `reduction='none'`, otherwise a scalar.
+
+**Important Notes:**
+- When using class probabilities as targets, ensure they form valid probability distributions (values in [0,1], sum to 1). PyTorch does not enforce this automatically.
+- Performance is optimized for class indices; use probabilities only when necessary (e.g., label smoothing).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  weight:
+    dtype: ["Tensor"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[C]"]
+    default: "null"
+  size_average:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "True"
+  ignore_index:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "-100"
+  reduce:
+    dtype: ["bool"]
+    range: [["True", "False"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "True"
+  reduction:
+    dtype: ["str"]
+    range: [["none", "mean", "sum"]]
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "'mean'"
+  label_smoothing:
+    dtype: ["float"]
+    range: null
+    structure: ["scalar"]
+    shape: ["[]"]
+    default: "0.0"
+constraints:
+  1:
+    Parameter 1: label_smoothing
+    Parameter 2: label_smoothing
+    Constraint: "0.0 <= label_smoothing <= 1.0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.CrossEntropyLoss in a complex way */
+import torch

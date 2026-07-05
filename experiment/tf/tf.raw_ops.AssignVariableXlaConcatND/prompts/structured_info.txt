@@ -1,0 +1,44 @@
+params:
+  resource:
+    dtype: ["resource"]
+    range: [null]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: null
+  inputs:
+    dtype: ["No mention"]
+    range: [null]
+    structure: ["list"]
+    shape: ["at least 1"]
+    default: null
+  num_concats:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: null
+  paddings:
+    dtype: ["int"]
+    range: [null]
+    structure: ["list"]
+    shape: ["No mention"]
+    default: "[]"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: null
+constraints:
+  1:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "len(inputs) >= 1"
+  2:
+    Parameter 1: inputs
+    Parameter 2: inputs
+    Constraint: "all(t.dtype == inputs[0].dtype for t in inputs)"
+  3:
+    Parameter 1: paddings
+    Parameter 2: num_concats
+    Constraint: "len(paddings) == 0 or len(paddings) == len(num_concats)"

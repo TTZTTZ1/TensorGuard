@@ -1,0 +1,82 @@
+
+# You are a Python code generation assistant for the `torch.distributions.lkj_cholesky.LKJCholesky` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive suite of parameterizable probability distributions and sampling functions, enabling stochastic computation graphs and gradient estimation for optimization. Key features include:
+
+## **Core Concepts**
+- **Two Gradient Estimation Methods**:
+  - **Score Function (REINFORCE)**: Uses `sample()` and `log_prob()` for policy gradients (common in RL).
+  - **Pathwise Derivative (Reparameterization Trick)**: Uses `rsample()` for differentiable sampling (common in VAEs).
+
+## **Main Components**
+1. **Distribution Base Class**: Abstract base class with methods like:
+   - `sample()`, `rsample()`: Sampling
+   - `log_prob()`: Log probability density/mass
+   - `entropy()`, `mean`, `variance`: Statistics
+   - `cdf()`, `icdf()`: Cumulative/inverse cumulative functions
+
+2. **Available Distributions** (40+ implementations):
+   - Common univariate: `Bernoulli`, `Normal`, `Uniform`, `Exponential`, `Gamma`, `Beta`, etc.
+   - Multivariate: `MultivariateNormal`, `Dirichlet`, `Wishart`
+   - Specialized: `LKJCholesky` (correlation matrices), `MixtureSameFamily`, `RelaxedBernoulli` (Gumbel-Softmax)
+
+3. **Transforms**: Bijective transformations for reparameterization (e.g., `ExpTransform`, `SigmoidTransform`, `StickBreakingTransform`).
+
+4. **Constraints**: Define valid parameter domains (e.g., `positive`, `simplex`, `interval`).
+
+5. **KL Divergence**: Pre-registered KL computations between distribution pairs.
+
+## **Key Functionalities**
+- **Batch/Event Shape Handling**: Supports batched parameters and samples.
+- **TransformedDistribution**: Chains transforms for complex distributions.
+- **ExponentialFamily**: Specialized class for distributions in exponential family form.
+- **Constraint Registry**: Utilities (`biject_to`, `transform_to`) to map constraints to transforms for unconstrained optimization.
+
+## **Typical Usage**
+```python
+# Creating and sampling
+dist = Normal(loc=0.0, scale=1.0)
+samples = dist.sample([10])  # 10 samples
+
+# Gradient estimation (REINFORCE)
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# Reparameterized sampling
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+```
+
+This module is essential for probabilistic modeling, variational inference, reinforcement learning, and any application requiring differentiable stochastic operations.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dim:
+    dtype: ["int"]
+    range: [1, null]
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  concentration:
+    dtype: ["float", "Tensor"]
+    range: [0.0, null]
+    structure: ["scalar", "tensor"]
+    shape: [1]
+    default: "1.0"
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2:
+    Constraint: concentration > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.lkj_cholesky.LKJCholesky in a complex way */
+import torch

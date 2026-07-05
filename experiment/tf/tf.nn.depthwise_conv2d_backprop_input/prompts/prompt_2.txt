@@ -1,0 +1,103 @@
+
+# You are a Python code generation assistant for the `tf.nn.depthwise_conv2d_backprop_input` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.depthwise_conv2d_backprop_input` computes the gradient of a depthwise 2D convolution with respect to the input tensor, which is used during backpropagation in neural network training.
+
+**Key Parameters:**
+- `input_sizes`: Shape of the original input tensor.
+- `filter`: 4‑D convolution kernel `[height, width, in_channels, depthwise_multiplier]`.
+- `out_backprop`: Gradient of the loss with respect to the convolution output.
+- `strides`, `padding`, `data_format`, `dilations`: Convolution hyperparameters (must match the forward pass).
+
+**Returns:**  
+A tensor with the same shape as the original input, representing the gradient with respect to that input.
+
+This function enables gradient‑based optimization for layers using depthwise convolution.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input_sizes:
+    dtype: ["int32"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: "null"
+  filter:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: "null"
+  out_backprop:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: [4]
+    default: "null"
+  strides:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: [4]
+    default: "null"
+  padding:
+    dtype: ["string", "int"]
+    range: ["SAME", "VALID"]
+    structure: ["string", "list"]
+    shape: ["No mention"]
+    default: "null"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW"]
+    structure: ["string"]
+    shape: [1]
+    default: "NHWC"
+  dilations:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["list"]
+    shape: [4]
+    default: "[1, 1, 1, 1]"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["string"]
+    shape: [1]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "filter"
+    Parameter 2: "out_backprop"
+    Constraint: "filter.dtype == out_backprop.dtype"
+  2:
+    Parameter 1: "padding"
+    Parameter 2: "data_format"
+    Constraint: "(isinstance(padding, str) and padding in ['SAME', 'VALID']) or (isinstance(padding, list) and len(padding) == 4 and all(len(row) == 2 for row in padding) and ((data_format == 'NHWC' and padding[0] == [0, 0] and padding[3] == [0, 0]) or (data_format == 'NCHW' and padding[0] == [0, 0] and padding[1] == [0, 0])))"
+  3:
+    Parameter 1: "dilations"
+    Parameter 2: "data_format"
+    Constraint: "(data_format == 'NHWC' and dilations[0] == 1 and dilations[3] == 1) or (data_format == 'NCHW' and dilations[0] == 1 and dilations[1] == 1)"
+  4:
+    Parameter 1: "strides"
+    Parameter 2: "input_sizes"
+    Constraint: "len(strides) == len(input_sizes)"
+  5:
+    Parameter 1: "input_sizes"
+    Parameter 2: "input_sizes"
+    Constraint: "len(input_sizes) == 4"
+  6:
+    Parameter 1: "filter"
+    Parameter 2: "filter"
+    Constraint: "len(filter.shape) == 4"
+  7:
+    Parameter 1: "out_backprop"
+    Parameter 2: "out_backprop"
+    Constraint: "len(out_backprop.shape) == 4"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.depthwise_conv2d_backprop_input in a complex way */
+import tensorflow as tf

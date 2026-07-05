@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.as_strided` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.as_strided` creates a tensor view by specifying its shape (`size`), stride pattern (`stride`), and optional storage offset. It directly manipulates memory interpretation without copying data.  
+
+**Key points:**  
+- Use with caution: prefer `.view()` or `.expand()` when possible.  
+- The view must stay within the original tensor's memory bounds.  
+- Overlapping views (multiple indices pointing to the same memory) lead to undefined behavior for in-place operations.  
+
+**Parameters:**  
+- `input`: Original tensor.  
+- `size`: Desired shape of the output view.  
+- `stride`: Stride for each dimension in the new view.  
+- `storage_offset`: Starting point in the underlying storage (defaults to input’s offset).  
+
+**Example:**  
+Given a 3×3 tensor, `torch.as_strided(x, (2, 2), (1, 2), 1)` creates a 2×2 view starting at element 1, using strides (1, 2) to skip elements in memory.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["float", "int", "double", "long", "bool"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  size:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple", "scalar"]
+    shape: null
+    default: null
+  stride:
+    dtype: ["int"]
+    range: null
+    structure: ["tuple", "scalar"]
+    shape: null
+    default: null
+  storage_offset:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: size
+    Parameter 2: stride
+    Constraint: "len(size) == len(stride)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.as_strided in a complex way */
+import torch

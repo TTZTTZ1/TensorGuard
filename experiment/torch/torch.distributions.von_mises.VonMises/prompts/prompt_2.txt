@@ -1,0 +1,90 @@
+
+# You are a Python code generation assistant for the `torch.distributions.von_mises.VonMises` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` package provides parameterizable probability distributions and sampling functions for building stochastic computation graphs and enabling gradient-based optimization. Key features include:
+
+## Core Concepts
+- **Two gradient estimation methods**: Score function estimator (REINFORCE) using `sample()` and `log_prob()`, and pathwise derivative estimator (reparameterization trick) using `rsample()`.
+- **Abstract base classes**: `Distribution` (base class) and `ExponentialFamily` (for exponential family distributions).
+
+## Main Components
+
+### **Distributions**
+Over 30+ probability distributions including:
+- **Univariate**: Bernoulli, Beta, Binomial, Categorical, Cauchy, Exponential, Gamma, Geometric, Laplace, Normal, Poisson, Uniform, etc.
+- **Multivariate**: Dirichlet, Multinomial, MultivariateNormal, LowRankMultivariateNormal, etc.
+- **Transformed distributions**: LogNormal, HalfNormal, Gumbel, Pareto, Weibull, etc.
+- **Specialized**: MixtureSameFamily, RelaxedBernoulli, LKJCholesky, Wishart, etc.
+
+### **Key Methods**
+- `sample()` / `rsample()`: Generate samples (latter is reparameterizable)
+- `log_prob()`: Compute log probability density/mass
+- `cdf()` / `icdf()`: Cumulative distribution and inverse functions
+- `entropy()`: Compute distribution entropy
+- `mean`, `variance`, `mode`: Distribution statistics
+
+### **Transforms & Constraints**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.) for reparameterization.
+- **Constraints**: Define valid parameter ranges (Interval, GreaterThan, Simplex, etc.).
+- **Registry system**: `transform_to()` and `biject_to()` for mapping constraints to transforms.
+
+### **KL Divergence**
+- `kl_divergence()`: Compute KL divergence between distributions
+- `register_kl()`: Decorator to register custom KL divergence implementations
+
+## Usage Examples
+
+### **REINFORCE (Score Function)**
+```python
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+```
+
+### **Reparameterization Trick**
+```python
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable sample
+loss = -reward
+loss.backward()
+```
+
+## Design Principles
+- Follows TensorFlow Distributions package design
+- Enables stochastic gradient estimators for optimization
+- Supports both discrete and continuous distributions
+- Provides automatic broadcasting over batch dimensions
+- Includes validation via `arg_constraints`
+
+The package is essential for probabilistic modeling, reinforcement learning, variational inference, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  loc:
+    dtype: ["float", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+  concentration:
+    dtype: ["float", "torch.Tensor"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [null]
+    default: null
+constraints:
+  1:
+    Parameter 1: concentration
+    Parameter 2: null
+    Constraint: concentration > 0.0
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.von_mises.VonMises in a complex way */
+import torch

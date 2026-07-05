@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.fx.Graph` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**torch.fx** is a Python-to-Python transformation toolkit for PyTorch, enabling programmatic modification of `nn.Module` instances. It works by:
+
+1. **Symbolic Tracing**: Executes the module with proxy values to capture operations into a graph.
+2. **Intermediate Representation (IR)**: Represents the traced code as a `Graph` of `Node`s (placeholders, calls, outputs).
+3. **Code Generation**: Converts the graph back into executable Python code within a `GraphModule`.
+
+### Key Use Cases:
+- **Transformations**: Modify models by rewriting the graph (e.g., op substitution, fusion, quantization).
+- **Analysis**: Inspect or profile model execution using the interpreter pattern.
+- **Code Generation**: Programmatically create models from configurations.
+
+### Core Components:
+- **`symbolic_trace()`**: Traces a module/function to create a `GraphModule`.
+- **`Graph`**: Data structure holding nodes representing operations.
+- **`GraphModule`**: A runnable `nn.Module` with generated `forward()` code from a `Graph`.
+- **`Tracer`**: Customizable class controlling tracing behavior (e.g., leaf modules).
+- **`Proxy`**: Wraps nodes to record operations during tracing or transformations.
+
+### Writing Transformations:
+- **Direct Graph Manipulation**: Iterate over nodes and modify targets/args.
+- **Proxy-based Rewriting**: Use `Proxy` to record new operations into the graph.
+- **Pattern Replacement**: Use `replace_pattern()` for find/replace of subgraphs.
+- **Interpreter/Transformer**: Override execution methods to analyze or transform graphs.
+
+### Limitations:
+- **Dynamic Control Flow**: Cannot trace loops/conditions dependent on input values (use `concrete_args` to specialize).
+- **Non-`torch` Functions**: Wrap built-ins (e.g., `len`, `math.sqrt`) with `torch.fx.wrap()`.
+- **Tensor Constructors**: `torch.rand`/`torch.randn` embed constant values; use workarounds.
+
+### Debugging:
+- Check correctness with `torch.allclose()`.
+- Inspect generated code via `print(gm.code)` or `gm.graph.print_tabular()`.
+- Use `pdb` or `to_folder()` to export and examine code.
+
+### Customization:
+Subclass `Tracer` to override:
+- `is_leaf_module()`: Control which modules are traced through.
+- `call_module()`: Customize handling of module calls.
+- `create_arg()`: Convert values to graph arguments.
+
+torch.fx enables powerful, modular transformations while maintaining the flexibility of standard PyTorch modules.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  owning_module:
+    dtype: ["torch.nn.Module", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tracer_cls:
+    dtype: ["type", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  tracer_extras:
+    dtype: ["dict", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: owning_module
+    Parameter 2: tracer_cls
+    Constraint: "owning_module is None or isinstance(owning_module, torch.nn.Module)"
+  2:
+    Parameter 1: tracer_cls
+    Parameter 2: tracer_extras
+    Constraint: "tracer_cls is None or (isinstance(tracer_cls, type) and issubclass(tracer_cls, torch.fx.Tracer))"
+  3:
+    Parameter 1: tracer_extras
+    Parameter 2: owning_module
+    Constraint: "tracer_extras is None or isinstance(tracer_extras, dict)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.fx.Graph in a complex way */
+import torch

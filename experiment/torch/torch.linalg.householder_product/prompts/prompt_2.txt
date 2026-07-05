@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.linalg.householder_product` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.linalg.householder_product` function computes the first \( n \) columns of a product of Householder matrices from given inputs \( A \) and \( \tau \). It is commonly used to reconstruct the orthogonal matrix \( Q \) from a QR decomposition.
+
+**Key Points:**
+- **Inputs:**  
+  - `A`: A tensor of shape `(*, m, n)` with \( m \geq n \).  
+  - `tau`: A tensor of shape `(*, k)` with \( k \leq n \).  
+- **Output:** A tensor of the same shape as `A`, representing the product of Householder matrices \( H_1 H_2 \dots H_k \).
+- **Use Case:** Often paired with `torch.geqrf()` to obtain \( Q \) from a QR decomposition.
+- **Supports:** Float, double, cfloat, and cdouble dtypes, including batched inputs.
+- **Gradient Warning:** Gradients may be undefined (producing NaN) if \( \tau_i = \frac{1}{\|a_i\|^2} \).
+- **Related Functions:**  
+  - `torch.geqrf()`: Generates the inputs for this function.  
+  - `torch.ormqr()`: Multiplies a product of Householder matrices with another matrix (not autograd-supported).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  A:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, m, n)"]
+    default: null
+  tau:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["(*, k)"]
+    default: null
+  out:
+    dtype: ["float", "double", "cfloat", "cdouble"]
+    range: null
+    structure: ["tensor"]
+    shape: ["same as A"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: A
+    Parameter 2: None
+    Constraint: "A.shape[-2] >= A.shape[-1]"
+  2:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[:-2] == tau.shape[:-1]"
+  3:
+    Parameter 1: A
+    Parameter 2: tau
+    Constraint: "A.shape[-1] >= tau.shape[-1]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.linalg.householder_product in a complex way */
+import torch

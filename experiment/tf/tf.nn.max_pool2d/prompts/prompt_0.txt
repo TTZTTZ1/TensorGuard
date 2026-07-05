@@ -1,0 +1,80 @@
+
+# You are a Python code generation assistant for the `tf.nn.max_pool2d` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.max_pool2d` performs 2D max pooling on 4D input tensors (e.g., images), reducing spatial dimensions by taking the maximum value within sliding windows defined by `ksize` and shifted by `strides`. It supports padding options (`"VALID"`, `"SAME"`, or explicit padding) and data formats (`"NHWC"` or `"NCHW"`). This function is a specialized version of `tf.nn.max_pool` for 2D spatial data.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [4]
+    default: "null"
+  ksize
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: [1], [2], [4]
+    default: "null"
+  strides
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: [1], [2], [4]
+    default: "null"
+  padding
+    dtype: ["string", "list"]
+    range: ["SAME", "VALID"], "No mention"
+    structure: ["string", "nested list"]
+    shape: "No mention"
+    default: "null"
+  data_format
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NCHW_VECT_C"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "NHWC"
+  name
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "null"
+constraints:
+  1
+    Parameter 1: "ksize"
+    Parameter 2: "ksize"
+    Constraint: "isinstance(ksize, int) or (isinstance(ksize, list) and len(ksize) in [1, 2, 4])"
+  2
+    Parameter 1: "strides"
+    Parameter 2: "strides"
+    Constraint: "isinstance(strides, int) or (isinstance(strides, list) and len(strides) in [1, 2, 4])"
+  3
+    Parameter 1: "padding"
+    Parameter 2: "padding"
+    Constraint: "padding in ['SAME', 'VALID'] or isinstance(padding, list)"
+  4
+    Parameter 1: "padding"
+    Parameter 2: "data_format"
+    Constraint: "not (isinstance(padding, list) and data_format == 'NCHW_VECT_C')"
+  5
+    Parameter 1: "padding"
+    Parameter 2: "data_format"
+    Constraint: "not (isinstance(padding, list) and data_format == 'NHWC' and not (len(padding) == 4 and padding[0] == [0, 0] and padding[3] == [0, 0]))"
+  6
+    Parameter 1: "padding"
+    Parameter 2: "data_format"
+    Constraint: "not (isinstance(padding, list) and data_format == 'NCHW' and not (len(padding) == 4 and padding[0] == [0, 0] and padding[1] == [0, 0]))"
+  7
+    Parameter 1: "padding"
+    Parameter 2: "ksize"
+    Constraint: "not (isinstance(padding, list) and any(padding[i][0] + padding[i][1] > ksize_dim for i, ksize_dim in zip([1, 2] if data_format == 'NHWC' else [2, 3], ksize if isinstance(ksize, list) else [ksize, ksize])))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.max_pool2d in a complex way */
+import tensorflow as tf

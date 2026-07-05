@@ -1,0 +1,121 @@
+
+# You are a Python code generation assistant for the `tf.lookup.TextFileInitializer` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.lookup.TextFileInitializer` is a TensorFlow class used to initialize lookup tables from a text file. It maps each line in the file to a key-value pair in the table, with customizable parsing based on line indices, delimiters, and data types.
+
+**Key Features:**
+- **File-Based Initialization:** Reads a text file where each line corresponds to a table entry.
+- **Flexible Indexing:** Keys and values can be extracted using:
+  - Line numbers (`TextFileIndex.LINE_NUMBER`).
+  - Entire line content (`TextFileIndex.WHOLE_LINE`).
+  - Specific column indices (split by a delimiter).
+- **Customizable Parameters:** Supports specifying data types, delimiter, vocabulary size, and an offset for value indices.
+
+**Example Use Case:**
+- Mapping words to numeric IDs (e.g., for tokenization).
+- Example: A file with lines like `"emerson 10"` can map `"emerson"` → `10`.
+
+**Main Arguments:**
+- `filename`: Path to the text file.
+- `key_dtype`/`value_dtype`: Data types for keys and values.
+- `key_index`/`value_index`: How to extract keys and values from each line.
+- `delimiter`: Separator for splitting lines (default: tab).
+- `vocab_size`: Optional number of elements in the file.
+- `value_index_offset`: Offset added to all value indices (e.g., to reserve index 0 for masking).
+
+**Typical Workflow:**
+1. Create a `TextFileInitializer` with the desired configuration.
+2. Pass it to a `tf.lookup.StaticHashTable` to build the lookup table.
+3. Use the table for mapping keys to values (e.g., in tokenization or feature encoding).
+
+**Errors Raised:**  
+- `ValueError` if the filename is empty or data types mismatch.
+- `TypeError` if keys/values don’t match the table’s expected types.
+
+This utility is commonly used in text processing pipelines, such as subword tokenization, where vocabulary mappings are stored in files.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filename:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar", "tensor"]
+    shape: [0]
+    default: null
+  key_dtype:
+    dtype: ["any"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  key_index:
+    dtype: ["int"]
+    range: [">=0", "TextFileIndex.LINE_NUMBER", "TextFileIndex.WHOLE_LINE"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  value_dtype:
+    dtype: ["any"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  value_index:
+    dtype: ["int"]
+    range: [">=0", "TextFileIndex.LINE_NUMBER", "TextFileIndex.WHOLE_LINE"]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  vocab_size:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  delimiter:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "\t"
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  value_index_offset:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "0"
+constraints:
+  1:
+    Parameter 1: filename
+    Parameter 2: null
+    Constraint: "filename != ''"
+  2:
+    Parameter 1: key_index
+    Parameter 2: key_dtype
+    Constraint: "key_index != tf.lookup.TextFileIndex.LINE_NUMBER or key_dtype == tf.int64"
+  3:
+    Parameter 1: key_index
+    Parameter 2: key_dtype
+    Constraint: "key_index != tf.lookup.TextFileIndex.WHOLE_LINE or key_dtype == tf.string"
+  4:
+    Parameter 1: value_index
+    Parameter 2: value_dtype
+    Constraint: "value_index != tf.lookup.TextFileIndex.LINE_NUMBER or value_dtype == tf.int64"
+  5:
+    Parameter 1: value_index
+    Parameter 2: value_dtype
+    Constraint: "value_index != tf.lookup.TextFileIndex.WHOLE_LINE or value_dtype == tf.string"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.lookup.TextFileInitializer in a complex way */
+import tensorflow as tf

@@ -1,0 +1,32 @@
+params:
+  probs:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  logits:
+    dtype: ["float"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "probs"
+    Parameter 2: "None"
+    Constraint: "probs is None or ( (probs >= 0).all() and (probs.sum(dim=-1) == 1).all() )"
+  2:
+    Parameter 1: "logits"
+    Parameter 2: "None"
+    Constraint: "logits is None or isinstance(logits, torch.Tensor)"
+  3:
+    Parameter 1: "probs"
+    Parameter 2: "logits"
+    Constraint: "(probs is not None) != (logits is not None)"

@@ -1,0 +1,78 @@
+
+# You are a Python code generation assistant for the `torch.median` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+**Function:** `torch.median`  
+**Purpose:** Computes the median value(s) of a tensor.
+
+---
+
+### **Two Usage Modes:**
+
+1. **Global Median**  
+   `torch.median(input)` → `Tensor`  
+   Returns the median of all elements in `input`.  
+   - For an even number of elements, returns the **lower median**.  
+   - For the average of the two medians, use `torch.quantile(input, q=0.5)`.
+
+2. **Median Along a Dimension**  
+   `torch.median(input, dim, keepdim=False, *, out=None)` → `(values, indices)`  
+   Returns a namedtuple containing:  
+   - `values`: Median of each slice along `dim`.  
+   - `indices`: Index of each median value in `dim`.  
+   - If `keepdim=True`, output retains the reduced dimension as size 1.
+
+---
+
+### **Key Notes:**
+- **Even-sized tensors:** Returns the lower median (not the average).  
+- **Non-unique medians:** `indices` may not point to the first occurrence; behavior can vary between CPU/GPU.  
+- **Gradients:** Deterministic for global median, but non-deterministic when `dim` is specified.
+
+---
+
+### **Example:**
+```python
+# Global median
+a = torch.tensor([1.5219, -1.5212, 0.2202])
+torch.median(a)  # tensor(0.2202)
+
+# Median along dimension
+b = torch.randn(4, 5)
+torch.median(b, dim=1)  # Returns (values, indices) per row
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["tensor"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  dim:
+    dtype: ["int"]
+    range: ["None", "any integer"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "-1"
+  keepdim:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  out:
+    dtype: ["tuple"]
+    range: "No mention"
+    structure: ["tuple"]
+    shape: "No mention"
+    default: "None"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.median in a complex way */
+import torch

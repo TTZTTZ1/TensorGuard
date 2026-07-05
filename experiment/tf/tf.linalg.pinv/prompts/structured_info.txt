@@ -1,0 +1,38 @@
+params:
+  a:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., M, N]"]
+    default: null
+  rcond:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["scalar", "tensor"]
+    shape: ["broadcastable to tf.shape(a)[:-2]"]
+    default: "10. * max(num_rows, num_cols) * np.finfo(a.dtype).eps"
+  validate_args:
+    dtype: ["bool"]
+    range: [[True, False]]
+    structure: ["scalar"]
+    shape: []
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "'pinv'"
+constraints:
+  1:
+    Parameter 1: a
+    Parameter 2: null
+    Constraint: "a.dtype.is_floating"
+  2:
+    Parameter 1: a
+    Parameter 2: null
+    Constraint: "tf.rank(a) >= 2"
+  3:
+    Parameter 1: rcond
+    Parameter 2: a
+    Constraint: "all(s1 == 1 or s2 == 1 or s1 == s2 for s1, s2 in zip(tf.shape(rcond), tf.shape(a)[:-2]))"

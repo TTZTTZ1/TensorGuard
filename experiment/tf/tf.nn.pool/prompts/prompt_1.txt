@@ -1,0 +1,72 @@
+
+# You are a Python code generation assistant for the `tf.nn.pool` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.pool` performs N‑dimensional pooling (MAX or AVG) over spatial dimensions of an input tensor. It supports configurable window size, strides, padding ("SAME" or "VALID"), data format (channel‑first or channel‑last), and dilation rates. The output shape depends on padding, strides, dilation, and window shape.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["rank N+2"]
+    default: "null"
+  window_shape:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "null"
+  pooling_type:
+    dtype: ["string"]
+    range: ["AVG", "MAX"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  strides:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "[1]*N"
+  padding:
+    dtype: ["string"]
+    range: ["SAME", "VALID"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "SAME"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", "None"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dilations:
+    dtype: ["int"]
+    range: [">=1"]
+    structure: ["sequence"]
+    shape: ["N"]
+    default: "[1]*N"
+  name:
+    dtype: ["string"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "data_format"
+    Parameter 2: "window_shape"
+    Constraint: "(data_format is None) or ((len(window_shape) == 1 and data_format in ['NWC', 'NCW']) or (len(window_shape) == 2 and data_format in ['NHWC', 'NCHW']) or (len(window_shape) == 3 and data_format in ['NDHWC', 'NCDHW']))"
+  2:
+    Parameter 1: "strides"
+    Parameter 2: "dilations"
+    Constraint: "not (any(s > 1 for s in strides) and any(d > 1 for d in dilations))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.pool in a complex way */
+import tensorflow as tf

@@ -1,0 +1,28 @@
+params:
+  element_spec:
+    dtype: ["TypeSpec"]
+    range: null
+    structure: ["nested"]
+    shape: null
+    default: null
+  value:
+    dtype: ["int", "float", "string", "bool", "complex"]
+    range: null
+    structure: ["scalar", "composite"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: "None"
+constraints:
+  1:
+    Parameter 1: value
+    Parameter 2: value
+    Constraint: "isinstance(value, (tf.Tensor, tf.CompositeTensor))"
+  2:
+    Parameter 1: element_spec
+    Parameter 2: element_spec
+    Constraint: "all(isinstance(s, tf.TypeSpec) for s in tf.nest.flatten(element_spec))"

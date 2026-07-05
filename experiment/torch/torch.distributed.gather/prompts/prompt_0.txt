@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.distributed.gather` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributed` package provides PyTorch's distributed communication capabilities for multi-process parallelism across multiple machines or GPUs. Here's a concise summary of its key aspects:
+
+## **Core Concepts**
+- **Backends**: Supports Gloo (CPU/GPU), NCCL (CUDA GPU), XCCL (XPU GPU), and MPI (optional). NCCL is recommended for GPU training, Gloo for CPU.
+- **Initialization**: Must call `init_process_group()` or `init_device_mesh()` before any distributed operations. Supports TCP, shared file-system, and environment variable initialization.
+- **DeviceMesh**: Higher-level abstraction for managing process groups and device topologies in N-dimensional parallelism.
+
+## **Key Features**
+- **Collective Operations**: Synchronous/asynchronous operations like `all_reduce`, `broadcast`, `all_gather`, `scatter`, `reduce_scatter`, `all_to_all`, and `barrier`.
+- **Point-to-Point Communication**: `send`/`recv` and asynchronous `isend`/`irecv` for direct rank-to-rank communication.
+- **Process Groups**: Create subgroups with `new_group()` for fine-grained communication.
+- **Key-Value Stores**: `TCPStore`, `FileStore`, and `HashStore` for sharing connection information.
+
+## **Usage Patterns**
+- **Rule of thumb**: Use NCCL for CUDA GPU training, XCCL for XPU GPU, Gloo for CPU.
+- **Synchronous vs Async**: Operations can be blocking (`async_op=False`) or non-blocking (`async_op=True`) returning `Work` objects.
+- **DeviceMesh**: Simplifies multi-dimensional parallelism setup with `init_device_mesh()`.
+
+## **Debugging & Tools**
+- `monitored_barrier()`: Enhanced barrier with timeout and rank failure reporting.
+- `TORCH_DISTRIBUTED_DEBUG`: Environment variable for additional logging and synchronization checks.
+- `breakpoint()`: Interactive debugging for single rank.
+- HTTP debug server for runtime data collection.
+
+## **Important Notes**
+- Requires explicit launch of separate script copies per process.
+- Each process maintains its own optimizer, eliminating parameter broadcast overhead.
+- Supports both single-machine and multi-machine configurations.
+- Windows support is available but with some limitations (no NCCL backend).
+
+The package enables efficient distributed training with better performance than `DataParallel` by avoiding Python GIL limitations and redundant parameter transfers.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["Tensor"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: null
+  gather_list:
+    dtype: ["list[Tensor]"]
+    range: [null]
+    structure: ["list"]
+    shape: [null]
+    default: "None"
+  dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  group:
+    dtype: ["ProcessGroup"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+  async_op:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "False"
+  group_dst:
+    dtype: ["int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [null]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: dst
+    Parameter 2: group_dst
+    Constraint: "dst is None or group_dst is None"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.gather in a complex way */
+import torch

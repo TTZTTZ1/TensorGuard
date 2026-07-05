@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.TensorScatterSub` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.TensorScatterSub` performs an in-place subtraction of sparse `updates` into an existing `tensor` at specified `indices`. It creates a new tensor by subtracting values from `updates` at positions defined by `indices`. If the original tensor's memory cannot be reused, a copy is made.
+
+**Key points:**
+- **Functionality:** Subtracts sparse updates from a tensor at given indices.
+- **Indices shape:** Last dimension ≤ rank of `tensor`; determines element or slice updates.
+- **Updates shape:** Must match `indices.shape[:-1] + tensor.shape[indices.shape[-1]:]`.
+- **Error handling:** On CPU, out-of-bound indices cause an error; on GPU, they are ignored.
+- **Similar to:** `tf.scatter_nd_sub`, but operates on tensors rather than variables.
+
+**Example use:** Subtract specific elements or entire slices from a tensor, returning an updated tensor.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  tensor:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["int32", "int64", "float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: indices
+    Parameter 2: tensor
+    Constraint: "indices.shape[-1] <= len(tensor.shape)"
+  2:
+    Parameter 1: updates
+    Parameter 2: tensor
+    Constraint: "updates.dtype == tensor.dtype"
+  3:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape[:-1] + tensor.shape[indices.shape[-1]:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.TensorScatterSub in a complex way */
+import tensorflow as tf

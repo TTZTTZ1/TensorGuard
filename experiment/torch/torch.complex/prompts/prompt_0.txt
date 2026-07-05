@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `torch.complex` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.complex` function constructs a complex-valued tensor from separate real and imaginary parts.  
+
+**Key points:**  
+- **Inputs:** Two tensors (`real` and `imag`) with matching data types (half, float, or double).  
+- **Output:** A complex tensor where each element is `real + imag * 1j`.  
+- **Data type mapping:**  
+  - `float32` → `complex64`  
+  - `float64` → `complex128`  
+- **Optional argument:** `out` tensor must have the corresponding complex dtype.  
+
+**Example:**  
+```python
+real = torch.tensor([1, 2], dtype=torch.float32)
+imag = torch.tensor([3, 4], dtype=torch.float32)
+z = torch.complex(real, imag)  # tensor([1.+3.j, 2.+4.j])
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  real:
+    dtype: ["torch.half", "torch.float32", "torch.float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  imag:
+    dtype: ["torch.half", "torch.float32", "torch.float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  out:
+    dtype: ["torch.complex64", "torch.complex128"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "real"
+    Parameter 2: "imag"
+    Constraint: "real.dtype == imag.dtype"
+  2:
+    Parameter 1: "out"
+    Parameter 2: "real"
+    Constraint: "out is None or ((real.dtype == torch.float32 and out.dtype == torch.complex64) or (real.dtype == torch.float64 and out.dtype == torch.complex128))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.complex in a complex way */
+import torch

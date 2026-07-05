@@ -1,0 +1,108 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.FusedBatchNormGradV3` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.FusedBatchNormGradV3` computes the gradients for batch normalization during backpropagation. It takes the gradient of the output (`y_backprop`), the original input (`x`), the scaling factor (`scale`), and saved batch statistics (`reserve_space_1`, `reserve_space_2`, `reserve_space_3`) from the forward pass. The operation supports both training and inference modes via `is_training`, and handles data formats like `"NHWC"` or `"NCHW"`. It returns gradients for the input, scale, and offset, along with two additional intermediate tensors for reuse.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  y_backprop:
+    dtype: ["half", "bfloat16", "float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  x:
+    dtype: ["half", "bfloat16", "float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [4]
+    default: null
+  scale:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  reserve_space_1:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  reserve_space_2:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  reserve_space_3:
+    dtype: ["float32"]
+    range: No mention
+    structure: ["tensor"]
+    shape: [1]
+    default: null
+  epsilon:
+    dtype: ["float"]
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: "0.0001"
+  data_format:
+    dtype: ["string"]
+    range: ["NHWC", "NCHW", "NDHWC", "NCDHW"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "NHWC"
+  is_training:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  name:
+    dtype: ["string"]
+    range: No mention
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+constraints:
+  1:
+    Parameter 1: y_backprop
+    Parameter 2: x
+    Constraint: "y_backprop.dtype == x.dtype"
+  2:
+    Parameter 1: reserve_space_2
+    Parameter 2: reserve_space_1
+    Constraint: "reserve_space_2.dtype == reserve_space_1.dtype"
+  3:
+    Parameter 1: reserve_space_3
+    Parameter 2: reserve_space_1
+    Constraint: "reserve_space_3.dtype == reserve_space_1.dtype"
+  4:
+    Parameter 1: y_backprop
+    Parameter 2: x
+    Constraint: "y_backprop.shape == x.shape"
+  5:
+    Parameter 1: scale
+    Parameter 2: y_backprop
+    Constraint: "scale.shape[0] == (y_backprop.shape[1] if data_format == 'NCHW' else y_backprop.shape[3])"
+  6:
+    Parameter 1: reserve_space_1
+    Parameter 2: scale
+    Constraint: "reserve_space_1.shape[0] == scale.shape[0]"
+  7:
+    Parameter 1: reserve_space_2
+    Parameter 2: scale
+    Constraint: "reserve_space_2.shape[0] == scale.shape[0]"
+  8:
+    Parameter 1: reserve_space_3
+    Parameter 2: scale
+    Constraint: "(is_training and reserve_space_3.shape[0] == scale.shape[0]) or (not is_training and reserve_space_3.shape[0] == 0)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.FusedBatchNormGradV3 in a complex way */
+import tensorflow as tf

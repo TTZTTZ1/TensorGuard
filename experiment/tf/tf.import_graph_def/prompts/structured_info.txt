@@ -1,0 +1,46 @@
+params:
+  graph_def:
+    dtype: ["GraphDef"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  input_map:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: "None"
+  return_elements:
+    dtype: ["list"]
+    range: null
+    structure: ["list"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "\"import\""
+  op_dict:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: "None"
+  producer_op_list:
+    dtype: ["OpList"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input_map"
+    Parameter 2: "graph_def"
+    Constraint: "all(key in {name for node in graph_def.node} for key in input_map.keys())"
+  2:
+    Parameter 1: "return_elements"
+    Parameter 2: "graph_def"
+    Constraint: "all(element in {name for node in graph_def.node} for element in return_elements)"

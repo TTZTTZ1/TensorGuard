@@ -1,0 +1,60 @@
+
+# You are a Python code generation assistant for the `torch.nn.KLDivLoss` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`KLDivLoss` computes the Kullback-Leibler divergence between two probability distributions.  
+
+**Key points:**  
+- **Input (`input`)**: Expected in **log-space** (e.g., `log_softmax` output) to avoid underflow.  
+- **Target (`target`)**: Can be in probability space (default) or log-space if `log_target=True`.  
+- **Reduction options**:  
+  - `"batchmean"` (recommended): Mathematically correct KL divergence (sum divided by batch size).  
+  - `"mean"`: Averages over all elements (does **not** give true KL value).  
+  - `"sum"`: Sums all elements.  
+  - `"none"`: Returns pointwise loss.  
+
+**Warning:**  
+- Use `reduction="batchmean"` for proper KL divergence values, not `"mean"`.  
+
+**Example usage:**  
+```python
+kl_loss = nn.KLDivLoss(reduction="batchmean")
+input = F.log_softmax(model_output, dim=1)
+target = F.softmax(target_data, dim=1)
+loss = kl_loss(input, target)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  size_average:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduce:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "True"
+  reduction:
+    dtype: ["string"]
+    range: [["mean", "batchmean", "sum", "none"]]
+    structure: ["scalar"]
+    shape: null
+    default: "mean"
+  log_target:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.nn.KLDivLoss in a complex way */
+import torch

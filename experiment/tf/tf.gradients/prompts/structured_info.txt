@@ -1,0 +1,58 @@
+params:
+  ys:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tensor", "list"]
+    shape: ["any"]
+    default: null
+  xs:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tensor", "list"]
+    shape: ["any"]
+    default: null
+  grad_ys:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tensor", "list"]
+    shape: ["any"]
+    default: null
+  name:
+    dtype: ["string"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: "gradients"
+  gate_gradients:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+  aggregation_method:
+    dtype: ["string", "int"]
+    range: [null]
+    structure: ["scalar"]
+    shape: [0]
+    default: null
+  stop_gradients:
+    dtype: ["any"]
+    range: [null]
+    structure: ["tensor", "list"]
+    shape: ["any"]
+    default: null
+  unconnected_gradients:
+    dtype: ["string"]
+    range: ["none", "zero"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "none"
+constraints:
+  1:
+    Parameter 1: grad_ys
+    Parameter 2: ys
+    Constraint: grad_ys is None or len(grad_ys) == len(ys)
+  2:
+    Parameter 1: unconnected_gradients
+    Parameter 2: unconnected_gradients
+    Constraint: unconnected_gradients in ['none', 'zero']

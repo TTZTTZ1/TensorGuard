@@ -1,0 +1,38 @@
+params:
+  parameters:
+    dtype: ["Iterable"]
+    range: ["No mention"]
+    structure: ["Iterable"]
+    shape: ["No mention"]
+    default: "null"
+  pruning_method:
+    dtype: ["function"]
+    range: ["No mention"]
+    structure: ["function"]
+    shape: ["No mention"]
+    default: "null"
+  importance_scores:
+    dtype: ["dict"]
+    range: ["No mention"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "None"
+  kwargs:
+    dtype: ["dict"]
+    range: ["No mention"]
+    structure: ["dict"]
+    shape: ["No mention"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "pruning_method"
+    Parameter 2: "null"
+    Constraint: "hasattr(pruning_method, 'PRUNING_TYPE') and pruning_method.PRUNING_TYPE == 'unstructured'"
+  2:
+    Parameter 1: "importance_scores"
+    Parameter 2: "parameters"
+    Constraint: "importance_scores is None or all(key in list(parameters) and importance_scores[key].shape == getattr(key[0], key[1]).shape for key in importance_scores)"
+  3:
+    Parameter 1: "kwargs"
+    Parameter 2: "null"
+    Constraint: "'amount' not in kwargs or (isinstance(kwargs.get('amount'), (int, float)) and (not isinstance(kwargs.get('amount'), float) or 0.0 <= kwargs.get('amount') <= 1.0))"

@@ -1,0 +1,46 @@
+params:
+  params:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["iterable"]
+    shape: ["any"]
+    default: "null"
+  optimizer_class:
+    dtype: ["class"]
+    range: ["torch.optim.Optimizer subclasses"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "null"
+  process_group:
+    dtype: ["ProcessGroup"]
+    range: ["None", "ProcessGroup"]
+    structure: ["object"]
+    shape: ["scalar"]
+    default: "None"
+  parameters_as_bucket_view:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  overlap_with_ddp:
+    dtype: ["bool"]
+    range: [True, False]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "False"
+  defaults:
+    dtype: ["any"]
+    range: ["any"]
+    structure: ["dict"]
+    shape: ["any"]
+    default: "null"
+constraints:
+  1:
+    Parameter 1: "params"
+    Parameter 2: "params"
+    Constraint: "all(isinstance(p, torch.Tensor) for p in params) and len(set(p.dtype for p in params)) == 1"
+  2:
+    Parameter 1: "overlap_with_ddp"
+    Parameter 2: "optimizer_class"
+    Constraint: "overlap_with_ddp == False or (optimizer_class is not None and hasattr(optimizer_class, 'functional'))"

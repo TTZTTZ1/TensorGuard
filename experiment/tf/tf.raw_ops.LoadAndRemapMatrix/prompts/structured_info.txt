@@ -1,0 +1,68 @@
+params:
+  ckpt_path:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  old_tensor_name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  row_remapping:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1-D"]
+    default: null
+  col_remapping:
+    dtype: ["int64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  initializing_values:
+    dtype: ["float32"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: null
+  num_rows:
+    dtype: ["int"]
+    range: ["[0, inf]"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  num_cols:
+    dtype: ["int"]
+    range: ["[1, inf]"]
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+  max_rows_in_memory:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: "-1"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["scalar"]
+    default: null
+constraints:
+  1:
+    Parameter 1: row_remapping
+    Parameter 2: num_rows
+    Constraint: "tf.shape(row_remapping)[0] == num_rows"
+  2:
+    Parameter 1: col_remapping
+    Parameter 2: num_cols
+    Constraint: "tf.size(col_remapping) == 0 or tf.shape(col_remapping)[0] == num_cols"
+  3:
+    Parameter 1: initializing_values
+    Parameter 2: row_remapping
+    Constraint: "tf.size(initializing_values) == (tf.reduce_sum(tf.cast(row_remapping == -1, tf.int32)) * num_cols) + (tf.reduce_sum(tf.cast(col_remapping == -1, tf.int32)) * num_rows) - (tf.reduce_sum(tf.cast(row_remapping == -1, tf.int32)) * tf.reduce_sum(tf.cast(col_remapping == -1, tf.int32)))"

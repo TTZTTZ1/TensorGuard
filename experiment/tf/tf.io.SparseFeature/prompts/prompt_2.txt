@@ -1,0 +1,76 @@
+
+# You are a Python code generation assistant for the `tf.io.SparseFeature` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.SparseFeature` is a configuration class used to parse sparse input features from TensorFlow `Example` protos into `SparseTensor` objects. It is designed for cases where sparse data is stored with separate features for indices and values.
+
+### Key Components:
+- **`index_key`**: Name(s) of the feature(s) containing indices (must be `int64`). Can be a single string (for 1D) or a list (for higher dimensions).
+- **`value_key`**: Name of the feature containing the values (data type matches `dtype`).
+- **`dtype`**: Data type of the values (e.g., `tf.float32`).
+- **`size`**: Dense shape of the resulting `SparseTensor` (int or list of ints).
+- **`already_sorted`**: Optional boolean indicating if values are pre-sorted by index (defaults to `False`).
+
+### How It Works:
+- The `value_key` feature provides the values for the `SparseTensor.values`.
+- Each `index_key` feature provides indices for a corresponding dimension in the `SparseTensor.indices`.
+- The `size` defines the `SparseTensor.dense_shape`.
+
+### Example:
+For a 2D `SparseTensor` with indices `[[3, 1], [20, 0]]` and values `[0.5, -1.0]`:
+- `Example` features: `"ix0" = [3, 20]`, `"ix1" = [1, 0]`, `"val" = [0.5, -1.0]`
+- Configuration:
+  ```python
+  SparseFeature(index_key=["ix0", "ix1"],
+                value_key="val",
+                dtype=tf.float32,
+                size=[100, 3])
+  ```
+
+### Note:
+Prefer using `VarLenFeature` for simpler cases, especially with `SequenceExample`. `SparseFeature` is more suitable when explicit multi-dimensional index features are needed.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  index_key:
+    dtype: ["str", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  value_key:
+    dtype: ["str"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  dtype:
+    dtype: ["tf.DType"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  size:
+    dtype: ["int", "list"]
+    range: null
+    structure: ["scalar", "list"]
+    shape: null
+    default: null
+  already_sorted:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+  1:
+    Parameter 1: index_key
+    Parameter 2: size
+    Constraint: "(isinstance(index_key, str) and isinstance(size, int)) or (isinstance(index_key, list) and isinstance(size, list) and len(size) == len(index_key))"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.SparseFeature in a complex way */
+import tensorflow as tf

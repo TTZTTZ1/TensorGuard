@@ -1,0 +1,61 @@
+
+# You are a Python code generation assistant for the `tf.nn.weighted_cross_entropy_with_logits` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.nn.weighted_cross_entropy_with_logits` computes a weighted binary cross-entropy loss, allowing adjustment of the cost for positive errors via `pos_weight`. This helps balance recall and precision in classification tasks.
+
+**Key features:**
+- **Inputs:** `labels` (values in [0,1]), `logits` (real numbers), and `pos_weight` (non-negative weight for positive class).
+- **Behavior:**  
+  - `pos_weight > 1`: Increases recall by penalizing false negatives more heavily.  
+  - `pos_weight < 1`: Increases precision by reducing penalty for false positives.
+- **Output:** A tensor of the same shape as `logits` containing element-wise loss values.
+- **Note:** Uses a numerically stable implementation to prevent overflow.
+
+**Example:**
+```python
+loss = tf.nn.weighted_cross_entropy_with_logits(
+    labels=[1., 0.5, 0.], 
+    logits=[1.5, -0.1, -10.], 
+    pos_weight=1.5
+)
+```
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  labels:
+    dtype: ["float32", "float64"]
+    range: [[0, 1]]
+    structure: ["tensor"]
+    shape: null
+    default: null
+  logits:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  pos_weight:
+    dtype: ["float32", "float64"]
+    range: [[0, null]]
+    structure: ["scalar", "tensor"]
+    shape: null
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: labels
+    Parameter 2: logits
+    Constraint: "labels.dtype == logits.dtype and labels.shape == logits.shape"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.nn.weighted_cross_entropy_with_logits in a complex way */
+import tensorflow as tf

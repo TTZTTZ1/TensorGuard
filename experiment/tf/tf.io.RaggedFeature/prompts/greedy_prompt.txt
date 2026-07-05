@@ -1,0 +1,69 @@
+
+# You are a Python code generation assistant for the `tf.io.RaggedFeature` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.io.RaggedFeature` is a configuration class in TensorFlow used to parse variable-length features from `tf.Example` protos into `tf.RaggedTensor` objects (or dense tensors in specific cases). It allows you to define hierarchical, ragged structures by specifying a `value_key` for the data and optional `partitions` for segmenting that data into rows or higher dimensions.
+
+### Key Features:
+- **Purpose**: Converts serialized `tf.Example` features into ragged tensors, handling nested variable-length data.
+- **Core Parameters**:
+  - `value_key`: The feature key containing the actual values.
+  - `partitions`: A list defining how to split values into rows/dimensions (e.g., `RowSplits`, `RowLengths`, `UniformRowLength`).
+  - `dtype`: Data type of the values (e.g., `int64`, `float32`, `string`).
+- **Output Structure**:
+  - Without partitions: Results in a 1D tensor (single example) or 2D `RaggedTensor` (batch).
+  - With partitions: Creates higher-dimensional ragged tensors, where each partition adds a ragged dimension.
+  - If the innermost partition is `UniformRowLength`, the output becomes a dense tensor.
+- **Use Case**: Ideal for parsing sparse or irregular data like sequences of varying lengths, nested lists, or segmented features.
+
+### Example:
+```python
+# Parsing a ragged feature with row splits
+feature = tf.io.RaggedFeature(
+    value_key="values",
+    dtype=tf.int64,
+    partitions=[tf.io.RaggedFeature.RowSplits("row_splits_key")]
+)
+```
+This configuration would parse a flat list of `values` into a 2D ragged tensor, using `row_splits_key` to determine row boundaries.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  dtype:
+    dtype: ["int64", "float32", "string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+  value_key:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  partitions:
+    dtype: ["tuple"]
+    range: null
+    structure: ["tuple"]
+    shape: null
+    default: "()"
+  row_splits_dtype:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "int32"
+  validate:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.io.RaggedFeature in a complex way */
+import tensorflow as tf

@@ -1,0 +1,74 @@
+params:
+  input:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["N+2"]
+    default: null
+  filters:
+    dtype: ["half", "bfloat16", "float32", "float64"]
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["N+2"]
+    default: null
+  output_shape:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["1"]
+    default: null
+  strides:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["0", "1"]
+    default: null
+  padding:
+    dtype: ["string"]
+    range: ["VALID", "SAME"]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "SAME"
+  data_format:
+    dtype: ["string", "None"]
+    range: ["NWC", "NCW", "NHWC", "NCHW", "NDHWC", "NCDHW", None]
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "None"
+  dilations:
+    dtype: ["int"]
+    range: "No mention"
+    structure: ["scalar", "list"]
+    shape: ["0", "1"]
+    default: "None"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: ["0"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "input.dtype == filters.dtype"
+  2:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "len(input.shape) == len(filters.shape)"
+  3:
+    Parameter 1: input
+    Parameter 2: filters
+    Constraint: "filters.shape[-2] == (input.shape[1] if data_format is not None and data_format.startswith('NC') else input.shape[-1])"
+  4:
+    Parameter 1: strides
+    Parameter 2: input
+    Constraint: "isinstance(strides, int) or len(strides) in [1, len(input.shape) - 2, len(input.shape)]"
+  5:
+    Parameter 1: dilations
+    Parameter 2: input
+    Constraint: "isinstance(dilations, int) or (dilations is not None and len(dilations) in [1, len(input.shape) - 2, len(input.shape)])"
+  6:
+    Parameter 1: output_shape
+    Parameter 2: input
+    Constraint: "len(output_shape) == len(input.shape)"

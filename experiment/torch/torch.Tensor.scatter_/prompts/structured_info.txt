@@ -1,0 +1,44 @@
+params:
+  dim:
+    dtype: ["int"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  index:
+    dtype: ["torch.LongTensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  src:
+    dtype: ["torch.Tensor"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  value:
+    dtype: ["scalar"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "null"
+  reduce:
+    dtype: ["str"]
+    range: ["add", "multiply"]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "index"
+    Parameter 2: "src"
+    Constraint: "index.dim() == src.dim() and all(index.size(d) <= src.size(d) for d in range(index.dim()))"
+  2:
+    Parameter 1: "index"
+    Parameter 2: "dim"
+    Constraint: "all(index.size(d) <= self.size(d) for d in range(index.dim()) if d != dim)"
+  3:
+    Parameter 1: "index"
+    Parameter 2: "dim"
+    Constraint: "(index >= 0).all() and (index < self.size(dim)).all()"

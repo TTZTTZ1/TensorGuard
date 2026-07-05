@@ -1,0 +1,57 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.MirrorPadGrad` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.MirrorPadGrad` is the gradient operation for `MirrorPad`. It reverses the padding applied by `MirrorPad` by "folding" the mirrored padding regions back into the original tensor shape.
+
+**Key Functionality:**
+- **Input:** Takes a padded tensor (`input`) and the same `paddings` matrix used in the original `MirrorPad` operation.
+- **Mode:** Supports `"REFLECT"` or `"SYMMETRIC"` padding modes, matching the mode used in `MirrorPad`.
+- **Output:** Returns a tensor with the padding removed, where each output dimension `D` has size:  
+  `input.dim_size(D) - paddings(D, 0) - paddings(D, 1)`.
+
+**Purpose:**  
+Used during backpropagation to compute gradients through a `MirrorPad` operation, effectively undoing the padding by aggregating values from the padded regions back into the original unpadded shape.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  input:
+    dtype: []
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  paddings:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: []
+    default: null
+  mode:
+    dtype: ["string"]
+    range: [["REFLECT", "SYMMETRIC"]]
+    structure: ["scalar"]
+    shape: []
+    default: null
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: []
+    default: null
+constraints:
+  1:
+    Parameter 1: "paddings"
+    Parameter 2: "input"
+    Constraint: "paddings.shape[0] == input.shape.rank"
+  2:
+    Parameter 1: "paddings"
+    Parameter 2: null
+    Constraint: "paddings.shape[1] == 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.MirrorPadGrad in a complex way */
+import tensorflow as tf

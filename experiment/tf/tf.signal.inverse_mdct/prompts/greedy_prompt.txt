@@ -1,0 +1,53 @@
+
+# You are a Python code generation assistant for the `tf.signal.inverse_mdct` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.signal.inverse_mdct` reconstructs a time-domain signal from Modified Discrete Cosine Transform (MDCT) coefficients. It requires the same window function (e.g., `tf.signal.vorbis_window`) used during the forward MDCT for perfect reconstruction. The function supports gradients and is compatible with TPU/GPU operations.
+
+**Key Parameters:**
+- `mdcts`: Input tensor of MDCT bins with shape `[..., frames, frame_length // 2]`.
+- `window_fn`: Window function applied (default is `vorbis_window`). Must satisfy perfect reconstruction conditions if not `None`.
+- `norm`: If `"ortho"`, uses orthonormal inverse DCT4; otherwise scales by `1/frame_length`.
+
+**Output:** Reconstructed signal with shape `[..., samples]`, where `samples = (frames - 1) * (frame_length // 2) + frame_length`.
+
+**Example:** Paired with `tf.signal.mdct`, it can reconstruct the original waveform within numerical tolerance, as shown in the provided round-trip validation example.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  mdcts:
+    dtype: ["float32", "float64"]
+    range: null
+    structure: ["tensor"]
+    shape: ["[..., frames, frame_length // 2]"]
+    default: null
+  window_fn:
+    dtype: ["callable"]
+    range: null
+    structure: ["callable"]
+    shape: null
+    default: "tf.signal.vorbis_window"
+  norm:
+    dtype: ["string", "None"]
+    range: [["ortho", null]]
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+  name:
+    dtype: ["string", "None"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "mdcts"
+    Parameter 2: "None"
+    Constraint: "mdcts.shape.rank >= 2"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.signal.inverse_mdct in a complex way */
+import tensorflow as tf

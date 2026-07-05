@@ -1,0 +1,67 @@
+
+# You are a Python code generation assistant for the `tf.raw_ops.ScatterMax` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.raw_ops.ScatterMax` performs an element-wise **maximum** operation between a mutable reference tensor (`ref`) and update values (`updates`) at specified positions (`indices`). It modifies `ref` in-place by replacing each indexed position with the maximum of its current value and the corresponding update.
+
+**Key Points:**
+- **Purpose:** Sparse reduction using `max` to update a variable.
+- **Operation:** For each index in `indices`, `ref[index] = max(ref[index], update)`.
+- **Inputs:**
+  - `ref`: Mutable tensor (variable) of numeric type.
+  - `indices`: Tensor of indices into the first dimension of `ref`.
+  - `updates`: Values to combine with `ref`; shape must match `indices.shape + ref.shape[1:]` or be scalar.
+- **Handling duplicates:** If multiple indices point to the same location, updates are combined correctly.
+- **Output:** Returns the updated `ref` tensor for operation chaining.
+- **Locking:** Optional lock (`use_locking`) to protect concurrent updates.
+
+**Example Use:** Updating a variable with sparse maximum values, commonly used in distributed or parallel training scenarios.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  ref:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  indices:
+    dtype: ["int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  updates:
+    dtype: ["half", "bfloat16", "float32", "float64", "int32", "int64"]
+    range: null
+    structure: ["tensor"]
+    shape: null
+    default: null
+  use_locking:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: "False"
+  name:
+    dtype: ["string"]
+    range: null
+    structure: ["scalar"]
+    shape: null
+    default: null
+constraints:
+  1:
+    Parameter 1: updates
+    Parameter 2: ref
+    Constraint: "updates.dtype == ref.dtype"
+  2:
+    Parameter 1: updates
+    Parameter 2: indices
+    Constraint: "updates.shape == indices.shape + ref.shape[1:] or updates.shape == []"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.raw_ops.ScatterMax in a complex way */
+import tensorflow as tf

@@ -1,0 +1,24 @@
+params:
+  self:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  mask:
+    dtype: ["bool"]
+    range: No mention
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  tensor:
+    dtype: No mention
+    range: No mention
+    structure: ["tensor"]
+    shape: No mention
+    default: null
+constraints:
+  1:
+    Parameter 1: self
+    Parameter 2: mask
+    Constraint: all((a == b) or (a == 1) or (b == 1) for a, b in zip((1,)*(max(len(self.shape), len(mask.shape)) - len(self.shape)) + tuple(self.shape), (1,)*(max(len(self.shape), len(mask.shape)) - len(mask.shape)) + tuple(mask.shape)))

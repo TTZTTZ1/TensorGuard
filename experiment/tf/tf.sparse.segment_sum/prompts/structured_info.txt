@@ -1,0 +1,50 @@
+params:
+  data:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "null"
+  indices:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  segment_ids:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: [1]
+    default: "null"
+  num_segments:
+    dtype: ["int32"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  name:
+    dtype: ["string"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: [0]
+    default: "null"
+  sparse_gradient:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: [0]
+    default: "False"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "segment_ids"
+    Constraint: "tf.size(indices) == tf.size(segment_ids)"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "data"
+    Constraint: "tf.reduce_all(tf.logical_and(indices >= 0, indices < tf.shape(data)[0]))"
+  3:
+    Parameter 1: "segment_ids"
+    Parameter 2: "num_segments"
+    Constraint: "num_segments is None or tf.reduce_all(segment_ids < num_segments)"

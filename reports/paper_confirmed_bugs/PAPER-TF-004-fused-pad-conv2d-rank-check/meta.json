@@ -1,0 +1,25 @@
+{
+  "id": "PAPER-TF-004",
+  "title": "FusedPadConv2D rank validation miss aborts process",
+  "framework": "TensorFlow",
+  "api": "tf.raw_ops.FusedPadConv2D",
+  "related_apis": [],
+  "bug_type": "Fatal check failure",
+  "severity": "High",
+  "status": "confirmed",
+  "source": {
+    "document": "基于大语言模型的深度学习库模糊测试.pdf",
+    "section": "附录 缺陷触发代码示例",
+    "paper_case": "4.4.3 case 3"
+  },
+  "trigger": "Use a rank-2 input tensor with paddings/filter shaped for rank-4 convolution.",
+  "expected": "TensorFlow should reject the input rank mismatch before reaching a fatal C++ check.",
+  "observed": "The process aborts after a CHECK failure: d < dims() (2 vs. 2).",
+  "reproducible": true,
+  "minimized": true,
+  "files": {
+    "repro": "repro.py",
+    "report": "report.md"
+  },
+  "tags": ["tensorflow", "fatal-check", "conv2d", "rank-validation"]
+}

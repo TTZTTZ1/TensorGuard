@@ -1,0 +1,86 @@
+
+# You are a Python code generation assistant for the `torch.sparse_coo_tensor` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.sparse_coo_tensor` constructs a sparse tensor in COO (coordinate) format from given indices and values. The indices specify the coordinates of non-zero elements, while values provide their corresponding data. If the size is not provided, it is inferred as the minimum size that can contain all specified indices. By default, the resulting tensor is uncoalesced unless explicitly set otherwise. Optional parameters allow control over data type, device placement, memory pinning, gradient tracking, and invariant checking.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  indices:
+    dtype: ["list", "tuple", "ndarray", "scalar", "other types"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "scalar", "other types"]
+    shape: [2]
+    default: "null"
+  values:
+    dtype: ["list", "tuple", "ndarray", "scalar", "other types"]
+    range: "No mention"
+    structure: ["list", "tuple", "ndarray", "scalar", "other types"]
+    shape: "No mention"
+    default: "null"
+  size:
+    dtype: ["list", "tuple", "torch.Size"]
+    range: "No mention"
+    structure: ["list", "tuple", "torch.Size"]
+    shape: "No mention"
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  device:
+    dtype: ["torch.device"]
+    range: "No mention"
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+  pin_memory:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  requires_grad:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "False"
+  check_invariants:
+    dtype: ["bool"]
+    range: ["True", "False"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "as returned by torch.sparse.check_sparse_tensor_invariants.is_enabled(), initially False."
+  is_coalesced:
+    dtype: ["bool", "None"]
+    range: ["True", "False", "None"]
+    structure: ["scalar"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "indices.shape[1] == values.shape[0]"
+  2:
+    Parameter 1: "indices"
+    Parameter 2: "values"
+    Constraint: "device is None or indices.device == values.device"
+  3:
+    Parameter 1: "size"
+    Parameter 2: "indices"
+    Constraint: "size is None or len(size) == indices.shape[0] + values.ndim - 1"
+  4:
+    Parameter 1: "size"
+    Parameter 2: "values"
+    Constraint: "size is None or size[indices.shape[0]:] == values.shape[1:]"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.sparse_coo_tensor in a complex way */
+import torch

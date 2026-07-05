@@ -1,0 +1,65 @@
+
+# You are a Python code generation assistant for the `torch.QInt8Storage` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The PyTorch `torch.UntypedStorage` is a low-level, contiguous, one-dimensional byte array that serves as the underlying data container for tensors. It holds the raw data, while tensors provide metadata like `dtype`, `shape`, `stride`, and `offset` to interpret that data.
+
+**Key Points:**
+- **Relationship with Tensors:** A tensor's data can be accessed via `tensor.untyped_storage()`. Multiple tensors (e.g., views) can share the same storage.
+- **Core Attributes:** Includes `data_ptr()` (unique identifier), `device`, `filename` (if memory-mapped), and `size()` (in bytes).
+- **Operations:** Supports in-place methods like `fill_()` and `copy_()`, as well as device transfers (e.g., `cuda()`, `cpu()`) and type casting (e.g., `float()`, `int()`).
+- **Memory Mapping:** Can be created from a file using `from_file()` for shared or private memory mapping.
+- **Shared Memory:** The `share_memory_()` method moves CPU storage to POSIX shared memory for inter-process sharing.
+- **Special Cases:** Tensors on `"meta"` device or `FakeTensor` have no storage. Tensors with gradients have separate storages for data and grad.
+- **Legacy API:** Typed storage classes (e.g., `torch.FloatStorage`) are deprecated; `torch.UntypedStorage` is the modern, untyped replacement.
+
+**Warning:** Direct storage manipulation is a low-level, risky operation. Standard tensor methods (e.g., `clone()`, `fill_()`) should be preferred for safety and clarity.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  args:
+    dtype: ["tuple", "list", "int", "torch.Tensor"]
+    range: ["No mention"]
+    structure: ["scalar", "tuple", "list", "tensor"]
+    shape: ["any"]
+    default: "null"
+  wrap_storage:
+    dtype: ["torch.UntypedStorage"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  dtype:
+    dtype: ["torch.dtype"]
+    range: ["torch.qint8"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "torch.qint8"
+  device:
+    dtype: ["string", "torch.device"]
+    range: ["cpu", "cuda", "hpu", "mps", "meta"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "null"
+  _internal:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["scalar"]
+    shape: [1]
+    default: "false"
+constraints:
+  1:
+    Parameter 1: "dtype"
+    Parameter 2: "None"
+    Constraint: "dtype == torch.qint8"
+  2:
+    Parameter 1: "wrap_storage"
+    Parameter 2: "args"
+    Constraint: "wrap_storage is None or len(args) == 0"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.QInt8Storage in a complex way */
+import torch

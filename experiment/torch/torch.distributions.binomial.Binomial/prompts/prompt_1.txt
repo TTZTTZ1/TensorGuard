@@ -1,0 +1,115 @@
+
+# You are a Python code generation assistant for the `torch.distributions.binomial.Binomial` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The `torch.distributions` module provides a comprehensive framework for working with probability distributions in PyTorch. Here's a concise summary of its key aspects:
+
+## **Core Purpose**
+- Enables construction of stochastic computation graphs with gradient estimators for optimization
+- Supports both score function (REINFORCE) and pathwise derivative (reparameterization) gradient estimation methods
+
+## **Key Components**
+
+### **1. Distribution Classes**
+- **Base Class**: `Distribution` - abstract base class with methods like `sample()`, `log_prob()`, `rsample()`, `entropy()`
+- **Common Distributions**: Bernoulli, Beta, Binomial, Categorical, Normal, Gamma, Exponential, Dirichlet, MultivariateNormal, etc.
+- **Specialized**: TransformedDistribution, MixtureSameFamily, Independent, ExponentialFamily
+
+### **2. Gradient Estimation Methods**
+- **Score Function (REINFORCE)**: Uses `sample()` + `log_prob()` for policy gradients
+- **Pathwise Derivative**: Uses `rsample()` for reparameterization trick (VAEs)
+
+### **3. Key Functionality**
+- **Sampling**: `sample()`, `rsample()` (reparameterized)
+- **Probability**: `log_prob()`, `cdf()`, `icdf()`
+- **Statistics**: `mean`, `variance`, `entropy()`, `mode`
+- **Batch/Event Shapes**: Support for batched parameters and multi-event samples
+
+### **4. Supporting Modules**
+- **Transforms**: Bijective transformations (AffineTransform, ExpTransform, SigmoidTransform, etc.)
+- **Constraints**: Domain validation (Interval, Simplex, PositiveDefinite, etc.)
+- **KL Divergence**: Pre-registered KL computations between distribution pairs
+- **Constraint Registry**: `biject_to()` and `transform_to()` for constrained optimization
+
+## **Typical Usage Patterns**
+
+```python
+# 1. Basic distribution usage
+m = Normal(loc=0, scale=1)
+sample = m.sample()
+log_prob = m.log_prob(sample)
+
+# 2. REINFORCE gradient estimation
+probs = policy_network(state)
+m = Categorical(probs)
+action = m.sample()
+loss = -m.log_prob(action) * reward
+loss.backward()
+
+# 3. Reparameterization gradient estimation
+params = policy_network(state)
+m = Normal(*params)
+action = m.rsample()  # Differentiable
+loss = -reward
+loss.backward()
+
+# 4. Constrained parameter transformation
+unconstrained = torch.tensor(...)
+scale = transform_to(Normal.arg_constraints["scale"])(unconstrained)
+```
+
+## **Design Features**
+- Follows TensorFlow Distributions package design
+- Supports automatic differentiation through stochastic nodes
+- Enables variational inference and reinforcement learning applications
+- Provides efficient batched operations and broadcasting
+- Includes specialized distributions for deep learning (LKJCholesky, RelaxedBernoulli, etc.)
+
+The module is essential for probabilistic modeling, Bayesian methods, and any application requiring differentiable sampling from probability distributions.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  total_count:
+    dtype: ["int", "Tensor"]
+    range: [">=0"]
+    structure: ["scalar", "tensor"]
+    shape: ["any"]
+    default: "1"
+  probs:
+    dtype: ["Tensor"]
+    range: ["[0,1]"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  logits:
+    dtype: ["Tensor"]
+    range: ["Real"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: "None"
+  validate_args:
+    dtype: ["bool"]
+    range: [null]
+    structure: ["scalar"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: total_count
+    Parameter 2: probs
+    Constraint: "torch.broadcast_shapes(torch.as_tensor(total_count).shape, torch.as_tensor(probs).shape) is not None"
+  2:
+    Parameter 1: total_count
+    Parameter 2: logits
+    Constraint: "torch.broadcast_shapes(torch.as_tensor(total_count).shape, torch.as_tensor(logits).shape) is not None"
+  3:
+    Parameter 1: probs
+    Parameter 2: logits
+    Constraint: "(probs is None) != (logits is None)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributions.binomial.Binomial in a complex way */
+import torch

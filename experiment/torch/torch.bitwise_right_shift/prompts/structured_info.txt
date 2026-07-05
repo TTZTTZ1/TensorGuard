@@ -1,0 +1,28 @@
+params:
+  input:
+    dtype: ["integral"]
+    range: "No mention"
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "null"
+  other:
+    dtype: ["integral"]
+    range: "No mention"
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: "null"
+  out:
+    dtype: "No mention"
+    range: "No mention"
+    structure: ["tensor"]
+    shape: "No mention"
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "input"
+    Parameter 2: "input"
+    Constraint: "input.dtype.is_floating_point == False"
+  2:
+    Parameter 1: "other"
+    Parameter 2: "input"
+    Constraint: "torch.all(other >= 0) and torch.all(other < torch.iinfo(torch.result_type(input, other)).bits)"

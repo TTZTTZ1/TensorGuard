@@ -1,0 +1,64 @@
+
+# You are a Python code generation assistant for the `torch.distributed.algorithms.Joinable` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+The **Generic Join Context Manager** in PyTorch enables distributed training with uneven inputs across processes, preventing hangs and errors when some processes finish earlier than others.
+
+### **Key Components:**
+
+1. **`Join` (Context Manager)**  
+   - Manages the join process for multiple `Joinable` objects.
+   - Parameters:
+     - `joinables`: List of participating joinable objects.
+     - `enable`: Enables uneven input detection (default `True`).
+     - `throw_on_early_termination`: Throws an exception if uneven inputs are detected (default `False`).
+
+2. **`Joinable` (Abstract Base Class)**  
+   Classes that work with the join context manager must inherit from `Joinable` and implement:
+   - `join_hook()` → Returns a `JoinHook` instance.
+   - `join_device` property → Device for collective communications.
+   - `join_process_group` property → Process group for join operations.
+
+3. **`JoinHook`**  
+   Defines two methods to shadow collective communications:
+   - `main_hook()`: Called repeatedly while any process hasn’t joined.
+   - `post_hook(is_last_joiner)`: Called after all processes have joined.
+
+### **Usage Flow:**
+1. Wrap training loop with `Join([joinable_objects])`.
+2. Each `Joinable` must call `Join.notify_join_context()` before per-iteration collective operations.
+3. The context manager uses hooks to simulate communications for joined processes, ensuring non-joined processes can complete without errors.
+
+### **Example:**
+```python
+with Join([model, optimizer]):
+    for input in inputs:
+        Join.notify_join_context(model)  # Notify before collective ops
+        loss = model(input).sum()
+        loss.backward()
+        optimizer.step()
+```
+
+### **Important Notes:**
+- All `JoinHook` objects must use the **same process group**.
+- The first `Joinable` in the list handles the collective notifications.
+- Disable with `enable=False` only if inputs are guaranteed to be even.
+
+This mechanism is essential for fault-tolerant distributed training with variable-length datasets.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  kwargs:
+    dtype: ["dict"]
+    range: null
+    structure: ["dict"]
+    shape: null
+    default: null
+constraints:
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.distributed.algorithms.Joinable in a complex way */
+import torch

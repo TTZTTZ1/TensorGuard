@@ -1,0 +1,58 @@
+
+# You are a Python code generation assistant for the `torch.where` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`torch.where` selects elements from two tensors based on a condition. It returns a tensor where each element is taken from `input` if the corresponding `condition` is True, otherwise from `other`. All inputs must be broadcastable.
+
+**Parameters:**
+- `condition` (BoolTensor): Determines selection source.
+- `input` (Tensor/scalar): Values chosen where `condition` is True.
+- `other` (Tensor/scalar): Values chosen where `condition` is False.
+
+**Returns:** A tensor with the broadcasted shape of the inputs.
+
+**Example:**
+```python
+>>> torch.where(x > 0, x, y)  # Select from x if condition holds, else from y
+```
+
+**Special form:** `torch.where(condition)` without `input`/`other` returns the indices where `condition` is True (equivalent to `torch.nonzero(condition, as_tuple=True)`).
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  condition:
+    dtype: ["bool"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["any"]
+    default: null
+  input:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  other:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor", "scalar"]
+    shape: ["any"]
+    default: null
+  out:
+    dtype: ["No mention"]
+    range: ["No mention"]
+    structure: ["tensor"]
+    shape: ["No mention"]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: condition
+    Parameter 2: input
+    Constraint: "try: torch.broadcast_shapes(condition.shape if torch.is_tensor(condition) else (), input.shape if torch.is_tensor(input) else (), other.shape if torch.is_tensor(other) else ()); True; except ValueError: False"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses torch.where in a complex way */
+import torch

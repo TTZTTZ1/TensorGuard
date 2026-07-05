@@ -1,0 +1,157 @@
+
+# You are a Python code generation assistant for the `tf.keras.layers.SeparableConv1D` API.
+
+# First, here is a general summary of the API's functionality and usage:
+---GENERAL SUMMARY START---
+`tf.keras.layers.SeparableConv1D` is a 1D separable convolution layer that performs a depthwise convolution (applied per input channel) followed by a pointwise convolution (mixes channels). It is more parameter-efficient than a standard 1D convolution.
+
+**Key Parameters:**
+- `filters`: Number of output filters in the pointwise convolution.
+- `kernel_size`: Size of the depthwise convolution window.
+- `strides`: Stride length (default 1).
+- `padding`: `"valid"` (no padding) or `"same"` (padding to preserve input size when `strides=1`).
+- `data_format`: `"channels_last"` (default, shape: `(batch, steps, channels)`) or `"channels_first"` (shape: `(batch, channels, steps)`).
+- `depth_multiplier`: Number of depthwise output channels per input channel (default 1).
+
+**Input Shape:**  
+3D tensor: `(batch, steps, channels)` if `data_format="channels_last"`, or `(batch, channels, steps)` if `"channels_first"`.
+
+**Output Shape:**  
+3D tensor with same data format, where `steps` may change based on padding/strides, and the channel dimension becomes `filters`.
+
+**Example:**
+```python
+x = np.random.rand(4, 10, 12)  # 4 samples, 10 timesteps, 12 channels
+y = tf.keras.layers.SeparableConv1D(filters=3, kernel_size=4, strides=2, activation='relu')(x)
+print(y.shape)  # (4, 4, 3)
+```
+
+This layer is useful for reducing computational cost while maintaining performance in sequence or temporal data processing.
+---GENERAL SUMMARY END---
+
+# Second, here is a detailed, structured description of the API's parameters and constraints. You MUST adhere to these rules.
+---STRUCTURED INFO START---
+params:
+  filters:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: null
+  kernel_size:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: [1]
+    default: null
+  strides:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: [1]
+    default: "1"
+  padding:
+    dtype: ["string"]
+    range: [["valid", "same"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "'valid'"
+  data_format:
+    dtype: ["string"]
+    range: [["channels_last", "channels_first"]]
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  dilation_rate:
+    dtype: ["int", "tuple", "list"]
+    range: null
+    structure: ["scalar", "tuple", "list"]
+    shape: [1]
+    default: "1"
+  depth_multiplier:
+    dtype: ["int"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "1"
+  activation:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  use_bias:
+    dtype: ["bool"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "True"
+  depthwise_initializer:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'glorot_uniform'"
+  pointwise_initializer:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'glorot_uniform'"
+  bias_initializer:
+    dtype: ["string", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "'zeros'"
+  depthwise_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  pointwise_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  bias_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  activity_regularizer:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  depthwise_constraint:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  pointwise_constraint:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+  bias_constraint:
+    dtype: ["callable", "NoneType"]
+    range: null
+    structure: ["scalar"]
+    shape: [1]
+    default: "None"
+constraints:
+  1:
+    Parameter 1: "strides"
+    Parameter 2: "dilation_rate"
+    Constraint: "not (strides > 1 and dilation_rate > 1)"
+---STRUCTURED INFO END---
+
+/* Please create a very short program which uses tf.keras.layers.SeparableConv1D in a complex way */
+import tensorflow as tf
