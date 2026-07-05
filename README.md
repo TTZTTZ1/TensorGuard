@@ -113,9 +113,9 @@ TensorGuard/
 
 | 项目 | 要求 |
 |------|------|
-| Python | 3.8+ |
-| PyTorch | ≥ 1.10（至少安装一个） |
-| TensorFlow | ≥ 2.8（至少安装一个） |
+| Python | 见 requirements.txt |
+| PyTorch | 至少安装一个 |
+| TensorFlow | 至少安装一个 |
 | GPU | 推荐（CPU 也可运行但较慢） |
 
 ### 安装
