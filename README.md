@@ -76,7 +76,7 @@ TensorGuard 是一个面向 PyTorch 和 TensorFlow 的**自动化模糊测试与
 
 ### 系统总览 Dashboard
 
-![系统总览](docs/screenshots/01-overview-dashboard.png)
+![系统总览](screenshots/01-overview-dashboard.png)
 
 - API 覆盖统计（PyTorch: 1568 / TensorFlow: 3040）
 - 已确认 Bug 数量
@@ -84,14 +84,14 @@ TensorGuard 是一个面向 PyTorch 和 TensorFlow 的**自动化模糊测试与
 
 ### 已确认 Bug 列表
 
-![已确认Bug](docs/screenshots/02-overview-bugs.png)
+![已确认Bug](screenshots/02-overview-bugs.png)
 
 - 结构化归档的缺陷证据
 - 支持查看详情和复现
 
 ### 单 API 运行 - 选择目标
 
-![API选择](docs/screenshots/03-api-run-selector.png)
+![API选择](screenshots/03-api-run-selector.png)
 
 - 选择框架（PyTorch/TensorFlow）
 - 选择目标 API
@@ -99,7 +99,7 @@ TensorGuard 是一个面向 PyTorch 和 TensorFlow 的**自动化模糊测试与
 
 ### 单 API 运行 - 执行进度
 
-![运行进度](docs/screenshots/04-api-run-progress.png)
+![运行进度](screenshots/04-api-run-progress.png)
 
 - 实时显示各阶段进展
 - GPU 监控曲线
@@ -107,7 +107,7 @@ TensorGuard 是一个面向 PyTorch 和 TensorFlow 的**自动化模糊测试与
 
 ### 单 API 运行 - 结果分析
 
-![结果分析](docs/screenshots/05-api-run-results.png)
+![结果分析](screenshots/05-api-run-results.png)
 
 - 有效程序数量
 - 异常/崩溃统计
@@ -115,7 +115,7 @@ TensorGuard 是一个面向 PyTorch 和 TensorFlow 的**自动化模糊测试与
 
 ### Bug 复现
 
-![Bug复现](docs/screenshots/06-bug-replay.png)
+![Bug复现](screenshots/06-bug-replay.png)
 
 - 最小复现代码
 - 环境配置选择
