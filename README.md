@@ -120,21 +120,30 @@ TensorGuard/
 
 ### 安装
 
+**推荐方式：使用 environment.yml（完整环境）**
+
 ```bash
 # 克隆仓库
 git clone https://github.com/TTZTTZ1/TensorGuard.git
 cd TensorGuard
 
+# 创建完整环境（包含CUDA支持）
+conda env create -f environment.yml
+conda activate tensorguard
+```
+
+**备选方式：手动安装**
+
+```bash
 # 创建虚拟环境
 conda create -n tensorguard python=3.10
 conda activate tensorguard
 
-# 安装依赖
-pip install -r requirements.txt
+# 安装 PyTorch（需要CUDA 13.0）
+pip install torch==2.11.0+cu130 --index-url https://download.pytorch.org/whl/cu130
 
-# 如需完整环境（含CUDA），使用 environment.yml
-conda env create -f environment.yml
-conda activate tensorguard
+# 安装其他依赖
+pip install -r requirements.txt
 ```
 
 ### 单 API 端到端演示
